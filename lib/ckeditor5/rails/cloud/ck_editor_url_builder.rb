@@ -3,7 +3,7 @@
 require 'active_support'
 require 'active_support/concern'
 
-module Ckeditor5::Cloud::CKEditorUrlBuilder
+module CKEditor5::Rails::Cloud::CKEditorUrlBuilder
   extend ActiveSupport::Concern
 
   class_methods do

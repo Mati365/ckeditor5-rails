@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class Ckeditor5::Cloud::CKEditorBaseBundle < Ckeditor5::AssetsBundle
-  include Ckeditor5::CDN::CKUrlBuilder
+class CKEditor5::Rails::Cloud::CKEditorBaseBundle < CKEditor5::AssetsBundle
+  include CKEditor5::CDN::CKUrlBuilder
 
   attr_reader :version, :package
 
   def initialize(version:, package:, translations: [])
-    raise ArgumentError, 'version must be semver' unless version.is_a?(Ckeditor5::Semver)
+    raise ArgumentError, 'version must be semver' unless version.is_a?(CKEditor5::Semver)
     raise ArgumentError, 'package must be a string' unless package.is_a?(String)
     raise ArgumentError, 'translations must be an array' unless translations.is_a?(Array)
 

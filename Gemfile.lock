@@ -2,8 +2,6 @@ PATH
   remote: .
   specs:
     ckeditor5 (0.0.1)
-      actionview (>= 5.0.0)
-      view_component (>= 3.1, < 4.0)
 
 GEM
   remote: https://rubygems.org/
@@ -102,11 +100,15 @@ GEM
     drb (2.2.1)
     erubi (1.13.0)
     ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-aarch64-linux-musl)
     ffi (1.17.0-arm-linux-gnu)
+    ffi (1.17.0-arm-linux-musl)
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86-linux-gnu)
+    ffi (1.17.0-x86-linux-musl)
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
+    ffi (1.17.0-x86_64-linux-musl)
     formatador (1.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -288,10 +290,6 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
     useragent (0.16.10)
-    view_component (3.19.0)
-      activesupport (>= 5.2.0, < 8.1)
-      concurrent-ruby (~> 1.0)
-      method_source (~> 1.0)
     webrick (1.8.2)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -302,11 +300,18 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  aarch64-linux-gnu
+  aarch64-linux-musl
   arm-linux
+  arm-linux-gnu
+  arm-linux-musl
   arm64-darwin
   x86-linux
+  x86-linux-gnu
+  x86-linux-musl
   x86_64-darwin
-  x86_64-linux
+  x86_64-linux-gnu
+  x86_64-linux-musl
 
 DEPENDENCIES
   bundler (~> 2.5, >= 2.5.21)
@@ -315,13 +320,12 @@ DEPENDENCIES
   guard
   guard-bundler
   guard-rails
-  rails (~> 7.0)
+  rails (~> 7)
   rake (~> 13.2, >= 13.2.1)
   rspec (~> 3.13)
   rubocop (~> 1.66)
   rubocop-rails (~> 2.26, >= 2.26.2)
   rubocop-rails-omakase (~> 1.0.0)
-  view_component (~> 3.10)
 
 BUNDLED WITH
    2.5.22
