@@ -7,6 +7,9 @@ gem 'rails', '~> 7.0'
 gem 'view_component', '~> 3.10'
 
 group :development do
+  gem 'guard'
+  gem 'guard-bundler'
+  gem 'guard-rails'
   gem 'rake', '~> 13.2', '>= 13.2.1'
   gem 'rspec', '~> 3.13'
   gem 'rubocop', '~> 1.66', require: false
