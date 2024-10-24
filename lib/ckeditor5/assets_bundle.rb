@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CKEditor5::AssetsBundle
+class Ckeditor5::AssetsBundle
   def js_exports = raise(NotImplementedError)
   def scripts = raise(NotImplementedError)
   def stylesheets = raise(NotImplementedError)

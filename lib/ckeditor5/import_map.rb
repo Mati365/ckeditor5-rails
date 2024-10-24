@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CKEditor5::ImportMap
+class Ckeditor5::ImportMap
   attr_reader :assets_bundles
 
   def initialize(assets_bundles = [])

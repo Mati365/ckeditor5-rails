@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-class CKEditor5::CDN::CKBaseBundle < CKEditor5::CDN::CKEditorBundle
+class Ckeditor5::Cloud::Bundles::CKEditor < Ckeditor5::Cloud::CKEditorBaseBundle
   def initialize(version, translations: [])
     super(
       version: version,
       translations: translations,
-      package: 'ckeditor5'
+      package: 'Ckeditor5'
     )
   end
 
   def js_exports
-    @js_exports ||= CKEditor5::AssetsBundle::JSExportsMeta.new(
-      import_name: 'ckeditor5',
+    @js_exports ||= Ckeditor5::AssetsBundle::JSExportsMeta.new(
+      import_name: 'Ckeditor5',
       window_name: 'CKEDITOR'
     )
   end

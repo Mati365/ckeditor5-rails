@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CKEditor5::Semver
+class Ckeditor5::Semver
   attr_reader :version
 
   alias to_s :version

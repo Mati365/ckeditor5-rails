@@ -1,11 +1,12 @@
-lib = File.expand_path('lib', __dir__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+# frozen_string_literal: true
+
+$LOAD_PATH.push File.expand_path('lib', __dir__)
 
 require 'ckeditor5/version'
 
 Gem::Specification.new do |s|
   s.name = 'ckeditor5'
-  s.version = CKEditor5::VERSION
+  s.version = Ckeditor5::VERSION
   s.platform = Gem::Platform::RUBY
   s.summary = 'CKEditor 5 for Rails'
   s.authors = [
@@ -16,8 +17,13 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.email = 'cziken58@gmail.com'
   s.homepage = 'https://github.com/Mati365/ckeditor5-rails'
-  s.files = `git ls-files`.split("\n")
-  s.executables  = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
+  s.required_ruby_version = '>= 3.0.0'
+
+  s.extra_rdoc_files = ['README.md']
+  s.test_files = Dir['{test}/**/*']
+  s.files = Dir['{app,lib}/**/*'] + ['LICENSE', 'Gemfile', 'README.md']
+
   s.require_paths = ['lib']
-  s.required_ruby_version = '>= 2.7.0'
+  s.add_runtime_dependency 'actionview', '>= 5.0.0'
+  s.add_runtime_dependency 'view_component', ['>= 3.1', '< 4.0']
 end
