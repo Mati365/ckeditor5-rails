@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gem 'bundler', '~> 2.5', '>= 2.5.21'
 
 group :development do
-  gem 'brakeman', '~> 6.1', '>= 6.1.1'
+  gem 'brakeman', '~> 6.1', '>= 6.1.1', require: false
   gem 'guard'
   gem 'guard-bundler'
   gem 'guard-rails'
