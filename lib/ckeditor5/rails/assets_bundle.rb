@@ -1,45 +1,54 @@
 # frozen_string_literal: true
 
-class CKEditor5::Rails::AssetsBundle
-  def js_exports = raise(NotImplementedError)
-  def scripts = raise(NotImplementedError)
-  def stylesheets = raise(NotImplementedError)
-
-  def empty?
-    scripts.empty? && stylesheets.empty?
-  end
-
-  def preload_links
-    (scripts + stylesheets).uniq
-  end
-
-  def merge!(other)
-    unless empty?
-      @scripts = (scripts + other.scripts).uniq
-      @css = (stylesheets + other.stylesheets).uniq
+module CKEditor5::Rails
+  class AssetsBundle
+    def initialize
+      validate_implementation!
     end
 
-    self
-  end
-
-  def merge(other)
-    dup.merge!(other)
-  end
-
-  class JSExportsMeta
-    attr_reader :import_name, :window_name
-
-    def initialize(import_name:, window_name:)
-      @import_name = import_name
-      @window_name = window_name
+    def empty?
+      scripts.empty? && stylesheets.empty?
     end
 
-    def esm?
-      import_name.present?
+    def preloads
+      stylesheets + scripts.map(&:url)
     end
 
-    def umd?
-      window_name.present?
+    def <<(other)
+      raise TypeError, 'other must be an instance of AssetsBundle' unless other.is_a?(AssetsBundle)
+
+      @scripts = scripts + other.scripts
+      @stylesheets = stylesheets + other.stylesheets
+    end
+
+    class JSExportsMeta
+      attr_reader :url, :import_name, :window_name
+
+      def initialize(url, import_name: nil, window_name: nil)
+        @url = url
+        @import_name = import_name
+        @window_name = window_name
+      end
+
+      def esm?
+        import_name.present?
+      end
+
+      def umd?
+        window_name.present?
+      end
+    end
+
+    private
+
+    def validate_implementation!
+      raise NotImplementedError, "#{self.class} must implement the #scripts method" unless respond_to?(
+        :scripts, true
+      )
+
+      raise NotImplementedError, "#{self.class} must implement the #stylesheets method" unless respond_to?(
+        :stylesheets, true
+      )
     end
   end
 end

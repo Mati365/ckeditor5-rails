@@ -13,7 +13,7 @@ Unofficial CKEditor 5 Ruby on Rails integration.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'ckeditor5'
+gem 'ckeditor5-rails'
 ```
 
 ## :construction: Planned features

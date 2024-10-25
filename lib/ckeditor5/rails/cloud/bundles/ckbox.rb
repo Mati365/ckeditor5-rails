@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module CKEditor5::Rails::Cloud
-  class Bundles::CKBox < AssetsBundle
+  class CKBox < CKEditor5::Rails::AssetsBundle
     attr_reader :version, :theme
 
-    def initialize(version, theme: 'lark')
+    def initialize(version, theme = 'lark')
       raise ArgumentError, 'version must be semver' unless version.is_a?(CKEditor5::Semver)
       raise ArgumentError, 'theme must be a string' unless theme.is_a?(String)
 
-      super
+      super()
 
       @version = version
       @theme = theme
@@ -16,7 +16,9 @@ module CKEditor5::Rails::Cloud
 
     def scripts
       @scripts ||= [
-        self.class.create_ckbox_cloud_url('ckbox', 'ckbox.js', version)
+        JSExportsMeta.new(
+          self.class.create_ckbox_cloud_url('ckbox', 'ckbox.js', version)
+        )
       ]
     end
 

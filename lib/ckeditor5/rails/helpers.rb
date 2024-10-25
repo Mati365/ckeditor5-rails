@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module CKEditor5::Rails::Helpers
-  def ckeditor5_assets
-    javascript_tag(noonce: true) do
-      concat "console.log('ssdasd');".html_safe
-    end
+require_relative 'cloud/helpers'
+
+module CKEditor5::Rails
+  module Helpers
+    include Cloud::Helpers
   end
 end

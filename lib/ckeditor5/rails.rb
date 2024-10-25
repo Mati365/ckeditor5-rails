@@ -2,8 +2,11 @@
 
 module CKEditor5
   module Rails
-    require_relative 'rails/engine'
     require_relative 'rails/version'
+    require_relative 'rails/semver'
+    require_relative 'rails/assets_bundle'
+    require_relative 'rails/assets_bundle_html_serializer'
     require_relative 'rails/helpers'
+    require_relative 'rails/engine'
   end
 end
