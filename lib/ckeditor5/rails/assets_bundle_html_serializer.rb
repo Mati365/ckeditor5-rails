@@ -15,16 +15,14 @@ module CKEditor5::Rails
     end
 
     def to_html
-      preload_tags + styles_tags + import_map_tag
+      safe_join([preload_tags, styles_tags, import_map_tag])
     end
 
     def self.url_resource_preload_type(url)
-      if url.end_with?('.js')
-        'script'
-      elsif url.end_with?('.css')
-        'style'
-      else
-        'fetch'
+      case File.extname(url)
+      when '.js' then 'script'
+      when '.css' then 'style'
+      else 'fetch'
       end
     end
 
@@ -33,27 +31,25 @@ module CKEditor5::Rails
     # rubocop:disable Rails/OutputSafety
 
     def import_map_tag
+      return @import_map_tag if defined?(@import_map_tag)
+
       import_map = bundle.scripts.each_with_object({}) do |script, memo|
         memo[script.import_name] = script.url if script.esm?
       end
 
-      tag.script import_map.to_json.html_safe, type: 'importmap', nonce: true
+      @import_map_tag = tag.script(import_map.to_json.html_safe, type: 'importmap', nonce: true)
     end
 
     def styles_tags
-      tags = bundle.stylesheets.map do |url|
+      @styles_tags ||= safe_join(bundle.stylesheets.map do |url|
         tag.link(href: url, rel: 'stylesheet')
-      end
-
-      safe_join(tags)
+      end)
     end
 
     def preload_tags
-      tags = bundle.preloads.map do |url|
-        tag.link rel: 'preload', href: url, as: self.class.url_resource_preload_type(url)
-      end
-
-      safe_join(tags)
+      @preload_tags ||= safe_join(bundle.preloads.map do |url|
+        tag.link(href: url, rel: 'preload', as: self.class.url_resource_preload_type(url))
+      end)
     end
 
     # rubocop:enable Rails/OutputSafety
