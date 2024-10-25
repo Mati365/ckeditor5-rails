@@ -2,7 +2,7 @@
 
 require 'action_view'
 
-module CKEditor5::Rails
+module CKEditor5::Rails::Assets
   class AssetsBundleHtmlSerializer
     include ActionView::Helpers::TagHelper
 

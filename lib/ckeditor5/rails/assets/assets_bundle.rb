@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CKEditor5::Rails
+module CKEditor5::Rails::Assets
   class AssetsBundle
     def initialize
       validate_implementation!
@@ -21,19 +21,6 @@ module CKEditor5::Rails
       @stylesheets = stylesheets + other.stylesheets
     end
 
-    class JSExportsMeta
-      attr_reader :url, :import_name
-
-      def initialize(url, import_name: nil)
-        @url = url
-        @import_name = import_name
-      end
-
-      def esm?
-        import_name.present?
-      end
-    end
-
     private
 
     def validate_implementation!
@@ -44,6 +31,19 @@ module CKEditor5::Rails
       raise NotImplementedError, "#{self.class} must implement the #stylesheets method" unless respond_to?(
         :stylesheets, true
       )
+    end
+  end
+
+  class JSExportsMeta
+    attr_reader :url, :import_name
+
+    def initialize(url, import_name: nil)
+      @url = url
+      @import_name = import_name
+    end
+
+    def esm?
+      import_name.present?
     end
   end
 end

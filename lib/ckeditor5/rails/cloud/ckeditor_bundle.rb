@@ -2,7 +2,7 @@
 
 module CKEditor5::Rails
   module Cloud
-    class CKEditorBundle < AssetsBundle
+    class CKEditorBundle < Assets::AssetsBundle
       attr_reader :version, :translations, :import_name
 
       def initialize(version, import_name, translations: [])
@@ -33,7 +33,7 @@ module CKEditor5::Rails
       private
 
       def js_exports_meta
-        JSExportsMeta.new(
+        Assets::JSExportsMeta.new(
           create_ck_cloud_url("#{import_name}.js"),
           import_name: import_name
         )
@@ -43,7 +43,7 @@ module CKEditor5::Rails
         translations.map do |lang|
           url = create_ck_cloud_url("translations/#{lang}.js")
 
-          JSExportsMeta.new(url, import_name: "#{import_name}/translations/#{lang}")
+          Assets::JSExportsMeta.new(url, import_name: "#{import_name}/translations/#{lang}")
         end
       end
 

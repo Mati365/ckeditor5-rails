@@ -12,7 +12,7 @@ module CKEditor5::Rails
       bundle << ckeditor5_premium_bundle(semver, translations) if premium
       bundle << Cloud::CKBoxBundle.new(ckbox[:version], ckbox[:theme] || 'lark') if ckbox
 
-      AssetsBundleHtmlSerializer.new(bundle).to_html
+      Assets::AssetsBundleHtmlSerializer.new(bundle).to_html
     end
 
     def ckeditor5_base_bundle(version, translations)
