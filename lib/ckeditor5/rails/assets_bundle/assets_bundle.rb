@@ -22,20 +22,15 @@ module CKEditor5::Rails
     end
 
     class JSExportsMeta
-      attr_reader :url, :import_name, :window_name
+      attr_reader :url, :import_name
 
-      def initialize(url, import_name: nil, window_name: nil)
+      def initialize(url, import_name: nil)
         @url = url
         @import_name = import_name
-        @window_name = window_name
       end
 
       def esm?
         import_name.present?
-      end
-
-      def umd?
-        window_name.present?
       end
     end
 

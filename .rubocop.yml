@@ -24,3 +24,6 @@ Metrics/ModuleLength:
 
 Rails:
   Enabled: true
+
+Rails/OutputSafety:
+  Enabled: false

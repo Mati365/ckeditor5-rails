@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module CKEditor5::Rails::Cloud
-  class CKBox < CKEditor5::Rails::AssetsBundle
+  class CKBoxBundle < CKEditor5::Rails::AssetsBundle
     attr_reader :version, :theme
 
-    def initialize(version, theme = 'lark')
+    def initialize(version, theme)
       raise ArgumentError, 'version must be semver' unless version.is_a?(CKEditor5::Semver)
       raise ArgumentError, 'theme must be a string' unless theme.is_a?(String)
 
