@@ -3,7 +3,6 @@
 source 'https://rubygems.org'
 
 gem 'bundler', '~> 2.5', '>= 2.5.21'
-gem 'rails', '~> 7'
 
 group :development do
   gem 'guard'
