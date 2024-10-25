@@ -51,21 +51,23 @@ module CKEditor5::Rails::Builder
     end
 
     def internal_plugins
-      @internal_plugins ||= plugins.select do |plugin|
-        plugin.is_a?(String) || plugin.is_a?(Symbol)
-      end.map(&:to_s)
+      @internal_plugins ||= plugins.filter_map do |plugin|
+        plugin.to_s if plugin.is_a?(String) || plugin.is_a?(Symbol)
+      end
     end
 
     def window_plugins
-      @window_plugins ||= plugins.select { |plugin| plugin.is_a?(CustomWindowPlugin) }.map do |plugin|
-        name = "__window_plugin_#{plugin.name.parameterize}"
-        { code: "const #{name} = window['#{plugin.name}'];", name: name }
+      @window_plugins ||= plugins.filter_map do |plugin|
+        if plugin.is_a?(CustomWindowPlugin)
+          name = "__window_plugin_#{plugin.name.parameterize}"
+          { code: "const #{name} = window['#{plugin.name}'];", name: name }
+        end
       end
     end
 
     def esm_plugins
-      @esm_plugins ||= plugins.select { |plugin| plugin.is_a?(CustomEsmPlugin) }.map do |plugin|
-        { import_name: plugin.import_name, name: plugin.name }
+      @esm_plugins ||= plugins.filter_map do |plugin|
+        { import_name: plugin.import_name, name: plugin.name } if plugin.is_a?(CustomEsmPlugin)
       end
     end
   end
