@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     ckeditor5 (0.0.1)
-      rails (>= 6.0)
+      rails (>= 7.1)
 
 GEM
   remote: https://rubygems.org/
