@@ -1,4 +1,153 @@
 - content_for :head
   = ckeditor5_cloud_assets('43.2.0', translations: ['pl'])
 
-= ckeditor5_editor(config: { plugins: [] })
+= ckeditor5_editor width: '500px', config: { \
+    toolbar: { \
+      items: [ \
+      'undo', \
+      'redo', \
+      '|', \
+      'heading', \
+      '|', \
+      'bold', \
+      'italic', \
+      'underline', \
+      '|', \
+      'link', \
+      'insertImage', \
+      'ckbox', \
+      'mediaEmbed', \
+      'insertTable', \
+      'blockQuote', \
+      '|', \
+      'bulletedList', \
+      'numberedList', \
+      'todoList', \
+      'outdent', \
+      'indent' \
+      ], \
+      shouldNotGroupWhenFull: false \
+    }, \
+    plugins: [ \
+      :AccessibilityHelp, \
+      :Autoformat, \
+      :AutoImage, \
+      :Autosave, \
+      :BlockQuote, \
+      :Bold, \
+      :CKBox, \
+      :CKBoxImageEdit, \
+      :CloudServices, \
+      :Essentials, \
+      :Heading, \
+      :ImageBlock, \
+      :ImageCaption, \
+      :ImageInline, \
+      :ImageInsert, \
+      :ImageInsertViaUrl, \
+      :ImageResize, \
+      :ImageStyle, \
+      :ImageTextAlternative, \
+      :ImageToolbar, \
+      :ImageUpload, \
+      :Indent, \
+      :IndentBlock, \
+      :Italic, \
+      :Link, \
+      :LinkImage, \
+      :List, \
+      :ListProperties, \
+      :MediaEmbed, \
+      :Paragraph, \
+      :PasteFromOffice, \
+      :PictureEditing, \
+      :SelectAll, \
+      :Table, \
+      :TableCaption, \
+      :TableCellProperties, \
+      :TableColumnResize, \
+      :TableProperties, \
+      :TableToolbar, \
+      :TextTransformation, \
+      :TodoList, \
+      :Underline, \
+      :Undo \
+    ] \
+  }
+
+br
+br
+
+= ckeditor5_editor width: '500px', config: { \
+    toolbar: { \
+      items: [ \
+      'undo', \
+      'redo', \
+      '|', \
+      'heading', \
+      '|', \
+      'bold', \
+      'italic', \
+      'underline', \
+      '|', \
+      'link', \
+      'insertImage', \
+      'ckbox', \
+      'mediaEmbed', \
+      'insertTable', \
+      'blockQuote', \
+      '|', \
+      'bulletedList', \
+      'numberedList', \
+      'todoList', \
+      'outdent', \
+      'indent' \
+      ], \
+      shouldNotGroupWhenFull: false \
+    }, \
+    plugins: [ \
+      :AccessibilityHelp, \
+      :Autoformat, \
+      :AutoImage, \
+      :Autosave, \
+      :BlockQuote, \
+      :Bold, \
+      :CKBox, \
+      :CKBoxImageEdit, \
+      :CloudServices, \
+      :Essentials, \
+      :Heading, \
+      :ImageBlock, \
+      :ImageCaption, \
+      :ImageInline, \
+      :ImageInsert, \
+      :ImageInsertViaUrl, \
+      :ImageResize, \
+      :ImageStyle, \
+      :ImageTextAlternative, \
+      :ImageToolbar, \
+      :ImageUpload, \
+      :Indent, \
+      :IndentBlock, \
+      :Italic, \
+      :Link, \
+      :LinkImage, \
+      :List, \
+      :ListProperties, \
+      :MediaEmbed, \
+      :Paragraph, \
+      :PasteFromOffice, \
+      :PictureEditing, \
+      :SelectAll, \
+      :Table, \
+      :TableCaption, \
+      :TableCellProperties, \
+      :TableColumnResize, \
+      :TableProperties, \
+      :TableToolbar, \
+      :TextTransformation, \
+      :TodoList, \
+      :Underline, \
+      :Undo \
+    ] \
+  }
