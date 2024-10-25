@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     ckeditor5 (0.0.1)
+      rails (>= 6.0)
 
 GEM
   remote: https://rubygems.org/
@@ -320,7 +321,6 @@ DEPENDENCIES
   guard
   guard-bundler
   guard-rails
-  rails (~> 7)
   rake (~> 13.2, >= 13.2.1)
   rspec (~> 3.13)
   rubocop (~> 1.66)
