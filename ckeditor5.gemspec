@@ -2,7 +2,7 @@
 
 $LOAD_PATH.push File.expand_path('lib', __dir__)
 
-require 'ckeditor5/rails'
+require 'ckeditor5/rails/version'
 
 Gem::Specification.new do |s|
   s.name = 'ckeditor5'
