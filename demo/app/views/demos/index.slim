@@ -1,5 +1,6 @@
 - content_for :head
-  = ckeditor5_cloud_assets('43.2.0', translations: ['pl'])
+  / = ckeditor5_cloud_assets('43.2.0', license_key: '123456', translations: ['pl'])
+  = ckeditor5_jsdelivr_assets '43.2.0'
 
 = ckeditor5_editor width: '500px', config: { \
     toolbar: { \

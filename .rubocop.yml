@@ -16,6 +16,12 @@ Style/ClassAndModuleChildren:
 Layout/LineLength:
   Max: 110
 
+Metrics/MethodLength:
+  Max: 18
+
+Metrics/ParametersList:
+  Max: 6
+
 Metrics/ClassLength:
   Max: 200
 

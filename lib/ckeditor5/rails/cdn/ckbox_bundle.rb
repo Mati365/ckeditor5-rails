@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
 module CKEditor5::Rails
-  module Cloud
+  module Cdn
     class CKBoxBundle < Assets::AssetsBundle
-      attr_reader :version, :theme
+      include Cdn::UrlGenerator
 
-      def initialize(version, theme)
+      attr_reader :cdn, :version, :theme
+
+      def initialize(version, theme: :lark, cdn: :jsdelivr)
         raise ArgumentError, 'version must be semver' unless version.is_a?(Semver)
         raise ArgumentError, 'theme must be a string' unless theme.is_a?(String)
 
         super()
 
+        @cdn = cdn
         @version = version
         @theme = theme
       end
@@ -18,19 +21,15 @@ module CKEditor5::Rails
       def scripts
         @scripts ||= [
           Assets::JSExportsMeta.new(
-            self.class.create_ckbox_cloud_url('ckbox', 'ckbox.js', version)
+            create_cdn_url('ckbox', 'ckbox.js', version)
           )
         ]
       end
 
       def stylesheets
         @stylesheets ||= [
-          self.class.create_ckbox_cloud_url('ckbox', "styles/themes/#{theme}.css", version)
+          create_cdn_url('ckbox', "styles/themes/#{theme}.css", version)
         ]
-      end
-
-      def self.create_ckbox_cloud_url(bundle, file, version)
-        "https://cdn.ckbox.io/#{bundle}/#{version}/#{file}"
       end
     end
   end
