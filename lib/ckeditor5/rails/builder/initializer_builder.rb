@@ -10,12 +10,12 @@ module CKEditor5::Rails::Builder
       multiroot: 'MultiRootEditor'
     }.freeze
 
-    attr_reader :id, :type, :bundle, :config
+    attr_reader :id, :type, :context, :config
 
-    def initialize(bundle, type, config, id: nil)
+    def initialize(context, type, config, id: nil)
       raise ArgumentError, "Invalid editor type: #{type}" unless CKEDITOR_EDITOR_TYPES_IMPORTS.key?(type)
 
-      @bundle = bundle
+      @context = context
       @type = type
       @id = id || SecureRandom.uuid
       @config = config
@@ -50,7 +50,8 @@ module CKEditor5::Rails::Builder
                      .except(:plugins)
                      .merge(
                        plugins: '__CKEDITOR_PLUGINS__',
-                       translations: '__CKEDITOR_TRANSLATIONS__'
+                       translations: '__CKEDITOR_TRANSLATIONS__',
+                       licenseKey: context[:license_key] || 'GPL'
                      )
                      .to_json
                      .gsub('"__CKEDITOR_PLUGINS__"', initializer_plugins.js_config_plugins)
@@ -58,7 +59,7 @@ module CKEditor5::Rails::Builder
     end
 
     def initializer_translations
-      @initializer_translations ||= InitializerTranslations.new(bundle)
+      @initializer_translations ||= InitializerTranslations.new(context[:bundle])
     end
 
     def initializer_plugins

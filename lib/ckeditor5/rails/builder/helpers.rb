@@ -9,10 +9,12 @@ require_relative 'initializer_builder'
 module CKEditor5::Rails::Builder
   module Helpers
     def ckeditor5_editor(config:, type: :classic, id: nil, width: 'auto')
-      raise 'CKEditor installation info is not defined' unless defined?(@__ckeditor_installation_info)
+      unless defined?(@__ckeditor_context)
+        raise 'CKEditor installation context is not defined. ' \
+              'Ensure ckeditor5_assets (or any other assets initializer) is called in the head section.'
+      end
 
-      bundle = @__ckeditor_installation_info[:bundle]
-      initializer = InitializerBuilder.new(bundle, type, config, id: id)
+      initializer = InitializerBuilder.new(@__ckeditor_context, type, config, id: id)
 
       safe_join([
                   tag.div(style: "width: #{width};") do
