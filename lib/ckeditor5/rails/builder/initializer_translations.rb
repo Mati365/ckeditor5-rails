@@ -34,7 +34,7 @@ module CKEditor5::Rails::Builder
     private
 
     def parameterize_import_name(name)
-      name.parameterize.gsub('-', '_')
+      name.parameterize.gsub('-', '_').camelize
     end
   end
 end

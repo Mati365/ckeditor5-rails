@@ -19,8 +19,8 @@ module CKEditor5::Rails
       Assets::AssetsBundleHtmlSerializer.new(bundle).to_html
     end
 
-    Cdn::UrlGenerator::CDN_THIRD_PARTY_GENERATORS.keys.each do |key|
-      define_method("ckeditor5_#{key.to_s.parameterize}_assets") do |version, **kwargs|
+    Cdn::UrlGenerator::CDN_THIRD_PARTY_GENERATORS.each_key do |key|
+      define_method(:"ckeditor5_#{key.to_s.parameterize}_assets") do |version, **kwargs|
         ckeditor5_cdn_assets(version, **kwargs.merge(cdn: key))
       end
     end

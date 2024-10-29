@@ -34,17 +34,17 @@ module CKEditor5::Rails::Assets
     private
 
     def window_scripts_tags
-      @window_scripts_tags ||= safe_join(bundle.scripts.select(&:window?).map do |script|
-        tag.script(src: script.url, nonce: true, async: true)
+      @window_scripts_tags ||= safe_join(bundle.scripts.filter_map do |script|
+        tag.script(src: script.url, nonce: true, async: true) if script.window?
       end)
     end
 
     def scripts_import_map_tag
       return @scripts_import_map_tag if defined?(@import_map_tag)
 
-      import_map = bundle.scripts.each_with_object({}) do |script, memo|
-        memo[script.import_name] = script.url if script.esm?
-      end
+      import_map = bundle.scripts.filter_map do |script|
+        [script.import_name, script.url] if script.esm?
+      end.to_h
 
       @import_map_tag = tag.script(
         { imports: import_map }.to_json.html_safe,

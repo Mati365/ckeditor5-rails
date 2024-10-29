@@ -48,7 +48,7 @@ module CKEditor5::Rails
 
           Assets::JSExportsMeta.new(
             url,
-            import_name: "#{import_name}/translations/#{import_name}.js",
+            import_name: "#{import_name}/translations/#{lang}.js",
             translation: true
           )
         end
