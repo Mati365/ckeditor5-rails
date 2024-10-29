@@ -43,7 +43,7 @@ module CKEditor5::Rails::Assets
       return @scripts_import_map_tag if defined?(@import_map_tag)
 
       import_map = bundle.scripts.filter_map do |script|
-        [script.import_name, script.url] if script.esm?
+        [ script.import_name, script.url ] if script.esm?
       end.to_h
 
       @import_map_tag = tag.script(
