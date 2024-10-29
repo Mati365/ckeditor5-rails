@@ -25,6 +25,14 @@ module CKEditor5::Rails
       end
     end
 
+    def ckeditor5_assets(version, **kwargs)
+      if kwargs[:license_key] && kwargs[:license_key] != 'GPL'
+        ckeditor5_cloud_assets(version, **kwargs)
+      else
+        ckeditor5_jsdelivr_assets(version, **kwargs)
+      end
+    end
+
     private
 
     def build_base_cdn_bundle(cdn, version, translations)
