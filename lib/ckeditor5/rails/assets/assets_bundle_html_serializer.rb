@@ -18,7 +18,8 @@ module CKEditor5::Rails::Assets
       safe_join([
                   preload_tags,
                   styles_tags,
-                  import_map_tag
+                  window_scripts_tags,
+                  scripts_import_map_tag
                 ])
     end
 
@@ -32,8 +33,14 @@ module CKEditor5::Rails::Assets
 
     private
 
-    def import_map_tag
-      return @import_map_tag if defined?(@import_map_tag)
+    def window_scripts_tags
+      @window_scripts_tags ||= safe_join(bundle.scripts.select(&:window?).map do |script|
+        tag.script(src: script.url, nonce: true, async: true)
+      end)
+    end
+
+    def scripts_import_map_tag
+      return @scripts_import_map_tag if defined?(@import_map_tag)
 
       import_map = bundle.scripts.each_with_object({}) do |script, memo|
         memo[script.import_name] = script.url if script.esm?

@@ -6,12 +6,15 @@ require_relative 'ckbox_bundle'
 
 module CKEditor5::Rails
   module Cdn::Helpers
-    def ckeditor5_cdn_assets(version, license_key: 'GPL', cdn:, premium: false, translations: [], ckbox: nil)
+    def ckeditor5_cdn_assets(version, cdn:, license_key: 'GPL', premium: false, translations: [], ckbox: nil)
       bundle = build_base_cdn_bundle(cdn, version, translations)
       bundle << build_premium_cdn_bundle(cdn, version, translations) if premium
       bundle << build_ckbox_cdn_bundle(ckbox) if ckbox
 
-      @__ckeditor_installation_info = { license_key: license_key }
+      @__ckeditor_installation_info = {
+        license_key: license_key,
+        bundle: bundle
+      }
 
       Assets::AssetsBundleHtmlSerializer.new(bundle).to_html
     end

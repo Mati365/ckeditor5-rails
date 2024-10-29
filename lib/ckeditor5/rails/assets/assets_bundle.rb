@@ -10,6 +10,10 @@ module CKEditor5::Rails::Assets
       scripts.empty? && stylesheets.empty?
     end
 
+    def translations_scripts
+      scripts.select(&:translation?)
+    end
+
     def preloads
       stylesheets + scripts.map(&:url)
     end
@@ -35,15 +39,25 @@ module CKEditor5::Rails::Assets
   end
 
   class JSExportsMeta
-    attr_reader :url, :import_name
+    attr_reader :url, :import_name, :window_name
 
-    def initialize(url, import_name: nil)
+    def initialize(url, import_name: nil, window_name: nil, translation: false)
       @url = url
       @import_name = import_name
+      @window_name = window_name
+      @translation = translation
+    end
+
+    def translation?
+      @translation
     end
 
     def esm?
       import_name.present?
+    end
+
+    def window?
+      window_name.present?
     end
   end
 end

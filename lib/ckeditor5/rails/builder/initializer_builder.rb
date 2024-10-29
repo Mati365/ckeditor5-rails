@@ -10,11 +10,12 @@ module CKEditor5::Rails::Builder
       multiroot: 'MultiRootEditor'
     }.freeze
 
-    attr_reader :id, :type, :config
+    attr_reader :id, :type, :bundle, :config
 
-    def initialize(type, config, id: nil)
+    def initialize(bundle, type, config, id: nil)
       raise ArgumentError, "Invalid editor type: #{type}" unless CKEDITOR_EDITOR_TYPES_IMPORTS.key?(type)
 
+      @bundle = bundle
       @type = type
       @id = id || SecureRandom.uuid
       @config = config
@@ -23,21 +24,21 @@ module CKEditor5::Rails::Builder
     def to_js
       <<-JS
         import { #{editor_constructor} } from 'ckeditor5';
-        #{initializer_plugins.js_imports}
+        #{initializer_plugins.esm_imports}
+        #{initializer_translations.esm_imports}
 
         (() => {
           const setupEditor = () => {
-            #{editor_constructor}
-              .create(document.getElementById('#{id}'), #{js_config})
-              .catch(error => {
-                console.error(error);
-              });
+            #{initializer_plugins.window_imports}
+            #{editor_constructor}.create(document.getElementById('#{id}'), #{js_config}).catch(error => {
+              console.error(error);
+            });
           };
 
-          if (['complete', 'loaded'].includes(document.readyState))
+          if (document.readyState === 'loaded')
             setupEditor();
           else
-            document.addEventListener('DOMContentLoaded', setupEditor);
+            window.addEventListener('load', setupEditor);
         })();
       JS
     end
@@ -47,9 +48,17 @@ module CKEditor5::Rails::Builder
     def js_config
       @js_config ||= config
                      .except(:plugins)
-                     .merge(plugins: '__CKEDITOR_PLUGINS__')
+                     .merge(
+                       plugins: '__CKEDITOR_PLUGINS__',
+                       translations: '__CKEDITOR_TRANSLATIONS__'
+                     )
                      .to_json
                      .gsub('"__CKEDITOR_PLUGINS__"', initializer_plugins.js_config_plugins)
+                     .gsub('"__CKEDITOR_TRANSLATIONS__"', initializer_translations.js_config_translations)
+    end
+
+    def initializer_translations
+      @initializer_translations ||= InitializerTranslations.new(bundle)
     end
 
     def initializer_plugins

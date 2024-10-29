@@ -46,7 +46,11 @@ module CKEditor5::Rails
         translations.map do |lang|
           url = create_cdn_url(import_name, version, "translations/#{lang}.js")
 
-          Assets::JSExportsMeta.new(url, import_name: "#{import_name}/translations/#{lang}")
+          Assets::JSExportsMeta.new(
+            url,
+            import_name: "#{import_name}/translations/#{import_name}.js",
+            translation: true
+          )
         end
       end
     end

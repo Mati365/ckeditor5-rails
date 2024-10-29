@@ -7,7 +7,7 @@ module CKEditor5::Rails::Cdn
     extend ActiveSupport::Concern
 
     CDN_THIRD_PARTY_GENERATORS = {
-      jsdelivr: ->(bundle, version, path) {
+      jsdelivr: lambda { |bundle, version, path|
         base_url = "https://cdn.jsdelivr.net/npm/#{bundle}@#{version}/dist"
 
         if path.start_with?('translations/')
@@ -20,7 +20,7 @@ module CKEditor5::Rails::Cdn
 
     CDN_COMMERCIAL_GENERATORS = {
       cloud: ->(bundle, version, path) { "https://cdn.ckeditor.com/#{bundle}/#{version}/#{path}" },
-      ckbox: ->(bundle, version, path) { "https://cdn.ckbox.io/#{bundle}/#{version}/#{path}" },
+      ckbox: ->(bundle, version, path) { "https://cdn.ckbox.io/#{bundle}/#{version}/#{path}" }
     }.freeze
 
     included do
