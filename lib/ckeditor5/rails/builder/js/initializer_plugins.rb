@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CKEditor5::Rails::Builder
+module CKEditor5::Rails::Builder::JS
   class InitializerPlugins
     attr_reader :plugins
 
@@ -43,7 +43,7 @@ module CKEditor5::Rails::Builder
           name = "__window_plugin_#{plugin.name.parameterize}"
 
           {
-            code: JsBuilder.create_window_import(plugin.name, name),
+            code: ImportCreator.create_window_import(plugin.name, name),
             name: name
           }
         end
@@ -74,7 +74,7 @@ module CKEditor5::Rails::Builder
       esm_plugins
         .group_by { |plugin| plugin[:import_name] }
         .map do |import_name, plugins|
-          JsBuilder.create_esm_import(import_name, plugins.map { |plugin| plugin[:name] })
+          ImportCreator.create_esm_import(import_name, plugins.map { |plugin| plugin[:name] })
         end
         .join("\n")
     end

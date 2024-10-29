@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'js_builder'
-
-require_relative 'initializer_translations'
-require_relative 'initializer_plugins'
-require_relative 'initializer_builder'
+require_relative 'js/import_creator'
+require_relative 'js/initializer_translations'
+require_relative 'js/initializer_plugins'
+require_relative 'js/initializer_builder'
 
 module CKEditor5::Rails::Builder
   module Helpers
@@ -14,7 +13,7 @@ module CKEditor5::Rails::Builder
               'Ensure ckeditor5_assets (or any other assets initializer) is called in the head section.'
       end
 
-      initializer = InitializerBuilder.new(@__ckeditor_context, type, config, id: id)
+      initializer = JS::InitializerBuilder.new(@__ckeditor_context, type, config, id: id)
 
       safe_join([
                   tag.div(style: "width: #{width};") do

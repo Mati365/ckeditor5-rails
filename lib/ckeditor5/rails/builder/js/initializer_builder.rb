@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CKEditor5::Rails::Builder
+module CKEditor5::Rails::Builder::JS
   class InitializerBuilder
     CKEDITOR_EDITOR_TYPES_IMPORTS = {
       classic: 'ClassicEditor',

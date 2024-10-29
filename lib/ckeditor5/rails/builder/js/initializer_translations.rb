@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CKEditor5::Rails::Builder
+module CKEditor5::Rails::Builder::JS
   class InitializerTranslations
     attr_reader :bundle
 
@@ -12,7 +12,7 @@ module CKEditor5::Rails::Builder
       @esm_imports ||= bundle.translations_scripts.map do |script|
         next unless script.translation?
 
-        JsBuilder.create_esm_default_import(
+        ImportCreator.create_esm_default_import(
           script.import_name,
           parameterize_import_name(script.import_name)
         )
