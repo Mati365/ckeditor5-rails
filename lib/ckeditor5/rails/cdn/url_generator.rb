@@ -10,11 +10,7 @@ module CKEditor5::Rails::Cdn
       jsdelivr: lambda { |bundle, version, path|
         base_url = "https://cdn.jsdelivr.net/npm/#{bundle}@#{version}/dist"
 
-        if path.start_with?('translations/')
-          "#{base_url}/#{path}"
-        else
-          "#{base_url}/browser/#{path}"
-        end
+        "#{base_url}/#{path.start_with?('translations/') ? '' : 'browser/'}#{path}"
       }
     }.freeze
 
