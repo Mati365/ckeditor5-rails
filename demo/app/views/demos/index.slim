@@ -1,9 +1,15 @@
 - content_for :head
   = ckeditor5_assets version: '43.2.0', translations: [ :pl, :es ]
 
+= ckeditor5_editor type: :multiroot, style: 'width: 600px' do
+  = ckeditor5_toolbar
+  br
+  = ckeditor5_editable 'toolbar', style: 'border: 1px solid var(--ck-color-base-border);'
+  br
+  = ckeditor5_editable 'content', style: 'border: 1px solid var(--ck-color-base-border)'
+
+br
+hr
+br
+
 = ckeditor5_editor style: 'width: 600px'
-
-br
-br
-
-= ckeditor5_editor style: 'width: 600px', type: :inline

@@ -8,18 +8,32 @@ module CKEditor5::Rails
     class EditorContextError < StandardError; end
     class PresetNotFoundError < ArgumentError; end
 
-    def ckeditor5_editor(config: nil, type: nil, preset: :default, **html_attributes)
+    def ckeditor5_editor(
+      config: nil, extra_config: {},
+      type: nil, preset: :default,
+      **html_attributes, &block
+    )
       context = validate_and_get_editor_context!
+      preset = fetch_editor_preset(preset)
 
-      preset_config = fetch_editor_preset(preset)
+      config ||= preset.config
+      type ||= preset.type
 
       editor_props = build_editor_props(
-        config: config || preset_config.config,
-        type: type || preset_config.type,
+        config: config.deep_merge(extra_config),
+        type: type,
         context: context
       )
 
-      render_editor_component(editor_props, html_attributes)
+      render_editor_component(editor_props, html_attributes, &(type == :multiroot ? block : nil))
+    end
+
+    def ckeditor5_editable(name, **kwargs)
+      tag.send(:'ckeditor-editable-component', name: name, **kwargs)
+    end
+
+    def ckeditor5_toolbar(**kwargs)
+      tag.send(:'ckeditor-toolbar-component', **kwargs)
     end
 
     private
@@ -43,8 +57,8 @@ module CKEditor5::Rails
       Editor::Props.new(context, type, config)
     end
 
-    def render_editor_component(props, html_attributes)
-      tag.send(:'ckeditor-component', **props.to_attributes, **html_attributes)
+    def render_editor_component(props, html_attributes, &block)
+      tag.send(:'ckeditor-component', **props.to_attributes, **html_attributes, &block)
     end
   end
 end
