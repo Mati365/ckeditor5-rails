@@ -9,7 +9,11 @@ module CKEditor5::Rails::Cdn
     CDN_THIRD_PARTY_GENERATORS = {
       jsdelivr: lambda { |bundle, version, path|
         base_url = "https://cdn.jsdelivr.net/npm/#{bundle}@#{version}/dist"
+        "#{base_url}/#{path.start_with?('translations/') ? '' : 'browser/'}#{path}"
+      },
 
+      unpkg: lambda { |bundle, version, path|
+        base_url = "https://unpkg.com/#{bundle}@#{version}/dist"
         "#{base_url}/#{path.start_with?('translations/') ? '' : 'browser/'}#{path}"
       }
     }.freeze

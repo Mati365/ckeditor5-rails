@@ -13,7 +13,7 @@ module CKEditor5::Rails::Editor
     }.freeze
 
     def initialize(context, type, config)
-      raise ArgumentError, "Invalid editor type: #{type}" unless EDITOR_TYPES.key?(type)
+      raise ArgumentError, "Invalid editor type: #{type}" unless Props.valid_editor_type?(type)
 
       @context = context
       @type = type
@@ -25,6 +25,10 @@ module CKEditor5::Rails::Editor
         type: EDITOR_TYPES[@type],
         **serialized_attributes
       }
+    end
+
+    def self.valid_editor_type?(type)
+      EDITOR_TYPES.key?(type)
     end
 
     private
@@ -44,7 +48,7 @@ module CKEditor5::Rails::Editor
     end
 
     def serialize_plugins
-      config[:plugins].map { |plugin| PropsPlugin.normalize(plugin).to_h }.to_json
+      (config[:plugins] || []).map { |plugin| PropsPlugin.normalize(plugin).to_h }.to_json
     end
 
     def serialize_config

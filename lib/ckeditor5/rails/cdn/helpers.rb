@@ -29,7 +29,7 @@ module CKEditor5::Rails
       if kwargs[:license_key] && kwargs[:license_key] != 'GPL'
         ckeditor5_cloud_assets(**kwargs)
       else
-        ckeditor5_jsdelivr_assets(**kwargs)
+        ckeditor5_cdn_assets(**kwargs.merge(cdn: Engine.base.default_cdn))
       end
     end
 
