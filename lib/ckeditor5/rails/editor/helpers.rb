@@ -12,7 +12,7 @@ module CKEditor5::Rails::Editor
 
       props = Props.new(@__ckeditor_context, type, config)
 
-      tag.send('ckeditor-component', **props.to_attributes, **html_attributes)
+      tag.send(:'ckeditor-component', **props.to_attributes, **html_attributes)
     end
   end
 end
