@@ -2,12 +2,12 @@
 
 require_relative 'cdn/helpers'
 require_relative 'cloud/helpers'
-require_relative 'builder/helpers'
+require_relative 'editor/helpers'
 
 module CKEditor5::Rails
   module Helpers
     include Cdn::Helpers
     include Cloud::Helpers
-    include Builder::Helpers
+    include Editor::Helpers
   end
 end

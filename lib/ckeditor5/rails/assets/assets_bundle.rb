@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/module'
+
 module CKEditor5::Rails::Assets
   class AssetsBundle
     def initialize
@@ -39,17 +41,36 @@ module CKEditor5::Rails::Assets
   end
 
   class JSExportsMeta
-    attr_reader :url, :import_name, :window_name
+    attr_reader :url, :import_meta
 
-    def initialize(url, import_name: nil, window_name: nil, translation: false)
+    delegate :esm?, :window?, :import_name, :window_name, to: :import_meta
+
+    def initialize(url, translation: false, **kwargs)
       @url = url
-      @import_name = import_name
-      @window_name = window_name
+      @import_meta = JSImportMeta.new(**kwargs)
       @translation = translation
     end
 
     def translation?
       @translation
+    end
+  end
+
+  class JSImportMeta
+    attr_reader :import_as, :import_name, :window_name
+
+    def initialize(import_as: nil, import_name: nil, window_name: nil)
+      if import_name.nil? && window_name.nil?
+        raise ArgumentError, 'import_name and window_name cannot be both nil'
+      end
+
+      if import_as && import_name.nil?
+        raise ArgumentError, 'import_name must be defined if import_as is defined'
+      end
+
+      @import_as = import_as
+      @import_name = import_name
+      @window_name = window_name
     end
 
     def esm?
@@ -58,6 +79,14 @@ module CKEditor5::Rails::Assets
 
     def window?
       window_name.present?
+    end
+
+    def to_h
+      {
+        import_as: import_as,
+        import_name: import_name,
+        window_name: window_name
+      }.compact
     end
   end
 end

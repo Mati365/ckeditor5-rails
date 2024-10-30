@@ -3,6 +3,8 @@
 require 'action_view'
 
 module CKEditor5::Rails::Assets
+  WEBCOMPONENT_SOURCE = File.read(File.join(__dir__, 'webcomponent.mjs')).html_safe
+
   class AssetsBundleHtmlSerializer
     include ActionView::Helpers::TagHelper
 
@@ -19,7 +21,8 @@ module CKEditor5::Rails::Assets
                   preload_tags,
                   styles_tags,
                   window_scripts_tags,
-                  scripts_import_map_tag
+                  scripts_import_map_tag,
+                  web_component_tag
                 ])
     end
 
@@ -32,6 +35,10 @@ module CKEditor5::Rails::Assets
     end
 
     private
+
+    def web_component_tag
+      @web_component_tag ||= tag.script(WEBCOMPONENT_SOURCE, type: 'module', nonce: true)
+    end
 
     def window_scripts_tags
       @window_scripts_tags ||= safe_join(bundle.scripts.filter_map do |script|
