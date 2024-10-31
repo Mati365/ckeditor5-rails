@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'bundler', '~> 2.5', '>= 2.5.21'
+gem 'rails', '~> 6.0', '>= 6.0.4'
 
 group :development do
   gem 'brakeman', '~> 6.1', '>= 6.1.1', require: false
