@@ -28,8 +28,8 @@ module CKEditor5::Rails
       render_editor_component(editor_props, html_attributes, &(type == :multiroot ? block : nil))
     end
 
-    def ckeditor5_editable(name, **kwargs)
-      tag.send(:'ckeditor-editable-component', name: name, **kwargs)
+    def ckeditor5_editable(name, **kwargs, &block)
+      tag.send(:'ckeditor-editable-component', name: name, **kwargs, &block)
     end
 
     def ckeditor5_toolbar(**kwargs)

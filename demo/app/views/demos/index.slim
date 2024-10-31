@@ -1,15 +1,35 @@
 - content_for :head
   = ckeditor5_assets version: '43.2.0', translations: [ :pl, :es ]
 
-= ckeditor5_editor type: :multiroot, style: 'width: 600px' do
+h2 MultiRoot Editor
+
+= ckeditor5_editor type: :multiroot, id: 'multiroot-demo', style: 'width: 600px' do
   = ckeditor5_toolbar
   br
-  = ckeditor5_editable 'toolbar', style: 'border: 1px solid var(--ck-color-base-border);'
+  = ckeditor5_editable 'toolbar', style: 'border: 1px solid var(--ck-color-base-border);' do
+    | This is a toolbar editable
   br
   = ckeditor5_editable 'content', style: 'border: 1px solid var(--ck-color-base-border)'
+  br
+
+javascript:
+  setTimeout(() => {
+    const demo = document.getElementById('multiroot-demo');
+    const dynamicEditable = document.createElement('ckeditor-editable-component');
+
+    dynamicEditable.style = 'border: 1px solid var(--ck-color-base-border);';
+    dynamicEditable.setAttribute('name', 'dynamic');
+
+    demo.appendChild(dynamicEditable);
+
+    setTimeout(() => {
+      dynamicEditable.remove();
+    }, 3000);
+  }, 2000);
 
 br
-hr
 br
+
+h2 Classic Editor
 
 = ckeditor5_editor style: 'width: 600px'
