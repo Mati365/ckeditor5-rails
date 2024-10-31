@@ -8,6 +8,10 @@
 
 Unofficial CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEditor 5 with Rails applications through web components and helper methods.
 
+<p align="center">
+  <img src="docs/intro-classic-editor.png" alt="CKEditor 5 Classic Editor in Ruby on Rails application">
+</p>
+
 ## Installation 🛠️
 
 Add this line to your application's Gemfile:
@@ -42,9 +46,7 @@ In your view:
 <!-- or using inline config: ckeditor5_editor type: :classic, config: { toolbar: [:Bold, :Italic] }, ... -->
 ```
 
-Result:
-
-![CKEditor 5 Classic Editor in Ruby on Rails application](docs/intro-classic-editor.png)
+Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
 
 ## Table of Contents 📚
 
