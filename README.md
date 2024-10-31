@@ -240,48 +240,57 @@ Keep in mind that you need to include the assets in the `head` section of your l
 
 #### Lazy loading 🚀
 
+<details>
+  <summary>Loading JS and CSS Assets</summary>
+
 All JS assets defined by the `ckeditor5_assets` helper method are loaded asynchronously. It means that the assets are loaded in the background without blocking the rendering of the page. However, the CSS assets are loaded synchronously to prevent the flash of unstyled content and ensure that the editor is styled correctly.
 
-It has been archived by using web components, together with import maps, which are supported by modern browsers. The web components are used to define the editor and its plugins, while the import maps are used to define the dependencies between the assets.
+It has been achieved by using web components, together with import maps, which are supported by modern browsers. The web components are used to define the editor and its plugins, while the import maps are used to define the dependencies between the assets.
+
+</details>
 
 #### GPL usage 🆓
 
 If you want to use CKEditor 5 under the GPL license, you can include the assets using the `ckeditor5_assets` helper method with the `version` keyword argument. The example below shows how to include the assets for version `43.3.0`:
 
-```slim
-# app/views/demos/index.slim
+```erb
+<!-- app/views/demos/index.html.erb -->
 
-- content_for :head
-  = ckeditor5_assets version: '43.3.0'
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.3.0' %>
+<% end %>
 ```
 
 It'll include the necessary assets for the GPL license from one of the most popular CDNs. In our scenario, we use the `jsdelivr` CDN which is the default one.
 
 In order to use `unpkg` CDN, you can pass the `cdn` keyword argument with the value `:unpkg`:
 
-```slim
-# app/views/demos/index.slim
+```erb
+<!-- app/views/demos/index.html.erb -->
 
-- content_for :head
-  = ckeditor5_assets version: '43.3.0', cdn: :unpkg
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.3.0', cdn: :unpkg %>
+<% end %>
 ```
 
 or using helper function:
 
-```slim
-# app/views/demos/index.slim
+```erb
+<!-- app/views/demos/index.html.erb -->
 
-- content_for :head
-  = ckeditor5_jsdelivr_assets version: '43.3.0'
+<% content_for :head do %>
+  <%= ckeditor5_jsdelivr_assets version: '43.3.0' %>
+<% end %>
 ```
 
 Translating CKEditor 5 is possible by passing the `translations` keyword argument with the languages codes array. The example below shows how to include the Polish translations:
 
-```slim
-# app/views/demos/index.slim
+```erb
+<!-- app/views/demos/index.html.erb -->
 
-- content_for :head
-  = ckeditor5_assets version: '43.3.0', translations: [ :pl ]
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.3.0', translations: [:pl] %>
+<% end %>
 ```
 
 Keep in mind, that you need to include the translations in the `config/initializers/ckeditor5.rb` file:
@@ -298,16 +307,22 @@ end
 
 #### Commercial usage 💰
 
+<details>
+  <summary>Expand to show more</summary>
+
 If you want to use CKEditor 5 under a commercial license, you can include the assets using the `ckeditor5_assets` helper method with the `license_key` keyword argument. The example below shows how to include the assets for the commercial license:
 
-```slim
-# app/views/demos/index.slim
+```erb
+<!-- app/views/demos/index.html.erb -->
 
-- content_for :head
-  = ckeditor5_assets license_key: 'your-license-key'
+<% content_for :head do %>
+  <%= ckeditor5_assets license_key: 'your-license-key' %>
+<% end %>
 ```
 
-In this scenario the assets are included from the official CKEditor 5 CDN which is more reliable and provides better performance, especially for commercial usage.
+In this scenario, the assets are included from the official CKEditor 5 CDN which is more reliable and provides better performance, especially for commercial usage.
+
+</details>
 
 ## License 📜
 
