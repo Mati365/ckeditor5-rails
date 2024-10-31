@@ -53,6 +53,7 @@ Effect:
   - [Editor placement 🏗️](#editor-placement-️)
     - [Classic editor 📝](#classic-editor-)
     - [Multiroot editor 🌳](#multiroot-editor-)
+    - [Inline editor 📝](#inline-editor-)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -412,9 +413,6 @@ Multiroot editor allows you to create an editor with multiple editing areas. You
 
 ![CKEditor 5 Multiroot Editor in Ruby on Rails application](docs/multiroot-editor.png)
 
-<details>
-  <summary>Expand to show more</summary>
-
 If you want to use a multiroot editor, you can pass the `type` keyword argument with the value `:multiroot`:
 
 ```erb
@@ -438,7 +436,23 @@ If you want to use a multiroot editor, you can pass the `type` keyword argument 
 
 Roots can be defined later to the editor by simply adding new elements rendered by `ckeditor5_editable` helper.
 
-</details>
+### Inline editor 📝
+
+Inline editor allows you to create an editor that can be placed inside any element. Keep in mind that inline editor does not work with `textarea` elements so it might be not suitable for all use cases.
+
+![CKEditor 5 Inline Editor in Ruby on Rails application](docs/inline-editor.png)
+
+If you want to use an inline editor, you can pass the `type` keyword argument with the value `:inline`:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.2.0' %>
+<% end %>
+
+<%= ckeditor5_editor type: :inline, style: 'width: 600px' %>
+```
 
 ## License 📜
 
