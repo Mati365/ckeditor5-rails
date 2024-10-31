@@ -30,6 +30,10 @@ gem 'ckeditor5'
       - [`language(ui, content:)` method](#languageui-content-method)
       - [`configure(name, value)` method](#configurename-value-method)
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
+    - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
+      - [Lazy loading 🚀](#lazy-loading-)
+      - [GPL usage 🆓](#gpl-usage-)
+      - [Commercial usage 💰](#commercial-usage-)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -98,6 +102,8 @@ Defines the type of editor. Available options:
 The example below shows how to define a multiroot editor:
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
   shape :multiroot
 end
@@ -108,6 +114,8 @@ end
 Defines the plugins to be included in the editor. You can specify multiple plugins by passing their names as arguments.
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
   plugins :Bold, :Italic, :Underline, :Link
 end
@@ -123,6 +131,8 @@ Defines the toolbar items. You can use predefined items like `:undo`, `:redo`, `
 The `should_group_when_full` keyword argument determines whether the toolbar should group items when there is not enough space. It's set to `true` by default.
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
   # ... other configuration
 
@@ -139,6 +149,8 @@ Keep in mind that the order of items is important, and you should install the co
 Defines the visibility of the menubar. By default, it's set to `true`.
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
   # ... other configuration
 
@@ -153,7 +165,11 @@ end
 Defines the language of the editor. You can pass the language code as an argument. Keep in mind that the UI and content language can be different. The example below shows how to set the Polish language for the UI and content:
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
+  # ... other configuration
+
   language :pl
 end
 ```
@@ -161,7 +177,11 @@ end
 In order to set the language for the content, you can pass the `content` keyword argument:
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
+  # ... other configuration
+
   language :en, content: :pl
 end
 ```
@@ -171,7 +191,11 @@ end
 Allows you to set custom configuration options. You can pass the name of the option and its value as arguments. The example below show how to set the default protocol for the link plugin to `https://`:
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
+  # ... other configuration
+
   configure :link, {
     defaultProtocol: 'https://'
   }
@@ -185,7 +209,11 @@ Defines a plugin to be included in the editor. You can pass the name of the plug
 The example below show how to import Bold plugin from the `ckeditor5` npm package:
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
+  # ... other configuration
+
   plugin :Bold
 end
 ```
@@ -193,12 +221,93 @@ end
 In order to import a plugin from a custom package, you can pass the `import_name` keyword argument:
 
 ```rb
+# config/initializers/ckeditor5.rb
+
 config.presets.define :custom do
+  # ... other configuration
+
   plugin :YourPlugin, import_name: 'your-package'
 end
 ```
 
 </details>
+
+### Including CKEditor 5 assets 📦
+
+To include CKEditor 5 assets in your application, you can use the `ckeditor5_assets` helper method. This method takes the version of CKEditor 5 as an argument and includes the necessary assets. It allows you to specify custom translations to be included.
+
+Keep in mind that you need to include the assets in the `head` section of your layout. In examples below, we use `content_for` to include the assets in the `head` section.
+
+#### Lazy loading 🚀
+
+All JS assets defined by the `ckeditor5_assets` helper method are loaded asynchronously. It means that the assets are loaded in the background without blocking the rendering of the page. However, the CSS assets are loaded synchronously to prevent the flash of unstyled content and ensure that the editor is styled correctly.
+
+It has been archived by using web components, together with import maps, which are supported by modern browsers. The web components are used to define the editor and its plugins, while the import maps are used to define the dependencies between the assets.
+
+#### GPL usage 🆓
+
+If you want to use CKEditor 5 under the GPL license, you can include the assets using the `ckeditor5_assets` helper method with the `version` keyword argument. The example below shows how to include the assets for version `43.3.0`:
+
+```slim
+# app/views/demos/index.slim
+
+- content_for :head
+  = ckeditor5_assets version: '43.3.0'
+```
+
+It'll include the necessary assets for the GPL license from one of the most popular CDNs. In our scenario, we use the `jsdelivr` CDN which is the default one.
+
+In order to use `unpkg` CDN, you can pass the `cdn` keyword argument with the value `:unpkg`:
+
+```slim
+# app/views/demos/index.slim
+
+- content_for :head
+  = ckeditor5_assets version: '43.3.0', cdn: :unpkg
+```
+
+or using helper function:
+
+```slim
+# app/views/demos/index.slim
+
+- content_for :head
+  = ckeditor5_jsdelivr_assets version: '43.3.0'
+```
+
+Translating CKEditor 5 is possible by passing the `translations` keyword argument with the languages codes array. The example below shows how to include the Polish translations:
+
+```slim
+# app/views/demos/index.slim
+
+- content_for :head
+  = ckeditor5_assets version: '43.3.0', translations: [ :pl ]
+```
+
+Keep in mind, that you need to include the translations in the `config/initializers/ckeditor5.rb` file:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails::Engine.configure do
+  presets.override :default do
+    language :pl
+  end
+end
+```
+
+#### Commercial usage 💰
+
+If you want to use CKEditor 5 under a commercial license, you can include the assets using the `ckeditor5_assets` helper method with the `license_key` keyword argument. The example below shows how to include the assets for the commercial license:
+
+```slim
+# app/views/demos/index.slim
+
+- content_for :head
+  = ckeditor5_assets license_key: 'your-license-key'
+```
+
+In this scenario the assets are included from the official CKEditor 5 CDN which is more reliable and provides better performance, especially for commercial usage.
 
 ## License 📜
 
