@@ -54,6 +54,7 @@ Effect:
     - [Classic editor 📝](#classic-editor-)
     - [Multiroot editor 🌳](#multiroot-editor-)
     - [Inline editor 📝](#inline-editor-)
+    - [Balloon editor 🎈](#balloon-editor-)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -409,7 +410,11 @@ If you want to override the configuration of the editor specified in default or 
 
 ### Multiroot editor 🌳
 
-Multiroot editor allows you to create an editor with multiple editing areas. You can use the `ckeditor5_editor` helper with the `ckeditor5_editable` helper to define the editing areas. The `ckeditor5_toolbar` helper can be used to define the toolbar.
+The multiroot editor allows you to create an editor with multiple editable areas. It's useful when you want to create a CMS with multiple editable areas on a single page.
+
+- `ckeditor5_editor`: Defines the editor instance.
+- `ckeditor5_editable`: Defines the editable areas within the editor.
+- `ckeditor5_toolbar`: Defines the toolbar for the editor.
 
 ![CKEditor 5 Multiroot Editor in Ruby on Rails application](docs/multiroot-editor.png)
 
@@ -452,6 +457,24 @@ If you want to use an inline editor, you can pass the `type` keyword argument wi
 <% end %>
 
 <%= ckeditor5_editor type: :inline, style: 'width: 600px' %>
+```
+
+### Balloon editor 🎈
+
+Balloon editor is a floating toolbar editor that provides a minimalistic interface. It's useful when you want to create a simple editor with a floating toolbar.
+
+![CKEditor 5 Balloon Editor in Ruby on Rails application](docs/balloon-editor.png)
+
+If you want to use a balloon editor, you can pass the `type` keyword argument with the value `:balloon`:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.2.0' %>
+<% end %>
+
+<%= ckeditor5_editor type: :balloon, style: 'width: 600px' %>
 ```
 
 ## License 📜
