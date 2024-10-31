@@ -30,10 +30,10 @@ gem 'ckeditor5'
       - [`language(ui, content:)` method](#languageui-content-method)
       - [`configure(name, value)` method](#configurename-value-method)
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
-    - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
-      - [Lazy loading 🚀](#lazy-loading-)
-      - [GPL usage 🆓](#gpl-usage-)
-      - [Commercial usage 💰](#commercial-usage-)
+  - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
+    - [Lazy loading 🚀](#lazy-loading-)
+    - [GPL usage 🆓](#gpl-usage-)
+    - [Commercial usage 💰](#commercial-usage-)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -232,13 +232,13 @@ end
 
 </details>
 
-### Including CKEditor 5 assets 📦
+## Including CKEditor 5 assets 📦
 
 To include CKEditor 5 assets in your application, you can use the `ckeditor5_assets` helper method. This method takes the version of CKEditor 5 as an argument and includes the necessary assets. It allows you to specify custom translations to be included.
 
 Keep in mind that you need to include the assets in the `head` section of your layout. In examples below, we use `content_for` to include the assets in the `head` section.
 
-#### Lazy loading 🚀
+### Lazy loading 🚀
 
 <details>
   <summary>Loading JS and CSS Assets</summary>
@@ -249,7 +249,7 @@ It has been achieved by using web components, together with import maps, which a
 
 </details>
 
-#### GPL usage 🆓
+### GPL usage 🆓
 
 If you want to use CKEditor 5 under the GPL license, you can include the assets using the `ckeditor5_assets` helper method with the `version` keyword argument. The example below shows how to include the assets for version `43.3.0`:
 
@@ -305,7 +305,7 @@ CKEditor5::Rails::Engine.configure do
 end
 ```
 
-#### Commercial usage 💰
+### Commercial usage 💰
 
 <details>
   <summary>Expand to show more</summary>
