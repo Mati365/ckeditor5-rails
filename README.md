@@ -37,15 +37,13 @@ In your view:
   <%= ckeditor5_assets %>
 
   <!-- or using inline config -->
-
-  <%= ckeditor5_assets version: '43.3.0', premium: false %>
+  <!-- <%= ckeditor5_assets version: '43.3.0', premium: false %> -->
 <% end %>
 
 <%= ckeditor5_editor style: 'width: 600px' %>
 
 <!-- or using inline config -->
-
-<%= ckeditor5_editor type: :classic, config: { toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
+<!-- <%= ckeditor5_editor type: :classic, config: { toolbar: [:Bold, :Italic] }, style: 'width: 600px' %> -->
 ```
 
 Result:
