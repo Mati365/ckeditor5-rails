@@ -28,7 +28,7 @@ Usage in your Rails application:
 <%= ckeditor5_editor style: 'width: 600px' %>
 ```
 
-Effect:
+Result:
 
 ![CKEditor 5 Classic Editor in Ruby on Rails application](docs/intro-classic-editor.png)
 
@@ -40,7 +40,7 @@ Effect:
   - [Presets 🎨](#presets-)
     - [Available Configuration Methods ⚙️](#available-configuration-methods-️)
       - [`shape(type)` method](#shapetype-method)
-      - [`plugins(*names)` method](#pluginsnames-method)
+      - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`toolbar(*items, should_group_when_full: true)` method](#toolbaritems-should_group_when_full-true-method)
       - [`menubar(visible: true)` method](#menubarvisible-true-method)
       - [`language(ui, content:)` method](#languageui-content-method)
@@ -62,9 +62,7 @@ Effect:
 
 Presets are predefined configurations of CKEditor 5, allowing quick setup with specific features. The gem includes a `:default` preset with common features like bold, italic, underline, and link for the classic editor.
 
-You can override the default preset or create your own by defining a new preset in the `config/initializers/ckeditor5.rb` file using the `config.presets.define` method.
-
-The example below shows how to define a custom preset with a classic editor and a custom toolbar:
+You can create your own by defining it in the `config/initializers/ckeditor5.rb` file using the `config.presets.define` method. The example below illustrates the setup of a custom preset with a classic editor and a custom toolbar:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -93,7 +91,7 @@ CKEditor5::Rails::Engine.configure do |config|
 end
 ```
 
-In order to override existing presets, you can use the `config.presets.override` method. The method takes the name of the preset you want to override and a block with the new configuration. In example below, we override the `:default` preset to hide the menubar.
+In order to override existing presets, you can use the `config.presets.override` method. The method takes the name of the preset you want to override and a block with the old configuration. The example below shows how to hide the menubar in the default preset:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -105,7 +103,7 @@ CKEditor5::Rails::Engine.configure do |config|
 end
 ```
 
-You can generate your preset using the CKEditor 5 [online builder](https://ckeditor.com/ckeditor-5/online-builder/). After generating the configuration, you can copy it to the `config/initializers/ckeditor5.rb` file.
+Configuration of the editor can be complex, and it's recommended to use the CKEditor 5 [online builder](https://ckeditor.com/ckeditor-5/online-builder/) to generate the configuration. It allows you to select the features you want to include and generate the configuration code in JavaScript format.  Keep in mind that you need to convert the JavaScript configuration to Ruby format before using it in this gem.
 
 ### Available Configuration Methods ⚙️
 
@@ -122,24 +120,28 @@ Defines the type of editor. Available options:
 - `:balloon` - balloon editor
 - `:multiroot` - editor with multiple editing areas
 
-The example below shows how to define a multiroot editor:
+The example below sets the editor type to `multiroot` in the custom preset:
 
 ```rb
 # config/initializers/ckeditor5.rb
 
 config.presets.define :custom do
+  # ... other configuration
+
   shape :multiroot
 end
 ```
 
-#### `plugins(*names)` method
+#### `plugins(*names, **kwargs)` method
 
-Defines the plugins to be included in the editor. You can specify multiple plugins by passing their names as arguments.
+Defines the plugins to be included in the editor. You can specify multiple plugins by passing their names as arguments. The keyword arguments are identical to the configuration of the `plugin` method defined below.
 
 ```rb
 # config/initializers/ckeditor5.rb
 
 config.presets.define :custom do
+  # ... other configuration
+
   plugins :Bold, :Italic, :Underline, :Link
 end
 ```
@@ -257,16 +259,16 @@ end
 
 ## Including CKEditor 5 assets 📦
 
-To include CKEditor 5 assets in your application, you can use the `ckeditor5_assets` helper method. This method takes the version of CKEditor 5 as an argument and includes the necessary assets. It allows you to specify custom translations to be included.
+To include CKEditor 5 assets in your application, you can use the `ckeditor5_assets` helper method. This method takes the version of CKEditor 5 as an argument and includes the necessary resources of the editor. Depending on the specified configuration, it includes the JS and CSS assets from the official CKEditor 5 CDN or one of the popular CDNs.
 
-Keep in mind that you need to include the assets in the `head` section of your layout. In examples below, we use `content_for` to include the assets in the `head` section.
+Keep in mind that you need to include the helper result in the `head` section of your layout. In examples below, we use `content_for` helper to include the assets in the `head` section of the view.
 
 ### Lazy loading 🚀
 
 <details>
   <summary>Loading JS and CSS Assets</summary>
 
-All JS assets defined by the `ckeditor5_assets` helper method are loaded asynchronously. It means that the assets are loaded in the background without blocking the rendering of the page. However, the CSS assets are loaded synchronously to prevent the flash of unstyled content and ensure that the editor is styled correctly.
+All JS assets defined by the `ckeditor5_assets` helper method are loaded **asynchronously**. It means that the assets are loaded in the background without blocking the rendering of the page. However, the CSS assets are loaded **synchronously** to prevent the flash of unstyled content and ensure that the editor is styled correctly.
 
 It has been achieved by using web components, together with import maps, which are supported by modern browsers. The web components are used to define the editor and its plugins, while the import maps are used to define the dependencies between the assets.
 
@@ -349,7 +351,7 @@ In this scenario, the assets are included from the official CKEditor 5 CDN which
 
 ## Editor placement 🏗️
 
-The `ckeditor5_editor` helper renders CKEditor 5 instances in your views. Before using it, ensure you've included the necessary assets in your page's head section.
+The `ckeditor5_editor` helper renders CKEditor 5 instances in your views. Before using it, ensure you've included the necessary assets in your page's head section otherwise the editor won't work as there are no CKEditor 5 JavaScript and CSS files loaded.
 
 ### Classic editor 📝
 
