@@ -50,6 +50,7 @@ Effect:
     - [Lazy loading 🚀](#lazy-loading-)
     - [GPL usage 🆓](#gpl-usage-)
     - [Commercial usage 💰](#commercial-usage-)
+  - [Editor placement 🏗️](#editor-placement-️)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -110,8 +111,9 @@ You can generate your preset using the CKEditor 5 [online builder](https://ckedi
 
 Defines the type of editor. Available options:
 
-- `:classic` - standard editor
+- `:classic` - classic edytor
 - `:inline` - inline editor
+- `:decoupled` - decoupled editor
 - `:balloon` - balloon editor
 - `:multiroot` - editor with multiple editing areas
 
@@ -339,6 +341,60 @@ If you want to use CKEditor 5 under a commercial license, you can include the as
 In this scenario, the assets are included from the official CKEditor 5 CDN which is more reliable and provides better performance, especially for commercial usage.
 
 </details>
+
+## Editor placement 🏗️
+
+The `ckeditor5_editor` helper renders CKEditor 5 instances in your views. Before using it, ensure you've included the necessary assets in your page's head section.
+
+The example below shows how to include the editor in your view:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.3.0' %>
+<% end %>
+
+<%= ckeditor5_editor style: 'width: 600px' %>
+```
+
+You can pass the `style` keyword argument to the `ckeditor5_editor` helper to define the editor's style. The example above shows how to set the width of the editor to `600px`. However you can pass any HTML attribute you want, such as `class`, `id`, `data-*`, etc.
+
+While example above uses predefined `:default` preset, you can use your custom presets by passing the `preset` keyword argument:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.3.0' %>
+<% end %>
+
+<%= ckeditor5_editor preset: :custom, style: 'width: 600px' %>
+```
+
+If your configuration is even more complex, you can pass the `config` and `type` arguments with the configuration hash:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.3.0' %>
+<% end %>
+
+<%= ckeditor5_editor type: :classic, config: { plugins: [:Bold, :Italic], toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
+```
+
+If you want to override the configuration of the editor specified in default or custom preset, you can pass the `extra_config` keyword argument with the configuration hash:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.3.0' %>
+<% end %>
+
+<%= ckeditor5_editor extra_config: { toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
+```
 
 ## License 📜
 
