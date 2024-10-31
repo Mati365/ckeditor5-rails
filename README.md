@@ -400,7 +400,7 @@ It has been achieved by using web components, together with import maps, which a
 
 ### GPL usage 🆓
 
-If you want to use CKEditor 5 under the GPL license, you can include the assets using the `ckeditor5_assets` helper method with the `version` keyword argument. The example below shows how to include the assets for version `43.3.0`:
+If you want to use CKEditor 5 under the GPL license, you can include the assets using the `ckeditor5_assets` without passing any arguments. However you can pass the `version` keyword argument with the version of CKEditor 5 you want to use:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
