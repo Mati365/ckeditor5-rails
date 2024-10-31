@@ -182,7 +182,7 @@ end
 
 #### `translations(*languages)` method
 
-Defines the translations of CKEditor 5. You can pass the language codes as arguments. The example below shows how to set the Polish and Spanish translations:
+Defines the translations of CKEditor 5. You can pass the language codes as arguments. The example below shows how tell integration to fetch Polish and Spanish translations:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -191,6 +191,18 @@ config.presets.define :custom do
   # ... other configuration
 
   translations :pl, :es
+end
+```
+
+⚠️ You need to use `language` method to set the default language of the editor, as the `translations` only fetch the translations files and makes them available to later use.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  translations :pl
+
+  language :pl
 end
 ```
 
