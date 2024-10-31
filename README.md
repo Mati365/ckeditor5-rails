@@ -51,6 +51,8 @@ Effect:
     - [GPL usage 🆓](#gpl-usage-)
     - [Commercial usage 💰](#commercial-usage-)
   - [Editor placement 🏗️](#editor-placement-️)
+    - [Classic editor 📝](#classic-editor-)
+    - [Multiroot editor 🌳](#multiroot-editor-)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -346,7 +348,15 @@ In this scenario, the assets are included from the official CKEditor 5 CDN which
 
 The `ckeditor5_editor` helper renders CKEditor 5 instances in your views. Before using it, ensure you've included the necessary assets in your page's head section.
 
-The example below shows how to include the editor in your view:
+### Classic editor 📝
+
+The classic editor is the most common type of editor. It provides a toolbar with various formatting options like bold, italic, underline, and link.
+
+It looks like this:
+
+![CKEditor 5 Classic Editor in Ruby on Rails application with Menubar](docs/classic-editor-with-toolbar.png)
+
+The example below shows how to include the classic editor in your view:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
@@ -395,6 +405,40 @@ If you want to override the configuration of the editor specified in default or 
 
 <%= ckeditor5_editor extra_config: { toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
 ```
+
+### Multiroot editor 🌳
+
+Multiroot editor allows you to create an editor with multiple editing areas. You can use the `ckeditor5_editor` helper with the `ckeditor5_editable` helper to define the editing areas. The `ckeditor5_toolbar` helper can be used to define the toolbar.
+
+![CKEditor 5 Multiroot Editor in Ruby on Rails application](docs/multiroot-editor.png)
+
+<details>
+  <summary>Expand to show more</summary>
+
+If you want to use a multiroot editor, you can pass the `type` keyword argument with the value `:multiroot`:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.2.0' %>
+<% end %>
+
+<%= ckeditor5_editor type: :multiroot, style: 'width: 600px' do %>
+  <%= ckeditor5_toolbar %>
+  <br>
+  <%= ckeditor5_editable 'toolbar', style: 'border: 1px solid var(--ck-color-base-border);' do %>
+    This is a toolbar editable
+  <% end %>
+  <br>
+  <%= ckeditor5_editable 'content', style: 'border: 1px solid var(--ck-color-base-border)' %>
+  <br>
+<% end %>
+```
+
+Roots can be defined later to the editor by simply adding new elements rendered by `ckeditor5_editable` helper.
+
+</details>
 
 ## License 📜
 
