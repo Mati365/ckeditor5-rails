@@ -80,20 +80,26 @@ module CKEditor5::Rails
       }
     end
 
-    def toolbar(*items)
-      @config[:toolbar] = items
+    def toolbar(*items, should_group_when_full: true)
+      @config[:toolbar] = {
+        items: items,
+        shouldNotGroupWhenFull: !should_group_when_full
+      }
     end
 
-    def plugin(name, premium: false)
-      @config[:plugins] << Editor::PropsPlugin.new(name, premium: premium)
+    def plugin(name, **kwargs)
+      @config[:plugins] << Editor::PropsPlugin.new(name, **kwargs)
     end
 
-    def plugins(*names, premium: false)
-      names.each { |name| plugin(name, premium: premium) }
+    def plugins(*names, **kwargs)
+      names.each { |name| plugin(name, **kwargs) }
     end
 
-    def language(lang)
-      @config[:language] = lang
+    def language(ui, content: ui) # rubocop:disable Naming/MethodParameterName
+      @config[:language] = {
+        ui: ui,
+        content: content
+      }
     end
   end
 end

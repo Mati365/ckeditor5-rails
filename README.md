@@ -16,29 +16,19 @@ Add this line to your application's Gemfile:
 gem 'ckeditor5'
 ```
 
-## Basic Usage
+## Presets
 
-### Presets
+Presets are predefined configurations of CKEditor 5, allowing quick setup with specific features. The gem includes a `:default` preset with common features like bold, italic, underline, and link for the classic editor.
 
-Override default preset configuration:
+You can override the default preset or create your own by defining a new preset in the `config/initializers/ckeditor5.rb` file using the `config.presets.define` method.
 
-```rb
-# config/initializers/ckeditor5.rb
-
-CKEditor5::Rails::Engine.configure do |config|
-  config.presets.override :default do |preset|
-    preset.menubar visible: false
-  end
-end
-```
-
-Create new preset:
+The example below shows how to define a custom preset with a classic editor and a custom toolbar:
 
 ```rb
 # config/initializers/ckeditor5.rb
 
 CKEditor5::Rails::Engine.configure do |config|
-  config.presets.define :custom do |preset|
+  config.presets.define :custom
     shape :classic
 
     menubar
@@ -59,58 +49,151 @@ CKEditor5::Rails::Engine.configure do |config|
             :TextTransformation, :TodoList, :Underline, :Undo, :Base64UploadAdapter
   end
 end
-
-# Somewhere in your view
-
-= ckeditor5_editor preset: :custom
 ```
 
-### CDN Configuration
+In order to override existing presets, you can use the `config.presets.override` method. The method takes the name of the preset you want to override and a block with the new configuration. In example below, we override the `:default` preset to hide the menubar.
 
-#### jsDelivr (Default)
+```rb
+# config/initializers/ckeditor5.rb
 
-```slim
-- content_for :head
-  = ckeditor5_assets version: '43.2.0'
+CKEditor5::Rails::Engine.configure do |config|
+  config.presets.override :default do
+    menubar visible: false
+  end
+end
 ```
 
-#### unpkg
+You can generate your preset using the CKEditor 5 [online builder](https://ckeditor.com/ckeditor-5/online-builder/). After generating the configuration, you can copy it to the `config/initializers/ckeditor5.rb` file.
 
-```slim
-- content_for :head
-  = ckeditor5_unpkg_assets version: '43.2.0'
+### Available Configuration Methods
+
+#### `shape(type)` method
+
+Defines the type of editor. Available options:
+
+- `:classic` - standard editor
+- `:inline` - inline editor
+- `:balloon` - balloon editor
+- `:multiroot` - editor with multiple editing areas
+
+The example below shows how to define a multiroot editor:
+
+```rb
+config.presets.define :custom do
+  shape :multiroot
+end
 ```
 
-#### CKEditor Cloud
+#### `plugins(*names)` method
 
-It's available only for licensed users.
+Defines the plugins to be included in the editor. You can specify multiple plugins by passing their names as arguments.
 
-```slim
-- content_for :head
-  = ckeditor5_assets version: '43.2.0', license_key: 'YOUR-LICENSE-KEY'
+```rb
+config.presets.define :custom do
+  plugins :Bold, :Italic, :Underline, :Link
+end
 ```
 
-### Editor type
+#### `toolbar(*items, should_group_when_full: true)` method
 
-#### Classic Editor
+Defines the toolbar items. You can use predefined items like `:undo`, `:redo`, `:|` or specify custom items. There are a few special items:
 
-```slim
-- content_for :head
-  = ckeditor5_assets version: '43.2.0' # Optional: translations: [ :pl, :es ]
+- `:_` - breakpoint
+- `:|` - separator
 
-= ckeditor5_editor
+The `should_group_when_full` keyword argument determines whether the toolbar should group items when there is not enough space. It's set to `true` by default.
+
+```rb
+config.presets.define :custom do
+  # ... other configuration
+
+  toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
+          :link, :insertImage, :ckbox, :mediaEmbed, :insertTable, :blockQuote, :|,
+          :bulletedList, :numberedList, :todoList, :outdent, :indent
+end
 ```
 
-#### Multiroot Editor
+Keep in mind that the order of items is important, and you should install the corresponding plugins. You can find the list of available plugins in the [CKEditor 5 documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/architecture/plugins.html).
 
-```slim
-= ckeditor5_editor type: :multiroot do
-  = ckeditor5_toolbar
-  br
-  = ckeditor5_editable 'editable-a' do
-    | This is a toolbar editable
-  br
-  = ckeditor5_editable 'editable-b'
+Defines the toolbar items. You can use predefined items like `:undo`, `:redo`, `:|` or specify custom items. There are few special items:
+
+- `:_` - breakpoint
+- `:|` - separator
+
+```rb
+config.presets.define :custom do
+  # ... other configuration
+
+  toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
+          :link, :insertImage, :ckbox, :mediaEmbed, :insertTable, :blockQuote, :|,
+          :bulletedList, :numberedList, :todoList, :outdent, :indent
+end
+```
+
+Keep in mind that the order of items is important, and you should install the corresponding plugins. You can find the list of available plugins in the [CKEditor 5 documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/architecture/plugins.html).
+
+#### `menubar(visible: true)` method
+
+Defines the visibility of the menubar. By default, it's set to `true`.
+
+```rb
+config.presets.define :custom do
+  # ... other configuration
+
+  toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
+          :link, :insertImage, :ckbox, :mediaEmbed, :insertTable, :blockQuote, :|,
+          :bulletedList, :numberedList, :todoList, :outdent, :indent
+end
+```
+
+#### `language(ui, content:)` method
+
+Defines the language of the editor. You can pass the language code as an argument. Keep in mind that the UI and content language can be different. The example below shows how to set the Polish language for the UI and content:
+
+```rb
+config.presets.define :custom do
+  language :pl
+end
+```
+
+In order to set the language for the content, you can pass the `content` keyword argument:
+
+```rb
+config.presets.define :custom do
+  language :en, content: :pl
+end
+```
+
+#### `configure(name, value)` method
+
+Allows you to set custom configuration options. You can pass the name of the option and its value as arguments. The example below show how to set the default protocol for the link plugin to `https://`:
+
+```rb
+config.presets.define :custom do
+  configure :link, {
+    defaultProtocol: 'https://'
+  }
+end
+```
+
+#### `plugin(name, premium:, import_name:)` method
+
+Defines a plugin to be included in the editor. You can pass the name of the plugin as an argument. The `premium` keyword argument determines whether the plugin is premium. The `import_name` keyword argument specifies the name of the package to import the plugin from.
+
+The example below show how to import Bold plugin from the `ckeditor5` npm package:
+
+```rb
+config.presets.define :custom do
+  plugin :Bold
+end
+```
+
+In order to import a plugin from a custom package, you can pass the `import_name` keyword argument:
+
+```rb
+config.presets.define :custom do
+  plugin :YourPlugin, import_name: 'your-package'
+end
 ```
 
 ## License
