@@ -1,4 +1,4 @@
-# CKEditor 5 Rails Integration
+# CKEditor 5 Rails Integration ✨
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 ![Gem Version](https://img.shields.io/gem/v/ckeditor5?style=flat-square)
@@ -8,7 +8,7 @@
 
 Unofficial CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEditor 5 with Rails applications through web components and helper methods.
 
-## Installation
+## Installation 🛠️
 
 Add this line to your application's Gemfile:
 
@@ -16,7 +16,23 @@ Add this line to your application's Gemfile:
 gem 'ckeditor5'
 ```
 
-## Presets
+## Table of Contents 📚
+
+- [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
+  - [Installation 🛠️](#installation-️)
+  - [Table of Contents 📚](#table-of-contents-)
+  - [Presets 🎨](#presets-)
+    - [Available Configuration Methods ⚙️](#available-configuration-methods-️)
+      - [`shape(type)` method](#shapetype-method)
+      - [`plugins(*names)` method](#pluginsnames-method)
+      - [`toolbar(*items, should_group_when_full: true)` method](#toolbaritems-should_group_when_full-true-method)
+      - [`menubar(visible: true)` method](#menubarvisible-true-method)
+      - [`language(ui, content:)` method](#languageui-content-method)
+      - [`configure(name, value)` method](#configurename-value-method)
+      - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
+  - [License 📜](#license-)
+
+## Presets 🎨
 
 Presets are predefined configurations of CKEditor 5, allowing quick setup with specific features. The gem includes a `:default` preset with common features like bold, italic, underline, and link for the classic editor.
 
@@ -65,7 +81,7 @@ end
 
 You can generate your preset using the CKEditor 5 [online builder](https://ckeditor.com/ckeditor-5/online-builder/). After generating the configuration, you can copy it to the `config/initializers/ckeditor5.rb` file.
 
-### Available Configuration Methods
+### Available Configuration Methods ⚙️
 
 <details>
   <summary>Expand to show available methods 📖</summary>
@@ -184,10 +200,10 @@ end
 
 </details>
 
-## License
+## License 📜
 
 The MIT License (MIT)
-Copyright (c) Mateusz Bagiński / Łukasz Modliński
+Mateusz Bagiński / Łukasz Modliński
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
