@@ -39,7 +39,13 @@ Result:
   - [Table of Contents 📚](#table-of-contents-)
   - [Presets 🎨](#presets-)
     - [Available Configuration Methods ⚙️](#available-configuration-methods-️)
-      - [`shape(type)` method](#shapetype-method)
+      - [`version(version)` method](#versionversion-method)
+      - [`gpl` method](#gpl-method)
+      - [`premium` method](#premium-method)
+      - [`translations(*languages)` method](#translationslanguages-method)
+      - [`license_key(key)` method](#license_keykey-method)
+      - [`ckbox` method](#ckbox-method)
+      - [`type(type)` method](#typetype-method)
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`toolbar(*items, should_group_when_full: true)` method](#toolbaritems-should_group_when_full-true-method)
       - [`menubar(visible: true)` method](#menubarvisible-true-method)
@@ -69,7 +75,9 @@ You can create your own by defining it in the `config/initializers/ckeditor5.rb`
 
 CKEditor5::Rails::Engine.configure do |config|
   config.presets.define :custom
-    shape :classic
+    gpl # Use GPL license
+
+    type :classic
 
     menubar
 
@@ -110,7 +118,91 @@ Configuration of the editor can be complex, and it's recommended to use the CKEd
 <details>
   <summary>Expand to show available methods 📖</summary>
 
-#### `shape(type)` method
+#### `version(version)` method
+
+Defines the version of CKEditor 5 to be used. The example below shows how to set the version to `43.2.0`:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  version '43.2.0'
+end
+```
+
+#### `gpl` method
+
+Defines the license of CKEditor 5. The example below shows how to set the license to GPL:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  gpl
+end
+```
+
+#### `premium` method
+
+Defines if premium package (`ckeditor5-premium-features`) should be used.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  premium
+end
+```
+
+#### `translations(*languages)` method
+
+Defines the translations of CKEditor 5. You can pass the language codes as arguments. The example below shows how to set the Polish and Spanish translations:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  translations :pl, :es
+end
+```
+
+#### `license_key(key)` method
+
+Defines the license key of CKEditor 5. It calls `premium` method internally. The example below shows how to set the license key:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  license_key 'your-license-key'
+end
+```
+
+#### `ckbox` method
+
+Defines the CKBox plugin to be included in the editor. The example below shows how to include the CKBox plugin:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  ckbox '2.5.4', theme: :lark
+end
+```
+
+#### `type(type)` method
 
 Defines the type of editor. Available options:
 
@@ -128,7 +220,7 @@ The example below sets the editor type to `multiroot` in the custom preset:
 config.presets.define :custom do
   # ... other configuration
 
-  shape :multiroot
+  type :multiroot
 end
 ```
 
@@ -288,6 +380,28 @@ If you want to use CKEditor 5 under the GPL license, you can include the assets 
 
 It'll include the necessary assets for the GPL license from one of the most popular CDNs. In our scenario, we use the `jsdelivr` CDN which is the default one.
 
+Version is optional as long as you defined it in the `config/initializers/ckeditor5.rb` file. If you want to use the default version, you can omit the `version` keyword argument:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets %>
+<% end %>
+```
+
+Set the version in the `config/initializers/ckeditor5.rb` file:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails::Engine.configure do
+  presets.override :default do
+    version '43.3.0'
+  end
+end
+```
+
 In order to use `unpkg` CDN, you can pass the `cdn` keyword argument with the value `:unpkg`:
 
 ```erb
@@ -367,7 +481,7 @@ The example below shows how to include the classic editor in your view:
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.3.0' %>
+  <%= ckeditor5_assets %>
 <% end %>
 
 <%= ckeditor5_editor style: 'width: 600px' %>
@@ -381,7 +495,7 @@ While example above uses predefined `:default` preset, you can use your custom p
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.3.0' %>
+  <%= ckeditor5_assets %>
 <% end %>
 
 <%= ckeditor5_editor preset: :custom, style: 'width: 600px' %>
@@ -393,7 +507,7 @@ If your configuration is even more complex, you can pass the `config` and `type`
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.3.0' %>
+  <%= ckeditor5_assets %>
 <% end %>
 
 <%= ckeditor5_editor type: :classic, config: { plugins: [:Bold, :Italic], toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
@@ -405,7 +519,7 @@ If you want to override the configuration of the editor specified in default or 
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.3.0' %>
+  <%= ckeditor5_assets %>
 <% end %>
 
 <%= ckeditor5_editor extra_config: { toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
@@ -427,7 +541,7 @@ If you want to use a multiroot editor, you can pass the `type` keyword argument 
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.2.0' %>
+  <%= ckeditor5_assets %>
 <% end %>
 
 <%= ckeditor5_editor type: :multiroot, style: 'width: 600px' do %>
@@ -456,7 +570,7 @@ If you want to use an inline editor, you can pass the `type` keyword argument wi
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.2.0' %>
+  <%= ckeditor5_assets %>
 <% end %>
 
 <%= ckeditor5_editor type: :inline, style: 'width: 600px' %>
@@ -474,7 +588,7 @@ If you want to use a balloon editor, you can pass the `type` keyword argument wi
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.2.0' %>
+  <%= ckeditor5_assets %>
 <% end %>
 
 <%= ckeditor5_editor type: :balloon, style: 'width: 600px' %>
@@ -490,7 +604,7 @@ If you want to use a decoupled editor, you can pass the `type` keyword argument 
 
 ```erb
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.2.0', translations: [:pl, :es] %>
+  <%= ckeditor5_assets %>
 <% end %>
 
 <style>

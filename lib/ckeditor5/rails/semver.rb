@@ -6,7 +6,7 @@ class CKEditor5::Rails::Semver
   alias to_s :version
 
   def initialize(version)
-    @version = version
+    @version = version.to_s
     validate!
   end
 

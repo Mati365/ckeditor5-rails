@@ -54,7 +54,7 @@ module CKEditor5::Rails::Editor
     def serialize_config
       config
         .except(:plugins)
-        .merge(licenseKey: context[:license_key] || 'GPL')
+        .tap { |cfg| cfg[:licenseKey] = context[:license_key] if context[:license_key] }
         .to_json
     end
   end

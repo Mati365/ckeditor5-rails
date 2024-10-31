@@ -31,7 +31,9 @@ module CKEditor5::Rails
 
     def define_default_preset
       define :default do
-        shape :classic
+        gpl
+
+        type :classic
 
         menubar
 
@@ -54,17 +56,79 @@ module CKEditor5::Rails
   end
 
   class PresetBuilder
-    attr_reader :type, :config
+    attr_reader :config
 
     def initialize
+      @version = nil
+      @premium = false
+      @cdn = :jsdelivr
+      @translations = []
+      @license_key = nil
       @type = :classic
+      @ckbox = nil
       @config = {
         plugins: [],
         toolbar: []
       }
     end
 
-    def shape(type)
+    def to_h_with_overrides(**overrides)
+      {
+        version: overrides.fetch(:version, version),
+        premium: overrides.fetch(:premium, premium),
+        cdn: overrides.fetch(:cdn, cdn),
+        translations: overrides.fetch(:translations, translations),
+        license_key: overrides.fetch(:license_key, license_key),
+        type: overrides.fetch(:type, type),
+        ckbox: overrides.fetch(:ckbox, ckbox),
+        config: config.merge(overrides.fetch(:config, {}))
+      }
+    end
+
+    def ckbox(version = nil, theme: :lark)
+      return @ckbox if version.nil?
+
+      @ckbox = { version: version, theme: theme }
+    end
+
+    def license_key(license_key = nil)
+      return @license_key if license_key.nil?
+
+      @license_key = license_key
+    end
+
+    def gpl
+      license_key('GPL')
+      premium(false)
+    end
+
+    def premium(premium = nil)
+      return @premium if premium.nil?
+
+      @premium = premium
+    end
+
+    def translations(*translations)
+      return @translations if translations.empty?
+
+      @translations = translations
+    end
+
+    def version(version = nil)
+      return @version.to_s if version.nil?
+
+      @version = Semver.new(version)
+    end
+
+    def cdn(cdn = nil)
+      return @cdn if cdn.nil?
+
+      @cdn = cdn
+    end
+
+    def type(type = nil)
+      return @type if type.nil?
+
       raise ArgumentError, "Invalid editor type: #{type}" unless Editor::Props.valid_editor_type?(type)
 
       @type = type

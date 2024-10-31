@@ -7,7 +7,7 @@ module CKEditor5::Rails
 
       attr_reader :cdn, :version, :theme, :translations
 
-      def initialize(version, theme: :lark, cdn: Engine.base.default_cdn, translations: [])
+      def initialize(version, theme: :lark, cdn: Engine.default_preset.cdn, translations: [])
         raise ArgumentError, 'version must be semver' unless version.is_a?(Semver)
         raise ArgumentError, 'theme must be a string' unless theme.is_a?(String)
         raise ArgumentError, 'translations must be an array' unless translations.is_a?(Array)

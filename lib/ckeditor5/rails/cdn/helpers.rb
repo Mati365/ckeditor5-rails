@@ -6,7 +6,17 @@ require_relative 'ckbox_bundle'
 
 module CKEditor5::Rails
   module Cdn::Helpers
-    def ckeditor5_cdn_assets(version:, cdn:, license_key: 'GPL', premium: false, translations: [], ckbox: nil)
+    def ckeditor5_cdn_assets(preset: :default, **kwargs)
+      merge_with_editor_preset(preset, **kwargs) => {
+        cdn:,
+        version:,
+        translations:,
+        ckbox:,
+        license_key:,
+        premium:,
+        **kwargs
+      }
+
       bundle = build_base_cdn_bundle(cdn, version, translations)
       bundle << build_premium_cdn_bundle(cdn, version, translations) if premium
       bundle << build_ckbox_cdn_bundle(ckbox) if ckbox
@@ -29,11 +39,33 @@ module CKEditor5::Rails
       if kwargs[:license_key] && kwargs[:license_key] != 'GPL'
         ckeditor5_cloud_assets(**kwargs)
       else
-        ckeditor5_cdn_assets(**kwargs.merge(cdn: Engine.base.default_cdn))
+        ckeditor5_cdn_assets(**kwargs.merge(cdn: Engine.default_preset.cdn))
       end
     end
 
     private
+
+    def merge_with_editor_preset(preset, **kwargs)
+      found_preset = Engine.base.presets[preset]
+
+      if found_preset.blank?
+        raise ArgumentError,
+              "Poor thing. You forgot to define your #{preset} preset. " \
+              'Please define it in initializer. Thank you!'
+      end
+
+      hash = found_preset.to_h_with_overrides(**kwargs)
+
+      %i[version type].each do |key|
+        next if hash[key].present?
+
+        raise ArgumentError,
+              "Poor thing. You forgot to define #{key}. Make sure you passed `#{key}:` parameter to " \
+              "`ckeditor5_cdn_assets` or defined default one in your `#{preset}` preset!"
+      end
+
+      hash
+    end
 
     def build_base_cdn_bundle(cdn, version, translations)
       Cdn::CKEditorBundle.new(
