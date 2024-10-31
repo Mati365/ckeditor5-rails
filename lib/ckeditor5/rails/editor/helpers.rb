@@ -25,15 +25,24 @@ module CKEditor5::Rails
         context: context
       )
 
-      render_editor_component(editor_props, html_attributes, &(type == :multiroot ? block : nil))
+      render_editor_component(editor_props, html_attributes,
+                              &(%i[multiroot decoupled].include?(type) ? block : nil))
     end
 
-    def ckeditor5_editable(name, **kwargs, &block)
+    def ckeditor5_editable(name = nil, **kwargs, &block)
       tag.send(:'ckeditor-editable-component', name: name, **kwargs, &block)
     end
 
+    def ckeditor5_ui_part(name, **kwargs, &block)
+      tag.send(:'ckeditor-ui-part-component', name: name, **kwargs, &block)
+    end
+
     def ckeditor5_toolbar(**kwargs)
-      tag.send(:'ckeditor-toolbar-component', **kwargs)
+      ckeditor5_ui_part('toolbar', **kwargs)
+    end
+
+    def ckeditor5_menubar(**kwargs)
+      ckeditor5_ui_part('menuBarView', **kwargs)
     end
 
     private
