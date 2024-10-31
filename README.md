@@ -67,6 +67,9 @@ You can generate your preset using the CKEditor 5 [online builder](https://ckedi
 
 ### Available Configuration Methods
 
+<details>
+  <summary>Expand to show available methods 📖</summary>
+
 #### `shape(type)` method
 
 Defines the type of editor. Available options:
@@ -102,23 +105,6 @@ Defines the toolbar items. You can use predefined items like `:undo`, `:redo`, `
 - `:|` - separator
 
 The `should_group_when_full` keyword argument determines whether the toolbar should group items when there is not enough space. It's set to `true` by default.
-
-```rb
-config.presets.define :custom do
-  # ... other configuration
-
-  toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
-          :link, :insertImage, :ckbox, :mediaEmbed, :insertTable, :blockQuote, :|,
-          :bulletedList, :numberedList, :todoList, :outdent, :indent
-end
-```
-
-Keep in mind that the order of items is important, and you should install the corresponding plugins. You can find the list of available plugins in the [CKEditor 5 documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/architecture/plugins.html).
-
-Defines the toolbar items. You can use predefined items like `:undo`, `:redo`, `:|` or specify custom items. There are few special items:
-
-- `:_` - breakpoint
-- `:|` - separator
 
 ```rb
 config.presets.define :custom do
@@ -195,6 +181,8 @@ config.presets.define :custom do
   plugin :YourPlugin, import_name: 'your-package'
 end
 ```
+
+</details>
 
 ## License
 
