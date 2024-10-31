@@ -16,6 +16,20 @@ Add this line to your application's Gemfile:
 gem 'ckeditor5'
 ```
 
+Usage in your Rails application:
+
+```erb
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.2.0', translations: [:pl, :es] %>
+<% end %>
+
+<%= ckeditor5_editor style: 'width: 600px' %>
+```
+
+Effect:
+
+![CKEditor 5 Classic Editor in Ruby on Rails application](docs/intro-classic-editor.png)
+
 ## Table of Contents 📚
 
 - [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
