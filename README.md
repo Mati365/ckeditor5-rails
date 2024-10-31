@@ -76,6 +76,7 @@ Result:
     - [Inline editor 📝](#inline-editor-)
     - [Balloon editor 🎈](#balloon-editor-)
     - [Decoupled editor 🌐](#decoupled-editor-)
+  - [How to access editor instance? 🤔](#how-to-access-editor-instance-)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -670,6 +671,44 @@ If you want to use a decoupled editor, you can pass the `type` keyword argument 
   <br>
   <div class="editable-container"><%= ckeditor5_editable %></div>
 <% end %>
+```
+
+## How to access editor instance? 🤔
+
+You can access the editor instance using plain HTML and JavaScript, as CKEditor 5 is a web component with defined `instance`, `instancePromise` and `editables` properties.
+
+For example:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets %>
+<% end %>
+
+<%= ckeditor5_editor style: 'width: 600px', id: 'editor' %>
+```
+
+⚠️ Direct access of `instance` property of the web component. Keep in mind it's unsafe and may cause issues if the editor is not loaded yet.
+
+```js
+document.getElementById('editor').instance
+```
+
+👌 Accessing the editor instance using `instancePromise` property. It's a promise that resolves to the editor instance when the editor is ready.
+
+```js
+document.getElementById('editor').instancePromise.then(editor => {
+  console.log(editor);
+});
+```
+
+✅ Accessing the editor through the `runAfterEditorReady` helper method. It's a safe way to access the editor instance when the editor is ready.
+
+```js
+document.getElementById('editor').runAfterEditorReady(editor => {
+  console.log(editor);
+});
 ```
 
 ## License 📜
