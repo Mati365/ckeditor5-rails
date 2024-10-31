@@ -1,8 +1,0 @@
-{
-  "files.exclude": {
-    "demo/gem": true
-  },
-  "search.exclude": {
-    "demo/gem/**/*": true
-  }
-}
