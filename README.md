@@ -19,6 +19,8 @@ gem 'ckeditor5'
 Usage in your Rails application:
 
 ```erb
+<!-- app/views/demos/index.html.erb -->
+
 <% content_for :head do %>
   <%= ckeditor5_assets version: '43.2.0', translations: [:pl, :es] %>
 <% end %>
