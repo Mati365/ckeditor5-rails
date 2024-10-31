@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'uri'
 require 'action_view'
 
 module CKEditor5::Rails::Assets

@@ -70,6 +70,10 @@ module CKEditor5::Rails
       @type = type
     end
 
+    def configure(key, value)
+      @config[key] = value
+    end
+
     def menubar(visible: true)
       @config[:menuBar] = {
         isVisible: visible
