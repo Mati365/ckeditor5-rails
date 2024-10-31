@@ -79,6 +79,9 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [Balloon editor 🎈](#balloon-editor-)
     - [Decoupled editor 🌐](#decoupled-editor-)
   - [How to access editor instance? 🤔](#how-to-access-editor-instance-)
+  - [Events fired by the editor 🔊](#events-fired-by-the-editor-)
+    - [`editor-ready` event](#editor-ready-event)
+    - [`editor-error` event](#editor-error-event)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -710,6 +713,28 @@ document.getElementById('editor').instancePromise.then(editor => {
 ```js
 document.getElementById('editor').runAfterEditorReady(editor => {
   console.log(editor);
+});
+```
+
+## Events fired by the editor 🔊
+
+### `editor-ready` event
+
+The event is fired when the initialization of the editor is completed. You can listen to it using the `editor-ready` event.
+
+```js
+document.getElementById('editor').addEventListener('editor-ready', () => {
+  console.log('Editor is ready');
+});
+```
+
+### `editor-error` event
+
+The event is fired when the initialization of the editor fails. You can listen to it using the `editor-error` event.
+
+```js
+document.getElementById('editor').addEventListener('editor-error', () => {
+  console.log('Editor has an error');
 });
 ```
 
