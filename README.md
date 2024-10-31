@@ -16,16 +16,36 @@ Add this line to your application's Gemfile:
 gem 'ckeditor5'
 ```
 
-Usage in your Rails application:
+In your config:
+
+```erb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails::Engine.configure do |config|
+  config.presets.override :default do
+    version '43.3.0'
+  end
+end
+```
+
+In your view:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.2.0', translations: [:pl, :es] %>
+  <%= ckeditor5_assets %>
+
+  <!-- or using inline config -->
+
+  <%= ckeditor5_assets version: '43.3.0', premium: false %>
 <% end %>
 
 <%= ckeditor5_editor style: 'width: 600px' %>
+
+<!-- or using inline config -->
+
+<%= ckeditor5_editor type: :classic, config: { toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
 ```
 
 Result:
