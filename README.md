@@ -415,8 +415,6 @@ config.presets.define :custom do
 end
 ```
 
-</details>
-
 #### `inline_plugin(name, code)` method
 
 Use with caution as this is an inline definition of the plugin code, and you can define a custom class or function for the plugin here. The example below shows how to define a custom plugin that highlights the text:
@@ -442,6 +440,7 @@ config.presets.define :custom do
   JS
 end
 ```
+</details>
 
 ## Including CKEditor 5 assets 📦
 
