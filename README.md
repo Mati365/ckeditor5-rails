@@ -741,6 +741,8 @@ Decoupled editor is a variant of classic editor that allows you to separate the 
 If you want to use a decoupled editor, you can pass the `type` keyword argument with the value `:decoupled`:
 
 ```erb
+<!-- app/views/demos/index.html.erb -->
+
 <% content_for :head do %>
   <%= ckeditor5_assets %>
 <% end %>
