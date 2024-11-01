@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CKEditor5::Rails
+module CKEditor5::Rails::Presets
   class ToolbarBuilder
     def initialize(toolbar_config)
       @toolbar_config = toolbar_config

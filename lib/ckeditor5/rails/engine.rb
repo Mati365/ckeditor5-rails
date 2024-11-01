@@ -2,16 +2,13 @@
 
 require 'rails/engine'
 
-require_relative 'toolbar_builder'
-require_relative 'preset_builder'
-require_relative 'presets_manager'
-
+require_relative 'presets/manager'
 require_relative 'hooks/form'
 
 module CKEditor5::Rails
   class Engine < ::Rails::Engine
     config.ckeditor5 = ActiveSupport::OrderedOptions.new
-    config.ckeditor5.presets = PresetsManager.new
+    config.ckeditor5.presets = Presets::Manager.new
 
     initializer 'helper' do
       ActiveSupport.on_load(:action_view) { include Helpers }

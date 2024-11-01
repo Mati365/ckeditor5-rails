@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-module CKEditor5::Rails
-  class PresetsManager
+require_relative 'preset_builder'
+require_relative 'toolbar_builder'
+
+module CKEditor5::Rails::Presets
+  class Manager
     attr_reader :presets
 
     def initialize
