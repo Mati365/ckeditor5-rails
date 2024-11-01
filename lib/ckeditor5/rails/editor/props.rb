@@ -12,10 +12,11 @@ module CKEditor5::Rails::Editor
       multiroot: 'MultiRootEditor'
     }.freeze
 
-    def initialize(context, type, config)
+    def initialize(controller_context, type, config, watchdog: true)
       raise ArgumentError, "Invalid editor type: #{type}" unless Props.valid_editor_type?(type)
 
-      @context = context
+      @controller_context = controller_context
+      @watchdog = watchdog
       @type = type
       @config = config
     end
@@ -33,18 +34,19 @@ module CKEditor5::Rails::Editor
 
     private
 
-    attr_reader :context, :type, :config
+    attr_reader :controller_context, :watchdog, :type, :config
 
     def serialized_attributes
       {
         translations: serialize_translations,
         plugins: serialize_plugins,
-        config: serialize_config
+        config: serialize_config,
+        watchdog: watchdog
       }
     end
 
     def serialize_translations
-      context[:bundle].translations_scripts.map(&:to_h).to_json
+      controller_context[:bundle].translations_scripts.map(&:to_h).to_json
     end
 
     def serialize_plugins
@@ -54,7 +56,7 @@ module CKEditor5::Rails::Editor
     def serialize_config
       config
         .except(:plugins)
-        .tap { |cfg| cfg[:licenseKey] = context[:license_key] if context[:license_key] }
+        .tap { |cfg| cfg[:licenseKey] = controller_context[:license_key] if controller_context[:license_key] }
         .to_json
     end
   end

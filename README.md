@@ -75,6 +75,7 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [Commercial usage 💰](#commercial-usage-)
   - [Editor placement 🏗️](#editor-placement-️)
     - [Setting Initial Content 📝](#setting-initial-content-)
+    - [Watchdog 🐕](#watchdog-)
     - [Classic editor 📝](#classic-editor-)
     - [Multiroot editor 🌳](#multiroot-editor-)
     - [Inline editor 📝](#inline-editor-)
@@ -598,6 +599,18 @@ The example below shows how to set the initial content of the editor using the `
 <%= ckeditor5_editor do %>
   <p>Initial content</p>
 <% end %>
+```
+
+### Watchdog 🐕
+
+CKEditor 5 uses a watchdog utility to protect you from data loss in case the editor crashes. It saves your content just before the crash and creates a new instance of the editor with your content intact. It's enabled by default in the gem.
+
+If you want to disable the watchdog, you can pass the `watchdog` keyword argument with the value `false`:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<%= ckeditor5_editor watchdog: false %>
 ```
 
 ### Classic editor 📝

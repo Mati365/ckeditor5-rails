@@ -9,13 +9,13 @@ module CKEditor5::Rails
     class EditorContextError < StandardError; end
     class PresetNotFoundError < ArgumentError; end
 
-    def ckeditor5_editor(
+    def ckeditor5_editor( # rubocop:disable Metrics/ParameterLists
       config: nil, extra_config: {},
       type: nil, preset: :default,
-      initial_data: nil,
+      initial_data: nil, watchdog: true,
       **html_attributes, &block
     )
-      context = validate_and_get_editor_context!
+      controller_context = validate_and_get_editor_context!
       preset = fetch_editor_preset(preset)
 
       config ||= preset.config
@@ -26,10 +26,9 @@ module CKEditor5::Rails
 
       raise ArgumentError, 'Cannot pass initial data and block at the same time.' if initial_data && block
 
-      editor_props = build_editor_props(
-        config: config,
-        type: type,
-        context: context
+      editor_props = Editor::Props.new(
+        controller_context, type, config,
+        watchdog: watchdog
       )
 
       render_editor_component(editor_props, html_attributes, &block)
@@ -66,10 +65,6 @@ module CKEditor5::Rails
     def fetch_editor_preset(preset)
       Engine.base.presets[preset] or
         raise PresetNotFoundError, "Preset #{preset} is not defined."
-    end
-
-    def build_editor_props(config:, type:, context:)
-      Editor::Props.new(context, type, config)
     end
 
     def render_editor_component(props, html_attributes, &block)
