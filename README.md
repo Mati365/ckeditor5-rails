@@ -804,11 +804,25 @@ This section covers frequent questions and scenarios when working with CKEditor 
 
 ### Setting Initial Content 📝
 
+You can set the initial content of the editor using the `initial_data` keyword argument or by passing the content directly to the `ckeditor5_editor` helper block.
+
+The example below shows how to set the initial content of the editor using the `initial_data` keyword argument:
+
 ```erb
 <%= ckeditor5_editor initial_data: "<p>Initial content</p>" %>
 ```
 
+The example below shows how to set the initial content of the editor using the `ckeditor5_editor` helper block.
+
+```erb
+<%= ckeditor5_editor do %>
+  <p>Initial content</p>
+<% end %>
+```
+
 ### Setting Editor Language 🌐
+
+You can set the language of the editor using the `language` method in the `config/initializers/ckeditor5.rb` file. The `translations` method fetches the translations files, while the `language` method sets the default language of the editor.
 
 ```rb
 config.presets.override :default do
@@ -818,6 +832,8 @@ end
 ```
 
 ### Integrating with Forms 📋
+
+You can integrate CKEditor 5 with Rails form builders like `form_for` or `simple_form`. The example below shows how to integrate CKEditor 5 with a Rails form using the `form_for` helper:
 
 #### Rails form builder integration
 
