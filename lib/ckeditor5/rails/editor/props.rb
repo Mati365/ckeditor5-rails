@@ -44,7 +44,7 @@ module CKEditor5::Rails::Editor
     end
 
     def serialize_translations
-      context[:bundle].translations_scripts.map { |script| script.import_meta.to_h }.to_json
+      context[:bundle].translations_scripts.map(&:to_h).to_json
     end
 
     def serialize_plugins

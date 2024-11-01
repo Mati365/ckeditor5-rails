@@ -57,17 +57,18 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [Available Configuration Methods ⚙️](#available-configuration-methods-️)
       - [`version(version)` method](#versionversion-method)
       - [`gpl` method](#gpl-method)
+      - [`license_key(key)` method](#license_keykey-method)
       - [`premium` method](#premium-method)
       - [`translations(*languages)` method](#translationslanguages-method)
-      - [`license_key(key)` method](#license_keykey-method)
       - [`ckbox` method](#ckbox-method)
       - [`type(type)` method](#typetype-method)
-      - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
-      - [`toolbar(*items, should_group_when_full: true)` method](#toolbaritems-should_group_when_full-true-method)
+      - [`toolbar(*items, should_group_when_full: true, &block)` method](#toolbaritems-should_group_when_full-true-block-method)
       - [`menubar(visible: true)` method](#menubarvisible-true-method)
       - [`language(ui, content:)` method](#languageui-content-method)
       - [`configure(name, value)` method](#configurename-value-method)
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
+      - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
+      - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
   - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
     - [Lazy loading 🚀](#lazy-loading-)
     - [GPL usage 🆓](#gpl-usage-)
@@ -82,6 +83,13 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
   - [Events fired by the editor 🔊](#events-fired-by-the-editor-)
     - [`editor-ready` event](#editor-ready-event)
     - [`editor-error` event](#editor-error-event)
+  - [Common Tasks and Solutions 💡](#common-tasks-and-solutions-)
+    - [Setting Initial Content 📝](#setting-initial-content-)
+    - [Using with Active Storage 📤](#using-with-active-storage-)
+    - [Setting Editor Language 🌐](#setting-editor-language-)
+    - [Integrating with Forms 📋](#integrating-with-forms-)
+    - [Custom Styling 🎨](#custom-styling-)
+    - [Custom plugins 🧩](#custom-plugins-)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -95,18 +103,16 @@ You can create your own by defining it in the `config/initializers/ckeditor5.rb`
 
 CKEditor5::Rails::Engine.configure do |config|
   config.presets.define :custom
-    gpl # Use GPL license
-
+    gpl
     type :classic
 
     menubar
-
     toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
-            :link, :insertImage, :ckbox, :mediaEmbed, :insertTable, :blockQuote, :|,
+            :link, :insertImage, :mediaEmbed, :insertTable, :blockQuote, :|,
             :bulletedList, :numberedList, :todoList, :outdent, :indent
 
     plugins :AccessibilityHelp, :Autoformat, :AutoImage, :Autosave,
-            :BlockQuote, :Bold, :CKBox, :CKBoxImageEdit, :CloudServices,
+            :BlockQuote, :Bold, :CloudServices,
             :Essentials, :Heading, :ImageBlock, :ImageCaption, :ImageInline,
             :ImageInsert, :ImageInsertViaUrl, :ImageResize, :ImageStyle,
             :ImageTextAlternative, :ImageToolbar, :ImageUpload, :Indent,
@@ -115,6 +121,10 @@ CKEditor5::Rails::Engine.configure do |config|
             :SelectAll, :Table, :TableCaption, :TableCellProperties,
             :TableColumnResize, :TableProperties, :TableToolbar,
             :TextTransformation, :TodoList, :Underline, :Undo, :Base64UploadAdapter
+
+    configure :image, {
+      toolbar: ['imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side']
+    }
   end
 end
 ```
@@ -166,9 +176,23 @@ config.presets.define :custom do
 end
 ```
 
+#### `license_key(key)` method
+
+Defines the license key of CKEditor 5. It calls `premium` method internally. The example below shows how to set the license key:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  license_key 'your-license-key'
+end
+```
+
 #### `premium` method
 
-Defines if premium package (`ckeditor5-premium-features`) should be used.
+Defines if premium package should be included in JS assets. The example below shows how to add `ckeditor5-premium-features` to import maps:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -203,20 +227,6 @@ config.presets.define :custom do
   translations :pl
 
   language :pl
-end
-```
-
-#### `license_key(key)` method
-
-Defines the license key of CKEditor 5. It calls `premium` method internally. The example below shows how to set the license key:
-
-```rb
-# config/initializers/ckeditor5.rb
-
-config.presets.define :custom do
-  # ... other configuration
-
-  license_key 'your-license-key'
 end
 ```
 
@@ -256,21 +266,7 @@ config.presets.define :custom do
 end
 ```
 
-#### `plugins(*names, **kwargs)` method
-
-Defines the plugins to be included in the editor. You can specify multiple plugins by passing their names as arguments. The keyword arguments are identical to the configuration of the `plugin` method defined below.
-
-```rb
-# config/initializers/ckeditor5.rb
-
-config.presets.define :custom do
-  # ... other configuration
-
-  plugins :Bold, :Italic, :Underline, :Link
-end
-```
-
-#### `toolbar(*items, should_group_when_full: true)` method
+#### `toolbar(*items, should_group_when_full: true, &block)` method
 
 Defines the toolbar items. You can use predefined items like `:undo`, `:redo`, `:|` or specify custom items. There are a few special items:
 
@@ -292,6 +288,21 @@ end
 ```
 
 Keep in mind that the order of items is important, and you should install the corresponding plugins. You can find the list of available plugins in the [CKEditor 5 documentation](https://ckeditor.com/docs/ckeditor5/latest/framework/architecture/plugins.html).
+
+If you want to add or prepend items to the existing toolbar, you can use the block syntax:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.override :default do
+  # ... other configuration
+
+  toolbar do
+    append :selectAll, :|, :selectAll, :selectAll
+    # Or prepend: prepend :selectAll, :|, :selectAll, :selectAll
+  end
+end
+```
 
 #### `menubar(visible: true)` method
 
@@ -367,7 +378,7 @@ config.presets.define :custom do
 end
 ```
 
-In order to import a plugin from a custom package, you can pass the `import_name` keyword argument:
+In order to import a plugin from a custom ESM package, you can pass the `import_name` keyword argument:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -379,7 +390,59 @@ config.presets.define :custom do
 end
 ```
 
+In order to import a plugin from a custom Window entry, you can pass the `window_name` keyword argument:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  plugin :YourPlugin, window_name: 'YourPlugin'
+end
+```
+
+#### `plugins(*names, **kwargs)` method
+
+Defines the plugins to be included in the editor. You can specify multiple plugins by passing their names as arguments. The keyword arguments are identical to the configuration of the `plugin` method defined below.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  plugins :Bold, :Italic, :Underline, :Link
+end
+```
+
 </details>
+
+#### `inline_plugin(name, code)` method
+
+Use with caution as this is an inline definition of the plugin code, and you can define a custom class or function for the plugin here. The example below shows how to define a custom plugin that highlights the text:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  inline_plugin :MyCustomPlugin, <<~JS
+    import { Plugin } from 'ckeditor5';
+
+    export default class MyCustomPlugin extends Plugin {
+      static get pluginName() {
+        return 'MyCustomPlugin';
+      }
+
+      init() {
+        // ... Your plugin code
+      }
+    }
+  JS
+end
+```
 
 ## Including CKEditor 5 assets 📦
 
@@ -749,6 +812,185 @@ document.getElementById('editor').addEventListener('editor-error', () => {
   console.log('Editor has an error');
 });
 ```
+
+## Common Tasks and Solutions 💡
+
+This section covers frequent questions and scenarios when working with CKEditor 5 in Rails applications.
+
+### Setting Initial Content 📝
+
+```erb
+<%= ckeditor5_editor initial_data: "<p>Initial content</p>" %>
+```
+
+### Using with Active Storage 📤
+
+Configure the editor for file uploads:
+
+```rb
+config.presets.define :with_upload do
+  plugin :Base64UploadAdapter
+  configure :upload, {
+    types: ['jpeg', 'png', 'gif'],
+    maxFileSize: 2 * 1024 * 1024 # 2MB
+  }
+end
+```
+
+### Setting Editor Language 🌐
+
+```rb
+config.presets.define :localized do
+  translations :pl, :es
+  language :pl
+end
+```
+
+### Integrating with Forms 📋
+
+```erb
+<%= form_for @post do |f| %>
+  <%= f.label :content %>
+  <%= f.ckeditor5_editor :content %>
+<% end %>
+```
+
+### Custom Styling 🎨
+
+```erb
+<%= ckeditor5_editor style: 'height: 400px; margin: 20px;' %>
+```
+
+### Custom plugins 🧩
+
+You can create custom plugins for CKEditor 5 using the `inline_plugin` method. It allows you to define a custom class or function inside your preset configuration.
+
+The example below shows how to define a custom plugin that allows toggling the highlight of the selected text:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.define :custom do
+  # ... other configuration
+
+  inline_plugin :MyCustomPlugin, <<~JS
+    import { Plugin, Command, ButtonView } from 'ckeditor5';
+
+    export default class MyCustomPlugin extends Plugin {
+      static get pluginName() {
+        return 'MyCustomPlugin';
+      }
+
+      init() {
+        const editor = this.editor;
+
+        // Define schema for highlight attribute
+        editor.model.schema.extend('$text', { allowAttributes: 'highlight' });
+
+        // Define conversion between model and view
+        editor.conversion.attributeToElement({
+          model: 'highlight',
+          view: {
+            name: 'span',
+            styles: {
+              'background-color': 'yellow'
+            }
+          }
+        });
+
+        // Create command that handles highlighting logic
+        // Command pattern is used to encapsulate all the logic related to executing an action
+        const command = new HighlightCommand(editor);
+
+        // Register command in editor
+        editor.commands.add('highlight', command);
+
+        // Add UI button
+        editor.ui.componentFactory.add('highlight', locale => {
+          const view = new ButtonView(locale);
+
+          // Bind button state to command state using bind method
+          // bind() allows to sync button state with command state automatically
+          view.bind('isOn').to(command, 'value');
+
+          view.set({
+            label: 'Highlight',
+            withText: true,
+            tooltip: true
+          });
+
+          view.on('execute', () => {
+            editor.execute('highlight');
+            editor.editing.view.focus();
+          });
+
+          return view;
+        });
+      }
+    }
+
+    // Command class that handles the highlight feature
+    // isEnabled property determines if command can be executed
+    class HighlightCommand extends Command {
+      execute() {
+        const model = this.editor.model;
+        const selection = model.document.selection;
+
+        model.change(writer => {
+          const ranges = model.schema.getValidRanges(selection.getRanges(), 'highlight');
+
+          for (const range of ranges) {
+            if (this.value) {
+              writer.removeAttribute('highlight', range);
+            } else {
+              writer.setAttribute('highlight', true, range);
+            }
+          }
+        });
+      }
+
+      refresh() {
+        const model = this.editor.model;
+        const selection = model.document.selection;
+        const isAllowed = model.schema.checkAttributeInSelection(selection, 'highlight');
+
+        // Set if command is enabled based on schema
+        this.isEnabled = isAllowed;
+        this.value = this.#isHighlightedNodeSelected();
+      }
+
+      // Check if the highlighted node is selected.
+      #isHighlightedNodeSelected() {
+        const { model } = this.editor
+        const { schema } = model
+        const selection = model.document.selection
+
+        if (selection.isCollapsed) {
+          return selection.hasAttribute('highlight')
+        }
+
+        return selection.getRanges().some(range =>
+          Array
+            .from(range.getItems())
+            .some(item =>
+              schema.checkAttribute(item, 'highlight') &&
+              item.hasAttribute('highlight')
+            )
+        );
+      }
+    }
+  JS
+
+  # Add item to beginning of the toolbar.
+  toolbar do
+    prepend :highlight
+  end
+end
+```
+
+Result:
+
+![CKEditor 5 Custom Highlight Plugin in Ruby on Rails application](docs/custom-highlight-plugin.png)
 
 ## License 📜
 

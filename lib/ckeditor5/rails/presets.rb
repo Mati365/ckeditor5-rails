@@ -29,7 +29,7 @@ module CKEditor5::Rails
 
     private
 
-    def define_default_preset
+    def define_default_preset # rubocop:disable Metrics/MethodLength
       define :default do
         gpl
 
@@ -38,11 +38,11 @@ module CKEditor5::Rails
         menubar
 
         toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
-                :link, :insertImage, :ckbox, :mediaEmbed, :insertTable, :blockQuote, :|,
+                :link, :insertImage, :mediaEmbed, :insertTable, :blockQuote, :|,
                 :bulletedList, :numberedList, :todoList, :outdent, :indent
 
         plugins :AccessibilityHelp, :Autoformat, :AutoImage, :Autosave,
-                :BlockQuote, :Bold, :CKBox, :CKBoxImageEdit, :CloudServices,
+                :BlockQuote, :Bold, :CloudServices,
                 :Essentials, :Heading, :ImageBlock, :ImageCaption, :ImageInline,
                 :ImageInsert, :ImageInsertViaUrl, :ImageResize, :ImageStyle,
                 :ImageTextAlternative, :ImageToolbar, :ImageUpload, :Indent,
@@ -51,6 +51,10 @@ module CKEditor5::Rails
                 :SelectAll, :Table, :TableCaption, :TableCellProperties,
                 :TableColumnResize, :TableProperties, :TableToolbar,
                 :TextTransformation, :TodoList, :Underline, :Undo, :Base64UploadAdapter
+
+        configure :image, {
+          toolbar: ['imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side']
+        }
       end
     end
   end
@@ -144,11 +148,22 @@ module CKEditor5::Rails
       }
     end
 
-    def toolbar(*items, should_group_when_full: true)
-      @config[:toolbar] = {
-        items: items,
-        shouldNotGroupWhenFull: !should_group_when_full
-      }
+    def toolbar(*items, should_group_when_full: true, &block)
+      if @config[:toolbar].blank? || !items.empty?
+        @config[:toolbar] = {
+          items: items,
+          shouldNotGroupWhenFull: !should_group_when_full
+        }
+      end
+
+      return unless block
+
+      builder = ToolbarBuilder.new(@config[:toolbar])
+      builder.instance_eval(&block)
+    end
+
+    def inline_plugin(name, code)
+      @config[:plugins] << Editor::PropsInlinePlugin.new(name, code)
     end
 
     def plugin(name, **kwargs)
@@ -164,6 +179,38 @@ module CKEditor5::Rails
         ui: ui,
         content: content
       }
+    end
+  end
+
+  class ToolbarBuilder
+    def initialize(toolbar_config)
+      @toolbar_config = toolbar_config
+    end
+
+    def prepend(*items, before: nil)
+      toolbar_items = @toolbar_config[:items]
+
+      if before
+        index = toolbar_items.index(before)
+        raise ArgumentError, "Item '#{before}' not found in toolbar" unless index
+
+        toolbar_items.insert(index, *items)
+      else
+        toolbar_items.insert(0, *items)
+      end
+    end
+
+    def append(*items, after: nil)
+      toolbar_items = @toolbar_config[:items]
+
+      if after
+        index = toolbar_items.index(after)
+        raise ArgumentError, "Item '#{after}' not found in toolbar" unless index
+
+        toolbar_items.insert(index + 1, *items)
+      else
+        toolbar_items.push(*items)
+      end
     end
   end
 end
