@@ -45,4 +45,8 @@ module CKEditor5::Rails
       yield config.ckeditor5
     end
   end
+
+  def configure(&block)
+    Engine.configure(&block)
+  end
 end

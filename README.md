@@ -25,7 +25,7 @@ In your config:
 ```rb
 # config/initializers/ckeditor5.rb
 
-CKEditor5::Rails::Engine.configure do |config|
+CKEditor5::Rails.configure do |config|
   config.presets.override :default do
     version '43.3.0'
   end
@@ -102,7 +102,7 @@ You can create your own by defining it in the `config/initializers/ckeditor5.rb`
 ```rb
 # config/initializers/ckeditor5.rb
 
-CKEditor5::Rails::Engine.configure do |config|
+CKEditor5::Rails.configure do |config|
   config.presets.define :custom
     gpl
     type :classic
@@ -135,7 +135,7 @@ In order to override existing presets, you can use the `config.presets.override`
 ```rb
 # config/initializers/ckeditor5.rb
 
-CKEditor5::Rails::Engine.configure do |config|
+CKEditor5::Rails.configure do |config|
   config.presets.override :default do
     menubar visible: false
 
@@ -511,7 +511,7 @@ Set the version in the `config/initializers/ckeditor5.rb` file:
 ```rb
 # config/initializers/ckeditor5.rb
 
-CKEditor5::Rails::Engine.configure do
+CKEditor5::Rails.configure do
   presets.override :default do
     version '43.3.0'
   end
@@ -553,7 +553,7 @@ Keep in mind, that you need to include the translations in the `config/initializ
 ```rb
 # config/initializers/ckeditor5.rb
 
-CKEditor5::Rails::Engine.configure do
+CKEditor5::Rails.configure do
   presets.override :default do
     language :pl
   end
