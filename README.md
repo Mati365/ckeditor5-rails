@@ -490,7 +490,7 @@ If you want to use CKEditor 5 under the GPL license, you can include the assets 
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.3.0' %>
+  <%= ckeditor5_assets %>
 <% end %>
 ```
 
@@ -524,7 +524,7 @@ In order to use `unpkg` CDN, you can pass the `cdn` keyword argument with the va
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.3.0', cdn: :unpkg %>
+  <%= ckeditor5_assets cdn: :unpkg %>
 <% end %>
 ```
 
@@ -534,7 +534,7 @@ or using helper function:
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_jsdelivr_assets version: '43.3.0' %>
+  <%= ckeditor5_jsdelivr_assets %>
 <% end %>
 ```
 
@@ -544,7 +544,7 @@ Translating CKEditor 5 is possible by passing the `translations` keyword argumen
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets version: '43.3.0', translations: [:pl] %>
+  <%= ckeditor5_assets translations: [:pl] %>
 <% end %>
 ```
 
