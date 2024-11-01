@@ -562,9 +562,6 @@ end
 
 ### Commercial usage 💰
 
-<details>
-  <summary>Expand to show more</summary>
-
 If you want to use CKEditor 5 under a commercial license, you can include the assets using the `ckeditor5_assets` helper method with the `license_key` keyword argument. The example below shows how to include the assets for the commercial license:
 
 ```erb
@@ -576,8 +573,6 @@ If you want to use CKEditor 5 under a commercial license, you can include the as
 ```
 
 In this scenario, the assets are included from the official CKEditor 5 CDN which is more reliable and provides better performance, especially for commercial usage.
-
-</details>
 
 ## Editor placement 🏗️
 
