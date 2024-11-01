@@ -87,6 +87,8 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [Setting Initial Content 📝](#setting-initial-content-)
     - [Setting Editor Language 🌐](#setting-editor-language-)
     - [Integrating with Forms 📋](#integrating-with-forms-)
+      - [Rails form builder integration](#rails-form-builder-integration)
+      - [Simple form integration](#simple-form-integration)
     - [Custom Styling 🎨](#custom-styling-)
     - [Custom plugins 🧩](#custom-plugins-)
   - [License 📜](#license-)
@@ -796,10 +798,26 @@ end
 
 ### Integrating with Forms 📋
 
+#### Rails form builder integration
+
 ```erb
 <%= form_for @post do |f| %>
   <%= f.label :content %>
-  <%= f.ckeditor5_editor :content %>
+  <%= f.ckeditor5 :content, required: true, style: 'width: 700px', initial_data: 'Hello World!' %>
+<% end %>
+```
+
+#### Simple form integration
+
+```erb
+<%= simple_form_for :demo, url: '/demos', html: { novalidate: false } do |f| %>
+  <div class="form-group">
+    <%= f.input :content, as: :ckeditor5, initial_data: 'Hello, World 12!', input_html: { style: 'width: 600px' }, required: true %>
+  </div>
+
+  <div class="form-group mt-3">
+    <%= f.button :submit, 'Save', class: 'btn btn-primary' %>
+  </div>
 <% end %>
 ```
 
@@ -976,6 +994,7 @@ class HighlightCommand extends Command {
   }
 }
 ```
+
 </details>
 
 ## License 📜

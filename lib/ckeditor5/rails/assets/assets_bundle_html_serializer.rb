@@ -63,13 +63,14 @@ module CKEditor5::Rails::Assets
 
     def styles_tags
       @styles_tags ||= safe_join(bundle.stylesheets.map do |url|
-        tag.link(href: url, rel: 'stylesheet')
+        tag.link(href: url, rel: 'stylesheet', crossorigin: 'anonymous')
       end)
     end
 
     def preload_tags
       @preload_tags ||= safe_join(bundle.preloads.map do |url|
-        tag.link(href: url, rel: 'preload', as: self.class.url_resource_preload_type(url))
+        tag.link(href: url, rel: 'preload', as: self.class.url_resource_preload_type(url),
+                 crossorigin: 'anonymous')
       end)
     end
   end

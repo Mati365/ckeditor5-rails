@@ -21,7 +21,7 @@ module CKEditor5::Rails
       config ||= preset.config
       type ||= preset.type
 
-      config.deep_merge!(extra_config)
+      config = config.deep_merge(extra_config)
       config[:initialData] = initial_data if initial_data
 
       editor_props = build_editor_props(

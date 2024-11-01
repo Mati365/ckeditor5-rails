@@ -2,6 +2,7 @@
 
 require 'rails/engine'
 require_relative 'presets'
+require_relative 'hooks/form'
 
 module CKEditor5::Rails
   class Engine < ::Rails::Engine
@@ -14,6 +15,22 @@ module CKEditor5::Rails
       ActiveSupport.on_load(:action_view) do
         include Helpers
       end
+    end
+
+    initializer 'ckeditor5.simple_form' do
+      next unless defined?(::SimpleForm)
+
+      require_relative 'hooks/simple_form'
+
+      ::SimpleForm::FormBuilder.map_type :ckeditor5, to: Hooks::SimpleForm::CKEditor5Input
+    end
+
+    initializer 'ckeditor5.form_builder' do
+      require_relative 'hooks/form'
+
+      ActionView::Helpers::FormBuilder.include(
+        Hooks::Form::FormBuilderExtension
+      )
     end
 
     def self.base
