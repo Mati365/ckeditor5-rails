@@ -825,7 +825,7 @@ This section covers frequent questions and scenarios when working with CKEditor 
 ### Setting Editor Language 🌐
 
 ```rb
-config.presets.define :localized do
+config.presets.override :default do
   translations :pl, :es
   language :pl
 end
