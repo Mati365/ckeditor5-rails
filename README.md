@@ -874,14 +874,17 @@ config.presets.define :custom do
   # plugin :MyPlugin, window_name: 'MyPlugin'
 
   # 3. Create JavaScript file in app/javascript/custom_plugins/highlight.js:
-  # You can also use "plugin" to import plugin from file using 'import_name' option:
+  # You can also use "plugin" to import plugin from file using 'import_name' option.
+  # Your `my-custom-plugin` must be present in import map.
 
   # plugin :MyCustomPlugin, import_name: 'my-custom-plugin'
 
   # 4 Create JavaScript file in app/javascript/custom_plugins/highlight.js:
 
   # In Ruby initializer you can also load plugin code directly from file:
-  plugin :MyCustomPlugin, File.read(Rails.root.join('app/javascript/custom_plugins/highlight.js'))
+  plugin :MyCustomPlugin, File.read(
+    Rails.root.join('app/javascript/custom_plugins/highlight.js')
+  )
 
   # 5. Or even define it inline:
   # plugin :MyCustomPlugin,  <<~JS
