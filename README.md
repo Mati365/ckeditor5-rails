@@ -701,54 +701,18 @@ If you want to use a decoupled editor, you can pass the `type` keyword argument 
   <%= ckeditor5_assets %>
 <% end %>
 
-<style>
-  .menubar-container,
-  .editable-container,
-  .toolbar-container {
-    position: relative;
-    border: 1px solid red;
-  }
-
-  .menubar-container::after,
-  .editable-container::after,
-  .toolbar-container::after {
-    content: attr(class);
-    position: absolute;
-    background: red;
-    color: #fff;
-    top: 0;
-    right: 0;
-    font: 10px/2 monospace;
-    padding: .1em .3em;
-  }
-
-  .menubar-container,
-  .toolbar-container {
-    padding: 1em;
-  }
-
-  .editable-container {
-    padding: 3em;
-    overflow-y: scroll;
-    max-height: 300px;
-  }
-
-  .editable-container .ck-editor__editable {
-    min-height: 21cm;
-    padding: 2em;
-    border: 1px #D3D3D3 solid;
-    border-radius: var(--ck-border-radius);
-    background: white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-</style>
-
 <%= ckeditor5_editor type: :decoupled, style: 'width: 600px' do %>
-  <div class="menubar-container"><%= ckeditor5_menubar %></div>
-  <br>
-  <div class="toolbar-container"><%= ckeditor5_toolbar %></div>
-  <br>
-  <div class="editable-container"><%= ckeditor5_editable %></div>
+  <div class="menubar-container">
+    <%= ckeditor5_menubar %>
+  </div>
+
+  <div class="toolbar-container">
+    <%= ckeditor5_toolbar %>
+  </div>
+
+  <div class="editable-container">
+    <%= ckeditor5_editable %>
+  </div>
 <% end %>
 ```
 
