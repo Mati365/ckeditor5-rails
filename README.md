@@ -590,12 +590,16 @@ You can set the initial content of the editor using the `initial_data` keyword a
 The example below shows how to set the initial content of the editor using the `initial_data` keyword argument:
 
 ```erb
+<!-- app/views/demos/index.html.erb -->
+
 <%= ckeditor5_editor initial_data: "<p>Initial content</p>" %>
 ```
 
 The example below shows how to set the initial content of the editor using the `ckeditor5_editor` helper block.
 
 ```erb
+<!-- app/views/demos/index.html.erb -->
+
 <%= ckeditor5_editor do %>
   <p>Initial content</p>
 <% end %>
