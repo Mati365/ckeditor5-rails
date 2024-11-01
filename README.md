@@ -490,7 +490,7 @@ If you want to use CKEditor 5 under the GPL license, you can include the assets 
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets %>
+  <%= ckeditor5_assets version: '43.3.0' %>
 <% end %>
 ```
 
