@@ -899,6 +899,9 @@ config.presets.define :custom do
 end
 ```
 
+<details>
+  <summary>Example of Custom Highlight Plugin 🎨</summary>
+
 ```js
 // app/javascript/custom_plugins/highlight.js
 import { Plugin, Command, ButtonView } from 'ckeditor5';
@@ -1007,6 +1010,7 @@ class HighlightCommand extends Command {
   }
 }
 ```
+</details>
 
 ## License 📜
 
