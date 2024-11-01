@@ -820,6 +820,8 @@ You can integrate CKEditor 5 with Rails form builders like `form_for` or `simple
 #### Rails form builder integration
 
 ```erb
+<!-- app/views/demos/index.html.erb -->
+
 <%= form_for @post do |f| %>
   <%= f.label :content %>
   <%= f.ckeditor5 :content, required: true, style: 'width: 700px', initial_data: 'Hello World!' %>
@@ -829,6 +831,8 @@ You can integrate CKEditor 5 with Rails form builders like `form_for` or `simple
 #### Simple form integration
 
 ```erb
+<!-- app/views/demos/index.html.erb -->
+
 <%= simple_form_for :demo, url: '/demos', html: { novalidate: false } do |f| %>
   <div class="form-group">
     <%= f.input :content, as: :ckeditor5, initial_data: 'Hello, World 12!', input_html: { style: 'width: 600px' }, required: true %>
@@ -845,6 +849,8 @@ You can integrate CKEditor 5 with Rails form builders like `form_for` or `simple
 You can pass the `style`, `class` and `id` keyword arguments to the `ckeditor5_editor` helper to define the styling of the editor. The example below shows how to set the height, margin, and CSS class of the editor:
 
 ```erb
+<!-- app/views/demos/index.html.erb -->
+
 <%= ckeditor5_editor style: 'height: 400px; margin: 20px;', class: 'your_css_class', id: 'your_id' %>
 ```
 
