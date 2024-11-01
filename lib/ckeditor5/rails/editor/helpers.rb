@@ -12,6 +12,7 @@ module CKEditor5::Rails
     def ckeditor5_editor(
       config: nil, extra_config: {},
       type: nil, preset: :default,
+      initial_data: nil,
       **html_attributes, &block
     )
       context = validate_and_get_editor_context!
@@ -20,8 +21,11 @@ module CKEditor5::Rails
       config ||= preset.config
       type ||= preset.type
 
+      config.deep_merge!(extra_config)
+      config[:initialData] = initial_data if initial_data
+
       editor_props = build_editor_props(
-        config: config.deep_merge(extra_config),
+        config: config,
         type: type,
         context: context
       )

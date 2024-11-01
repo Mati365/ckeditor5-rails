@@ -42,7 +42,7 @@ In your view:
   <!-- or using inline config: ckeditor5_assets version: '43.3.0', premium: false -->
 <% end %>
 
-<%= ckeditor5_editor style: 'width: 600px' %>
+<%= ckeditor5_editor style: 'width: 600px', initial_data: '<YOUR DATA>' %>
 <!-- or using inline config: ckeditor5_editor type: :classic, config: { toolbar: [:Bold, :Italic] }, ... -->
 ```
 
