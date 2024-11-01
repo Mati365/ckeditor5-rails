@@ -74,23 +74,23 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [GPL usage 🆓](#gpl-usage-)
     - [Commercial usage 💰](#commercial-usage-)
   - [Editor placement 🏗️](#editor-placement-️)
+    - [Setting Initial Content 📝](#setting-initial-content-)
     - [Classic editor 📝](#classic-editor-)
     - [Multiroot editor 🌳](#multiroot-editor-)
     - [Inline editor 📝](#inline-editor-)
     - [Balloon editor 🎈](#balloon-editor-)
     - [Decoupled editor 🌐](#decoupled-editor-)
   - [How to access editor instance? 🤔](#how-to-access-editor-instance-)
-  - [Events fired by the editor 🔊](#events-fired-by-the-editor-)
-    - [`editor-ready` event](#editor-ready-event)
-    - [`editor-error` event](#editor-error-event)
   - [Common Tasks and Solutions 💡](#common-tasks-and-solutions-)
-    - [Setting Initial Content 📝](#setting-initial-content-)
     - [Setting Editor Language 🌐](#setting-editor-language-)
     - [Integrating with Forms 📋](#integrating-with-forms-)
       - [Rails form builder integration](#rails-form-builder-integration)
       - [Simple form integration](#simple-form-integration)
     - [Custom Styling 🎨](#custom-styling-)
     - [Custom plugins 🧩](#custom-plugins-)
+  - [Events fired by the editor 🔊](#events-fired-by-the-editor-)
+    - [`editor-ready` event](#editor-ready-event)
+    - [`editor-error` event](#editor-error-event)
   - [License 📜](#license-)
 
 ## Presets 🎨
@@ -583,6 +583,24 @@ In this scenario, the assets are included from the official CKEditor 5 CDN which
 
 The `ckeditor5_editor` helper renders CKEditor 5 instances in your views. Before using it, ensure you've included the necessary assets in your page's head section otherwise the editor won't work as there are no CKEditor 5 JavaScript and CSS files loaded.
 
+### Setting Initial Content 📝
+
+You can set the initial content of the editor using the `initial_data` keyword argument or by passing the content directly to the `ckeditor5_editor` helper block.
+
+The example below shows how to set the initial content of the editor using the `initial_data` keyword argument:
+
+```erb
+<%= ckeditor5_editor initial_data: "<p>Initial content</p>" %>
+```
+
+The example below shows how to set the initial content of the editor using the `ckeditor5_editor` helper block.
+
+```erb
+<%= ckeditor5_editor do %>
+  <p>Initial content</p>
+<% end %>
+```
+
 ### Classic editor 📝
 
 The classic editor is the most common type of editor. It provides a toolbar with various formatting options like bold, italic, underline, and link.
@@ -776,49 +794,9 @@ document.getElementById('editor').runAfterEditorReady(editor => {
 });
 ```
 
-## Events fired by the editor 🔊
-
-### `editor-ready` event
-
-The event is fired when the initialization of the editor is completed. You can listen to it using the `editor-ready` event.
-
-```js
-document.getElementById('editor').addEventListener('editor-ready', () => {
-  console.log('Editor is ready');
-});
-```
-
-### `editor-error` event
-
-The event is fired when the initialization of the editor fails. You can listen to it using the `editor-error` event.
-
-```js
-document.getElementById('editor').addEventListener('editor-error', () => {
-  console.log('Editor has an error');
-});
-```
-
 ## Common Tasks and Solutions 💡
 
 This section covers frequent questions and scenarios when working with CKEditor 5 in Rails applications.
-
-### Setting Initial Content 📝
-
-You can set the initial content of the editor using the `initial_data` keyword argument or by passing the content directly to the `ckeditor5_editor` helper block.
-
-The example below shows how to set the initial content of the editor using the `initial_data` keyword argument:
-
-```erb
-<%= ckeditor5_editor initial_data: "<p>Initial content</p>" %>
-```
-
-The example below shows how to set the initial content of the editor using the `ckeditor5_editor` helper block.
-
-```erb
-<%= ckeditor5_editor do %>
-  <p>Initial content</p>
-<% end %>
-```
 
 ### Setting Editor Language 🌐
 
@@ -1035,6 +1013,28 @@ class HighlightCommand extends Command {
 ```
 
 </details>
+
+## Events fired by the editor 🔊
+
+### `editor-ready` event
+
+The event is fired when the initialization of the editor is completed. You can listen to it using the `editor-ready` event.
+
+```js
+document.getElementById('editor').addEventListener('editor-ready', () => {
+  console.log('Editor is ready');
+});
+```
+
+### `editor-error` event
+
+The event is fired when the initialization of the editor fails. You can listen to it using the `editor-error` event.
+
+```js
+document.getElementById('editor').addEventListener('editor-error', () => {
+  console.log('Editor has an error');
+});
+```
 
 ## License 📜
 
