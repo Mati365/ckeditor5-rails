@@ -187,29 +187,33 @@ module CKEditor5::Rails
       @toolbar_config = toolbar_config
     end
 
-    def prepend(*items, before: nil)
-      toolbar_items = @toolbar_config[:items]
+    def items
+      @toolbar_config[:items]
+    end
 
+    def remove(*removed_items)
+      removed_items.each { |item| items.delete(item) }
+    end
+
+    def prepend(*prepended_items, before: nil)
       if before
-        index = toolbar_items.index(before)
+        index = items.index(before)
         raise ArgumentError, "Item '#{before}' not found in toolbar" unless index
 
-        toolbar_items.insert(index, *items)
+        items.insert(index, *prepended_items)
       else
-        toolbar_items.insert(0, *items)
+        items.insert(0, *prepended_items)
       end
     end
 
-    def append(*items, after: nil)
-      toolbar_items = @toolbar_config[:items]
-
+    def append(*appended_items, after: nil)
       if after
-        index = toolbar_items.index(after)
+        index = items.index(after)
         raise ArgumentError, "Item '#{after}' not found in toolbar" unless index
 
-        toolbar_items.insert(index + 1, *items)
+        items.insert(index + 1, *appended_items)
       else
-        toolbar_items.push(*items)
+        items.push(*appended_items)
       end
     end
   end

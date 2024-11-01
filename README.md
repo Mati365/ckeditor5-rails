@@ -138,6 +138,13 @@ In order to override existing presets, you can use the `config.presets.override`
 CKEditor5::Rails::Engine.configure do |config|
   config.presets.override :default do
     menubar visible: false
+
+    toolbar do
+      remove :underline, :heading
+
+      # prepend :underline
+      # append :heading
+    end
   end
 end
 ```
@@ -301,6 +308,20 @@ config.presets.override :default do
   toolbar do
     append :selectAll, :|, :selectAll, :selectAll
     # Or prepend: prepend :selectAll, :|, :selectAll, :selectAll
+  end
+end
+```
+
+If you want to remove items from the toolbar, you can use the `remove` method:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+config.presets.override :default do
+  # ... other configuration
+
+  toolbar do
+    remove :selectAll, :heading #, ...
   end
 end
 ```
