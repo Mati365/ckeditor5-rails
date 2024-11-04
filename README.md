@@ -175,7 +175,7 @@ Defines the CDN to be used for CKEditor 5 assets. The example below shows how to
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   cdn :jsdelivr
@@ -187,7 +187,7 @@ It also allows you to define a custom CDN by passing a block with the bundle, ve
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   cdn do |bundle, version, path|
@@ -205,7 +205,7 @@ Defines the version of CKEditor 5 to be used. The example below shows how to set
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   version '43.2.0'
@@ -219,7 +219,7 @@ Defines the license of CKEditor 5. The example below shows how to set the licens
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   gpl
@@ -233,7 +233,7 @@ Defines the license key of CKEditor 5. It calls `premium` method internally. The
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   license_key 'your-license-key'
@@ -247,7 +247,7 @@ Defines if premium package should be included in JS assets. The example below sh
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   premium
@@ -261,7 +261,7 @@ Defines the translations of CKEditor 5. You can pass the language codes as argum
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   translations :pl, :es
@@ -273,9 +273,10 @@ end
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
-  translations :pl
+CKEditor5::Rails.configure do
+  # ... other configuration
 
+  translations :pl
   language :pl
 end
 ```
@@ -287,7 +288,7 @@ Defines the CKBox plugin to be included in the editor. The example below shows h
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   ckbox '2.5.4', theme: :lark
@@ -309,7 +310,7 @@ The example below sets the editor type to `multiroot` in the custom preset:
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   type :multiroot
@@ -328,7 +329,7 @@ The `should_group_when_full` keyword argument determines whether the toolbar sho
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
@@ -344,7 +345,7 @@ If you want to add or prepend items to the existing toolbar, you can use the blo
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.override :default do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   toolbar do
@@ -359,7 +360,7 @@ If you want to remove items from the toolbar, you can use the `remove` method:
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.override :default do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   toolbar do
@@ -375,7 +376,7 @@ Defines the visibility of the menubar. By default, it's set to `true`.
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
@@ -391,7 +392,7 @@ Defines the language of the editor. You can pass the language code as an argumen
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   language :pl
@@ -403,7 +404,7 @@ In order to set the language for the content, you can pass the `content` keyword
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   language :en, content: :pl
@@ -417,7 +418,7 @@ Allows you to set custom configuration options. You can pass the name of the opt
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   configure :link, {
@@ -435,7 +436,7 @@ The example below show how to import Bold plugin from the `ckeditor5` npm packag
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   plugin :Bold
@@ -447,7 +448,7 @@ In order to import a plugin from a custom ESM package, you can pass the `import_
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   plugin :YourPlugin, import_name: 'your-package'
@@ -459,7 +460,7 @@ In order to import a plugin from a custom Window entry, you can pass the `window
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   plugin :YourPlugin, window_name: 'YourPlugin'
@@ -473,7 +474,7 @@ Defines the plugins to be included in the editor. You can specify multiple plugi
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   plugins :Bold, :Italic, :Underline, :Link
@@ -487,7 +488,7 @@ Use with caution as this is an inline definition of the plugin code, and you can
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   inline_plugin :MyCustomPlugin, <<~JS
