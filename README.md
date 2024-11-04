@@ -67,6 +67,10 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
   - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
+    - [Format 📝](#format-)
+      - [Using default preset](#using-default-preset)
+      - [Custom preset](#custom-preset)
+      - [Inline preset definition](#inline-preset-definition)
     - [Lazy loading 🚀](#lazy-loading-)
     - [GPL usage 🆓](#gpl-usage-)
     - [Commercial usage 💰](#commercial-usage-)
@@ -509,6 +513,72 @@ To include CKEditor 5 assets in your application, you can use the `ckeditor5_ass
 
 Keep in mind that you need to include the helper result in the `head` section of your layout. In examples below, we use `content_for` helper to include the assets in the `head` section of the view.
 
+### Format 📝
+
+#### Using default preset
+
+The example below users the default preset defined [here](https://github.com/Mati365/ckeditor5-rails/blob/main/lib/ckeditor5/rails/presets/manager.rb).
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets %>
+<% end %>
+```
+
+If you want to fetch some additional translations, you can extend your initializer with the following configuration:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... rest of the configuration
+
+  translations :pl, :es
+end
+```
+
+#### Custom preset
+
+To specify a custom preset, you need to pass the `preset` keyword argument with the name of the preset. The example below shows how to include the assets for the custom preset:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets preset: :custom %>
+<% end %>
+```
+
+In order to define such preset, you can use the following configuration:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... rest of the configuration
+
+  presets.define :custom do
+    # ... your preset configuration
+
+    translations :pl, :es
+  end
+end
+```
+
+#### Inline preset definition
+
+It's possible to define the preset directly in the `ckeditor5_assets` helper method. It allows you to dynamically specify version, cdn provider or even translations in the view. The example below inherits the default preset and adds Polish translations and other options:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets version: '43.3.0', cdn: :jsdelivr, translations: [:pl], license_key: '<YOUR KEY> OR GPL' %>
+<% end %>
+```
+
 ### Lazy loading 🚀
 
 <details>
@@ -522,19 +592,9 @@ It has been achieved by using web components, together with import maps, which a
 
 ### GPL usage 🆓
 
-If you want to use CKEditor 5 under the GPL license, you can include the assets using the `ckeditor5_assets` without passing any arguments. However you can pass the `version` keyword argument with the version of CKEditor 5 you want to use:
+If you want to use CKEditor 5 under the GPL license, you can include the assets using the `ckeditor5_assets` without passing any arguments. It'll include the necessary assets for the GPL license from one of the most popular CDNs. In our scenario, we use the `jsdelivr` CDN which is the default one.
 
-```erb
-<!-- app/views/demos/index.html.erb -->
-
-<% content_for :head do %>
-  <%= ckeditor5_assets version: '43.3.0' %>
-<% end %>
-```
-
-It'll include the necessary assets for the GPL license from one of the most popular CDNs. In our scenario, we use the `jsdelivr` CDN which is the default one.
-
-Version is optional as long as you defined it in the `config/initializers/ckeditor5.rb` file. If you want to use the default version, you can omit the `version` keyword argument:
+Example:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
@@ -544,7 +604,7 @@ Version is optional as long as you defined it in the `config/initializers/ckedit
 <% end %>
 ```
 
-Set the version in the `config/initializers/ckeditor5.rb` file:
+In that scenario it's recommended to add `gpl` method to the initializer along with the version:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -555,7 +615,19 @@ CKEditor5::Rails.configure do
 end
 ```
 
-In order to use `unpkg` CDN, you can pass the `cdn` keyword argument with the value `:unpkg`:
+In order to use `unpkg` CDN, you can extend your initializer with the following configuration:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... rest of the configuration
+
+  cdn :unpkg
+end
+```
+
+However, you can also specify the CDN directly in the view:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
@@ -575,29 +647,27 @@ or using helper function:
 <% end %>
 ```
 
-Translating CKEditor 5 is possible by passing the `translations` keyword argument with the languages codes array. The example below shows how to include the Polish translations:
+### Commercial usage 💰
 
-```erb
-<!-- app/views/demos/index.html.erb -->
-
-<% content_for :head do %>
-  <%= ckeditor5_assets translations: [:pl] %>
-<% end %>
-```
-
-Keep in mind, that you need to include the translations in the `config/initializers/ckeditor5.rb` file:
+If you want to use CKEditor 5 under a commercial license, you have to specify license key. It can be done in the initializer:
 
 ```rb
 # config/initializers/ckeditor5.rb
 
 CKEditor5::Rails.configure do
-  language :pl
+  license_key 'your-license-key'
 end
 ```
 
-### Commercial usage 💰
+```erb
+<!-- app/views/demos/index.html.erb -->
 
-If you want to use CKEditor 5 under a commercial license, you can include the assets using the `ckeditor5_assets` helper method with the `license_key` keyword argument. The example below shows how to include the assets for the commercial license:
+<% content_for :head do %>
+  <%= ckeditor5_assets %>
+<% end %>
+```
+
+or directly in the view:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
