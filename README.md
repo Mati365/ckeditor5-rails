@@ -141,16 +141,18 @@ CKEditor5::Rails.configure do
 end
 ```
 
-In order to override existing presets, you can use the `config.presets.override` method. The method takes the name of the preset you want to override and a block with the old configuration. The example below shows how to hide the menubar in the default preset:
+In order to override existing presets, you can use the `presets.override` method. The method takes the name of the preset you want to override and a block with the old configuration. The example below shows how to hide the menubar in the default preset:
 
 ```rb
 # config/initializers/ckeditor5.rb
 
 CKEditor5::Rails.configure do
-  menubar visible: false
+  presets.override :custom do
+    menubar visible: false
 
-  toolbar do
-    remove :underline, :heading
+    toolbar do
+      remove :underline, :heading
+    end
   end
 end
 ```
