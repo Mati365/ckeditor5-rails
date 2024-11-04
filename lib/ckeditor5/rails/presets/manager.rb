@@ -12,8 +12,13 @@ module CKEditor5::Rails::Presets
       define_default_preset
     end
 
-    def define(name, &block)
-      preset = PresetBuilder.new
+    def define(name, inherit: true, &block)
+      preset = if inherit && default.present?
+                 default.clone
+               else
+                 PresetBuilder.new
+               end
+
       preset.instance_eval(&block)
       @presets[name] = preset
     end
@@ -22,12 +27,14 @@ module CKEditor5::Rails::Presets
       @presets[name].instance_eval(&block)
     end
 
+    alias extend override
+
     def default
-      @presets[:default] || {}
+      @presets[:default]
     end
 
     def [](name)
-      @presets[name] || {}
+      @presets[name]
     end
 
     private

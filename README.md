@@ -25,10 +25,8 @@ In your config (the default config is defined [here](https://github.com/Mati365/
 ```rb
 # config/initializers/ckeditor5.rb
 
-CKEditor5::Rails.configure do |config|
-  config.presets.override :default do
-    version '43.3.0'
-  end
+CKEditor5::Rails.configure do
+  version '43.3.0'
 end
 ```
 
@@ -103,8 +101,20 @@ You can create your own by defining it in the `config/initializers/ckeditor5.rb`
 ```rb
 # config/initializers/ckeditor5.rb
 
-CKEditor5::Rails.configure do |config|
-  config.presets.define :custom
+CKEditor5::Rails.configure do
+  # It's possible to override the default preset right in the initializer.
+  version '43.3.0'
+
+  # New presets inherit properties from the default preset defined in the initializer.
+  # In this example, the custom preset inherits everything from default but disables the menubar:
+  presets.define :inherited_custom
+    menubar visible: false
+  end
+
+  # In order to define preset from scratch, you can use the `inherit: false` option.
+  presets.define :blank_preset, inherit: false do
+    version '44.0.0'
+
     gpl
     type :classic
 
@@ -136,13 +146,11 @@ In order to override existing presets, you can use the `config.presets.override`
 ```rb
 # config/initializers/ckeditor5.rb
 
-CKEditor5::Rails.configure do |config|
-  config.presets.override :default do
-    menubar visible: false
+CKEditor5::Rails.configure do
+  menubar visible: false
 
-    toolbar do
-      remove :underline, :heading
-    end
+  toolbar do
+    remove :underline, :heading
   end
 end
 ```
@@ -540,9 +548,8 @@ Set the version in the `config/initializers/ckeditor5.rb` file:
 # config/initializers/ckeditor5.rb
 
 CKEditor5::Rails.configure do
-  presets.override :default do
-    version '43.3.0'
-  end
+  gpl
+  version '43.3.0'
 end
 ```
 
@@ -582,9 +589,7 @@ Keep in mind, that you need to include the translations in the `config/initializ
 # config/initializers/ckeditor5.rb
 
 CKEditor5::Rails.configure do
-  presets.override :default do
-    language :pl
-  end
+  language :pl
 end
 ```
 

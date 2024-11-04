@@ -33,8 +33,25 @@ module CKEditor5::Rails
         config.ckeditor5.presets.default
       end
 
-      def configure
-        yield config.ckeditor5
+      def configure(&block)
+        proxy = ConfigurationProxy.new(config.ckeditor5)
+        proxy.instance_eval(&block)
+      end
+    end
+
+    class ConfigurationProxy
+      delegate :presets, to: :@configuration
+
+      delegate :version, :gpl, :premium, :cdn, :translations, :license_key,
+               :type, :menubar, :toolbar, :plugins, :plugin, :inline_plugin,
+               :language, :ckbox, :configure, to: :default_preset
+
+      def initialize(configuration)
+        @configuration = configuration
+      end
+
+      def default_preset
+        presets.default
       end
     end
   end
