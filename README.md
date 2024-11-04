@@ -20,7 +20,7 @@ Add this line to your application's Gemfile:
 gem 'ckeditor5'
 ```
 
-In your config:
+In your config (the default config is defined [here](https://github.com/Mati365/ckeditor5-rails/blob/main/lib/ckeditor5/rails/presets/manager.rb)):
 
 ```rb
 # config/initializers/ckeditor5.rb
