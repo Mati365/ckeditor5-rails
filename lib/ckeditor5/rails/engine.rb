@@ -14,9 +14,11 @@ module CKEditor5::Rails
       ActiveSupport.on_load(:action_view) { include Helpers }
     end
 
-    initializer 'ckeditor5.simple_form', if: -> { defined?(::SimpleForm) } do
-      require_relative 'hooks/simple_form'
-      ::SimpleForm::FormBuilder.map_type :ckeditor5, to: Hooks::SimpleForm::CKEditor5Input
+    initializer 'ckeditor5.simple_form', after: :load_config_initializers do
+      if defined?(::SimpleForm)
+        require_relative 'hooks/simple_form'
+        ::SimpleForm::FormBuilder.map_type :ckeditor5, to: Hooks::SimpleForm::CKEditor5Input
+      end
     end
 
     initializer 'ckeditor5.form_builder' do
