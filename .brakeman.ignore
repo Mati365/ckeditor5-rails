@@ -1,0 +1,16 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 123,
+      "fingerprint": "EOLRails",
+      "check_name": "EOLRails",
+      "message": "Support for Rails 6.1.7.10 ended on 2024-10-01",
+      "file": "Gemfile.lock",
+      "line": 139,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "confidence": "High",
+      "note": "Gem supports multiple Rails versions including EOL versions"
+    }
+  ]
+}
