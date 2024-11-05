@@ -980,7 +980,7 @@ The example below shows how to define a custom plugin that allows toggling the h
 ```rb
 # config/initializers/ckeditor5.rb
 
-config.presets.define :custom do
+CKEditor5::Rails.configure do
   # ... other configuration
 
   # 1. You can also use "window_name" option to import plugin from window object:
