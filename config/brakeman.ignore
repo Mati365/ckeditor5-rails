@@ -2,15 +2,24 @@
   "ignored_warnings": [
     {
       "warning_type": "Unmaintained Dependency",
-      "warning_code": 123,
-      "fingerprint": "EOLRails",
+      "warning_code": 120,
+      "fingerprint": "d84924377155b41e094acae7404ec2e521629d86f97b0ff628e3d1b263f8101c",
       "check_name": "EOLRails",
       "message": "Support for Rails 6.1.7.10 ended on 2024-10-01",
       "file": "Gemfile.lock",
       "line": 139,
       "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
       "confidence": "High",
-      "note": "Gem supports multiple Rails versions including EOL versions"
+      "cwe_id": [
+        1104
+      ],
+      "note": ""
     }
-  ]
+  ],
+  "updated": "2024-11-05 14:44:25 +0100",
+  "brakeman_version": "6.2.2"
 }
