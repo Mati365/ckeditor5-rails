@@ -24,5 +24,5 @@ Gem::Specification.new do |s|
   s.files = Dir['lib/**/*'] + ['LICENSE', 'Gemfile', 'README.md']
 
   s.require_paths = ['lib']
-  s.add_runtime_dependency 'rails', '>= 6.0', '< 8.0'
+  s.add_runtime_dependency 'rails', '>= 6.0', '< 9.0'
 end
