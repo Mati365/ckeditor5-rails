@@ -30,6 +30,22 @@ CKEditor5::Rails.configure do
 end
 ```
 
+In your layout:
+
+```erb
+<!-- app/views/layouts/application.html.erb -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= yield :head %>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>
+```
+
 In your view:
 
 ```erb
