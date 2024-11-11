@@ -567,6 +567,9 @@ To specify a custom preset, you need to pass the `preset` keyword argument with 
 <% content_for :head do %>
   <%= ckeditor5_assets preset: :custom %>
 <% end %>
+
+<%-# This editor will use `custom` preset defined in `ckeditor5_assets` above %>
+<%= ckeditor5_editor %>
 ```
 
 In order to define such preset, you can use the following configuration:
@@ -583,6 +586,18 @@ CKEditor5::Rails.configure do
     translations :pl, :es
   end
 end
+```
+
+:warning: Keep in mind that all `ckeditor5_editor` helpers will use the configuration from the preset defined in the `ckeditor5_assets`. If you want to use a different preset for a specific editor, you can pass the `preset` keyword argument to the `ckeditor5_editor` helper.
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets preset: :custom %>
+<% end %>
+
+<%= ckeditor5_editor preset: :default %>
 ```
 
 #### Inline preset definition

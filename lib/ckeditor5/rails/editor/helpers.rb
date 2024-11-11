@@ -9,22 +9,18 @@ module CKEditor5::Rails
     class EditorContextError < StandardError; end
     class PresetNotFoundError < ArgumentError; end
 
-    def ckeditor5_editor( # rubocop:disable Metrics/ParameterLists
+    def ckeditor5_editor(
       config: nil, extra_config: {},
-      type: nil, preset: :default,
+      type: nil, preset: nil,
       initial_data: nil, watchdog: true,
       **html_attributes, &block
     )
+      validate_editor_input!(initial_data, block)
       controller_context = validate_and_get_editor_context!
-      preset = fetch_editor_preset(preset)
 
-      config ||= preset.config
+      preset = resolve_editor_preset(preset || controller_context[:preset])
+      config = build_editor_config(preset, config, extra_config, initial_data)
       type ||= preset.type
-
-      config = config.deep_merge(extra_config)
-      config[:initialData] = initial_data if initial_data
-
-      raise ArgumentError, 'Cannot pass initial data and block at the same time.' if initial_data && block
 
       editor_props = Editor::Props.new(
         controller_context, type, config,
@@ -51,6 +47,23 @@ module CKEditor5::Rails
     end
 
     private
+
+    def validate_editor_input!(initial_data, block)
+      return unless initial_data && block
+
+      raise ArgumentError, 'Cannot pass initial data and block at the same time.'
+    end
+
+    def resolve_editor_preset(preset_name)
+      fetch_editor_preset(preset_name || :default)
+    end
+
+    def build_editor_config(preset, config, extra_config, initial_data)
+      editor_config = config || preset.config
+      editor_config = editor_config.deep_merge(extra_config)
+      editor_config[:initialData] = initial_data if initial_data
+      editor_config
+    end
 
     def validate_and_get_editor_context!
       unless defined?(@__ckeditor_context)

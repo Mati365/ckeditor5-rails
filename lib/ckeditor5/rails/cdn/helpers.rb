@@ -23,7 +23,8 @@ module CKEditor5::Rails
 
       @__ckeditor_context = {
         license_key: license_key,
-        bundle: bundle
+        bundle: bundle,
+        preset: preset
       }
 
       Assets::AssetsBundleHtmlSerializer.new(bundle).to_html
