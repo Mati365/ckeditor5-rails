@@ -9,7 +9,7 @@ module CKEditor5::Rails
     class EditorContextError < StandardError; end
     class PresetNotFoundError < ArgumentError; end
 
-    def ckeditor5_editor(
+    def ckeditor5_editor( # rubocop:disable Metrics/ParameterLists
       config: nil, extra_config: {},
       type: nil, preset: nil,
       initial_data: nil, watchdog: true,
