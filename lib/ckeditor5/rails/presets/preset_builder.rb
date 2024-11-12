@@ -13,6 +13,7 @@ module CKEditor5::Rails
         @license_key = nil
         @type = :classic
         @ckbox = nil
+        @editable_height = nil
         @config = {
           plugins: [],
           toolbar: []
@@ -30,6 +31,12 @@ module CKEditor5::Rails
           ckbox: overrides.fetch(:ckbox, ckbox),
           config: config.merge(overrides.fetch(:config, {}))
         }
+      end
+
+      def editable_height(height = nil)
+        return @editable_height if height.nil?
+
+        @editable_height = height
       end
 
       def ckbox(version = nil, theme: :lark)

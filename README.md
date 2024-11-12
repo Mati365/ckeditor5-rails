@@ -73,6 +73,7 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
       - [`gpl` method](#gpl-method)
       - [`license_key(key)` method](#license_keykey-method)
       - [`premium` method](#premium-method)
+      - [`editable_height(height)` method](#editable_heightheight-method)
       - [`translations(*languages)` method](#translationslanguages-method)
       - [`ckbox` method](#ckbox-method)
       - [`type(type)` method](#typetype-method)
@@ -268,6 +269,20 @@ CKEditor5::Rails.configure do
   # ... other configuration
 
   premium
+end
+```
+
+#### `editable_height(height)` method
+
+Defines the height of the editor. The example below shows how to set the height to `300px`:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  editable_height 300
 end
 ```
 
@@ -806,6 +821,18 @@ If you want to override the configuration of the editor specified in default or 
 <% end %>
 
 <%= ckeditor5_editor extra_config: { toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
+```
+
+It's possible to define the height of the editor by passing the `editable_height` keyword argument with the value in pixels:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets %>
+<% end %>
+
+<%= ckeditor5_editor editable_height: 300 %>
 ```
 
 ### Multiroot editor 🌳

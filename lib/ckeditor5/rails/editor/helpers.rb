@@ -8,26 +8,34 @@ module CKEditor5::Rails
   module Editor::Helpers
     class EditorContextError < StandardError; end
     class PresetNotFoundError < ArgumentError; end
+    class InvalidEditableHeightError < ArgumentError; end
 
     def ckeditor5_editor( # rubocop:disable Metrics/ParameterLists
       config: nil, extra_config: {},
       type: nil, preset: nil,
       initial_data: nil, watchdog: true,
+      editable_height: nil,
       **html_attributes, &block
     )
       validate_editor_input!(initial_data, block)
+
       controller_context = validate_and_get_editor_context!
 
       preset = resolve_editor_preset(preset || controller_context[:preset])
       config = build_editor_config(preset, config, extra_config, initial_data)
       type ||= preset.type
 
+      validated_height = validate_editable_height(type, editable_height) || preset.editable_height
       editor_props = Editor::Props.new(
         controller_context, type, config,
         watchdog: watchdog
       )
 
-      render_editor_component(editor_props, html_attributes, &block)
+      render_editor_component(
+        editor_props,
+        html_attributes.merge(validated_height ? { 'editable-height' => validated_height } : {}),
+        &block
+      )
     end
 
     def ckeditor5_editable(name = nil, **kwargs, &block)
@@ -82,6 +90,24 @@ module CKEditor5::Rails
 
     def render_editor_component(props, html_attributes, &block)
       tag.send(:'ckeditor-component', **props.to_attributes, **html_attributes, &block)
+    end
+
+    def validate_editable_height(type, height)
+      return nil if height.nil?
+
+      unless type == :classic
+        raise InvalidEditableHeightError,
+              'editable_height can be used only with ClassicEditor'
+      end
+
+      case height
+      when String, /^\d+px$/ then height
+      when Integer, /^\d+$/ then "#{height}px"
+      else
+        raise InvalidEditableHeightError,
+              "editable_height must be an integer representing pixels or string ending with 'px'\n" \
+              "(e.g. 500 or '500px'). Got: #{height.inspect}"
+      end
     end
   end
 end
