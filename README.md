@@ -103,7 +103,7 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [Decoupled editor 🌐](#decoupled-editor-)
   - [Using Context 📦](#using-context-)
     - [Using Context in CKEditor 5 🔄](#using-context-in-ckeditor-5-)
-      - [Example usage of `ckeditor5_context` helper 📝](#example-usage-of-ckeditor5_context-helper-)
+    - [Example usage of `ckeditor5_context` helper 📝](#example-usage-of-ckeditor5_context-helper-)
   - [How to access editor instance? 🤔](#how-to-access-editor-instance-)
   - [Common Tasks and Solutions 💡](#common-tasks-and-solutions-)
     - [Setting Editor Language 🌐](#setting-editor-language-)
@@ -982,7 +982,7 @@ Format of the `ckeditor5_context` helper:
 
 The `ckeditor5_context` helper takes the `config` and `plugins` keyword arguments. The `config` keyword argument allows you to define the shared configuration of the editor instances, while the `plugins` keyword argument allows you to define the shared plugins. Format of these arguments is the same as in the `ckeditor5_editor` helper.
 
-#### Example usage of `ckeditor5_context` helper 📝
+### Example usage of `ckeditor5_context` helper 📝
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
