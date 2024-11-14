@@ -965,6 +965,8 @@ If you want to use a decoupled editor, you can pass the `type` keyword argument 
 
 ## Using Context 📦
 
+![CKEditor 5 Context](docs/context.png)
+
 Context CKEditor 5 is a feature that allows multiple editor instances to share a common configuration and state. This is particularly useful in collaborative environments where multiple users are editing different parts of the same document simultaneously. By using a shared context, all editor instances can synchronize their configurations, plugins, and other settings, ensuring a consistent editing experience across all users.
 
 ### Using Context in CKEditor 5 🔄
