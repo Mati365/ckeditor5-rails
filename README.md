@@ -101,6 +101,9 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [Inline editor 📝](#inline-editor-)
     - [Balloon editor 🎈](#balloon-editor-)
     - [Decoupled editor 🌐](#decoupled-editor-)
+  - [Using Context 📦](#using-context-)
+    - [Benefits of Using Context in Collaboration 🤝](#benefits-of-using-context-in-collaboration-)
+    - [Using Context in CKEditor 5 🔄](#using-context-in-ckeditor-5-)
   - [How to access editor instance? 🤔](#how-to-access-editor-instance-)
   - [Common Tasks and Solutions 💡](#common-tasks-and-solutions-)
     - [Setting Editor Language 🌐](#setting-editor-language-)
@@ -957,6 +960,46 @@ If you want to use a decoupled editor, you can pass the `type` keyword argument 
   <div class="editable-container">
     <%= ckeditor5_editable %>
   </div>
+<% end %>
+```
+
+## Using Context 📦
+
+Context CKEditor 5 is a feature that allows multiple editor instances to share a common configuration and state. This is particularly useful in collaborative environments where multiple users are editing different parts of the same document simultaneously. By using a shared context, all editor instances can synchronize their configurations, plugins, and other settings, ensuring a consistent editing experience across all users.
+
+### Benefits of Using Context in Collaboration 🤝
+
+1. **Consistency**: Ensures that all editor instances have the same configuration, plugins, and settings, providing a uniform editing experience.
+2. **Synchronization**: Allows real-time synchronization of content and changes across multiple editor instances, making collaborative editing seamless.
+3. **Resource Sharing**: Reduces the overhead of loading and initializing multiple editor instances by sharing common resources and configurations.
+4. **Simplified Management**: Makes it easier to manage and update the configuration and state of multiple editor instances from a single point.
+
+### Using Context in CKEditor 5 🔄
+
+Format of the `ckeditor5_context` helper:
+
+```erb
+<%= ckeditor5_context config: { ...you context config... }, plugins: [ ...your context plugins... ] do %>
+  <%= ckeditor5_editor %>
+  <%= ckeditor5_editor %>
+<% end %>
+```
+
+Example usage:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets preset: :ultrabasic %>
+<% end %>
+
+<%= ckeditor5_context do %>
+  <%= ckeditor5_editor initial_data: 'Hello World' %>
+
+  <br>
+
+  <%= ckeditor5_editor initial_data: 'Hello World 2' %>
 <% end %>
 ```
 

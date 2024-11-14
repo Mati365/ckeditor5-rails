@@ -29,16 +29,13 @@ module CKEditor5::Rails
       type ||= preset.type
 
       validated_height = validate_editable_height(type, editable_height) || preset.editable_height
-      editor_props = Editor::Props.new(
-        controller_context, type, config,
-        watchdog: watchdog
-      )
+      editor_props = Editor::Props.new(controller_context, type, config, watchdog: watchdog)
 
-      render_editor_component(
-        editor_props,
-        html_attributes.merge(validated_height ? { 'editable-height' => validated_height } : {}),
-        &block
-      )
+      tag_attributes = html_attributes
+                       .merge(editor_props.to_attributes)
+                       .merge(validated_height ? { 'editable-height' => validated_height } : {})
+
+      tag.send(:'ckeditor-component', **tag_attributes, &block)
     end
 
     def ckeditor5_editable(name = nil, **kwargs, &block)
@@ -89,10 +86,6 @@ module CKEditor5::Rails
     def fetch_editor_preset(preset)
       Engine.base.presets[preset] or
         raise PresetNotFoundError, "Preset #{preset} is not defined."
-    end
-
-    def render_editor_component(props, html_attributes, &block)
-      tag.send(:'ckeditor-component', **props.to_attributes, **html_attributes, &block)
     end
 
     def validate_editable_height(type, height)
