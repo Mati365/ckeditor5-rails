@@ -3,6 +3,8 @@
 module CKEditor5::Rails
   module Presets
     class PresetBuilder
+      include Editor::ConfigHelpers
+
       attr_reader :config
 
       def initialize

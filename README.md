@@ -84,6 +84,7 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
+      - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
   - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
     - [Format 📝](#format-)
       - [Using default preset](#using-default-preset)
@@ -445,7 +446,9 @@ end
 
 #### `configure(name, value)` method
 
-Allows you to set custom configuration options. You can pass the name of the option and its value as arguments. The example below show how to set the default protocol for the link plugin to `https://`:
+Allows you to set custom configuration options. You can pass the name of the option and its value as arguments. The [`ckeditor5_element_ref(selector)` helper](#ckeditor5_element_refselector-method) allows you to reference DOM elements that will be used by the editor's features. It's particularly useful for features that need to check element presence or operate on specific DOM elements.
+
+For example, you can use it to configure font family dropdown to show only fonts available in specific elements:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -453,8 +456,19 @@ Allows you to set custom configuration options. You can pass the name of the opt
 CKEditor5::Rails.configure do
   # ... other configuration
 
-  configure :link, {
-    defaultProtocol: 'https://'
+  configure :fontFamily, {
+    supportAllValues: true,
+    options: [
+      'default',
+      'Arial, Helvetica, sans-serif',
+      'Courier New, Courier, monospace',
+      'Georgia, serif',
+      'Lucida Sans Unicode, Lucida Grande, sans-serif',
+      'Tahoma, Geneva, sans-serif',
+      'Times New Roman, Times, serif',
+      'Trebuchet MS, Helvetica, sans-serif',
+      'Verdana, Geneva, sans-serif'
+    ]
   }
 end
 ```
@@ -538,6 +552,23 @@ CKEditor5::Rails.configure do
   JS
 end
 ```
+
+#### `ckeditor5_element_ref(selector)` method
+
+Defines a reference to a CKEditor 5 element. In other words, it allows you to reference DOM elements that will be used by the editor's features. It's particularly useful for features that need to check element presence or operate on specific DOM elements. The primary example is the `presence list` feature that requires a reference to the element that will be used to display the list.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  configure :yourPlugin, {
+      element: ckeditor5_element_ref("body")
+  }
+end
+```
+
 </details>
 
 ## Including CKEditor 5 assets 📦

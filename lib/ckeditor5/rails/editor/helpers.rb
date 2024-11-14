@@ -3,9 +3,12 @@
 require_relative 'props_plugin'
 require_relative 'props_inline_plugin'
 require_relative 'props'
+require_relative 'config_helpers'
 
 module CKEditor5::Rails
   module Editor::Helpers
+    include Editor::ConfigHelpers
+
     class EditorContextError < StandardError; end
     class PresetNotFoundError < ArgumentError; end
     class InvalidEditableHeightError < ArgumentError; end
