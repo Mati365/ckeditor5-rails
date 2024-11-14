@@ -184,9 +184,6 @@ Configuration of the editor can be complex, and it's recommended to use the [CKE
 
 ### Available Configuration Methods ⚙️
 
-<details>
-  <summary>Expand to show available methods 📖</summary>
-
 #### `cdn(cdn = nil, &block)` method
 
 Defines the CDN to be used for CKEditor 5 assets. The example below shows how to set the CDN to `:jsdelivr`:
@@ -568,8 +565,6 @@ CKEditor5::Rails.configure do
   }
 end
 ```
-
-</details>
 
 ## Including CKEditor 5 assets 📦
 
