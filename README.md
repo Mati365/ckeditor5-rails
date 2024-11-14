@@ -979,6 +979,8 @@ Context CKEditor 5 is a feature that allows multiple editor instances to share a
 Format of the `ckeditor5_context` helper:
 
 ```erb
+<!-- app/views/demos/index.html.erb -->
+
 <%= ckeditor5_context config: { ...you context config... }, plugins: [ ...your context plugins... ] do %>
   <%= ckeditor5_editor %>
   <%= ckeditor5_editor %>
