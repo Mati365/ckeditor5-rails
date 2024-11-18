@@ -3,9 +3,9 @@
 require 'uri'
 require 'action_view'
 
-module CKEditor5::Rails::Assets
-  WEBCOMPONENT_SOURCE = File.read(File.join(__dir__, 'webcomponent.mjs')).html_safe
+require_relative 'webcomponent_bundle'
 
+module CKEditor5::Rails::Assets
   class AssetsBundleHtmlSerializer
     include ActionView::Helpers::TagHelper
 
@@ -38,7 +38,7 @@ module CKEditor5::Rails::Assets
     private
 
     def web_component_tag
-      @web_component_tag ||= tag.script(WEBCOMPONENT_SOURCE, type: 'module', nonce: true)
+      @web_component_tag ||= tag.script(WebComponentBundle.source, type: 'module', nonce: true)
     end
 
     def window_scripts_tags
