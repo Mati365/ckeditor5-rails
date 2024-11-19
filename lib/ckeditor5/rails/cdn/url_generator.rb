@@ -31,11 +31,11 @@ module CKEditor5::Rails::Cdn
     end
 
     def create_cdn_url(bundle, version, path)
-      generator = CDN_THIRD_PARTY_GENERATORS[cdn] || CDN_COMMERCIAL_GENERATORS[cdn] || cdn
+      executor = CDN_THIRD_PARTY_GENERATORS[cdn] || CDN_COMMERCIAL_GENERATORS[cdn] || cdn
 
-      raise ArgumentError, "Unknown provider: #{cdn}" unless generator
+      raise ArgumentError, "Unknown provider: #{cdn}" if executor.blank? || !executor.respond_to?(:call)
 
-      generator.call(bundle, version, path)
+      executor.call(bundle, version, path)
     end
   end
 end

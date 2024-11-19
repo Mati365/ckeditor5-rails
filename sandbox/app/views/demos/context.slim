@@ -1,0 +1,12 @@
+strong style="color: red; margin-bottom: 10px; display: block; font-family: Arial;" Your context:
+
+div style="border: 2px solid red; padding: 10px; width: 600px;"
+  - content_for :head
+    = ckeditor5_assets preset: :ultrabasic
+
+  = ckeditor5_context do
+    = ckeditor5_editor initial_data: 'Context Item 1'
+
+    br
+
+    = ckeditor5_editor initial_data: 'Context Item 2'

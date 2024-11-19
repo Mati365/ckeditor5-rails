@@ -1,0 +1,6 @@
+#!/usr/bin/env rake
+# frozen_string_literal: true
+
+require File.expand_path('config/application', __dir__)
+
+Sandbox::Application.load_tasks

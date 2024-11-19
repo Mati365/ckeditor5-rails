@@ -1,0 +1,26 @@
+- content_for :head
+  = ckeditor5_assets
+
+H1 Forms
+
+H2 Rails Forms
+
+= form_with url: '/demos', local: true do |f|
+  .form-group
+    = f.ckeditor5 :content, required: true, style: 'width: 600px', initial_data: 'Hello World!'
+    = f.text_field :second, class: 'form-control'
+
+  .form-group
+    = f.submit 'Save', class: 'btn btn-primary'
+
+br
+
+H2 Simple form
+
+= simple_form_for :demo, url: '/demos', html: { novalidate: false } do |f|
+  .form-group
+    = f.input :content, as: :ckeditor5, initial_data: 'Hello, World 12!', input_html: { style: 'width: 600px' }, required: true
+    = f.input :second
+
+  .form-group.
+    = f.button :submit, 'Save', class: 'btn btn-primary'
