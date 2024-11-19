@@ -5,5 +5,6 @@ class DemosController < ApplicationController
   def classic; end
   def decoupled; end
   def form; end
+  def multiroot; end
   def context; end
 end
