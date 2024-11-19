@@ -6,7 +6,7 @@ require_relative 'ckbox_bundle'
 
 module CKEditor5::Rails
   module Cdn::Helpers
-    def ckeditor5_cdn_assets(preset: :default, **kwargs)
+    def ckeditor5_assets(preset: :default, **kwargs)
       merge_with_editor_preset(preset, **kwargs) => {
         cdn:,
         version:,
@@ -32,15 +32,7 @@ module CKEditor5::Rails
 
     Cdn::UrlGenerator::CDN_THIRD_PARTY_GENERATORS.each_key do |key|
       define_method(:"ckeditor5_#{key.to_s.parameterize}_assets") do |**kwargs|
-        ckeditor5_cdn_assets(**kwargs.merge(cdn: key))
-      end
-    end
-
-    def ckeditor5_assets(**kwargs)
-      if kwargs[:license_key] && kwargs[:license_key] != 'GPL'
-        ckeditor5_cloud_assets(**kwargs)
-      else
-        ckeditor5_cdn_assets(**kwargs.merge(cdn: Engine.default_preset.cdn))
+        ckeditor5_assets(**kwargs.merge(cdn: key))
       end
     end
 
@@ -62,7 +54,7 @@ module CKEditor5::Rails
 
         raise ArgumentError,
               "Poor thing. You forgot to define #{key}. Make sure you passed `#{key}:` parameter to " \
-              "`ckeditor5_cdn_assets` or defined default one in your `#{preset}` preset!"
+              "`ckeditor5_assets` or defined default one in your `#{preset}` preset!"
       end
 
       hash

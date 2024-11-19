@@ -115,6 +115,8 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
   - [Events fired by the editor 🔊](#events-fired-by-the-editor-)
     - [`editor-ready` event](#editor-ready-event)
     - [`editor-error` event](#editor-error-event)
+    - [`editor-change` event](#editor-change-event)
+    - [Inline event handling](#inline-event-handling)
   - [Trademarks 📜](#trademarks-)
   - [License 📜](#license-)
 
@@ -1259,6 +1261,8 @@ class HighlightCommand extends Command {
 
 ## Events fired by the editor 🔊
 
+CKEditor 5 provides a set of events that you can listen to in order to react to changes in the editor. You can listen to these events using the `addEventListener` method or by defining event handlers directly in the view.
+
 ### `editor-ready` event
 
 The event is fired when the initialization of the editor is completed. You can listen to it using the `editor-ready` event.
@@ -1277,6 +1281,40 @@ The event is fired when the initialization of the editor fails. You can listen t
 document.getElementById('editor').addEventListener('editor-error', () => {
   console.log('Editor has an error');
 });
+```
+
+### `editor-change` event
+
+The event is fired when the content of the editor changes. You can listen to it using the `editor-change` event.
+
+```js
+document.getElementById('editor').addEventListener('editor-change', () => {
+  console.log('Editor content has changed');
+});
+```
+
+### Inline event handling
+
+You can also define event handlers directly in the view using the `oneditorchange`, `oneditorerror`, and `oneditorready` attributes.
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<script type="text/javascript">
+  function onEditorChange(event) {
+    // event.detail.editor, event.detail.data
+  }
+
+  function onEditorError(event) {
+    // event.detail.editor
+  }
+
+  function onEditorReady(event) {
+    // event.detail.editor
+  }
+</script>
+
+<%= ckeditor5_editor style: 'width: 600px', id: 'editor', oneditorchange: 'onEditorChange', oneditorerror: 'onEditorError', oneditorready: 'onEditorReady' %>
 ```
 
 ## Trademarks 📜

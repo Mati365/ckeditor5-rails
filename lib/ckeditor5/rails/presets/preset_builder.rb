@@ -22,6 +22,18 @@ module CKEditor5::Rails
         }
       end
 
+      def premium?
+        @premium
+      end
+
+      def gpl?
+        license_key == 'GPL'
+      end
+
+      def menubar?
+        @config.dig(:menuBar, :isVisible) || false
+      end
+
       def to_h_with_overrides(**overrides)
         {
           version: overrides.fetch(:version, version),
@@ -51,6 +63,8 @@ module CKEditor5::Rails
         return @license_key if license_key.nil?
 
         @license_key = license_key
+
+        cdn(:cloud) unless gpl?
       end
 
       def gpl
@@ -134,7 +148,9 @@ module CKEditor5::Rails
         names.each { |name| plugin(name, **kwargs) }
       end
 
-      def language(ui, content: ui) # rubocop:disable Naming/MethodParameterName
+      def language(ui = nil, content: ui) # rubocop:disable Naming/MethodParameterName
+        return @config[:language] if ui.nil?
+
         @config[:language] = {
           ui: ui,
           content: content
