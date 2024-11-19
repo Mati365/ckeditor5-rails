@@ -117,6 +117,7 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [`editor-error` event](#editor-error-event)
     - [`editor-change` event](#editor-change-event)
     - [Inline event handling](#inline-event-handling)
+    - [Gem Development 🛠](#gem-development-)
   - [Trademarks 📜](#trademarks-)
   - [License 📜](#license-)
 
@@ -1319,6 +1320,16 @@ You can also define event handlers directly in the view using the `oneditorchang
     oneditorerror: 'onEditorError',
     oneditorready: 'onEditorReady'
 %>
+```
+
+### Gem Development 🛠
+
+If you want to contribute to the gem, you can clone the repository and run the following commands:
+
+```sh
+gem install bundler -v 2.5.22
+bundle install
+bundle exec guard
 ```
 
 ## Trademarks 📜
