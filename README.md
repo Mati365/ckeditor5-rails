@@ -1314,7 +1314,11 @@ You can also define event handlers directly in the view using the `oneditorchang
   }
 </script>
 
-<%= ckeditor5_editor style: 'width: 600px', id: 'editor', oneditorchange: 'onEditorChange', oneditorerror: 'onEditorError', oneditorready: 'onEditorReady' %>
+<%= ckeditor5_editor id: 'editor',
+    oneditorchange: 'onEditorChange',
+    oneditorerror: 'onEditorError',
+    oneditorready: 'onEditorReady'
+%>
 ```
 
 ## Trademarks 📜
