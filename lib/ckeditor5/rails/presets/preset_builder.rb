@@ -174,7 +174,7 @@ module CKEditor5::Rails
 
       def simple_upload_adapter(upload_url = '/uploads')
         plugins do
-          remove :Base64UploadAdapter
+          remove(:Base64UploadAdapter)
         end
 
         plugin(Plugins::SimpleUploadAdapter.new)
