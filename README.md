@@ -590,20 +590,6 @@ CKEditor5::Rails.configure do
 end
 ```
 
-Remember to remove the `Base64UploadAdapter` plugin from the plugins list if you want to use the simple upload adapter. It may cause issues.
-
-```rb
-# config/initializers/ckeditor5.rb
-
-CKEditor5::Rails.configure do
-  # ... other configuration
-
-  plugins do
-    remove :Base64UploadAdapter
-  end
-end
-```
-
 ### Controller / View helpers 📦
 
 #### `ckeditor5_element_ref(selector)` method
