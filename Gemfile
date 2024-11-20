@@ -17,6 +17,8 @@ group :development do
   gem 'rubocop', '~> 1.66', require: false
   gem 'rubocop-rails', '~> 2.26', '>= 2.26.2', require: false
   gem 'rubocop-rails-omakase', '~> 1.0.0', require: false
+  gem 'simplecov', '~> 0.21', '>= 0.21.2', require: false
+  gem 'simplecov_json_formatter', '~> 0.1.4', require: false
   gem 'simple_form', '~> 5.3', '>= 5.3.0'
   gem 'slim', '~> 5.2', '>= 5.2.0'
   gem 'sprockets-rails', '~> 3.2', '>= 3.2.2'

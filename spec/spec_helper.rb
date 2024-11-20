@@ -1,5 +1,28 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+require 'simplecov_json_formatter'
+
+SimpleCov.start do
+  enable_coverage :branch
+  enable_coverage :line
+
+  add_filter 'sandbox/'
+  add_group 'Library', 'lib/'
+
+  track_files 'lib/**/*.rb'
+
+  minimum_coverage 90
+  minimum_coverage_by_file 80
+
+  formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::JSONFormatter
+  ]
+
+  formatter SimpleCov::Formatter::MultiFormatter.new(formatters)
+end
+
 ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../sandbox/config/application', __dir__)
@@ -31,7 +54,6 @@ RSpec.configure do |config|
 
   Kernel.rand config.seed
 
-  # Add database cleaner configuration
   config.before(:each) do
     Rails.application.load_seed
   end

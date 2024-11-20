@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.0.0'
 
   s.extra_rdoc_files = ['README.md']
-  s.test_files = Dir['test/**/*']
+  s.test_files = Dir['spec/**/*']
   s.files = Dir['lib/**/*'] + ['LICENSE', 'Gemfile', 'README.md']
 
   s.require_paths = ['lib']
