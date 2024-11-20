@@ -137,7 +137,7 @@ module CKEditor5::Rails
 
         return unless block
 
-        builder = ToolbarBuilder.new(@config[:toolbar])
+        builder = ArrayBuilder.new(@config[:toolbar][:items])
         builder.instance_eval(&block)
       end
 
@@ -146,11 +146,21 @@ module CKEditor5::Rails
       end
 
       def plugin(name, **kwargs)
-        @config[:plugins] << Editor::PropsPlugin.new(name, **kwargs)
+        plugin_obj = PluginsBuilder.create_plugin(name, **kwargs)
+
+        @config[:plugins] << plugin_obj
+        plugin_obj
       end
 
-      def plugins(*names, **kwargs)
-        names.each { |name| plugin(name, **kwargs) }
+      def plugins(*names, **kwargs, &block)
+        @config[:plugins] ||= []
+
+        names.each { |name| plugin(name, **kwargs) } unless names.empty?
+
+        return unless block
+
+        builder = PluginsBuilder.new(@config[:plugins])
+        builder.instance_eval(&block)
       end
 
       def language(ui = nil, content: ui) # rubocop:disable Naming/MethodParameterName
@@ -160,6 +170,15 @@ module CKEditor5::Rails
           ui: ui,
           content: content
         }
+      end
+
+      def simple_upload_adapter(upload_url = '/uploads')
+        plugins do
+          remove :Base64UploadAdapter
+        end
+
+        plugin(Plugins::SimpleUploadAdapter.new)
+        configure(:simpleUpload, { uploadUrl: upload_url })
       end
     end
   end

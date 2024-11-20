@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'preset_builder'
 require_relative 'toolbar_builder'
+require_relative 'plugins_builder'
+require_relative 'preset_builder'
 
 module CKEditor5::Rails::Presets
   class Manager

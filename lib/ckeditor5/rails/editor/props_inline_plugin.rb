@@ -2,6 +2,8 @@
 
 module CKEditor5::Rails::Editor
   class PropsInlinePlugin
+    attr_reader :name, :code
+
     def initialize(name, code)
       @name = name
       @code = code
@@ -17,8 +19,6 @@ module CKEditor5::Rails::Editor
     end
 
     private
-
-    attr_reader :name, :code
 
     def validate_code!
       raise ArgumentError, 'Code must be a String' unless code.is_a?(String)

@@ -85,6 +85,7 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
+      - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
       - [`ckeditor5_preset(&block)` method](#ckeditor5_presetblock-method)
@@ -534,6 +535,20 @@ CKEditor5::Rails.configure do
 end
 ```
 
+Methods such as `remove`, `append`, and `prepend` can be used to modify the plugins configuration. To remove a plugin, you can use the `remove` method with the plugin name as an argument:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  plugins do
+    remove :Heading
+  end
+end
+```
+
 #### `inline_plugin(name, code)` method
 
 Use with caution as this is an inline definition of the plugin code, and you can define a custom class or function for the plugin here. The example below shows how to define a custom plugin that highlights the text:
@@ -557,6 +572,35 @@ CKEditor5::Rails.configure do
       }
     }
   JS
+end
+```
+
+#### `simple_upload_adapter(url)` method
+
+Defines the URL for the simple upload adapter. The default endpoint is `/uploads` and the method is `POST`. The example below shows how to set the URL to `/uploads`:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  simple_upload_adapter
+  # or: simple_upload_adapter '/uploads'
+end
+```
+
+Remember to remove the `Base64UploadAdapter` plugin from the plugins list if you want to use the simple upload adapter. It may cause issues.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  plugins do
+    remove :Base64UploadAdapter
+  end
 end
 ```
 

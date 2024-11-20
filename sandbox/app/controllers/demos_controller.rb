@@ -11,12 +11,18 @@ class DemosController < ApplicationController
       toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
               :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
               :fontFamily, :fontSize, :|, :link, :anchor, :|,
-              :fontColor, :fontBackgroundColor
+              :fontColor, :fontBackgroundColor, :|, :imageUpload
 
       plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
               :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
               :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials,
-              :Paragraph
+              :Paragraph, :Base64UploadAdapter
+
+      plugins :Image, :ImageUpload, :ImageToolbar, :ImageInsert,
+              :ImageInsertViaUrl, :ImageBlock, :ImageCaption, :ImageInline, :ImageResize,
+              :AutoImage, :LinkImage
+
+      simple_upload_adapter
     end
   end
 

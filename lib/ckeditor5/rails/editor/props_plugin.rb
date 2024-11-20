@@ -2,6 +2,8 @@
 
 module CKEditor5::Rails::Editor
   class PropsPlugin
+    attr_reader :name, :js_import_meta
+
     delegate :to_h, to: :import_meta
 
     def initialize(name, premium: false, **js_import_meta)
@@ -30,9 +32,5 @@ module CKEditor5::Rails::Editor
       meta.merge!({ type: :external })
       meta
     end
-
-    private
-
-    attr_reader :name, :js_import_meta
   end
 end
