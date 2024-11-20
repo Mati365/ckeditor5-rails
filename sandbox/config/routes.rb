@@ -5,12 +5,12 @@ Sandbox::Application.routes.draw do
 
   resources :demos, only: [], path: '/' do
     collection do
-      get :classic
-      get :classic_controller_preset
-      get :decoupled
-      get :form
-      get :multiroot
-      get :context
+      %i[
+        classic classic_controller_preset decoupled
+        form multiroot context balloon inline
+      ].each do |action|
+        get action
+      end
     end
   end
 end

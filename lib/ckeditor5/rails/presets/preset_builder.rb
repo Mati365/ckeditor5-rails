@@ -24,6 +24,19 @@ module CKEditor5::Rails
         instance_eval(&block) if block_given?
       end
 
+      def initialize_copy(source)
+        super
+
+        @translations = source.translations.dup
+        @ckbox = source.ckbox.dup if source.ckbox
+        @config = {
+          plugins: source.config[:plugins].map(&:dup),
+          toolbar: deep_copy_toolbar(source.config[:toolbar])
+        }.merge(
+          source.config.except(:plugins, :toolbar).deep_dup
+        )
+      end
+
       def premium?
         @premium
       end
@@ -179,6 +192,18 @@ module CKEditor5::Rails
 
         plugin(Plugins::SimpleUploadAdapter.new)
         configure(:simpleUpload, { uploadUrl: upload_url })
+      end
+
+      private
+
+      def deep_copy_toolbar(toolbar)
+        return toolbar.dup if toolbar.is_a?(Array)
+        return {} if toolbar.nil?
+
+        {
+          items: toolbar[:items].dup,
+          shouldNotGroupWhenFull: toolbar[:shouldNotGroupWhenFull]
+        }
       end
     end
   end

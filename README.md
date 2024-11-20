@@ -62,10 +62,25 @@ In your view:
 
 Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
 
+## Demos 🚀
+
+Interested in more advanced configuration? Visit the demos in the [demo application](https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos) or take a look at official CKEditor 5 [examples](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html).
+
+In order to run all demos locally, you can clone the repository and run the following commands:
+
+```bash
+bundle install
+cd sandbox
+bundle exec rails server -p 3000
+```
+
+Then visit [http://localhost:3000/demos](http://localhost:3000/) to see the demos in action. 🚀
+
 ## Table of Contents 📚
 
 - [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
   - [Installation 🛠️](#installation-️)
+  - [Demos 🚀](#demos-)
   - [Table of Contents 📚](#table-of-contents-)
   - [Presets 🎨](#presets-)
     - [Available Configuration Methods ⚙️](#available-configuration-methods-️)

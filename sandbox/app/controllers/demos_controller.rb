@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class DemosController < ApplicationController
-  def index; end
-  def classic; end
-
   def classic_controller_preset
     @preset = ckeditor5_preset do
       version '43.3.0'
@@ -25,9 +22,4 @@ class DemosController < ApplicationController
       simple_upload_adapter
     end
   end
-
-  def decoupled; end
-  def form; end
-  def multiroot; end
-  def context; end
 end

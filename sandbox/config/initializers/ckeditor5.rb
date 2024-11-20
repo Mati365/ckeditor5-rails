@@ -9,6 +9,7 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
             :numberedList, :todoList, :outdent, :indent, :|, :alignment, :blockQuote, :link, :insertTable,
             :imageUpload, :horizontalLine, :mediaEmbed, :|,
             :fontFamily, :fontSize, :fontColor, :fontBackgroundColor
+
     plugins :Essentials, :Paragraph, :Heading, :FindAndReplace, :SelectAll, :Bold, :Italic, :Underline,
             :Strikethrough, :RemoveFormat, :Subscript, :Superscript, :Alignment, :Link, :LinkImage,
             :BlockQuote, :Image, :ImageUpload, :ImageToolbar, :ImageInsert,
