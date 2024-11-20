@@ -63,8 +63,14 @@ In your view:
   <%= ckeditor5_assets %>
 <% end %>
 
-<!-- 🖋️ Renders rich text editor interface using WebComponent -->
+<!-- 🖋️ CKEditor 5 might be placed using simple view helper ... -->
 <%= ckeditor5_editor %>
+
+<!-- ... or using form input helper -->
+
+<%= form_for @post do |f| %>
+  <%= f.ckeditor5 :content, required: true %>
+<% end %>
 ```
 
 Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
