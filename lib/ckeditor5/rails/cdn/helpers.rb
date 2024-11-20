@@ -39,7 +39,7 @@ module CKEditor5::Rails
     private
 
     def merge_with_editor_preset(preset, **kwargs)
-      found_preset = Engine.base.presets[preset]
+      found_preset = Engine.find_preset(preset)
 
       if found_preset.blank?
         raise ArgumentError,

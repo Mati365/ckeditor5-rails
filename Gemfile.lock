@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ckeditor5 (1.11.1)
+    ckeditor5 (1.12.0)
       rails (>= 6.0, < 9.0)
 
 GEM
@@ -190,6 +190,8 @@ GEM
     pry (0.15.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-rails (0.3.11)
+      pry (>= 0.13.0)
     psych (5.2.0)
       stringio
     public_suffix (6.0.1)
@@ -354,6 +356,7 @@ DEPENDENCIES
   guard-process (~> 1.2)
   guard-rspec (~> 4.7, >= 4.7.3)
   pry (~> 0.15, >= 0.15.0)
+  pry-rails (~> 0.3, >= 0.3.11)
   rails (~> 7.0, >= 7.0.0)
   rake (~> 13.2, >= 13.2.1)
   rspec (~> 3.13)

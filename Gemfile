@@ -10,6 +10,7 @@ group :development do
   gem 'guard-process', '~> 1.2'
   gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
   gem 'pry', '~> 0.15', '>= 0.15.0'
+  gem 'pry-rails', '~> 0.3', '>= 0.3.11'
   gem 'rails', '~> 7.0', '>= 7.0.0'
   gem 'rake', '~> 13.2', '>= 13.2.1'
   gem 'rspec', '~> 3.13'

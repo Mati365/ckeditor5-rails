@@ -6,6 +6,7 @@ Sandbox::Application.routes.draw do
   resources :demos, only: [], path: '/' do
     collection do
       get :classic
+      get :classic_controller_preset
       get :decoupled
       get :form
       get :multiroot

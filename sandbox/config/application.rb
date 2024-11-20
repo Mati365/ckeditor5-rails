@@ -5,6 +5,8 @@ require_relative 'boot'
 require 'rails/all'
 require 'slim'
 require 'simple_form'
+require 'pry'
+require 'pry-rails'
 
 Bundler.require
 

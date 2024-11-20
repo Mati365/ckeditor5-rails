@@ -85,7 +85,9 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
+    - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
+    - [`ckeditor5_preset(&block)` method](#ckeditor5_presetblock-method)
   - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
     - [Format 📝](#format-)
       - [Using default preset](#using-default-preset)
@@ -558,6 +560,8 @@ CKEditor5::Rails.configure do
 end
 ```
 
+### Controller / View helpers 📦
+
 #### `ckeditor5_element_ref(selector)` method
 
 Defines a reference to a CKEditor 5 element. In other words, it allows you to reference DOM elements that will be used by the editor's features. It's particularly useful for features that need to check element presence or operate on specific DOM elements. The primary example is the `presence list` feature that requires a reference to the element that will be used to display the list.
@@ -572,6 +576,43 @@ CKEditor5::Rails.configure do
       element: ckeditor5_element_ref("body")
   }
 end
+```
+
+### `ckeditor5_preset(&block)` method
+
+The `ckeditor5_preset` method allows you to define a custom preset in your application controller. It may be useful when you want to define a preset based on the current user or request.
+
+```rb
+# app/controllers/application_controller.rb
+
+class ApplicationController < ActionController::Base
+  def show
+    @preset = ckeditor5_preset do
+      version '43.3.0'
+
+      toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
+              :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
+              :fontFamily, :fontSize, :|, :link, :anchor, :|,
+              :fontColor, :fontBackgroundColor
+
+      plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
+              :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
+              :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph
+    end
+  end
+end
+```
+
+In order to use the preset in the view, you can pass it to the `ckeditor5_assets` helper method:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets preset: @preset %>
+<% end %>
+
+<%= ckeditor5_editor %>
 ```
 
 ## Including CKEditor 5 assets 📦

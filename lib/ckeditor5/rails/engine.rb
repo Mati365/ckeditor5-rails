@@ -12,6 +12,7 @@ module CKEditor5::Rails
 
     initializer 'helper' do
       ActiveSupport.on_load(:action_view) { include Helpers }
+      ActiveSupport.on_load(:action_controller) { include Helpers }
     end
 
     initializer 'ckeditor5.simple_form', after: :load_config_initializers do
@@ -38,6 +39,12 @@ module CKEditor5::Rails
       def configure(&block)
         proxy = ConfigurationProxy.new(config.ckeditor5)
         proxy.instance_eval(&block)
+      end
+
+      def find_preset(preset)
+        return preset if preset.is_a?(CKEditor5::Rails::Presets::PresetBuilder)
+
+        Engine.base.presets[preset]
       end
     end
 

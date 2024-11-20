@@ -3,15 +3,15 @@
 module CKEditor5::Rails
   module Presets
     class PresetBuilder
-      include Editor::ConfigHelpers
+      include Editor::Helpers::Config
 
       attr_reader :config
 
-      def initialize
+      def initialize(&block)
         @version = nil
         @premium = false
         @cdn = :jsdelivr
-        @translations = []
+        @translations = [:en]
         @license_key = nil
         @type = :classic
         @ckbox = nil
@@ -20,6 +20,8 @@ module CKEditor5::Rails
           plugins: [],
           toolbar: []
         }
+
+        instance_eval(&block) if block_given?
       end
 
       def premium?
