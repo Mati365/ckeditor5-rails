@@ -28,12 +28,13 @@ In your config (the default config is defined [here](https://github.com/Mati365/
 # config/initializers/ckeditor5.rb
 
 CKEditor5::Rails.configure do
-  version '43.3.0'  # 🔖 Specify the version of editor you want.
-                    # ⚙️ Configuration includes:
-                    #    📝 Classic editor build
-                    #    🧩 Essential plugins (paragraphs, basic styles)
-                    #    🎛️ Default toolbar layout
-                    #    📜 GPL license
+  # 🔖 Specify the version of editor you want.
+  # ⚙️ Configuration includes:
+  #    📝 Classic editor build
+  #    🧩 Essential plugins (paragraphs, basic styles)
+  #    🎛️ Default toolbar layout
+  #    📜 GPL license
+  version '43.3.0'
 end
 ```
 
