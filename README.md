@@ -28,7 +28,12 @@ In your config (the default config is defined [here](https://github.com/Mati365/
 # config/initializers/ckeditor5.rb
 
 CKEditor5::Rails.configure do
-  version '43.3.0'
+  version '43.3.0'  # 📌 Current CKEditor version
+                    # 🎯 Configuration includes:
+                    #    💠 Classic editor build
+                    #    🔧 Essential plugins (paragraphs, basic styles)
+                    #    🎨 Default toolbar layout
+                    #    📄 GPL license
 end
 ```
 
@@ -53,10 +58,10 @@ In your view:
 ```erb
 <!-- app/views/demos/index.html.erb -->
 <% content_for :head do %>
-  <%= ckeditor5_assets %> <!-- 🔌 Loads via importmap: -->
-                         <!-- - CKEditor 5 core -->
-                         <!-- - Default plugins (text editing, basic formatting) -->
-                         <!-- - Default theme CSS -->
+  <%= ckeditor5_assets %> <!-- Loads via importmap: -->
+                          <!-- 🔧 Core editor -->
+                          <!-- 🧩 Basic plugins -->
+                          <!-- 🎯 Default theme -->
 <% end %>
 
 <%= ckeditor5_editor %> <!-- ✨ Renders WYSIWYG editor -->
