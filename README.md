@@ -80,7 +80,7 @@ bundle install # Install all the goodies 📦
 bundle exec guard -g rails # Fire up the server 🔥
 ```
 
-Now the fun part - open [http://localhost:3000/demos](http://localhost:3000/) in your browser and start experimenting! 🎯 Feel free to tweak the code and make it your own! 🎨
+Now the fun part - open [http://localhost:3000/](http://localhost:3000/) in your browser and start experimenting! 🎯 Feel free to tweak the code and make it your own! 🎨
 
 Want to extend CKEditor's functionality? Check out our [plugins directory](https://github.com/Mati365/ckeditor5-rails/tree/main/lib/ckeditor5/rails/plugins) and create your own awesome plugins! 🔌 We love community contributions - your plugin could be the next great addition to our ecosystem! ⭐
 
