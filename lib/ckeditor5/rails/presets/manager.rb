@@ -42,6 +42,7 @@ module CKEditor5::Rails::Presets
 
     def define_default_preset # rubocop:disable Metrics/MethodLength
       define :default do
+        automatic_upgrades
         gpl
         type :classic
         menubar

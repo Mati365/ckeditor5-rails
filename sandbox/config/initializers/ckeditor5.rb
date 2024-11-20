@@ -35,6 +35,8 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
   end
 
   presets.define :ultrabasic, inherit: false do
+    automatic_upgrades
+
     version '43.3.0'
 
     editable_height 100

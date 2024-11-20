@@ -76,6 +76,12 @@ module CKEditor5::Rails
       editor_config = config || preset.config
       editor_config = editor_config.deep_merge(extra_config)
       editor_config[:initialData] = initial_data if initial_data
+
+      if preset.automatic_upgrades? && editor_config[:version].present?
+        detected_version = VersionDetector.latest_safe_version(editor_config[:version])
+        editor_config[:version] = detected_version if detected_version
+      end
+
       editor_config
     end
 

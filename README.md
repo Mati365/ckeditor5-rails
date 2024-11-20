@@ -94,6 +94,7 @@ Want to extend CKEditor's functionality? Check out our [plugins directory](https
     - [Available Configuration Methods ⚙️](#available-configuration-methods-️)
       - [`cdn(cdn = nil, &block)` method](#cdncdn--nil-block-method)
       - [`version(version)` method](#versionversion-method)
+      - [`automatic_upgrades(enabled: true)` method](#automatic_upgradesenabled-true-method)
       - [`gpl` method](#gpl-method)
       - [`license_key(key)` method](#license_keykey-method)
       - [`premium` method](#premium-method)
@@ -109,6 +110,7 @@ Want to extend CKEditor's functionality? Check out our [plugins directory](https
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
       - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
+    - [Automatic upgrades 🔄](#automatic-upgrades-)
     - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
       - [`ckeditor5_preset(&block)` method](#ckeditor5_presetblock-method)
@@ -171,6 +173,11 @@ CKEditor5::Rails.configure do
   # In order to define preset from scratch, you can use the `inherit: false` option.
   presets.define :blank_preset, inherit: false do
     version '44.0.0'
+
+    # It tells the integration to fetch the newest security patches and bug fixes.
+    # It may be disabled, but it's highly recommended to keep it enabled to avoid
+    # potential security issues.
+    automatic_upgrades
 
     gpl
     type :classic
@@ -261,6 +268,24 @@ CKEditor5::Rails.configure do
   version '43.2.0'
 end
 ```
+
+#### `automatic_upgrades(enabled: true)` method
+
+Defines if automatic upgrades should be enabled. It's enabled for the `:default` preset by default. The example below shows how to disable automatic upgrades:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  automatic_upgrades enabled: false
+end
+```
+
+It means that the editor will automatically upgrade to the latest version when the gem is updated. It'll upgrade the editor only if the new patch or minor version is released. If you want to disable automatic upgrades, you can pass the `enabled: false` keyword argument to the `automatic_upgrades` method.
+
+Version is checked every nth day, where n is the number of days since the last check. Currently it's 4 days.
 
 #### `gpl` method
 
@@ -610,6 +635,22 @@ CKEditor5::Rails.configure do
 
   simple_upload_adapter
   # or: simple_upload_adapter '/uploads'
+end
+```
+
+### Automatic upgrades 🔄
+
+The gem includes a feature that automatically upgrades the CKEditor&nbsp;5 version when it's released. It's enabled by default for the `:default` preset. It means that the editor will automatically check the version of the editor during the initialization and upgrade it to the latest version if the new patch or minor version is released.
+
+If you want to disable automatic upgrades, you can pass the `enabled: false` keyword argument to the `automatic_upgrades` method.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  automatic_upgrades enabled: false
 end
 ```
 

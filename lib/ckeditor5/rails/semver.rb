@@ -1,18 +1,48 @@
 # frozen_string_literal: true
 
-class CKEditor5::Rails::Semver
-  attr_reader :version
+module CKEditor5
+  module Rails
+    class Semver
+      SEMVER_PATTERN = /\A\d+\.\d+\.\d+\z/
 
-  alias to_s :version
+      attr_reader :major, :minor, :patch
 
-  def initialize(version)
-    @version = version.to_s
-    validate!
-  end
+      include Comparable
 
-  private
+      def initialize(version_string)
+        validate!(version_string)
+        @major, @minor, @patch = version_string.split('.').map(&:to_i)
+      end
 
-  def validate!
-    raise ArgumentError, 'invalid version format' unless version.match?(/\A\d+\.\d+\.\d+\z/)
+      def <=>(other)
+        return nil unless other.is_a?(Semver)
+
+        [major, minor, patch] <=> [other.major, other.minor, other.patch]
+      end
+
+      def safe_update?(other_version)
+        other = self.class.new(other_version)
+
+        return false if other.major != major
+        return true if other.minor > minor
+        return true if other.minor == minor && other.patch > patch
+
+        false
+      end
+
+      def version
+        "#{major}.#{minor}.#{patch}"
+      end
+
+      alias to_s :version
+
+      private
+
+      def validate!(version_string)
+        return if version_string.is_a?(String) && version_string.match?(SEMVER_PATTERN)
+
+        raise ArgumentError, 'invalid version format'
+      end
+    end
   end
 end

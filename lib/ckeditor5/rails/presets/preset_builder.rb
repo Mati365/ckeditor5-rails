@@ -16,6 +16,7 @@ module CKEditor5::Rails
         @type = :classic
         @ckbox = nil
         @editable_height = nil
+        @automatic_upgrades = false
         @config = {
           plugins: [],
           toolbar: []
@@ -105,7 +106,20 @@ module CKEditor5::Rails
       def version(version = nil)
         return @version.to_s if version.nil?
 
-        @version = Semver.new(version)
+        if @automatic_upgrades && version
+          detected = VersionDetector.latest_safe_version(version)
+          @version = Semver.new(detected || version)
+        else
+          @version = Semver.new(version)
+        end
+      end
+
+      def automatic_upgrades(enabled: true)
+        @automatic_upgrades = enabled
+      end
+
+      def automatic_upgrades?
+        @automatic_upgrades
       end
 
       def cdn(cdn = nil, &block)
