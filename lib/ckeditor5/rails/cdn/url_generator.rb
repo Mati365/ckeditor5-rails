@@ -20,9 +20,11 @@ module CKEditor5::Rails::Cdn
 
     CDN_COMMERCIAL_GENERATORS = {
       cloud: lambda { |bundle, version, path|
-        domain = bundle == 'ckbox' ? 'ckbox.io' : 'ckeditor.com'
+        "https://cdn.ckeditor.com/#{bundle}/#{version}/#{path}"
+      },
 
-        "https://cdn.#{domain}/#{bundle}/#{version}/#{path}"
+      ckbox: lambda { |bundle, version, path|
+        "https://cdn.ckbox.io/#{bundle}/#{version}/#{path}"
       }
     }.freeze
 

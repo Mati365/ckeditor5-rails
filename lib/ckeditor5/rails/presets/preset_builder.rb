@@ -56,7 +56,10 @@ module CKEditor5::Rails
       def ckbox(version = nil, theme: :lark)
         return @ckbox if version.nil?
 
-        @ckbox = { version: version, theme: theme }
+        @ckbox = {
+          version: version,
+          theme: theme
+        }
       end
 
       def license_key(license_key = nil)

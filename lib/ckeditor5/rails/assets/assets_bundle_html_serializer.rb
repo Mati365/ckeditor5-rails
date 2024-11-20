@@ -43,7 +43,7 @@ module CKEditor5::Rails::Assets
 
     def window_scripts_tags
       @window_scripts_tags ||= safe_join(bundle.scripts.filter_map do |script|
-        tag.script(src: script.url, nonce: true, async: true) if script.window?
+        tag.script(src: script.url, nonce: true, async: true, crossorigin: 'anonymous') if script.window?
       end)
     end
 

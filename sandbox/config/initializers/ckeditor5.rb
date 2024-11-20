@@ -38,6 +38,8 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
 
     editable_height 100
 
+    ckbox '2.6.0', theme: :lark
+
     toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
             :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
             :fontFamily, :fontSize, :|, :link, :anchor, :|,

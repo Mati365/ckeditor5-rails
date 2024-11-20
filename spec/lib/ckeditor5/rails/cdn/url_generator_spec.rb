@@ -44,7 +44,7 @@ RSpec.describe CKEditor5::Rails::Cdn::UrlGenerator do
                       'https://cdn.ckeditor.com/ckeditor5/%<version>s/ckeditor.js'
 
       it 'generates correct CKBox URL' do
-        instance.cdn = :cloud
+        instance.cdn = :ckbox
         expect(instance.create_cdn_url('ckbox', '34.1.0', 'ckeditor.js'))
           .to eq('https://cdn.ckbox.io/ckbox/34.1.0/ckeditor.js')
       end
