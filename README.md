@@ -62,25 +62,26 @@ In your view:
 
 Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
 
-## Demos 🚀
+## Try Our Demos! 🎮 ✨
 
-Interested in more advanced configuration? Visit the demos in the [demo application](https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos) or take a look at official CKEditor 5 [examples](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html).
+Want to see some cool examples? We've got you covered! Check out our interactive [demo application](https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos) packed with various editor configurations. You can also explore official CKEditor 5 [examples](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html) for more inspiration! 💡
 
-In order to run all demos locally, you can clone the repository and run the following commands:
+Ready to play with the demos locally? It's super easy! Just follow these steps: 🚀
 
 ```bash
-bundle install
-cd sandbox
-bundle exec rails server -p 3000
+bundle install # Install all the goodies 📦
+bundle exec guard -g rails # Fire up the server 🔥
 ```
 
-Then visit [http://localhost:3000/demos](http://localhost:3000/) to see the demos in action. 🚀
+Now the fun part - open [http://localhost:3000/demos](http://localhost:3000/) in your browser and start experimenting! 🎯 Feel free to tweak the code and make it your own! 🎨
+
+Want to extend CKEditor's functionality? Check out our [plugins directory](https://github.com/Mati365/ckeditor5-rails/tree/main/lib/ckeditor5/rails/plugins) and create your own awesome plugins! 🔌 We love community contributions - your plugin could be the next great addition to our ecosystem! ⭐
 
 ## Table of Contents 📚
 
 - [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
   - [Installation 🛠️](#installation-️)
-  - [Demos 🚀](#demos-)
+  - [Try Our Demos! 🎮 ✨](#try-our-demos--)
   - [Table of Contents 📚](#table-of-contents-)
   - [Presets 🎨](#presets-)
     - [Available Configuration Methods ⚙️](#available-configuration-methods-️)
