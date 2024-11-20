@@ -8,6 +8,7 @@ group :development do
   gem 'brakeman', '~> 6.1', '>= 6.1.1', require: false
   gem 'guard', '~> 2.19', '>= 2.19.0'
   gem 'guard-process', '~> 1.2'
+  gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
   gem 'pry', '~> 0.15', '>= 0.15.0'
   gem 'rails', '~> 7.0', '>= 7.0.0'
   gem 'rake', '~> 13.2', '>= 13.2.1'

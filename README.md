@@ -119,6 +119,7 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
     - [`editor-change` event](#editor-change-event)
     - [Inline event handling](#inline-event-handling)
   - [Gem Development 🛠](#gem-development-)
+    - [Running tests 🧪](#running-tests-)
   - [Trademarks 📜](#trademarks-)
   - [License 📜](#license-)
 
@@ -1330,7 +1331,21 @@ If you want to contribute to the gem, you can clone the repository and run the f
 ```sh
 gem install bundler -v 2.5.22
 bundle install
-bundle exec guard
+bundle exec guard -g rails
+```
+
+### Running tests 🧪
+
+You can run the tests using the following command:
+
+```sh
+bundle exec rspec
+```
+
+If you want to watch the tests, you can use the following command:
+
+```sh
+bundle exec guard -g rspec
 ```
 
 ## Trademarks 📜

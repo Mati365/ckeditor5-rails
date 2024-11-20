@@ -127,6 +127,10 @@ GEM
     guard-process (1.2.1)
       guard-compat (~> 1.2, >= 1.2.1)
       spoon (~> 0.0.1)
+    guard-rspec (4.7.3)
+      guard (~> 2.1)
+      guard-compat (~> 1.1)
+      rspec (>= 2.99.0, < 4.0)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
@@ -348,6 +352,7 @@ DEPENDENCIES
   ckeditor5!
   guard (~> 2.19, >= 2.19.0)
   guard-process (~> 1.2)
+  guard-rspec (~> 4.7, >= 4.7.3)
   pry (~> 0.15, >= 0.15.0)
   rails (~> 7.0, >= 7.0.0)
   rake (~> 13.2, >= 13.2.1)
