@@ -87,7 +87,7 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
-    - [`ckeditor5_preset(&block)` method](#ckeditor5_presetblock-method)
+      - [`ckeditor5_preset(&block)` method](#ckeditor5_presetblock-method)
   - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
     - [Format 📝](#format-)
       - [Using default preset](#using-default-preset)
@@ -578,7 +578,7 @@ CKEditor5::Rails.configure do
 end
 ```
 
-### `ckeditor5_preset(&block)` method
+#### `ckeditor5_preset(&block)` method
 
 The `ckeditor5_preset` method allows you to define a custom preset in your application controller. It may be useful when you want to define a preset based on the current user or request.
 
