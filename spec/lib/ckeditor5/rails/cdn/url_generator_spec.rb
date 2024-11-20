@@ -31,10 +31,16 @@ RSpec.describe CKEditor5::Rails::Cdn::UrlGenerator do
                       'https://unpkg.com/ckeditor5@%<version>s/dist/browser/ckeditor.js'
 
       context 'with translations' do
-        it 'handles translation paths correctly' do
+        it 'handles translation paths correctly for jsdelivr' do
           instance.cdn = :jsdelivr
           expect(instance.create_cdn_url('ckeditor5', '34.1.0', 'translations/pl.js'))
             .to eq('https://cdn.jsdelivr.net/npm/ckeditor5@34.1.0/dist/translations/pl.js')
+        end
+
+        it 'handles translation paths correctly for unpkg' do
+          instance.cdn = :unpkg
+          expect(instance.create_cdn_url('ckeditor5', '34.1.0', 'translations/pl.js'))
+            .to eq('https://unpkg.com/ckeditor5@34.1.0/dist/translations/pl.js')
         end
       end
     end

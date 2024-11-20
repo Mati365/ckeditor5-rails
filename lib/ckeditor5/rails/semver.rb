@@ -13,7 +13,6 @@ class CKEditor5::Rails::Semver
   private
 
   def validate!
-    raise ArgumentError, 'version must be a string' unless version.is_a?(String)
     raise ArgumentError, 'invalid version format' unless version.match?(/\A\d+\.\d+\.\d+\z/)
   end
 end
