@@ -22,6 +22,21 @@ Add this line to your application's Gemfile:
 gem 'ckeditor5'
 ```
 
+In your config (the default config is defined [here](https://github.com/Mati365/ckeditor5-rails/blob/main/lib/ckeditor5/rails/presets/manager.rb)):
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  version '43.3.0'  # 🔖 Specify the version of editor you want.
+                    # ⚙️ Configuration includes:
+                    #    📝 Classic editor build
+                    #    🧩 Essential plugins (paragraphs, basic styles)
+                    #    🎛️ Default toolbar layout
+                    #    📜 GPL license
+end
+```
+
 In your layout:
 
 ```erb
@@ -36,21 +51,6 @@ In your layout:
     <%= yield %>
   </body>
 </html>
-```
-
-In your config (the default config is defined [here](https://github.com/Mati365/ckeditor5-rails/blob/main/lib/ckeditor5/rails/presets/manager.rb)):
-
-```rb
-# config/initializers/ckeditor5.rb
-
-CKEditor5::Rails.configure do
-  version '43.3.0'  # 🔖 Specify the version of editor you want.
-                    # ⚙️ Configuration includes:
-                    #    📝 Classic editor build
-                    #    🧩 Essential plugins (paragraphs, basic styles)
-                    #    🎛️ Default toolbar layout
-                    #    📜 GPL license
-end
 ```
 
 In your view:
