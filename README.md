@@ -52,12 +52,14 @@ In your view:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
-
 <% content_for :head do %>
-  <%= ckeditor5_assets %>
+  <%= ckeditor5_assets %> <!-- 🔌 Loads via importmap: -->
+                         <!-- - CKEditor 5 core -->
+                         <!-- - Default plugins (text editing, basic formatting) -->
+                         <!-- - Default theme CSS -->
 <% end %>
 
-<%= ckeditor5_editor %>
+<%= ckeditor5_editor %> <!-- ✨ Renders WYSIWYG editor -->
 ```
 
 Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
