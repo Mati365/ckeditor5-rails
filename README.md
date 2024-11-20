@@ -29,7 +29,7 @@ In your config (the default config is defined [here](https://github.com/Mati365/
 
 CKEditor5::Rails.configure do
   # 🔖 Specify the version of editor you want.
-  # ⚙️ Configuration includes:
+  # ⚙️ Default configuration includes:
   #    📝 Classic editor build
   #    🧩 Essential plugins (paragraphs, basic styles)
   #    🎛️ Default toolbar layout
