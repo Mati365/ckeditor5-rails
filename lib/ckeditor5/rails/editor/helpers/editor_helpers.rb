@@ -8,7 +8,6 @@ module CKEditor5::Rails
 
     class EditorContextError < StandardError; end
     class PresetNotFoundError < ArgumentError; end
-    class InvalidEditableHeightError < ArgumentError; end
 
     # Creates a CKEditor 5 editor instance
     #

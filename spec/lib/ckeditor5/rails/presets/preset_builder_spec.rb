@@ -57,7 +57,9 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
 
       # Compare toolbar separately
       expect(copy.config[:toolbar][:items]).to eq(original.config[:toolbar][:items])
-      expect(copy.config[:toolbar][:shouldNotGroupWhenFull]).to eq(original.config[:toolbar][:shouldNotGroupWhenFull])
+      expect(copy.config[:toolbar][:shouldNotGroupWhenFull]).to eq(
+        original.config[:toolbar][:shouldNotGroupWhenFull]
+      )
 
       # Compare plugin names
       copy_names = copy.config[:plugins].map { |p| p.name.to_s }
@@ -116,7 +118,7 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
                                                })
       end
 
-      it 'doesnt override existing toolbar if no items provided' do
+      it 'doesn\'t override existing toolbar if no items provided' do
         original_config = { items: [:bold], shouldNotGroupWhenFull: true }
         builder.config[:toolbar] = original_config
         builder.toolbar

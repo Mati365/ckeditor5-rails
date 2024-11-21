@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'props_plugin'
+require_relative 'editable_height_normalizer'
 
 module CKEditor5::Rails::Editor
   class Props
@@ -19,7 +20,7 @@ module CKEditor5::Rails::Editor
       @watchdog = watchdog
       @type = type
       @config = config
-      @editable_height = normalize_editable_height(editable_height)
+      @editable_height = EditableHeightNormalizer.new(type).normalize(editable_height)
     end
 
     def to_attributes
@@ -60,24 +61,6 @@ module CKEditor5::Rails::Editor
         .except(:plugins)
         .tap { |cfg| cfg[:licenseKey] = controller_context[:license_key] if controller_context[:license_key] }
         .to_json
-    end
-
-    def normalize_editable_height(editable_height)
-      return nil if editable_height.nil?
-
-      unless type == :classic
-        raise InvalidEditableHeightError,
-              'editable_height can be used only with ClassicEditor'
-      end
-
-      case editable_height
-      when String, /^\d+px$/ then editable_height
-      when Integer, /^\d+$/ then "#{editable_height}px"
-      else
-        raise InvalidEditableHeightError,
-              "editable_height must be an integer representing pixels or string ending with 'px'\n" \
-              "(e.g. 500 or '500px'). Got: #{editable_height.inspect}"
-      end
     end
   end
 end
