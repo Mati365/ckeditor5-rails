@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require_relative '../semver'
+require_relative '../editor/props'
+require_relative '../editor/helpers/config_helpers'
+require_relative '../presets/manager'
+require_relative '../assets/assets_bundle_html_serializer'
+
 require_relative 'url_generator'
 require_relative 'ckeditor_bundle'
 require_relative 'ckbox_bundle'
