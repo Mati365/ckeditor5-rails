@@ -74,6 +74,9 @@ CKEditor5::Rails.configure do
   # Optionally, you can specify version of CKEditor 5 to use.
   # If it's not specified the default version specified in the gem will be used.
   # version '43.3.1'
+
+  # Upload images to the server using the simple upload adapter, instead of Base64 encoding.
+  # simple_upload_adapter
 end
 ```
 
