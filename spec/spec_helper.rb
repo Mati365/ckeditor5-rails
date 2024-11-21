@@ -13,7 +13,7 @@ SimpleCov.start do
 
   track_files 'lib/**/*.rb'
 
-  minimum_coverage 90
+  minimum_coverage 98
 
   formatters = [
     SimpleCov::Formatter::HTMLFormatter,
