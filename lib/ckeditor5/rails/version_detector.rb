@@ -4,6 +4,8 @@ require 'net/http'
 require 'json'
 require 'singleton'
 require 'monitor'
+
+require_relative 'version'
 require_relative 'semver'
 
 module CKEditor5::Rails

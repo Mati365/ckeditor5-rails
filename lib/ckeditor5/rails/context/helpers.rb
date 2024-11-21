@@ -7,7 +7,7 @@ module CKEditor5::Rails::Context
     def ckeditor5_context(**config, &block)
       context_props = Props.new(config)
 
-      tag.send(:'ckeditor-context-component', **context_props.to_attributes, &block)
+      tag.public_send(:'ckeditor-context-component', **context_props.to_attributes, &block)
     end
   end
 end

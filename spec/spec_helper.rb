@@ -13,8 +13,8 @@ SimpleCov.start do
 
   track_files 'lib/**/*.rb'
 
-  # minimum_coverage 90
-  # minimum_coverage_by_file 80
+  minimum_coverage 90
+  minimum_coverage_by_file 80
 
   formatters = [
     SimpleCov::Formatter::HTMLFormatter,
@@ -32,6 +32,9 @@ require 'pry'
 require 'spec_helper'
 require 'rspec/rails'
 require 'rspec/expectations'
+require 'rspec-html-matchers'
+
+Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
 Rails.application.initialize!
 
@@ -58,4 +61,6 @@ RSpec.configure do |config|
   config.before(:each) do
     Rails.application.load_seed
   end
+
+  config.include RSpecHtmlMatchers
 end

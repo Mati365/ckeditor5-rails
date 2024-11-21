@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../../version_detector'
+require_relative '../../presets/preset_builder'
 require_relative 'config_helpers'
 
 module CKEditor5::Rails
@@ -44,15 +46,15 @@ module CKEditor5::Rails
 
       tag_attributes = html_attributes.merge(editor_props.to_attributes)
 
-      tag.send(:'ckeditor-component', **tag_attributes, &block)
+      tag.public_send(:'ckeditor-component', **tag_attributes, &block)
     end
 
     def ckeditor5_editable(name = nil, **kwargs, &block)
-      tag.send(:'ckeditor-editable-component', name: name, **kwargs, &block)
+      tag.public_send(:'ckeditor-editable-component', name: name, **kwargs, &block)
     end
 
     def ckeditor5_ui_part(name, **kwargs, &block)
-      tag.send(:'ckeditor-ui-part-component', name: name, **kwargs, &block)
+      tag.public_send(:'ckeditor-ui-part-component', name: name, **kwargs, &block)
     end
 
     def ckeditor5_toolbar(**kwargs)
