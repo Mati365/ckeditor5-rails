@@ -41,7 +41,7 @@ def increment_version(version)
   "#{major}.#{minor}.#{patch}"
 end
 
-def commit_and_tag_changes(new_version)
+def commit_changes(new_version)
   # Najpierw konfigurujemy gita
   system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
   system('git config --global user.name "github-actions[bot]"')
@@ -56,11 +56,7 @@ def commit_and_tag_changes(new_version)
 
   system('git add lib/ckeditor5/rails/version.rb README.md Gemfile.lock')
   system(%(git commit -m "chore: update CKEditor to version #{new_version}"))
-
-  new_gem_version = increment_version(CKEditor5::Rails::VERSION)
-  tag_message = "v#{new_gem_version}"
-  system("git tag -a #{tag_message} -m 'Release #{tag_message}'")
-  system('git push origin main --tags')
+  system('git push origin main')
 end
 
 def main
@@ -75,8 +71,8 @@ def main
   if latest_version != current_version
     puts "New version detected: #{latest_version} (current: #{current_version})"
     update_version_file(latest_version)
-    commit_and_tag_changes(latest_version)
-    puts 'Updated version and created new tag'
+    commit_changes(latest_version)
+    puts 'Updated version and pushed changes'
   else
     puts "Version is up to date (#{current_version})"
   end
