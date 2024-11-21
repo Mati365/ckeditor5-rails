@@ -33,9 +33,6 @@ def update_version_file(new_version)
     "version '#{new_version}'"
   )
   File.write(readme_path, updated_readme)
-
-  # Run bundle install to update Gemfile.lock
-  system('bundle install')
 end
 
 def increment_version(version)
@@ -45,8 +42,16 @@ def increment_version(version)
 end
 
 def commit_and_tag_changes(new_version)
+  # Najpierw konfigurujemy gita
   system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
   system('git config --global user.name "github-actions[bot]"')
+
+  puts 'Running bundle install...'
+
+  unless system('bundle install')
+    puts 'Bundle install failed!'
+    exit 1
+  end
 
   system('git add lib/ckeditor5/rails/version.rb README.md Gemfile.lock')
   system(%(git commit -m "chore: update CKEditor to version #{new_version}"))
