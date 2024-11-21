@@ -49,7 +49,9 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
     subject(:html) { serializer.to_html }
 
     it 'includes window scripts' do
-      expect(html).to include('<script src="https://cdn.com/script1.js" nonce="true" crossorigin="anonymous">')
+      expect(html).to include(
+        '<script src="https://cdn.com/script1.js" nonce="true" crossorigin="anonymous">'
+      )
     end
 
     it 'includes import map' do
@@ -64,10 +66,21 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
     end
 
     it 'includes preload links' do
-      expect(html).to include('<link href="https://cdn.com/style1.css" rel="preload" as="style" crossorigin="anonymous">')
-      expect(html).to include('<link href="https://cdn.com/style2.css" rel="preload" as="style" crossorigin="anonymous">')
-      expect(html).to include('<link href="https://cdn.com/script1.js" rel="preload" as="script" crossorigin="anonymous">')
-      expect(html).to include('<link href="https://cdn.com/script2.js" rel="preload" as="script" crossorigin="anonymous">')
+      expect(html).to include(
+        '<link href="https://cdn.com/style1.css" rel="preload" as="style" crossorigin="anonymous">'
+      )
+
+      expect(html).to include(
+        '<link href="https://cdn.com/style2.css" rel="preload" as="style" crossorigin="anonymous">'
+      )
+
+      expect(html).to include(
+        '<link href="https://cdn.com/script1.js" rel="preload" as="script" crossorigin="anonymous">'
+      )
+
+      expect(html).to include(
+        '<link href="https://cdn.com/script2.js" rel="preload" as="script" crossorigin="anonymous">'
+      )
     end
 
     it 'includes web component script' do
