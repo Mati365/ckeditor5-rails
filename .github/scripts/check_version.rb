@@ -17,12 +17,11 @@ def update_version_file(new_version)
   version_file_path = 'lib/ckeditor5/rails/version.rb'
   content = File.read(version_file_path)
 
-  # Aktualizacja obu wersji w tym samym pliku
   updated_content = content
-                    .gsub(/DEFAULT_CKEDITOR_VERSION = ['"].*['"]/,
-                          "DEFAULT_CKEDITOR_VERSION = '#{new_version}'")
                     .gsub(/VERSION = ['"].*['"]/,
                           "VERSION = '#{increment_version(CKEditor5::Rails::VERSION)}'")
+                    .gsub(/DEFAULT_CKEDITOR_VERSION = ['"].*['"]/,
+                          "DEFAULT_CKEDITOR_VERSION = '#{new_version}'")
 
   File.write(version_file_path, updated_content)
 
@@ -34,6 +33,9 @@ def update_version_file(new_version)
     "version '#{new_version}'"
   )
   File.write(readme_path, updated_readme)
+
+  # Run bundle install to update Gemfile.lock
+  system('bundle install')
 end
 
 def increment_version(version)
@@ -46,7 +48,7 @@ def commit_and_tag_changes(new_version)
   system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
   system('git config --global user.name "github-actions[bot]"')
 
-  system('git add lib/ckeditor5/rails/version.rb README.md')
+  system('git add lib/ckeditor5/rails/version.rb README.md Gemfile.lock')
   system(%(git commit -m "chore: update CKEditor to version #{new_version}"))
 
   new_gem_version = increment_version(CKEditor5::Rails::VERSION)
