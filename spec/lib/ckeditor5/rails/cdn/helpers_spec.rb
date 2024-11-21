@@ -117,6 +117,28 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
           helper.ckeditor5_assets(preset: :default)
         end
       end
+
+      context 'when destructuring preset hash' do
+        let(:preset) do
+          instance_double(
+            CKEditor5::Rails::Presets::PresetBuilder,
+            to_h_with_overrides: {
+              cdn: :cloud,
+              version: '34.1.0',
+              type: 'classic',
+              translations: %w[pl],
+              ckbox: nil,
+              license_key: nil,
+              premium: false,
+              extra: 'value'
+            }
+          )
+        end
+
+        it 'successfully matches and extracts required parameters' do
+          expect { helper.ckeditor5_assets(preset: :default) }.not_to raise_error
+        end
+      end
     end
 
     context 'with invalid preset' do
@@ -142,6 +164,42 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
         expect { helper.ckeditor5_assets(preset: :default) }
           .to raise_error(ArgumentError, /forgot to define version/)
       end
+    end
+  end
+
+  context 'when overriding preset values with kwargs' do
+    let(:preset) do
+      CKEditor5::Rails::Presets::PresetBuilder.new do
+        version '34.1.0'
+        type :classic
+        translations :pl
+        cdn :cloud
+        license_key 'preset-license'
+        premium false
+      end
+    end
+
+    before do
+      allow(CKEditor5::Rails::Engine).to receive(:find_preset).and_return(preset)
+    end
+
+    it 'allows overriding preset values with kwargs' do
+      result = helper.send(:merge_with_editor_preset, :default, license_key: 'overridden-license')
+      expect(result).to include(license_key: 'overridden-license')
+    end
+
+    it 'preserves non-overridden preset values' do
+      result = helper.send(:merge_with_editor_preset, :default, license_key: 'overridden-license')
+      expect(result).to eq(
+        version: '34.1.0',
+        premium: false,
+        cdn: :cloud,
+        translations: [:pl],
+        license_key: 'overridden-license',
+        type: :classic,
+        ckbox: nil,
+        config: { plugins: [], toolbar: [] }
+      )
     end
   end
 
