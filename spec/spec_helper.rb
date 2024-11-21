@@ -8,6 +8,7 @@ SimpleCov.start do
   enable_coverage :line
 
   add_filter 'sandbox/'
+  add_filter 'spec/'
   add_group 'Library', 'lib/'
 
   track_files 'lib/**/*.rb'

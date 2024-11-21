@@ -42,4 +42,62 @@ RSpec.describe CKEditor5::Rails::Semver do
       expect(semver.version).to eq(version)
     end
   end
+
+  describe '#<=>' do
+    let(:version1) { described_class.new('1.2.3') }
+
+    it 'compares versions correctly' do
+      expect(version1).to be < described_class.new('1.2.4')
+      expect(version1).to be < described_class.new('1.3.0')
+      expect(version1).to be < described_class.new('2.0.0')
+      expect(version1).to be > described_class.new('1.2.2')
+      expect(version1).to be > described_class.new('1.1.9')
+      expect(version1).to be > described_class.new('0.9.9')
+      expect(version1).to eq described_class.new('1.2.3')
+    end
+
+    it 'returns nil when comparing with non-Semver object' do
+      expect(version1 <=> 'not a version').to be_nil
+    end
+  end
+
+  describe '#safe_update?' do
+    let(:base_version) { described_class.new('1.2.3') }
+
+    context 'when major version changes' do
+      it 'returns false for major version increase' do
+        expect(base_version.safe_update?('2.0.0')).to be false
+      end
+
+      it 'returns false for major version decrease' do
+        expect(base_version.safe_update?('0.2.3')).to be false
+      end
+    end
+
+    context 'when minor version changes' do
+      it 'returns true for minor version increase' do
+        expect(base_version.safe_update?('1.3.0')).to be true
+      end
+
+      it 'returns false for minor version decrease' do
+        expect(base_version.safe_update?('1.1.9')).to be false
+      end
+    end
+
+    context 'when patch version changes' do
+      it 'returns true for patch version increase' do
+        expect(base_version.safe_update?('1.2.4')).to be true
+      end
+
+      it 'returns false for patch version decrease' do
+        expect(base_version.safe_update?('1.2.2')).to be false
+      end
+    end
+
+    context 'when version is the same' do
+      it 'returns false for identical version' do
+        expect(base_version.safe_update?('1.2.3')).to be false
+      end
+    end
+  end
 end

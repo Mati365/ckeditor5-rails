@@ -22,6 +22,10 @@ module CKEditor5::Rails
       @monitor = Monitor.new
     end
 
+    def clear_cache!
+      @monitor.synchronize { @cache.clear }
+    end
+
     def latest_safe_version(current_version)
       @monitor.synchronize do
         cache_key = "#{current_version}_latest"

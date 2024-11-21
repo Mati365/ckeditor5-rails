@@ -104,7 +104,7 @@ module CKEditor5::Rails
       end
 
       def version(version = nil)
-        return @version.to_s if version.nil?
+        return @version&.to_s if version.nil?
 
         if @automatic_upgrades && version
           detected = VersionDetector.latest_safe_version(version)
@@ -164,7 +164,7 @@ module CKEditor5::Rails
 
         return unless block
 
-        builder = ArrayBuilder.new(@config[:toolbar][:items])
+        builder = ToolbarBuilder.new(@config[:toolbar][:items])
         builder.instance_eval(&block)
       end
 
@@ -174,7 +174,6 @@ module CKEditor5::Rails
 
       def plugin(name, **kwargs)
         plugin_obj = PluginsBuilder.create_plugin(name, **kwargs)
-
         @config[:plugins] << plugin_obj
         plugin_obj
       end

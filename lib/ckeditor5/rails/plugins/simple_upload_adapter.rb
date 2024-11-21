@@ -81,7 +81,7 @@ module CKEditor5::Rails::Plugins
     JAVASCRIPT
 
     def initialize
-      super(:SimpleUpload, PLUGIN_CODE)
+      super(:SimpleUploadAdapter, PLUGIN_CODE)
     end
   end
 end

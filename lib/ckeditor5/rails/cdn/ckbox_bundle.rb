@@ -22,9 +22,9 @@ module CKEditor5::Rails
         @scripts ||= [
           Assets::JSExportsMeta.new(
             create_cdn_url('ckbox', version, 'ckbox.js'),
-            *translations_js_exports_meta,
             window_name: 'CKBox'
-          )
+          ),
+          *translations_js_exports_meta
         ]
       end
 
