@@ -9,6 +9,7 @@ SimpleCov.start do
 
   add_filter 'sandbox/'
   add_filter 'spec/'
+  add_filter 'lib/ckeditor5/rails/version.rb' # Fix bug in coverage calculation
   add_group 'Library', 'lib/'
 
   track_files 'lib/**/*.rb'
