@@ -14,13 +14,16 @@ rescue StandardError => e
 end
 
 def update_version_file(new_version)
-  # Update version.rb
   version_file_path = 'lib/ckeditor5/rails/version.rb'
   content = File.read(version_file_path)
-  updated_content = content.gsub(
-    /DEFAULT_CKEDITOR_VERSION = ['"].*['"]/,
-    "DEFAULT_CKEDITOR_VERSION = '#{new_version}'"
-  )
+
+  # Aktualizacja obu wersji w tym samym pliku
+  updated_content = content
+                    .gsub(/DEFAULT_CKEDITOR_VERSION = ['"].*['"]/,
+                          "DEFAULT_CKEDITOR_VERSION = '#{new_version}'")
+                    .gsub(/VERSION = ['"].*['"]/,
+                          "VERSION = '#{increment_version(CKEditor5::Rails::VERSION)}'")
+
   File.write(version_file_path, updated_content)
 
   # Update README.md
@@ -33,6 +36,12 @@ def update_version_file(new_version)
   File.write(readme_path, updated_readme)
 end
 
+def increment_version(version)
+  major, minor, patch = version.split('.')
+  patch = patch.to_i + 1
+  "#{major}.#{minor}.#{patch}"
+end
+
 def commit_and_tag_changes(new_version)
   system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
   system('git config --global user.name "github-actions[bot]"')
@@ -40,10 +49,7 @@ def commit_and_tag_changes(new_version)
   system('git add lib/ckeditor5/rails/version.rb README.md')
   system(%(git commit -m "chore: update CKEditor to version #{new_version}"))
 
-  new_gem_version = CKEditor5::Rails::VERSION.split('.')
-  new_gem_version[-1] = (new_gem_version[-1].to_i + 1).to_s
-  new_gem_version = new_gem_version.join('.')
-
+  new_gem_version = increment_version(CKEditor5::Rails::VERSION)
   tag_message = "v#{new_gem_version}"
   system("git tag -a #{tag_message} -m 'Release #{tag_message}'")
   system('git push origin main --tags')
