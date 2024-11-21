@@ -22,22 +22,6 @@ Add this line to your application's Gemfile:
 gem 'ckeditor5'
 ```
 
-In your config (the default config is defined [here](https://github.com/Mati365/ckeditor5-rails/blob/main/lib/ckeditor5/rails/presets/manager.rb)):
-
-```rb
-# config/initializers/ckeditor5.rb
-
-CKEditor5::Rails.configure do
-  # 🔖 Specify the version of editor you want.
-  # ⚙️ Default configuration includes:
-  #    📝 Classic editor build
-  #    🧩 Essential plugins (paragraphs, basic styles)
-  #    🎛️ Default toolbar layout
-  #    📜 GPL license
-  version '43.3.0'
-end
-```
-
 In your layout:
 
 ```erb
@@ -72,6 +56,25 @@ In your view:
 <%= form_for @post do |f| %>
   <%= f.ckeditor5 :content, required: true %>
 <% end %>
+```
+
+(optional) Customize your config (the default config is defined [here](https://github.com/Mati365/ckeditor5-rails/blob/main/lib/ckeditor5/rails/presets/manager.rb)):
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # 🔖 Specify the version of editor you want.
+  # ⚙️ Default configuration includes:
+  #    📝 Classic editor build
+  #    🧩 Essential plugins (paragraphs, basic styles)
+  #    🎛️ Default toolbar layout
+  #    📜 GPL license
+
+  # Optionally, you can specify version of CKEditor 5 to use.
+  # If it's not specified the default version specified in the gem will be used.
+  # version '43.3.1'
+end
 ```
 
 Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
