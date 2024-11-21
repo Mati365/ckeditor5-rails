@@ -38,7 +38,7 @@ end
 def increment_version(version)
   major, minor, patch = version.split('.')
   patch = patch.to_i + 1
-  "#{major}.#{minor}.#{patch}"
+  "#{major}.minor}.#{patch}"
 end
 
 def commit_changes(new_version)
@@ -72,9 +72,10 @@ def main
     puts "New version detected: #{latest_version} (current: #{current_version})"
     update_version_file(latest_version)
     commit_changes(latest_version)
-    puts 'Updated version and pushed changes'
+    puts '::set-output name=version_updated::true'
   else
     puts "Version is up to date (#{current_version})"
+    puts '::set-output name=version_updated::false'
   end
 end
 

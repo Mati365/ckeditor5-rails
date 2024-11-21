@@ -20,12 +20,13 @@ jobs:
           bundler-cache: true
 
       - name: Run version checker
+        id: version_check
         run: ruby .github/scripts/check_version.rb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Trigger Release Workflow
-        if: success()
+        if: steps.version_check.outputs.version_updated == 'true'
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
