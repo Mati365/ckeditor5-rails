@@ -172,7 +172,7 @@ You can create your own by defining it in the `config/initializers/ckeditor5.rb`
 
 CKEditor5::Rails.configure do
   # It's possible to override the default preset right in the initializer.
-  version '43.3.0'
+  version '43.3.1'
 
   # New presets inherit properties from the default preset defined in the initializer.
   # In this example, the custom preset inherits everything from default but disables the menubar:
@@ -182,7 +182,7 @@ CKEditor5::Rails.configure do
 
   # In order to define preset from scratch, you can use the `inherit: false` option.
   presets.define :blank_preset, inherit: false do
-    version '44.0.0'
+    version '43.3.1'
 
     # It tells the integration to fetch the newest security patches and bug fixes.
     # It may be disabled, but it's highly recommended to keep it enabled to avoid
@@ -291,7 +291,7 @@ Defines the version of CKEditor 5 to be used. The example below shows how to set
 CKEditor5::Rails.configure do
   # ... other configuration
 
-  version '43.2.0'
+  version '43.3.1'
 end
 ```
 
@@ -692,7 +692,7 @@ The `ckeditor5_preset` method allows you to define a custom preset in your appli
 class ApplicationController < ActionController::Base
   def show
     @preset = ckeditor5_preset do
-      version '43.3.0'
+      version '43.3.1'
 
       toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
               :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
@@ -838,7 +838,7 @@ In that scenario it's recommended to add `gpl` method to the initializer along w
 
 CKEditor5::Rails.configure do
   gpl
-  version '43.3.0'
+  version '43.3.1'
 end
 ```
 
