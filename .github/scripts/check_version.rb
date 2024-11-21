@@ -38,7 +38,7 @@ end
 def increment_version(version)
   major, minor, patch = version.split('.')
   patch = patch.to_i + 1
-  "#{major}.minor}.#{patch}"
+  "#{major}.#{minor}.#{patch}"
 end
 
 def commit_changes(new_version)
