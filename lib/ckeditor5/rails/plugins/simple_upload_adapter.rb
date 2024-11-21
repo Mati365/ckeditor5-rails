@@ -36,6 +36,13 @@ module CKEditor5::Rails::Plugins
                   xhr.open('POST', config.uploadUrl, true);
                   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
+                  // Add CSRF token from meta tag
+                  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+                  if (csrfToken) {
+                    xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+                  }
+
                   xhr.upload.onprogress = (evt) => {
                     if (evt.lengthComputable) {
                       loader.uploadTotal = evt.total;
