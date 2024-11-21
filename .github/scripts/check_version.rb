@@ -47,6 +47,7 @@ def commit_and_tag_changes(new_version)
   system('git config --global user.name "github-actions[bot]"')
 
   puts 'Running bundle install...'
+  system('bundle config set frozen false')
 
   unless system('bundle install')
     puts 'Bundle install failed!'
