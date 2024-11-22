@@ -16,7 +16,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
           bundler-cache: true
 
       - name: Run version checker
@@ -24,6 +24,17 @@ jobs:
         run: ruby .github/scripts/check_version.rb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Chrome
+        if: steps.version_check.outputs.version_updated == 'true'
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Run e2e tests
+        run: bundle exec rake e2e
+        env:
+          HEADLESS: true
 
       - name: Trigger Release Workflow
         if: steps.version_check.outputs.version_updated == 'true'
