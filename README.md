@@ -82,7 +82,7 @@ end
 
 Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
 
-## Try Our Demos! 🎮 ✨
+## Try Demos! 🎮 ✨
 
 Explore various editor configurations with the interactive [demo application](https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos). For additional inspiration, visit the official CKEditor 5 [examples](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html).
 
@@ -101,7 +101,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
 
 - [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
   - [Installation 🛠️](#installation-️)
-  - [Try Our Demos! 🎮 ✨](#try-our-demos--)
+  - [Try Demos! 🎮 ✨](#try-demos--)
   - [Table of Contents 📚](#table-of-contents-)
   - [Presets 🎨](#presets-)
     - [Automatic upgrades 🔄](#automatic-upgrades-)
