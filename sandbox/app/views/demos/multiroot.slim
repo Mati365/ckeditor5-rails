@@ -1,13 +1,12 @@
 - content_for :head
   = ckeditor5_assets version: '43.2.0'
 
-h1 Multiroot Editor
+h1 data-testid="multiroot-editor-title" Multiroot Editor
 
-= ckeditor5_editor type: :multiroot, style: 'width: 600px'
-  = ckeditor5_toolbar
+= ckeditor5_editor type: :multiroot, style: 'width: 800px', data: { testid: 'multiroot-editor' }
+  = ckeditor5_toolbar data: { testid: 'multiroot-toolbar' }
   br
-  = ckeditor5_editable 'toolbar', style: 'border: 1px solid var(--ck-color-base-border);'
+  = ckeditor5_editable 'toolbar', style: 'border: 1px solid var(--ck-color-base-border); margin: 10px 0;', data: { testid: 'toolbar-editable' }
     | This is a toolbar editable
-  br
-  = ckeditor5_editable 'content', style: 'border: 1px solid var(--ck-color-base-border)'
+  = ckeditor5_editable 'content', style: 'border: 1px solid var(--ck-color-base-border); margin: 10px 0;', data: { testid: 'content-editable' }
   br

@@ -1,6 +1,8 @@
 - content_for :head
   = ckeditor5_assets
 
+= render 'back_to_home'
+
 h1 Balloon Editor
 
 = ckeditor5_editor type: :balloon, style: 'width: 600px; border: 1px solid #ccc;'

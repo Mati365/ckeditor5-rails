@@ -1,6 +1,8 @@
 - content_for :head
   = ckeditor5_assets preset: @preset
 
+= render 'back_to_home'
+
 h1 Classic Editor (preset in controller)
 
 = ckeditor5_editor preset: @preset, editable_height: 300

@@ -1,7 +1,10 @@
 - content_for :head
   = ckeditor5_assets
 
-h1 Inline Editor
+= render 'back_to_home'
 
-= ckeditor5_editor type: :inline, style: 'width: 600px; border: 1px solid #ccc;'  do
-  | Hello World
+h1 data-testid="inline-editor-title" Inline Editor
+
+.editor-container style="max-width: 800px;"
+  = ckeditor5_editor type: :inline, style: 'border: 1px solid var(--ck-color-base-border);', data: { testid: 'inline-editor' } do
+    | Hello World

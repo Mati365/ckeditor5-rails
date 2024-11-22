@@ -1,26 +1,35 @@
 - content_for :head
   = ckeditor5_assets
 
-H1 Forms
+= render 'back_to_home'
 
-H2 Rails Forms
+h1 data-testid="forms-title" Forms
 
-= form_with url: '/demos', local: true do |f|
-  .form-group
-    = f.ckeditor5 :content, required: true, style: 'width: 600px', initial_data: 'Hello World!'
-    = f.text_field :second, class: 'form-control'
+.form-container style="max-width: 800px;"
+  h2 data-testid="rails-form-title" Rails Forms
+  = form_with url: '/demos', local: true, data: { testid: 'rails-form' } do |f|
+    .form-group.mb-3
+      = f.label :content, class: "form-label" do
+        abbr title="required" *
+        | &nbsp;Content
+      = f.ckeditor5 :content, required: true, data: { testid: 'rails-form-editor' }, initial_data: 'Hello World!'
 
-  .form-group
-    = f.submit 'Save', class: 'btn btn-primary'
+    .form-group.mb-3
+      = f.label :second, class: "form-label" do
+        abbr title="required" *
+        | &nbsp;Second Field
+      = f.text_field :second, class: 'form-control', data: { testid: 'rails-form-text' }
 
-br
+    .form-group
+      = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit' }
 
-H2 Simple form
+  h2.mt-4 data-testid="simple-form-title" Simple form
+  = simple_form_for :demo, url: '/demos', html: { novalidate: false, data: { testid: 'simple-form' } } do |f|
+    .form-group.mb-3
+      = f.input :content, as: :ckeditor5, input_html: { data: { testid: 'simple-form-editor' } }, initial_data: 'Hello, World!', label: "Content", label_html: { class: 'form-label' }
 
-= simple_form_for :demo, url: '/demos', html: { novalidate: false } do |f|
-  .form-group
-    = f.input :content, as: :ckeditor5, initial_data: 'Hello, World 12!', input_html: { style: 'width: 600px' }, required: true
-    = f.input :second
+    .form-group.mb-3
+      = f.input :second, input_html: { data: { testid: 'simple-form-text' }, class: 'form-control' }, label: "Second Field", label_html: { class: 'form-label' }
 
-  .form-group.
-    = f.button :submit, 'Save', class: 'btn btn-primary'
+    .form-group
+      = f.button :submit, 'Save', class: 'btn btn-primary', data: { testid: 'simple-form-submit' }
