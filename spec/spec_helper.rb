@@ -36,7 +36,7 @@ require 'rspec-html-matchers'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
-Rails.application.initialize!
+Rails.application.initialize! unless Rails.application.initialized?
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
