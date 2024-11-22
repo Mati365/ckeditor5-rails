@@ -24,6 +24,7 @@ end
 
 group :test, :development do
   gem 'capybara', '~> 3.40'
+  gem 'cuprite', '~> 0.15.0'
   gem 'rspec', '~> 3.13'
   gem 'rspec-expectations', '~> 3.13'
   gem 'rspec-html-matchers', '~> 0.10.0'

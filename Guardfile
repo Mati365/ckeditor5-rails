@@ -18,3 +18,11 @@ group :rspec do
     watch('spec/spec_helper.rb') { 'spec' }
   end
 end
+
+group :e2e do
+  guard :process, name: 'capybara', command: 'bundle exec rake e2e' do
+    watch(%r{^spec/e2e/.+_spec\.rb$})
+    watch(%r{^lib/(.+)\.rb$}) { |m| "spec/lib/#{m[1]}_spec.rb" }
+    watch('spec/e2e/spec_helper.rb') { 'spec' }
+  end
+end
