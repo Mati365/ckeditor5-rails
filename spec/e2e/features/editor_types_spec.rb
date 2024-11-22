@@ -132,5 +132,47 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
     it 'shares toolbar between editables' do
       expect(page).to have_css('.ck-toolbar', count: 1)
     end
+
+    it 'handles dynamically added editables' do # rubocop:disable Metrics/BlockLength
+      # Set up event listener
+      page.execute_script(<<~JS)
+        window._newEditableEvents = [];
+        document.querySelector('ckeditor-component').addEventListener('editor-change', (e) => {
+          window._newEditableEvents.push({
+            data: e.detail.data,
+            hasEditor: !!e.detail.editor
+          });
+        });
+      JS
+
+      # Add new editable component
+      page.execute_script(<<~JS)
+        const container = document.querySelector('[data-testid="multiroot-editor"]');
+        const newEditable = document.createElement('ckeditor-editable-component');
+        newEditable.setAttribute('name', 'new-root');
+        container.appendChild(newEditable);
+      JS
+
+      sleep 0.1 # Wait for component initialization
+
+      # Find and interact with new editable
+      new_editable = find("[name='new-root']")
+      new_editable.click
+      new_editable.send_keys('Content for new root')
+
+      # Verify the change event
+      eventually do
+        events = page.evaluate_script('window._newEditableEvents')
+        last_event = events.last
+
+        expect(last_event['data']).to include(
+          'content' => '',
+          'new-root' => '<p>Content for new root</p>',
+          'toolbar' => '<p>This is a toolbar editable</p>'
+        )
+
+        expect(last_event['hasEditor']).to be true
+      end
+    end
   end
 end
