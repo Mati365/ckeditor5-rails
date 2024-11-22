@@ -26,19 +26,24 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
 
+    - name: Run Brakeman
+      run: bundle exec brakeman --force --skip-files demo/
+
+    - name: Run RuboCop
+      run: bundle exec rubocop
+
     - name: Run spec tests
       run: bundle exec rake spec
+
+    - name: Setup Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: stable
 
     - name: Run e2e tests
       run: bundle exec rake e2e
       env:
         HEADLESS: true
-
-    - name: Run RuboCop
-      run: bundle exec rubocop
-
-    - name: Run Brakeman
-      run: bundle exec brakeman --force --skip-files demo/
 
     - name: Run build
       run: bundle exec rake build
