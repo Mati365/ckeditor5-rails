@@ -3,7 +3,7 @@
 
 = render 'back_to_home'
 
-h1 data-testid="inline-editor-title" Inline Editor
+h1.mb-4 data-testid="inline-editor-title" Inline Editor
 
 .editor-container style="max-width: 800px;"
   = ckeditor5_editor type: :inline, style: 'border: 1px solid var(--ck-color-base-border);', data: { testid: 'inline-editor' } do
