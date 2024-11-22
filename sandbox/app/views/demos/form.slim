@@ -26,7 +26,7 @@ h1.mb-4 data-testid="forms-title" Forms
   h2.mt-4 data-testid="simple-form-title" Simple form
   = simple_form_for :demo, url: '/demos', html: { novalidate: false, data: { testid: 'simple-form' } } do |f|
     .form-group.mb-3
-      = f.input :content, as: :ckeditor5, input_html: { data: { testid: 'simple-form-editor' } }, initial_data: 'Hello, World!', label: "Content", label_html: { class: 'form-label' }
+      = f.input :content, as: :ckeditor5, input_html: { data: { testid: 'simple-form-editor' } }, required: true, initial_data: 'Hello, World!', label: "Content", label_html: { class: 'form-label' }
 
     .form-group.mb-3
       = f.input :second, input_html: { data: { testid: 'simple-form-text' }, class: 'form-control' }, label: "Second Field", label_html: { class: 'form-label' }
