@@ -13,7 +13,7 @@ require 'capybara/rails'
 Capybara.app = Rails.application
 
 Capybara.register_driver(:cuprite) do |app|
-  Capybara::Cuprite::Driver.new(
+  driver = Capybara::Cuprite::Driver.new(
     app,
     window_size: [1200, 800],
     headless: ENV['HEADLESS'] == 'true',
@@ -26,6 +26,14 @@ Capybara.register_driver(:cuprite) do |app|
     timeout: 20,
     inspector: true
   )
+
+  process = driver.browser.process
+  puts ''
+  puts "Browser: #{process.browser_version}"
+  puts "Protocol: #{process.protocol_version}"
+  puts "V8: #{process.v8_version}"
+  puts "Webkit: #{process.webkit_version}"
+  driver
 end
 
 Capybara.server = :webrick
