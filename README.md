@@ -84,18 +84,18 @@ Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
 
 ## Try Our Demos! 🎮 ✨
 
-Want to see some cool examples? We've got you covered! Check out our interactive [demo application](https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos) packed with various editor configurations. You can also explore official CKEditor 5 [examples](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html) for more inspiration! 💡
+Explore various editor configurations with the interactive [demo application](https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos). For additional inspiration, visit the official CKEditor 5 [examples](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html).
 
-Ready to play with the demos locally? It's super easy! Just follow these steps: 🚀
+To run the demos locally, follow these steps:
 
 ```bash
-bundle install # Install all the goodies 📦
-bundle exec guard -g rails # Fire up the server 🔥
+bundle install # Install dependencies
+bundle exec guard -g rails # Start the server
 ```
 
-Now the fun part - open [http://localhost:3000/](http://localhost:3000/) in your browser and start experimenting! 🎯 Feel free to tweak the code and make it your own! 🎨
+Open [http://localhost:3000/](http://localhost:3000/) in a browser to start experimenting. Modify the code as needed.
 
-Want to extend CKEditor's functionality? Check out our [plugins directory](https://github.com/Mati365/ckeditor5-rails/tree/main/lib/ckeditor5/rails/plugins) and create your own awesome plugins! 🔌 We love community contributions - your plugin could be the next great addition to our ecosystem! ⭐
+For extending CKEditor's functionality, refer to the [plugins directory](https://github.com/Mati365/ckeditor5-rails/tree/main/lib/ckeditor5/rails/plugins) to create custom plugins. Community contributions are welcome.
 
 ## Table of Contents 📚
 
@@ -628,7 +628,7 @@ end
 
 #### `inline_plugin(name, code)` method
 
-Use with caution as this is an inline definition of the plugin code, and you can define a custom class or function for the plugin here. The example below shows how to define a custom plugin that highlights the text:
+⚠️ **Warning:** Use with caution as this is an inline definition of the plugin code, and it can potentially cause XSS vulnerabilities. Only use this method with static, trusted JavaScript code. The example below shows how to define a custom plugin that highlights the text:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -645,12 +645,31 @@ CKEditor5::Rails.configure do
       }
 
       init() {
+        const config = this.editor.config.get('myCustomPlugin') || {};
+
         // ... Your plugin code
       }
     }
   JS
 end
 ```
+
+To configure the custom plugin, use the `configure` method in your initializer. The example below shows how to configure the `myCustomPlugin`:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  configure :myCustomPlugin, {
+    option1: 'value1',
+    option2: 'value2'
+  }
+end
+```
+
+This approach is resistant to XSS attacks as it avoids inline JavaScript.
 
 #### `simple_upload_adapter(url)` method
 
