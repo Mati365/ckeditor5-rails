@@ -162,10 +162,9 @@ module CKEditor5::Rails
           }
         end
 
-        return unless block
-
         builder = ToolbarBuilder.new(@config[:toolbar][:items])
-        builder.instance_eval(&block)
+        builder.instance_eval(&block) if block_given?
+        builder
       end
 
       def inline_plugin(name, code)
@@ -183,10 +182,9 @@ module CKEditor5::Rails
 
         names.each { |name| plugin(name, **kwargs) } unless names.empty?
 
-        return unless block
-
         builder = PluginsBuilder.new(@config[:plugins])
-        builder.instance_eval(&block)
+        builder.instance_eval(&block) if block_given?
+        builder
       end
 
       def language(ui = nil, content: ui) # rubocop:disable Naming/MethodParameterName

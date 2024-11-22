@@ -86,6 +86,13 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
     it 'includes web component script' do
       expect(html).to include('<script type="module" nonce="true">')
     end
+
+    it 'memoizes scripts import map' do
+      first_call = serializer.send(:scripts_import_map_tag)
+      second_call = serializer.send(:scripts_import_map_tag)
+
+      expect(first_call.object_id).to eq(second_call.object_id)
+    end
   end
 
   describe '.url_resource_preload_type' do

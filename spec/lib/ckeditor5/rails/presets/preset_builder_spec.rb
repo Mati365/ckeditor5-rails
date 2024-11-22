@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require_relative './plugins_builder_spec'
+require_relative './toolbar_builder_spec'
 
 RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
   let(:builder) { described_class.new }
@@ -139,6 +141,10 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
         end
         expect(builder.config[:toolbar][:items]).to include(:bold, :italic, :undo)
       end
+
+      it 'returns ToolbarBuilder instance if no block provided' do
+        expect(builder.toolbar).to be_a(CKEditor5::Rails::Presets::ToolbarBuilder)
+      end
     end
 
     describe '#plugins' do
@@ -156,6 +162,10 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
         end
         plugin_names = builder.config[:plugins].map { |p| p.name.to_s }
         expect(plugin_names).to eq(%w[Paragraph Essentials])
+      end
+
+      it 'returns PluginsBuilder instance if no block provided' do
+        expect(builder.plugins).to be_a(CKEditor5::Rails::Presets::PluginsBuilder)
       end
     end
 

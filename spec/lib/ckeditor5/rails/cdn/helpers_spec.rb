@@ -160,7 +160,25 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
         )
       end
 
-      it 'raises error when version is missing' do
+      before do
+        allow(helper).to receive(:merge_with_editor_preset).and_return({})
+      end
+
+      it 'raises error about missing required parameters' do
+        expect { helper.ckeditor5_assets(preset: :default) }
+          .to raise_error(NoMatchingPatternKeyError)
+      end
+    end
+
+    context 'with empty hash from preset' do
+      let(:preset) do
+        instance_double(
+          CKEditor5::Rails::Presets::PresetBuilder,
+          to_h_with_overrides: {}
+        )
+      end
+
+      it 'raises error about missing version and type' do
         expect { helper.ckeditor5_assets(preset: :default) }
           .to raise_error(ArgumentError, /forgot to define version/)
       end

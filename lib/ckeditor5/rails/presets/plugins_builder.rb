@@ -2,10 +2,10 @@
 
 module CKEditor5::Rails
   class Presets::PluginsBuilder
-    attr_reader :plugins
+    attr_reader :items
 
     def initialize(plugins)
-      @plugins = plugins
+      @items = plugins
     end
 
     def self.create_plugin(name, **kwargs)
@@ -17,19 +17,19 @@ module CKEditor5::Rails
     end
 
     def remove(*names)
-      names.each { |name| plugins.delete_if { |plugin| plugin.name == name } }
+      names.each { |name| items.delete_if { |plugin| plugin.name == name } }
     end
 
     def prepend(*names, before: nil, **kwargs)
       new_plugins = names.map { |name| self.class.create_plugin(name, **kwargs) }
 
       if before
-        index = plugins.index { |p| p.name == before }
+        index = items.index { |p| p.name == before }
         raise ArgumentError, "Plugin '#{before}' not found" unless index
 
-        plugins.insert(index, *new_plugins)
+        items.insert(index, *new_plugins)
       else
-        plugins.insert(0, *new_plugins)
+        items.insert(0, *new_plugins)
       end
     end
 
@@ -37,12 +37,12 @@ module CKEditor5::Rails
       new_plugins = names.map { |name| self.class.create_plugin(name, **kwargs) }
 
       if after
-        index = plugins.index { |p| p.name == after }
+        index = items.index { |p| p.name == after }
         raise ArgumentError, "Plugin '#{after}' not found" unless index
 
-        plugins.insert(index + 1, *new_plugins)
+        items.insert(index + 1, *new_plugins)
       else
-        plugins.push(*new_plugins)
+        items.push(*new_plugins)
       end
     end
   end

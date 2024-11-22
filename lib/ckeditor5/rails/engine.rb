@@ -45,7 +45,7 @@ module CKEditor5::Rails
       def find_preset(preset)
         return preset if preset.is_a?(CKEditor5::Rails::Presets::PresetBuilder)
 
-        Engine.base.presets[preset]
+        base.presets[preset]
       end
     end
 
@@ -54,7 +54,8 @@ module CKEditor5::Rails
 
       delegate :version, :gpl, :premium, :cdn, :translations, :license_key,
                :type, :menubar, :toolbar, :plugins, :plugin, :inline_plugin,
-               :language, :ckbox, :configure, to: :default_preset
+               :language, :ckbox, :configure, :automatic_upgrades, :simple_upload_adapter,
+               :editable_height, to: :default_preset
 
       def initialize(configuration)
         @configuration = configuration
