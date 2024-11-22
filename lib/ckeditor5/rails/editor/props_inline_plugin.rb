@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'props_base_plugin'
-
 module CKEditor5::Rails::Editor
-  class PropsInlinePlugin < PropsBasePlugin
-    attr_reader :code
+  class PropsInlinePlugin
+    attr_reader :name, :code
 
     def initialize(name, code)
-      super(name)
-
+      @name = name
       @code = code
       validate_code!
     end

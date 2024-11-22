@@ -25,15 +25,9 @@ RSpec.describe CKEditor5::Rails::Context::Props do
   describe '#to_attributes' do
     subject(:attributes) { props.to_attributes }
 
-    it 'returns integrity property' do
-      expect(attributes[:integrity]).to eq(
-        '24e46c3ee19f6764930b38ecdf62c0ac824a0acbe6616b46199d892afb211acb'
-      )
-    end
-
     it 'returns a hash with plugins and config keys' do
       expect(attributes).to be_a(Hash)
-      expect(attributes.keys).to match_array(%i[plugins integrity config])
+      expect(attributes.keys).to match_array(%i[plugins config])
     end
 
     describe ':plugins key' do
