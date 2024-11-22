@@ -37,11 +37,6 @@ jobs:
     - name: Run spec tests
       run: bundle exec rake spec
 
-    - name: Setup Chrome
-      uses: browser-actions/setup-chrome@v1
-      with:
-        chrome-version: stable
-
     - name: Run e2e tests
       run: bundle exec rake e2e
       env:
