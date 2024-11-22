@@ -1,0 +1,66 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (X.Y.Z)'
+        required: true
+        type: string
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@users.noreply.github.com"
+
+      - name: Show current version file
+        run: cat lib/ckeditor5/rails/version.rb
+
+      - name: Update version
+        run: |
+          sed -i "/[[:space:]]*VERSION = / s/'[0-9.]*'/'${{ github.event.inputs.version }}'/" lib/ckeditor5/rails/version.rb
+
+      - name: Bundle install
+        run: |
+          bundle config set frozen false
+          bundle install
+
+      - name: Show version diff
+        run: |
+          echo "Version file changes:"
+          git diff lib/ckeditor5/rails/version.rb
+
+      - name: Commit changes
+        run: |
+          git add lib/ckeditor5/rails/version.rb Gemfile.lock
+          git commit -m "Bump version to ${{ github.event.inputs.version }} and update dependencies"
+          git push origin HEAD:main
+
+#      - name: Create and push tag
+#        run: |
+#          git tag v${{ github.event.inputs.version }}
+#          git push origin v${{ github.event.inputs.version }}
+#
+#      - name: Trigger Release Process
+#        uses: peter-evans/repository-dispatch@v2
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          event-type: trigger-release
+#          client-payload: '{"version": "${{ github.event.inputs.version }}"}'
