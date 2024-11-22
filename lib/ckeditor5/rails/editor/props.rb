@@ -5,6 +5,8 @@ require_relative 'editable_height_normalizer'
 
 module CKEditor5::Rails::Editor
   class Props
+    include CKEditor5::Rails::Concerns::Checksum
+
     EDITOR_TYPES = {
       classic: 'ClassicEditor',
       inline: 'InlineEditor',
@@ -25,8 +27,9 @@ module CKEditor5::Rails::Editor
 
     def to_attributes
       {
+        **serialized_attributes,
         type: EDITOR_TYPES[@type],
-        **serialized_attributes
+        integrity: integrity_checksum
       }
     end
 
@@ -38,14 +41,24 @@ module CKEditor5::Rails::Editor
 
     attr_reader :controller_context, :watchdog, :type, :config, :editable_height
 
+    def integrity_checksum
+      unsafe_attributes = serialized_attributes.slice(:translations, :plugins)
+
+      calculate_object_checksum(unsafe_attributes)
+    end
+
     def serialized_attributes
-      {
+      return @serialized_attributes if defined?(@serialized_attributes)
+
+      attributes = {
         translations: serialize_translations,
         plugins: serialize_plugins,
         config: serialize_config,
         watchdog: watchdog
       }
-        .merge(editable_height ? { 'editable-height' => editable_height } : {})
+
+      attributes.merge!(editable_height ? { 'editable-height' => editable_height } : {})
+      @serialized_attributes = attributes
     end
 
     def serialize_translations

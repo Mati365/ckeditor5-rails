@@ -28,11 +28,13 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
 
     it 'includes required attributes' do
       attributes = props.to_attributes
+
       expect(attributes).to include(
         type: 'ClassicEditor',
         translations: String,
         plugins: String,
         config: String,
+        integrity: '358d88b83d041f208d94ac957b2fd68135f1caab5c0d101d33cf04d5d39d81ef',
         watchdog: true
       )
     end

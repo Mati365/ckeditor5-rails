@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-module CKEditor5::Rails::Editor
-  class PropsPlugin
-    attr_reader :name, :js_import_meta
+require_relative 'props_base_plugin'
 
-    delegate :to_h, to: :import_meta
+module CKEditor5::Rails::Editor
+  class PropsPlugin < PropsBasePlugin
+    attr_reader :js_import_meta
 
     def initialize(name, premium: false, **js_import_meta)
+      super(name)
+
       @name = name
       @js_import_meta = if js_import_meta.empty?
                           { import_name: premium ? 'ckeditor5-premium-features' : 'ckeditor5' }
