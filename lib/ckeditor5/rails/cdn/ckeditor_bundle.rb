@@ -22,8 +22,8 @@ module CKEditor5::Rails
 
       def scripts
         @scripts ||= [
-          js_exports_meta,
-          *translations_js_exports_meta
+          js_url_imports,
+          *translations_js_url_imports
         ]
       end
 
@@ -35,18 +35,18 @@ module CKEditor5::Rails
 
       private
 
-      def js_exports_meta
-        Assets::JSExportsMeta.new(
+      def js_url_imports
+        Assets::JSUrlImportMeta.new(
           create_cdn_url(import_name, version, "#{import_name}.js"),
           import_name: import_name
         )
       end
 
-      def translations_js_exports_meta
+      def translations_js_url_imports
         translations.map do |lang|
           url = create_cdn_url(import_name, version, "translations/#{lang}.js")
 
-          Assets::JSExportsMeta.new(
+          Assets::JSUrlImportMeta.new(
             url,
             import_name: "#{import_name}/translations/#{lang}.js",
             translation: true

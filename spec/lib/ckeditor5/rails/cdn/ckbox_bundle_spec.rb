@@ -36,7 +36,7 @@ RSpec.describe CKEditor5::Rails::Cdn::CKBoxBundle do
 
   describe '#scripts' do
     it 'returns array with main script' do
-      expect(bundle.scripts.first).to be_a(CKEditor5::Rails::Assets::JSExportsMeta)
+      expect(bundle.scripts.first).to be_a(CKEditor5::Rails::Assets::JSUrlImportMeta)
       expect(bundle.scripts.first.url).to include('ckbox.js')
       expect(bundle.scripts.first.window_name).to eq('CKBox')
     end

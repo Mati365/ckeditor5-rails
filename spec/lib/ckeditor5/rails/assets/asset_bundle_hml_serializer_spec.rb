@@ -19,11 +19,11 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
 
   let(:scripts) do
     [
-      CKEditor5::Rails::Assets::JSExportsMeta.new(
+      CKEditor5::Rails::Assets::JSUrlImportMeta.new(
         'https://cdn.com/script1.js',
         window_name: 'CKEditor5'
       ),
-      CKEditor5::Rails::Assets::JSExportsMeta.new(
+      CKEditor5::Rails::Assets::JSUrlImportMeta.new(
         'https://cdn.com/script2.js',
         import_name: '@ckeditor/script2'
       )

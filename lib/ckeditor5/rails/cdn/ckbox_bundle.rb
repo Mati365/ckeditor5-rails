@@ -20,11 +20,11 @@ module CKEditor5::Rails
 
       def scripts
         @scripts ||= [
-          Assets::JSExportsMeta.new(
+          Assets::JSUrlImportMeta.new(
             create_cdn_url('ckbox', version, 'ckbox.js'),
             window_name: 'CKBox'
           ),
-          *translations_js_exports_meta
+          *translations_js_url_imports
         ]
       end
 
@@ -46,11 +46,11 @@ module CKEditor5::Rails
               'theme must be a string or symbol'
       end
 
-      def translations_js_exports_meta
+      def translations_js_url_imports
         translations.map do |lang|
           url = create_cdn_url('ckbox', version, "translations/#{lang}.js")
 
-          Assets::JSExportsMeta.new(url, window_name: 'CKBOX_TRANSLATIONS', translation: true)
+          Assets::JSUrlImportMeta.new(url, window_name: 'CKBOX_TRANSLATIONS', translation: true)
         end
       end
     end

@@ -35,8 +35,10 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundle do
 
   describe '#translations_scripts' do
     let(:bundle) { concrete_class.new }
-    let(:translation_script) { instance_double(CKEditor5::Rails::Assets::JSExportsMeta, translation?: true) }
-    let(:regular_script) { instance_double(CKEditor5::Rails::Assets::JSExportsMeta, translation?: false) }
+    let(:translation_script) do
+      instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta, translation?: true)
+    end
+    let(:regular_script) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta, translation?: false) }
 
     before do
       allow(bundle).to receive(:scripts).and_return([translation_script, regular_script])
@@ -48,8 +50,8 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundle do
   end
 
   describe '#<<' do
-    let(:script1) { instance_double(CKEditor5::Rails::Assets::JSExportsMeta) }
-    let(:script2) { instance_double(CKEditor5::Rails::Assets::JSExportsMeta) }
+    let(:script1) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta) }
+    let(:script2) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta) }
     let(:stylesheet1) { '/path/to/style1.css' }
     let(:stylesheet2) { '/path/to/style2.css' }
 
@@ -101,8 +103,8 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundle do
   end
 
   describe '#preloads' do
-    let(:script1) { instance_double(CKEditor5::Rails::Assets::JSExportsMeta, url: '/js/script1.js') }
-    let(:script2) { instance_double(CKEditor5::Rails::Assets::JSExportsMeta, url: '/js/script2.js') }
+    let(:script1) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta, url: '/js/script1.js') }
+    let(:script2) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta, url: '/js/script2.js') }
     let(:stylesheet1) { '/css/style1.css' }
     let(:stylesheet2) { '/css/style2.css' }
 
@@ -136,7 +138,7 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundle do
   end
 end
 
-RSpec.describe CKEditor5::Rails::Assets::JSExportsMeta do
+RSpec.describe CKEditor5::Rails::Assets::JSUrlImportMeta do
   let(:url) { '/path/to/script.js' }
 
   describe '#initialize' do

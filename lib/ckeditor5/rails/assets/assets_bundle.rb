@@ -38,7 +38,7 @@ module CKEditor5::Rails::Assets
     end
   end
 
-  class JSExportsMeta
+  class JSUrlImportMeta
     attr_reader :url, :import_meta
 
     delegate :esm?, :window?, :import_name, :window_name, :import_as, :to_h, to: :import_meta
