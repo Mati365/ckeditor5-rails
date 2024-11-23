@@ -256,6 +256,11 @@ end
 
 #### `cdn(cdn = nil, &block)` method
 
+<details>
+  <summary>Configure custom CDN URL pattern or use predefined CDNs like jsdelivr or unpkg</summary>
+
+<br />
+
 Defines the CDN to be used for CKEditor 5 assets. The example below shows how to set the CDN to `:jsdelivr`:
 
 ```rb
@@ -283,8 +288,14 @@ CKEditor5::Rails.configure do
   end
 end
 ```
+</details>
 
 #### `version(version)` method
+
+<details>
+  <summary>Set up the version of CKEditor 5 to be used by the integration</summary>
+
+<br />
 
 Defines the version of CKEditor 5 to be used. The example below shows how to set the version to `43.2.0`:
 
@@ -297,8 +308,14 @@ CKEditor5::Rails.configure do
   version '43.3.1'
 end
 ```
+</details>
 
 #### `automatic_upgrades(enabled: true)` method
+
+<details>
+  <summary>Enable or disable automatic security patches and bug fixes</summary>
+
+<br />
 
 Defines if automatic upgrades should be enabled. It's enabled for the `:default` preset by default. The example below shows how to disable automatic upgrades:
 
@@ -315,8 +332,14 @@ end
 It means that the editor will automatically upgrade to the latest version when the gem is updated. It'll upgrade the editor only if the new patch or minor version is released. If you want to disable automatic upgrades, you can pass the `enabled: false` keyword argument to the `automatic_upgrades` method.
 
 Version is checked every nth day, where n is the number of days since the last check. Currently it's 4 days.
+</details>
 
 #### `gpl` method
+
+<details>
+  <summary>Defines the license of CKEditor 5. The example below shows how to set the license to GPL:</summary>
+
+<br />
 
 Defines the license of CKEditor 5. The example below shows how to set the license to GPL:
 
@@ -329,8 +352,14 @@ CKEditor5::Rails.configure do
   gpl
 end
 ```
+</details>
 
 #### `license_key(key)` method
+
+<details>
+  <summary>Defines the license key of CKEditor 5. It calls `premium` method internally. The example below shows how to set the license key:</summary>
+
+<br />
 
 Defines the license key of CKEditor 5. It calls `premium` method internally. The example below shows how to set the license key:
 
@@ -343,8 +372,14 @@ CKEditor5::Rails.configure do
   license_key 'your-license-key'
 end
 ```
+</details>
 
 #### `premium` method
+
+<details>
+  <summary>Defines if premium package should be included in JS assets. The example below shows how to add `ckeditor5-premium-features` to import maps:</summary>
+
+<br />
 
 Defines if premium package should be included in JS assets. The example below shows how to add `ckeditor5-premium-features` to import maps:
 
@@ -357,8 +392,14 @@ CKEditor5::Rails.configure do
   premium
 end
 ```
+</details>
 
 #### `editable_height(height)` method
+
+<details>
+  <summary>Set editor height in pixels - useful for fixed-size layouts</summary>
+
+<br />
 
 Defines the height of the editor. The example below shows how to set the height to `300px`:
 
@@ -371,8 +412,14 @@ CKEditor5::Rails.configure do
   editable_height 300
 end
 ```
+</details>
 
 #### `translations(*languages)` method
+
+<details>
+  <summary>Load additional language files for the editor interface</summary>
+
+<br />
 
 Defines the translations of CKEditor 5. You can pass the language codes as arguments. The example below shows how tell integration to fetch Polish and Spanish translations:
 
@@ -398,8 +445,14 @@ CKEditor5::Rails.configure do
   language :pl
 end
 ```
+</details>
 
 #### `ckbox` method
+
+<details>
+  <summary>Configure CKBox file manager integration</summary>
+
+<br />
 
 Defines the CKBox plugin to be included in the editor. The example below shows how to include the CKBox plugin:
 
@@ -412,8 +465,14 @@ CKEditor5::Rails.configure do
   ckbox '2.6.0', theme: :lark
 end
 ```
+</details>
 
 #### `type(type)` method
+
+<details>
+  <summary>Select editor type (classic, inline, balloon, decoupled, multiroot)</summary>
+
+<br />
 
 Defines the type of editor. Available options:
 
@@ -434,8 +493,14 @@ CKEditor5::Rails.configure do
   type :multiroot
 end
 ```
+</details>
 
 #### `toolbar(*items, should_group_when_full: true, &block)` method
+
+<details>
+  <summary>Define toolbar items and their grouping behavior</summary>
+
+<br />
 
 Defines the toolbar items. You can use predefined items like `:undo`, `:redo`, `:|` or specify custom items. There are a few special items:
 
@@ -486,8 +551,14 @@ CKEditor5::Rails.configure do
   end
 end
 ```
+</details>
 
 #### `menubar(visible: true)` method
+
+<details>
+  <summary>Set the visibility and options for the editor menubar</summary>
+
+<br />
 
 Defines the visibility of the menubar. By default, it's set to `true`.
 
@@ -502,8 +573,14 @@ CKEditor5::Rails.configure do
           :bulletedList, :numberedList, :todoList, :outdent, :indent
 end
 ```
+</details>
 
 #### `language(ui, content:)` method
+
+<details>
+  <summary>Set UI and content language for the editor</summary>
+
+<br />
 
 Defines the language of the editor. You can pass the language code as an argument. Keep in mind that the UI and content language can be different. The example below shows how to set the Polish language for the UI and content:
 
@@ -528,8 +605,14 @@ CKEditor5::Rails.configure do
   language :en, content: :pl
 end
 ```
+</details>
 
 #### `configure(name, value)` method
+
+<details>
+  <summary>Add custom configuration options to the editor instance</summary>
+
+<br />
 
 Allows you to set custom configuration options. You can pass the name of the option and its value as arguments. The [`ckeditor5_element_ref(selector)` helper](#ckeditor5_element_refselector-method) allows you to reference DOM elements that will be used by the editor's features. It's particularly useful for features that need to check element presence or operate on specific DOM elements.
 
@@ -557,8 +640,14 @@ CKEditor5::Rails.configure do
   }
 end
 ```
+</details>
 
 #### `plugin(name, premium:, import_name:)` method
+
+<details>
+  <summary>Register individual CKEditor plugins with optional premium flag</summary>
+
+<br />
 
 Defines a plugin to be included in the editor. You can pass the name of the plugin as an argument. The `premium` keyword argument determines whether the plugin is premium. The `import_name` keyword argument specifies the name of the package to import the plugin from.
 
@@ -597,10 +686,15 @@ CKEditor5::Rails.configure do
   plugin :YourPlugin, window_name: 'YourPlugin'
 end
 ```
+</details>
 
 #### `plugins(*names, **kwargs)` method
 
+<details>
+  <summary>Register multiple CKEditor plugins at once</summary>
 Defines the plugins to be included in the editor. You can specify multiple plugins by passing their names as arguments. The keyword arguments are identical to the configuration of the `plugin` method defined below.
+
+<br />
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -625,8 +719,14 @@ CKEditor5::Rails.configure do
   end
 end
 ```
+</details>
 
 #### `inline_plugin(name, code)` method
+
+<details>
+  <summary>Define custom CKEditor plugins directly in the configuration</summary>
+
+<br />
 
 ⚠️ **Warning:** Use with caution as this is an inline definition of the plugin code, and it can potentially cause XSS vulnerabilities. Only use this method with static, trusted JavaScript code. The example below shows how to define a custom plugin that highlights the text:
 
@@ -670,10 +770,15 @@ end
 ```
 
 This approach is resistant to XSS attacks as it avoids inline JavaScript.
+</details>
 
 #### `simple_upload_adapter(url)` method
 
+<details>
+  <summary>Configure server-side image upload endpoint</summary>
 Defines the URL for the simple upload adapter. The default endpoint is `/uploads` and the method is `POST`. The example below shows how to set the URL to `/uploads`:
+
+<br />
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -685,12 +790,18 @@ CKEditor5::Rails.configure do
   # or: simple_upload_adapter '/uploads'
 end
 ```
+</details>
 
 ### Controller / View helpers 📦
 
 #### `ckeditor5_element_ref(selector)` method
 
-Defines a reference to a CKEditor 5 element. In other words, it allows you to reference DOM elements that will be used by the editor's features. It's particularly useful for features that need to check element presence or operate on specific DOM elements. The primary example is the `presence list` feature that requires a reference to the element that will be used to display the list.
+<details>
+  <summary>Defines a reference to a CKEditor 5 element.</summary>
+
+<br />
+
+In other words, it allows you to reference DOM elements that will be used by the editor's features. It's particularly useful for features that need to check element presence or operate on specific DOM elements. The primary example is the `presence list` feature that requires a reference to the element that will be used to display the list.
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -703,10 +814,16 @@ CKEditor5::Rails.configure do
   }
 end
 ```
+</details>
 
 #### `ckeditor5_preset(&block)` method
 
-The `ckeditor5_preset` method allows you to define a custom preset in your application controller. It may be useful when you want to define a preset based on the current user or request.
+<details>
+  <summary>The `ckeditor5_preset` method allows you to define a custom preset in your application controller.</summary>
+
+<br />
+
+It may be useful when you want to define a preset based on the current user or request.
 
 ```rb
 # app/controllers/application_controller.rb
@@ -740,6 +857,7 @@ In order to use the preset in the view, you can pass it to the `ckeditor5_assets
 
 <%= ckeditor5_editor %>
 ```
+</details>
 
 ## Including CKEditor 5 assets 📦
 
