@@ -779,6 +779,9 @@ This approach is resistant to XSS attacks as it avoids inline JavaScript.
 
 <details>
   <summary>Configure server-side image upload endpoint</summary>
+
+<br />
+
 Defines the URL for the simple upload adapter. The default endpoint is `/uploads` and the method is `POST`. The example below shows how to set the URL to `/uploads`:
 
 <br />
