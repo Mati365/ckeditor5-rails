@@ -692,6 +692,9 @@ end
 
 <details>
   <summary>Register multiple CKEditor plugins at once</summary>
+
+<br />
+
 Defines the plugins to be included in the editor. You can specify multiple plugins by passing their names as arguments. The keyword arguments are identical to the configuration of the `plugin` method defined below.
 
 <br />
