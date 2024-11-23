@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'concerns/configuration_methods'
+require_relative 'concerns/plugin_methods'
+
 module CKEditor5::Rails
   module Presets
     class PresetBuilder
       include Editor::Helpers::Config
-
-      attr_reader :config
+      include Concerns::ConfigurationMethods
+      include Concerns::PluginMethods
 
       def initialize(&block)
         @version = nil
@@ -44,10 +47,6 @@ module CKEditor5::Rails
 
       def gpl?
         license_key == 'GPL'
-      end
-
-      def menubar?
-        @config.dig(:menuBar, :isVisible) || false
       end
 
       def to_h_with_overrides(**overrides)
@@ -144,14 +143,14 @@ module CKEditor5::Rails
         @type = type
       end
 
-      def configure(key, value)
-        @config[key] = value
-      end
-
       def menubar(visible: true)
-        @config[:menuBar] = {
+        config[:menuBar] = {
           isVisible: visible
         }
+      end
+
+      def menubar?
+        config.dig(:menuBar, :isVisible) || false
       end
 
       def toolbar(*items, should_group_when_full: true, &block)
@@ -167,30 +166,10 @@ module CKEditor5::Rails
         builder
       end
 
-      def inline_plugin(name, code)
-        @config[:plugins] << Editor::PropsInlinePlugin.new(name, code)
-      end
-
-      def plugin(name, **kwargs)
-        plugin_obj = PluginsBuilder.create_plugin(name, **kwargs)
-        @config[:plugins] << plugin_obj
-        plugin_obj
-      end
-
-      def plugins(*names, **kwargs, &block)
-        @config[:plugins] ||= []
-
-        names.each { |name| plugin(name, **kwargs) } unless names.empty?
-
-        builder = PluginsBuilder.new(@config[:plugins])
-        builder.instance_eval(&block) if block_given?
-        builder
-      end
-
       def language(ui = nil, content: ui) # rubocop:disable Naming/MethodParameterName
-        return @config[:language] if ui.nil?
+        return config[:language] if ui.nil?
 
-        @config[:language] = {
+        config[:language] = {
           ui: ui,
           content: content
         }

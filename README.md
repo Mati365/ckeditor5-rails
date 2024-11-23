@@ -1148,15 +1148,17 @@ Format of the `ckeditor5_context` helper:
 ```erb
 <!-- app/views/demos/index.html.erb -->
 
-<%= ckeditor5_context config: { ... }, plugins: [ ... ] do %>
+<%= ckeditor5_context @context_preset do %>
   <%= ckeditor5_editor %>
   <%= ckeditor5_editor %>
 <% end %>
 ```
 
-The `ckeditor5_context` helper takes the `config` and `plugins` keyword arguments. The `config` keyword argument allows you to define the shared configuration of the editor instances, while the `plugins` keyword argument allows you to define the shared plugins. Format of these arguments is the same as in the `ckeditor5_editor` helper.
+The `ckeditor5_context` helper takes the context preset as an argument and renders the editor instances within the context. The context preset defines the shared configuration and state of the editor instances. It should be defined somewhere in controller.
 
 ### Example usage of `ckeditor5_context` helper 📝
+
+In your view:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
@@ -1165,7 +1167,7 @@ The `ckeditor5_context` helper takes the `config` and `plugins` keyword argument
   <%= ckeditor5_assets preset: :ultrabasic %>
 <% end %>
 
-<%= ckeditor5_context do %>
+<%= ckeditor5_context @context_preset do %>
   <%= ckeditor5_editor initial_data: 'Hello World' %>
 
   <br>
@@ -1173,6 +1175,28 @@ The `ckeditor5_context` helper takes the `config` and `plugins` keyword argument
   <%= ckeditor5_editor initial_data: 'Hello World 2' %>
 <% end %>
 ```
+
+In your controller:
+
+```rb
+# app/controllers/demos_controller.rb
+
+class DemosController < ApplicationController
+  def index
+    @context_preset = ckeditor5_context_preset do
+      # Syntax is identical to the `toolbar` method of the preset configuration.
+      toolbar :bold, :italic
+
+      # It's possible to define plugins. Syntax is identical to the `plugins` method of the preset configuration.
+      # Example:
+      # plugin :Bold
+      # inline_plugin :MyCustomPlugin, '...'
+    end
+  end
+end
+```
+
+See demo for more details.
 
 ## How to access editor instance? 🤔
 

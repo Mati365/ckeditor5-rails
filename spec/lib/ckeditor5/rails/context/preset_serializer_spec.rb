@@ -2,28 +2,27 @@
 
 require 'spec_helper'
 
-RSpec.describe CKEditor5::Rails::Context::Props do
-  let(:config) do
-    {
-      plugins: [
-        CKEditor5::Rails::Editor::PropsPlugin.new('Plugin1', import_name: '@ckeditor/plugin1'),
-        CKEditor5::Rails::Editor::PropsInlinePlugin.new('plugin2', 'export default class Plugin2 {}')
-      ],
-      toolbar: { items: %w[bold italic] },
-      language: 'en'
-    }
+RSpec.describe CKEditor5::Rails::Context::PresetSerializer do
+  let(:preset) do
+    CKEditor5::Rails::Context::PresetBuilder.new do
+      plugin 'Plugin1', import_name: '@ckeditor/plugin1'
+      inline_plugin 'plugin2', 'export default class Plugin2 {}'
+
+      configure :toolbar, { items: %w[bold italic] }
+      configure :language, 'en'
+    end
   end
 
-  subject(:props) { described_class.new(config) }
+  subject(:serializer) { described_class.new(preset) }
 
   describe '#initialize' do
-    it 'accepts a config hash' do
-      expect { described_class.new({}) }.not_to raise_error
+    it 'accepts a preset instance' do
+      expect { described_class.new(preset) }.not_to raise_error
     end
   end
 
   describe '#to_attributes' do
-    subject(:attributes) { props.to_attributes }
+    subject(:attributes) { serializer.to_attributes }
 
     it 'returns a hash with plugins and config keys' do
       expect(attributes).to be_a(Hash)

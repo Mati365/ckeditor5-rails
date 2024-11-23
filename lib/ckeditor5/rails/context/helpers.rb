@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
-require_relative 'props'
+require_relative 'preset_builder'
+require_relative 'preset_serializer'
 
 module CKEditor5::Rails::Context
   module Helpers
-    def ckeditor5_context(**config, &block)
-      context_props = Props.new(config)
+    def ckeditor5_context(preset, &block)
+      context_props = PresetSerializer.new(preset)
 
       tag.public_send(:'ckeditor-context-component', **context_props.to_attributes, &block)
+    end
+
+    def ckeditor5_context_preset(&block)
+      PresetBuilder.new(&block)
     end
   end
 end

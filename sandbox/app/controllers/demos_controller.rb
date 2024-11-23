@@ -22,4 +22,27 @@ class DemosController < ApplicationController
       simple_upload_adapter
     end
   end
+
+  def context
+    @context_preset = ckeditor5_context_preset do
+      inline_plugin :MagicContextPlugin, <<~JS
+        import { Plugin } from 'ckeditor5';
+
+        export default class MagicContextPlugin extends Plugin {
+          static get pluginName() {
+            return 'MagicContextPlugin';
+          }
+
+          static get isContextPlugin() {
+            return true;
+          }
+
+          async init() {
+            console.log('MagicContextPlugin was initialized!');
+            window.MagicContextPlugin = this;
+          }
+        }
+      JS
+    end
+  end
 end

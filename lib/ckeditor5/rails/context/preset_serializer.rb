@@ -2,9 +2,9 @@
 
 module CKEditor5::Rails
   module Context
-    class Props
-      def initialize(config)
-        @config = config
+    class PresetSerializer
+      def initialize(preset)
+        @preset = preset
       end
 
       def to_attributes
@@ -16,7 +16,7 @@ module CKEditor5::Rails
 
       private
 
-      attr_reader :config
+      delegate :config, to: :@preset
 
       def serialize_plugins
         (config[:plugins] || []).map { |plugin| Editor::PropsPlugin.normalize(plugin).to_h }.to_json

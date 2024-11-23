@@ -2,7 +2,7 @@
 
 module CKEditor5::Rails::Plugins
   class SimpleUploadAdapter < CKEditor5::Rails::Editor::PropsInlinePlugin
-    PLUGIN_CODE = <<~JAVASCRIPT
+    PLUGIN_CODE = <<~JS
       import { Plugin, FileRepository } from 'ckeditor5';
 
       export default class SimpleUploadAdapter extends Plugin {
@@ -78,7 +78,7 @@ module CKEditor5::Rails::Plugins
           });
         }
       }
-    JAVASCRIPT
+    JS
 
     def initialize
       super(:SimpleUploadAdapter, PLUGIN_CODE)
