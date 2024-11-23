@@ -35,6 +35,16 @@ RSpec.describe CKEditor5::Rails::Context::Helpers do
       end
     end
 
+    it 'is optional to pass a preset' do
+      expect(helper.ckeditor5_context).to have_tag(
+        'ckeditor-context-component',
+        with: {
+          plugins: '[]',
+          config: '{}'
+        }
+      )
+    end
+
     it 'creates context component with default attributes' do
       expect(helper.ckeditor5_context(empty_preset)).to have_tag(
         'ckeditor-context-component',

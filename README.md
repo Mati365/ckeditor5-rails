@@ -1196,6 +1196,17 @@ class DemosController < ApplicationController
 end
 ```
 
+It's possible to omit the preset argument, in that case the empty preset will be used.
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<%= ckeditor5_context do %>
+  <%= ckeditor5_editor %>
+  <%= ckeditor5_editor %>
+<% end %>
+```
+
 See demo for more details.
 
 ## How to access editor instance? 🤔
