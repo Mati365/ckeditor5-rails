@@ -126,7 +126,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
-      - [`ckeditor5_preset(&block)` method](#ckeditor5_presetblock-method)
+      - [`ckeditor5_preset(name = nil, &block)` method](#ckeditor5_presetname--nil-block-method)
   - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
     - [Format 📝](#format-)
       - [Using default preset](#using-default-preset)
