@@ -1144,7 +1144,8 @@ If you want to override the configuration of the editor specified in default or 
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <%= ckeditor5_assets %>
+  <!-- You can override default preset in assets helper too. -->
+  <%= ckeditor5_assets translations: [:pl] %>
 <% end %>
 
 <%= ckeditor5_editor extra_config: { toolbar: [:Bold, :Italic] }, style: 'width: 600px' %>
