@@ -22,12 +22,13 @@ module CKEditor5::Rails
     # @param initial_data [String] Initial content for the editor
     # @param watchdog [Boolean] Whether to enable the CKEditor watchdog feature
     # @param editable_height [String, Integer] Height of the editable area (Classic editor only)
+    # @param language [String] Language code for the editor UI
     # @param html_attributes [Hash] Additional HTML attributes for the editor element
     def ckeditor5_editor( # rubocop:disable Metrics/ParameterLists
       preset: nil,
       config: nil, extra_config: {}, type: nil,
       initial_data: nil, watchdog: true,
-      editable_height: nil,
+      editable_height: nil, language: nil,
       **html_attributes, &block
     )
       validate_editor_input!(initial_data, block)
@@ -41,7 +42,8 @@ module CKEditor5::Rails
       editor_props = Editor::Props.new(
         controller_context, type, config,
         watchdog: watchdog,
-        editable_height: editable_height
+        editable_height: editable_height,
+        language: language
       )
 
       tag_attributes = html_attributes.merge(editor_props.to_attributes)

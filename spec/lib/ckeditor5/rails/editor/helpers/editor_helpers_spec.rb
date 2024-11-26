@@ -65,6 +65,19 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
       end.to raise_error(ArgumentError, /Cannot pass initial data and block/)
     end
 
+    context 'when language is present' do
+      it 'passes language to editor props' do
+        result = helper.ckeditor5_editor(language: 'pl')
+
+        expect(result).to include('config=')
+        config_attr = result.match(/config="([^"]+)"/)[1]
+        decoded_config = CGI.unescape_html(config_attr)
+        parsed_config = JSON.parse(decoded_config)
+
+        expect(parsed_config['language']).to eq({ 'ui' => 'pl' })
+      end
+    end
+
     context 'when automatic upgrades are enabled' do
       before do
         allow(preset).to receive(:automatic_upgrades?).and_return(true)

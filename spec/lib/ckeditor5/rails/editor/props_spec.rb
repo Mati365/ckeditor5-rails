@@ -45,6 +45,17 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
       end
     end
 
+    context 'with language' do
+      subject(:props) { described_class.new(controller_context, type, config, language: 'pl') }
+
+      it 'includes language in config' do
+        config_json = props.to_attributes[:config]
+
+        expect(config_json).to include('language')
+        expect(JSON.parse(config_json)['language']).to eq({ 'ui' => 'pl' })
+      end
+    end
+
     context 'with license key' do
       let(:controller_context) do
         { bundle: double('Bundle', translations_scripts: []), license_key: 'ABC123' }

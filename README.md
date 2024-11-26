@@ -113,12 +113,12 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`license_key(key)` method](#license_keykey-method)
       - [`premium` method](#premium-method)
       - [`editable_height(height)` method](#editable_heightheight-method)
+      - [`language(ui, content:)` method](#languageui-content-method)
       - [`translations(*languages)` method](#translationslanguages-method)
       - [`ckbox` method](#ckbox-method)
       - [`type(type)` method](#typetype-method)
       - [`toolbar(*items, should_group_when_full: true, &block)` method](#toolbaritems-should_group_when_full-true-block-method)
       - [`menubar(visible: true)` method](#menubarvisible-true-method)
-      - [`language(ui, content:)` method](#languageui-content-method)
       - [`configure(name, value)` method](#configurename-value-method)
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
@@ -414,6 +414,41 @@ end
 ```
 </details>
 
+#### `language(ui, content:)` method
+
+<details>
+  <summary>Set UI and content language for the editor</summary>
+
+<br />
+
+Defines the language of the editor. You can pass the language code as an argument. Keep in mind that the UI and content language can be different. The example below shows how to set the Polish language for the UI and content:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  language :pl
+end
+```
+
+In order to set the language for the content, you can pass the `content` keyword argument:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  language :pl
+end
+```
+
+The example above sets the Polish language for the UI and content. If `pl` language was not defined in the translations, the builder will append the language to the list of translations to fetch. In order to prefetch more translations, use the helper below.
+
+</details>
+
 #### `translations(*languages)` method
 
 <details>
@@ -571,38 +606,6 @@ CKEditor5::Rails.configure do
   toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
           :link, :insertImage, :ckbox, :mediaEmbed, :insertTable, :blockQuote, :|,
           :bulletedList, :numberedList, :todoList, :outdent, :indent
-end
-```
-</details>
-
-#### `language(ui, content:)` method
-
-<details>
-  <summary>Set UI and content language for the editor</summary>
-
-<br />
-
-Defines the language of the editor. You can pass the language code as an argument. Keep in mind that the UI and content language can be different. The example below shows how to set the Polish language for the UI and content:
-
-```rb
-# config/initializers/ckeditor5.rb
-
-CKEditor5::Rails.configure do
-  # ... other configuration
-
-  language :pl
-end
-```
-
-In order to set the language for the content, you can pass the `content` keyword argument:
-
-```rb
-# config/initializers/ckeditor5.rb
-
-CKEditor5::Rails.configure do
-  # ... other configuration
-
-  language :en, content: :pl
 end
 ```
 </details>
@@ -1380,13 +1383,35 @@ This section covers frequent questions and scenarios when working with CKEditor 
 
 ### Setting Editor Language 🌐
 
-You can set the language of the editor using the `language` method in the `config/initializers/ckeditor5.rb` file. The `translations` method fetches the translations files, while the `language` method sets the default language of the editor.
+You can set the language of the editor using the `language` keyword argument. The example below shows how to set the language of the editor to Polish:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets language: :pl %>
+<% end %>
+
+<%= ckeditor5_editor %>
+```
+
+It can be also set in the initializer:
 
 ```rb
-config.presets.override :default do
-  translations :pl, :es
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # Optional, it load multiple translation packs: translations :pl, :es
   language :pl
 end
+```
+
+... or on the editor level (keep in mind to load translations in the assets helper):
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<%= ckeditor5_editor language: :pl %>
 ```
 
 ### Integrating with Forms 📋

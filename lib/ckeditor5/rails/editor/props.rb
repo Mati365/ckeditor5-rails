@@ -13,13 +13,17 @@ module CKEditor5::Rails::Editor
       multiroot: 'MultiRootEditor'
     }.freeze
 
-    def initialize(controller_context, type, config, watchdog: true, editable_height: nil)
+    def initialize(
+      controller_context, type, config,
+      watchdog: true, editable_height: nil, language: nil
+    )
       raise ArgumentError, "Invalid editor type: #{type}" unless Props.valid_editor_type?(type)
 
       @controller_context = controller_context
       @watchdog = watchdog
       @type = type
       @config = config
+      @language = language
       @editable_height = EditableHeightNormalizer.new(type).normalize(editable_height)
     end
 
@@ -59,7 +63,10 @@ module CKEditor5::Rails::Editor
     def serialize_config
       config
         .except(:plugins)
-        .tap { |cfg| cfg[:licenseKey] = controller_context[:license_key] if controller_context[:license_key] }
+        .tap do |cfg|
+          cfg[:licenseKey] = controller_context[:license_key] if controller_context[:license_key]
+          cfg[:language] = { ui: @language } if @language
+        end
         .to_json
     end
   end

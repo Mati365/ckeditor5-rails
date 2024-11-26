@@ -266,35 +266,49 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
     end
   end
 
-  describe '#to_h_with_overrides' do
-    let(:builder) do
-      described_class.new do
-        version '35.0.0'
-        premium true
-        translations :en, :pl
-      end
+  describe '#merge_with_hash!' do
+    it 'merges hash with current configuration' do
+      builder.merge_with_hash!(version: '32.0.0', type: :inline)
+      expect(builder.version).to eq('32.0.0')
+      expect(builder.type).to eq(:inline)
     end
 
-    it 'returns hash with default values' do
-      result = builder.to_h_with_overrides
-      expect(result).to include(
-        version: '35.0.0',
-        premium: true,
-        translations: %i[en pl]
-      )
+    it 'returns self' do
+      expect(builder.merge_with_hash!(version: '35.0.0')).to eq(builder)
     end
 
-    it 'applies overrides' do
-      result = builder.to_h_with_overrides(
-        version: '36.0.0',
-        premium: false,
-        translations: [:en]
-      )
-      expect(result).to include(
-        version: '36.0.0',
-        premium: false,
-        translations: [:en]
-      )
+    it 'merges language configuration' do
+      builder.merge_with_hash!(language: :pl)
+      expect(builder.config[:language]).to eq({ ui: :pl, content: :pl })
+    end
+
+    it 'preserves existing values when not overridden' do
+      builder.version '34.0.0'
+      builder.translations :en, :pl
+      builder.premium true
+
+      builder.merge_with_hash!(type: :inline)
+
+      expect(builder.version).to eq('34.0.0')
+      expect(builder.translations).to eq(%i[en pl])
+      expect(builder.premium?).to be true
+    end
+
+    it 'merges ckbox configuration' do
+      builder.merge_with_hash!(ckbox: { version: '1.0.0', theme: :lark })
+      expect(builder.ckbox).to eq({ version: '1.0.0', theme: :lark })
+    end
+
+    it 'merges config options deeply' do
+      original_config = { plugins: [:Essentials], toolbar: { items: [:bold] } }
+      new_config = { menuBar: { isVisible: true } }
+
+      builder.merge_with_hash!(config: original_config)
+      builder.merge_with_hash!(config: new_config)
+
+      expect(builder.config[:plugins]).to eq([:Essentials])
+      expect(builder.config[:toolbar]).to eq({ items: [:bold] })
+      expect(builder.config[:menuBar]).to eq({ isVisible: true })
     end
   end
 

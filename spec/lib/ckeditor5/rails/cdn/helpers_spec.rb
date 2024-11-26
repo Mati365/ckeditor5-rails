@@ -6,19 +6,16 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
   let(:test_class) { Class.new { include CKEditor5::Rails::Cdn::Helpers } }
   let(:helper) { test_class.new }
   let(:preset) do
-    instance_double(
-      CKEditor5::Rails::Presets::PresetBuilder,
-      to_h_with_overrides: {
-        cdn: :cloud,
-        version: '34.1.0',
-        type: 'classic',
-        translations: %w[pl],
-        ckbox: nil,
-        license_key: nil,
-        premium: false
-      }
-    )
+    CKEditor5::Rails::Presets::PresetBuilder.new do
+      version '34.1.0'
+      type :classic
+      translations :pl
+      cdn :cloud
+      license_key nil
+      premium false
+    end
   end
+
   let(:bundle_html) { '<script src="test.js"></script>' }
   let(:serializer) do
     instance_double(CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer, to_html: bundle_html)
@@ -40,7 +37,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
           .with(
             instance_of(CKEditor5::Rails::Semver),
             'ckeditor5',
-            translations: %w[pl],
+            translations: [:pl],
             cdn: :cloud
           )
           .and_call_original
@@ -50,18 +47,13 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
 
       context 'with premium features' do
         let(:preset) do
-          instance_double(
-            CKEditor5::Rails::Presets::PresetBuilder,
-            to_h_with_overrides: {
-              cdn: :cloud,
-              version: '34.1.0',
-              type: 'classic',
-              translations: %w[pl],
-              ckbox: nil,
-              license_key: nil,
-              premium: true
-            }
-          )
+          CKEditor5::Rails::Presets::PresetBuilder.new do
+            version '34.1.0'
+            type :classic
+            translations :pl
+            cdn :cloud
+            premium true
+          end
         end
 
         it 'creates base and premium bundles' do
@@ -69,7 +61,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
             .with(
               instance_of(CKEditor5::Rails::Semver),
               'ckeditor5',
-              translations: %w[pl],
+              translations: [:pl],
               cdn: :cloud
             )
             .and_call_original
@@ -79,7 +71,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
             .with(
               instance_of(CKEditor5::Rails::Semver),
               'ckeditor5-premium-features',
-              translations: %w[pl],
+              translations: [:pl],
               cdn: :cloud
             )
             .and_call_original
@@ -91,18 +83,13 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
 
       context 'with ckbox' do
         let(:preset) do
-          instance_double(
-            CKEditor5::Rails::Presets::PresetBuilder,
-            to_h_with_overrides: {
-              cdn: :cloud,
-              version: '34.1.0',
-              type: 'classic',
-              translations: %w[pl],
-              ckbox: { version: '1.0.0', theme: :lark },
-              license_key: nil,
-              premium: false
-            }
-          )
+          CKEditor5::Rails::Presets::PresetBuilder.new do
+            version '34.1.0'
+            type :classic
+            translations :pl
+            cdn :cloud
+            ckbox '1.0.0', theme: :lark
+          end
         end
 
         it 'creates ckbox bundle' do
@@ -117,49 +104,40 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
           helper.ckeditor5_assets(preset: :default)
         end
       end
-
-      context 'when destructuring preset hash' do
-        let(:preset) do
-          instance_double(
-            CKEditor5::Rails::Presets::PresetBuilder,
-            to_h_with_overrides: {
-              cdn: :cloud,
-              version: '34.1.0',
-              type: 'classic',
-              translations: %w[pl],
-              ckbox: nil,
-              license_key: nil,
-              premium: false,
-              extra: 'value'
-            }
-          )
-        end
-
-        it 'successfully matches and extracts required parameters' do
-          expect { helper.ckeditor5_assets(preset: :default) }.not_to raise_error
-        end
-      end
     end
 
-    context 'with invalid preset' do
-      before do
-        allow(CKEditor5::Rails::Engine).to receive(:find_preset).and_return(nil)
+    context 'when overriding preset values' do
+      let(:preset) do
+        CKEditor5::Rails::Presets::PresetBuilder.new do
+          version '34.1.0'
+          type :classic
+          translations :pl
+          cdn :cloud
+          license_key 'preset-license'
+          premium false
+        end
       end
 
-      it 'raises error' do
-        expect { helper.ckeditor5_assets(preset: :invalid) }
-          .to raise_error(ArgumentError, /forgot to define your invalid preset/)
+      it 'allows overriding preset values' do
+        helper.ckeditor5_assets(preset: :default, license_key: 'overridden-license')
+
+        expect(helper.instance_variable_get(:@__ckeditor_context)[:preset].license_key)
+          .to eq('overridden-license')
+      end
+
+      it 'preserves non-overridden preset values' do
+        helper.ckeditor5_assets(preset: :default, license_key: 'overridden-license')
+        preset_context = helper.instance_variable_get(:@__ckeditor_context)[:preset]
+
+        expect(preset_context.version).to eq('34.1.0')
+        expect(preset_context.premium?).to be false
+        expect(preset_context.cdn).to eq(:cloud)
+        expect(preset_context.translations).to eq([:pl])
+        expect(preset_context.type).to eq(:classic)
       end
     end
 
     context 'with missing required parameters' do
-      let(:preset) do
-        instance_double(
-          CKEditor5::Rails::Presets::PresetBuilder,
-          to_h_with_overrides: { cdn: :cloud }
-        )
-      end
-
       before do
         allow(helper).to receive(:merge_with_editor_preset).and_return({})
       end
@@ -170,54 +148,24 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
       end
     end
 
-    context 'with empty hash from preset' do
-      let(:preset) do
-        instance_double(
-          CKEditor5::Rails::Presets::PresetBuilder,
-          to_h_with_overrides: {}
-        )
+    context 'destructure non-matching preset override' do
+      before do
+        allow(CKEditor5::Rails::Engine).to receive(:find_preset).and_return(nil)
       end
+
+      it 'raises error' do
+        expect { helper.ckeditor5_assets(preset: :invalid) }
+          .to raise_error(ArgumentError, /forgot to define your invalid preset/)
+      end
+    end
+
+    context 'with empty preset' do
+      let(:preset) { CKEditor5::Rails::Presets::PresetBuilder.new }
 
       it 'raises error about missing version and type' do
         expect { helper.ckeditor5_assets(preset: :default) }
           .to raise_error(ArgumentError, /forgot to define version/)
       end
-    end
-  end
-
-  context 'when overriding preset values with kwargs' do
-    let(:preset) do
-      CKEditor5::Rails::Presets::PresetBuilder.new do
-        version '34.1.0'
-        type :classic
-        translations :pl
-        cdn :cloud
-        license_key 'preset-license'
-        premium false
-      end
-    end
-
-    before do
-      allow(CKEditor5::Rails::Engine).to receive(:find_preset).and_return(preset)
-    end
-
-    it 'allows overriding preset values with kwargs' do
-      result = helper.send(:merge_with_editor_preset, :default, license_key: 'overridden-license')
-      expect(result).to include(license_key: 'overridden-license')
-    end
-
-    it 'preserves non-overridden preset values' do
-      result = helper.send(:merge_with_editor_preset, :default, license_key: 'overridden-license')
-      expect(result).to eq(
-        version: '34.1.0',
-        premium: false,
-        cdn: :cloud,
-        translations: [:pl],
-        license_key: 'overridden-license',
-        type: :classic,
-        ckbox: nil,
-        config: { plugins: [], toolbar: [] }
-      )
     end
   end
 

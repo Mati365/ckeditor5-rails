@@ -49,17 +49,27 @@ module CKEditor5::Rails
         license_key == 'GPL'
       end
 
-      def to_h_with_overrides(**overrides)
-        {
-          version: overrides.fetch(:version, version),
-          premium: overrides.fetch(:premium, premium),
-          cdn: overrides.fetch(:cdn, cdn),
-          translations: overrides.fetch(:translations, translations),
-          license_key: overrides.fetch(:license_key, license_key),
-          type: overrides.fetch(:type, type),
-          ckbox: overrides.fetch(:ckbox, ckbox),
-          config: config.merge(overrides.fetch(:config, {}))
-        }
+      def deconstruct_keys(keys)
+        keys.index_with do |key|
+          public_send(key)
+        end
+      end
+
+      def merge_with_hash!(language: nil, **overrides) # rubocop:disable Metrics/AbcSize
+        @version = Semver.new(overrides[:version]) if overrides.key?(:version)
+        @premium = overrides.fetch(:premium, premium)
+        @cdn = overrides.fetch(:cdn, cdn)
+        @translations = overrides.fetch(:translations, translations)
+        @license_key = overrides.fetch(:license_key, license_key)
+        @type = overrides.fetch(:type, type)
+        @editable_height = overrides.fetch(:editable_height, editable_height)
+        @automatic_upgrades = overrides.fetch(:automatic_upgrades, automatic_upgrades)
+        @ckbox = overrides.fetch(:ckbox, ckbox) if overrides.key?(:ckbox) || ckbox
+        @config = config.merge(overrides.fetch(:config, {}))
+
+        language(language) if language
+
+        self
       end
 
       def editable_height(height = nil)
@@ -168,6 +178,8 @@ module CKEditor5::Rails
 
       def language(ui = nil, content: ui) # rubocop:disable Naming/MethodParameterName
         return config[:language] if ui.nil?
+
+        @translations << ui.to_sym unless @translations.map(&:to_sym).include?(ui.to_sym)
 
         config[:language] = {
           ui: ui,

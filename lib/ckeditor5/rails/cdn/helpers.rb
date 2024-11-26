@@ -13,14 +13,14 @@ require_relative 'ckbox_bundle'
 module CKEditor5::Rails
   module Cdn::Helpers
     def ckeditor5_assets(preset: :default, **kwargs)
-      merge_with_editor_preset(preset, **kwargs) => {
+      mapped_preset = merge_with_editor_preset(preset, **kwargs)
+      mapped_preset => {
         cdn:,
         version:,
         translations:,
         ckbox:,
         license_key:,
-        premium:,
-        **kwargs
+        premium:
       }
 
       bundle = build_base_cdn_bundle(cdn, version, translations)
@@ -30,7 +30,7 @@ module CKEditor5::Rails
       @__ckeditor_context = {
         license_key: license_key,
         bundle: bundle,
-        preset: preset
+        preset: mapped_preset
       }
 
       Assets::AssetsBundleHtmlSerializer.new(bundle).to_html
@@ -53,17 +53,17 @@ module CKEditor5::Rails
               'Please define it in initializer. Thank you!'
       end
 
-      hash = found_preset.to_h_with_overrides(**kwargs)
+      new_preset = found_preset.clone.merge_with_hash!(**kwargs)
 
       %i[version type].each do |key|
-        next if hash[key].present?
+        next if new_preset.public_send(key).present?
 
         raise ArgumentError,
               "Poor thing. You forgot to define #{key}. Make sure you passed `#{key}:` parameter to " \
               "`ckeditor5_assets` or defined default one in your `#{preset}` preset!"
       end
 
-      hash
+      new_preset
     end
 
     def build_base_cdn_bundle(cdn, version, translations)
