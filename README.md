@@ -1089,13 +1089,15 @@ The `ckeditor5_editor` helper renders CKEditor 5 instances in your views. Before
 
 You can set the initial content of the editor using the `initial_data` keyword argument or by passing the content directly to the `ckeditor5_editor` helper block.
 
-The example below shows how to set the initial content of the editor using the `initial_data` keyword argument:
+The example below shows how to set the initial content of the editor using the `initial_data` and `language` keyword arguments:
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
 
-<%= ckeditor5_editor initial_data: "<p>Initial content</p>" %>
+<%= ckeditor5_editor initial_data: "<p>Initial content</p>", language: :es %>
 ```
+
+The `language` keyword argument is optional, as it might be specified in the configuration. However, it's possible to override it for a specific editor instance. Keep in mind that you  need to include the language in `translations` in the configuration to preload proper files.
 
 The example below shows how to set the initial content of the editor using the `ckeditor5_editor` helper block.
 
