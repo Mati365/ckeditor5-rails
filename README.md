@@ -44,8 +44,8 @@ In your view:
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <!-- 📦 Loads CKEditor assets via importmap based on initializer config -->
-  <%= ckeditor5_assets %>
+  <!-- 📦 Adds importmap with CKEditor 5 assets. Language is optional. -->
+  <%= ckeditor5_assets language: :en %>
 <% end %>
 
 <!-- 🖋️ CKEditor 5 might be placed using simple view helper ... -->
