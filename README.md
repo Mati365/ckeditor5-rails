@@ -447,7 +447,7 @@ In order to set the language for the content, you can pass the `content` keyword
 CKEditor5::Rails.configure do
   # ... other configuration
 
-  language :pl
+  language :pl, content: :en
 end
 ```
 
