@@ -77,6 +77,10 @@ CKEditor5::Rails.configure do
 
   # Upload images to the server using the simple upload adapter, instead of Base64 encoding.
   # simple_upload_adapter
+
+  # Specify global language for the editor.
+  # It can be done here, in controller or in the view.
+  # language :pl
 end
 ```
 
