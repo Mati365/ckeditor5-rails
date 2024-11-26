@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ckeditor5 (1.17.0)
+    ckeditor5 (1.17.1)
       rails (>= 6.0, < 9.0)
 
 GEM
