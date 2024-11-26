@@ -822,7 +822,7 @@ end
 ```
 </details>
 
-#### `ckeditor5_preset(&block)` method
+#### `ckeditor5_preset(name = nil, &block)` method
 
 <details>
   <summary>The `ckeditor5_preset` method allows you to define a custom preset in your application controller.</summary>
@@ -864,6 +864,8 @@ In order to use the preset in the view, you can pass it to the `ckeditor5_assets
 <%= ckeditor5_editor %>
 ```
 </details>
+
+If `name` is provided then the preset is returned.
 
 ## Including CKEditor 5 assets 📦
 
