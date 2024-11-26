@@ -55,6 +55,12 @@ module CKEditor5::Rails
         end
       end
 
+      def override(&block)
+        clone.tap do |preset|
+          preset.instance_eval(&block)
+        end
+      end
+
       def merge_with_hash!(language: nil, **overrides) # rubocop:disable Metrics/AbcSize
         @version = Semver.new(overrides[:version]) if overrides.key?(:version)
         @premium = overrides.fetch(:premium, premium)

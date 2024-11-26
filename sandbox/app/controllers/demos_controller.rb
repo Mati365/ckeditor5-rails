@@ -23,6 +23,12 @@ class DemosController < ApplicationController
     end
   end
 
+  def locale_via_preset
+    @preset = ckeditor5_preset(:default).override do
+      language :ru
+    end
+  end
+
   def context
     @context_preset = ckeditor5_context_preset do
       inline_plugin :MagicContextPlugin, <<~JS

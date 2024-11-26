@@ -234,6 +234,8 @@ CKEditor5::Rails.configure do
 end
 ```
 
+You can define presets in the controller using the `ckeditor5_preset` helper method. See it in the section below ([Controller / View helpers](#controller--view-helpers-)).
+
 Configuration of the editor can be complex, and it's recommended to use the [CKEditor 5 online builder](https://ckeditor.com/ckeditor-5/online-builder/) to generate the configuration. It allows you to select the features you want to include and generate the configuration code in JavaScript format. Keep in mind that you need to convert the JavaScript configuration to Ruby format before using it in this gem.
 
 ### Automatic upgrades 🔄
@@ -866,9 +868,31 @@ In order to use the preset in the view, you can pass it to the `ckeditor5_assets
 
 <%= ckeditor5_editor %>
 ```
-</details>
 
-If `name` is provided then the preset is returned.
+If you want to override the preset defined in the initializer, you can search for the preset by name and then override it (it'll create copy of the preset):
+
+```rb
+# app/controllers/application_controller.rb
+
+class ApplicationController < ActionController::Base
+  def show
+    @preset = ckeditor5_preset(:default).override do
+      version '43.3.1'
+
+      toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
+              :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
+              :fontFamily, :fontSize, :|, :link, :anchor, :|,
+              :fontColor, :fontBackgroundColor
+
+      plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
+              :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
+              :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph
+    end
+  end
+end
+```
+
+</details>
 
 ## Including CKEditor 5 assets 📦
 

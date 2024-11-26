@@ -1,0 +1,9 @@
+- content_for :head
+  = ckeditor5_assets language: :pl
+
+= render 'back_to_home'
+
+h1.mb-4 Classic Editor (assets locale)
+
+= ckeditor5_editor do
+  | Hello World

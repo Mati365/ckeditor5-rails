@@ -70,6 +70,22 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
     end
   end
 
+  describe '#override' do
+    it 'returns a new instance with overridden values' do
+      builder.version '35.0.0'
+      builder.translations :en, :pl
+
+      overridden = builder.override do
+        version '36.0.0'
+        translations :de
+      end
+
+      expect(builder.version).to eq('35.0.0')
+      expect(overridden.version).to eq('36.0.0')
+      expect(overridden.translations).to eq([:de])
+    end
+  end
+
   describe 'configuration methods' do
     describe '#automatic_upgrades' do
       it 'enables automatic upgrades' do
