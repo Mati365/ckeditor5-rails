@@ -1094,10 +1094,8 @@ The example below shows how to set the initial content of the editor using the `
 ```erb
 <!-- app/views/demos/index.html.erb -->
 
-<%= ckeditor5_editor initial_data: "<p>Initial content</p>", language: :es %>
+<%= ckeditor5_editor initial_data: "<p>Initial content</p>" %>
 ```
-
-The `language` keyword argument is optional, as it might be specified in the configuration. However, it's possible to override it for a specific editor instance. Keep in mind that you  need to include the language in `translations` in the configuration to preload proper files.
 
 The example below shows how to set the initial content of the editor using the `ckeditor5_editor` helper block.
 
