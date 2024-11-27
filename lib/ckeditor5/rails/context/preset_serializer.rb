@@ -19,7 +19,7 @@ module CKEditor5::Rails
       delegate :config, to: :@preset
 
       def serialize_plugins
-        (config[:plugins] || []).map { |plugin| Editor::PropsPlugin.normalize(plugin).to_h }.to_json
+        (config[:plugins] || []).map { |plugin| Editor::PropsBasePlugin.normalize(plugin).to_h }.to_json
       end
 
       def serialize_config

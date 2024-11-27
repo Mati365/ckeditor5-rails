@@ -57,7 +57,7 @@ module CKEditor5::Rails::Editor
     end
 
     def serialize_plugins
-      (config[:plugins] || []).map { |plugin| PropsPlugin.normalize(plugin).to_h }.to_json
+      (config[:plugins] || []).map { |plugin| PropsBasePlugin.normalize(plugin).to_h }.to_json
     end
 
     def serialize_config

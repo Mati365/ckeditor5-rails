@@ -1,26 +1,21 @@
 # frozen_string_literal: true
 
+require_relative 'props_base_plugin'
+
 module CKEditor5::Rails::Editor
-  class PropsPlugin
-    attr_reader :name, :js_import_meta
+  class PropsPlugin < PropsBasePlugin
+    attr_reader :js_import_meta
 
     delegate :to_h, to: :import_meta
 
     def initialize(name, premium: false, **js_import_meta)
-      @name = name
+      super(name)
+
       @js_import_meta = if js_import_meta.empty?
                           { import_name: premium ? 'ckeditor5-premium-features' : 'ckeditor5' }
                         else
                           js_import_meta
                         end
-    end
-
-    def self.normalize(plugin)
-      case plugin
-      when String, Symbol then new(plugin)
-      when PropsPlugin, PropsInlinePlugin then plugin
-      else raise ArgumentError, "Invalid plugin: #{plugin}"
-      end
     end
 
     def to_h
