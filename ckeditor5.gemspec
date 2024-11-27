@@ -18,6 +18,12 @@ Gem::Specification.new do |s|
   s.email = 'cziken58@gmail.com'
   s.homepage = 'https://github.com/Mati365/ckeditor5-rails'
   s.required_ruby_version = '>= 3.0.0'
+  s.metadata = {
+    'homepage_uri' => 'https://github.com/Mati365/ckeditor5-rails',
+    'documentation_uri' => 'https://github.com/Mati365/ckeditor5-rails',
+    'source_code_uri' => 'https://github.com/Mati365/ckeditor5-rails',
+    'bug_tracker_uri' => 'https://github.com/Mati365/ckeditor5-rails/issues'
+  }
 
   s.extra_rdoc_files = ['README.md']
   s.test_files = Dir['spec/**/*']
