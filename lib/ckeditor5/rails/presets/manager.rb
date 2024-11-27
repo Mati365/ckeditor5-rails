@@ -40,7 +40,7 @@ module CKEditor5::Rails::Presets
 
     private
 
-    def define_default_preset # rubocop:disable Metrics/MethodLength
+    def define_default_preset
       define :default do
         version CKEditor5::Rails::DEFAULT_CKEDITOR_VERSION
 
