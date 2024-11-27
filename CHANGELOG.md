@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.18.1] - 2024-11-27
+
+### Bug Fixes
+
+* missing `wproofreader` in initializer config proxy ([9a5b8d1](https://github.com/Mati365/ckeditor5-rails/commit/9a5b8d1402af3f004e5fce6f4e587ffb4d70c378))
+* incorrect changelog generate ([e1c41ed](https://github.com/Mati365/ckeditor5-rails/commit/e1c41edaa06a4510ca4b83db76c78e985af2d7fe))
+* wrong example of wproofreader cdn in docs ([dce8af4](https://github.com/Mati365/ckeditor5-rails/commit/dce8af4f1cac822a1aa99ad2b18717b82c0ef351))
+
 ## [1.18.0] - 2024-11-27
 
 ### Features
