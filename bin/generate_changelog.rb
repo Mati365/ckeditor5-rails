@@ -3,7 +3,7 @@
 require 'date'
 
 def get_commits_since_last_bump
-  `git log --pretty=format:"%H|||%s|||%h" $(git log --grep="^Bump version" -n 2 --pretty=format:%H | tail -n 1)..HEAD`
+  `git log --pretty=format:"%H|||%s|||%h" $(git log --grep="^Bump version" -n 1 --pretty=format:%H)..HEAD`
     .split("\n")
     .map { |line| line.split('|||') }
     .map { |hash, subject, short_hash| [hash, subject.strip, short_hash] }
