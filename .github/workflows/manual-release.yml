@@ -37,19 +37,26 @@ jobs:
         run: |
           sed -i "/^[[:space:]]*VERSION = / {/DEFAULT_CKEDITOR_VERSION/! s/'[0-9.]*'/'${{ github.event.inputs.version }}'/}" lib/ckeditor5/rails/version.rb
 
+      - name: Update changelog
+        run: |
+          chmod +x bin/generate_changelog.rb
+          ruby bin/generate_changelog.rb ${{ github.event.inputs.version }}
+
       - name: Bundle install
         run: |
           bundle config set frozen false
           bundle install
 
-      - name: Show version diff
+      - name: Show changes
         run: |
           echo "Version file changes:"
           git diff lib/ckeditor5/rails/version.rb
+          echo "Changelog changes:"
+          git diff CHANGELOG.md
 
       - name: Commit changes
         run: |
-          git add lib/ckeditor5/rails/version.rb Gemfile.lock
+          git add lib/ckeditor5/rails/version.rb Gemfile.lock CHANGELOG.md
           git commit -m "Bump version to ${{ github.event.inputs.version }} and update dependencies"
           git push origin HEAD:main
 
