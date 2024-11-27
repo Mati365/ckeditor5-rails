@@ -129,6 +129,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
+      - [`external_plugin(name, script:, import_as: nil, window_name: nil, stylesheets: [])` method](#external_pluginname-script-import_as-nil-window_name-nil-stylesheets--method)
       - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
       - [`wproofreader(version: nil, cdn: nil, **config)` method](#wproofreaderversion-nil-cdn-nil-config-method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
@@ -789,6 +790,84 @@ end
 ```
 
 This approach is resistant to XSS attacks as it avoids inline JavaScript.
+</details>
+
+#### `external_plugin(name, script:, import_as: nil, window_name: nil, stylesheets: [])` method
+
+<details>
+  <summary>Define external CKEditor plugins directly in the configuration</summary>
+
+<br />
+
+Defines an external plugin to be included in the editor. You can pass the name of the plugin as an argument. The `script` keyword argument specifies the URL of the script to import the plugin from. The `import_as` keyword argument specifies the name of the package to import the plugin from. The `window_name` keyword argument specifies the name of the plugin in the window object. The `stylesheets` keyword argument specifies the URLs of the stylesheets to import.
+
+The example below shows how to define an external plugin that highlights the text:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  external_plugin :MyExternalPlugin,
+                  script: 'https://example.com/my-external-plugin.js'
+end
+```
+
+In order to import a plugin from a custom ESM package, you can pass the `import_as` keyword argument:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  external_plugin :MyExternalPlugin,
+                  script: 'https://example.com/my-external-plugin.js',
+                  import_as: 'Plugin'
+end
+```
+
+It's equivalent to the following JavaScript code:
+
+```js
+import { Plugin } from 'my-external-plugin';
+```
+
+In order to import a plugin from a custom Window entry, you can pass the `window_name` keyword argument:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  external_plugin :MyExternalPlugin,
+                  script: 'https://example.com/my-external-plugin.js',
+                  window_name: 'MyExternalPlugin'
+end
+```
+
+It's equivalent to the following JavaScript code:
+
+```js
+const Plugin = window.MyExternalPlugin;
+```
+
+In order to import a plugin with stylesheets, you can pass the `stylesheets` keyword argument:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  external_plugin :MyExternalPlugin,
+                  script: 'https://example.com/my-external-plugin.js',
+                  stylesheets: ['https://example.com/my-external-plugin.css']
+end
+```
+
 </details>
 
 #### `simple_upload_adapter(url)` method
