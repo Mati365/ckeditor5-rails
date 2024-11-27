@@ -57,7 +57,7 @@ module CKEditor5::Rails
       delegate :version, :gpl, :premium, :cdn, :translations, :license_key,
                :type, :menubar, :toolbar, :plugins, :plugin, :inline_plugin,
                :language, :ckbox, :configure, :automatic_upgrades, :simple_upload_adapter,
-               :editable_height, to: :default_preset
+               :editable_height, :wproofreader, to: :default_preset
 
       def initialize(configuration)
         @configuration = configuration
