@@ -7,6 +7,7 @@ def get_commits_since_last_bump
     .split("\n")
     .map { |line| line.split('|||') }
     .map { |hash, subject, short_hash| [hash, subject.strip, short_hash] }
+    .reject { |_, subject, _| subject.start_with?('Bump version') }
 end
 
 def get_repo_url
