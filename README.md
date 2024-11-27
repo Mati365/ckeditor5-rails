@@ -922,7 +922,7 @@ CKEditor5::Rails.configure do
   # ... other configuration
 
   wproofreader version: '2.0.0',
-               cdn: :jsdelivr,
+               cdn: 'https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-wproofreader@2.0.0/dist',
                serviceId: 'your-service-ID',
                srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js'
 end

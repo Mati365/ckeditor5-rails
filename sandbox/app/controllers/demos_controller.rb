@@ -37,8 +37,7 @@ class DemosController < ApplicationController
 
   def classic_wproofreader
     @preset = ckeditor5_preset(:default).override do
-      wproofreader version: '3.1.2',
-                   lang: 'auto',
+      wproofreader lang: 'auto',
                    serviceId: '<enter your service key>',
                    srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js'
     end
