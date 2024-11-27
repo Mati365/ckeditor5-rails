@@ -8,7 +8,7 @@ Sandbox::Application.routes.draw do
       %i[
         classic classic_controller_preset decoupled
         form multiroot context balloon inline
-        locale_via_assets locale_via_editor locale_via_preset
+        locale_via_assets locale_via_editor locale_via_preset locale_via_rails_i18n
       ].each do |action|
         get action
       end

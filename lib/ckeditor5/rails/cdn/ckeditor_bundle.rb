@@ -43,7 +43,9 @@ module CKEditor5::Rails
       end
 
       def translations_js_url_imports
-        translations.map do |lang|
+        translations.filter_map do |lang|
+          next if lang == :en
+
           url = create_cdn_url(import_name, version, "translations/#{lang}.js")
 
           Assets::JSUrlImportMeta.new(

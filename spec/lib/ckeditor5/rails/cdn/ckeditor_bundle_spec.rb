@@ -58,6 +58,28 @@ RSpec.describe CKEditor5::Rails::Cdn::CKEditorBundle do
         "#{cdn}/npm/#{import_name}@#{version}/build/translations/de.js"
       )
     end
+
+    context 'when handling English translation' do
+      before { bundle.translations << :en }
+
+      it 'excludes English translation file' do
+        translation_urls = bundle.scripts.select(&:translation?).map(&:url)
+        expect(translation_urls).not_to include(
+          "#{cdn}/npm/#{import_name}@#{version}/build/translations/en.js"
+        )
+      end
+    end
+
+    context 'when adding additional translations' do
+      before { bundle.translations << :ru }
+
+      it 'includes new non-English translations' do
+        translation_urls = bundle.scripts.select(&:translation?).map(&:url)
+        expect(translation_urls).to include(
+          "#{cdn}/npm/#{import_name}@#{version}/build/translations/ru.js"
+        )
+      end
+    end
   end
 
   describe '#stylesheets' do

@@ -22,7 +22,7 @@ RSpec.describe CKEditor5::Rails::Hooks::Form do
           name: 'post[content]',
           id: 'post_content',
           type: 'ClassicEditor',
-          translations: '[{"import_name":"ckeditor5/translations/en.js"}]',
+          translations: '[]',
           watchdog: 'true'
         }
 

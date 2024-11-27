@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 class DemosController < ApplicationController
+  around_action :switch_locale
+
+  def switch_locale(&action)
+    locale = (params[:locale] || I18n.default_locale).to_s.downcase
+
+    if I18n.available_locales.map(&:to_s).include?(locale)
+      I18n.with_locale(locale, &action)
+    else
+      I18n.with_locale(I18n.default_locale, &action)
+    end
+  end
+
   def classic_controller_preset
     @preset = ckeditor5_preset do
       version '43.3.0'
