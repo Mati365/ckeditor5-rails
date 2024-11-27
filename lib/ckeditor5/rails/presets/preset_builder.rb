@@ -61,7 +61,7 @@ module CKEditor5::Rails
         end
       end
 
-      def merge_with_hash!(language: nil, **overrides) # rubocop:disable Metrics/AbcSize
+      def merge_with_hash!(**overrides) # rubocop:disable Metrics/AbcSize
         @version = Semver.new(overrides[:version]) if overrides.key?(:version)
         @premium = overrides.fetch(:premium, premium)
         @cdn = overrides.fetch(:cdn, cdn)
@@ -72,8 +72,6 @@ module CKEditor5::Rails
         @automatic_upgrades = overrides.fetch(:automatic_upgrades, automatic_upgrades)
         @ckbox = overrides.fetch(:ckbox, ckbox) if overrides.key?(:ckbox) || ckbox
         @config = config.merge(overrides.fetch(:config, {}))
-
-        language(language) if language
 
         self
       end
@@ -180,6 +178,10 @@ module CKEditor5::Rails
         builder = ToolbarBuilder.new(@config[:toolbar][:items])
         builder.instance_eval(&block) if block_given?
         builder
+      end
+
+      def language?
+        config[:language].present?
       end
 
       def language(ui = nil, content: ui) # rubocop:disable Naming/MethodParameterName

@@ -44,8 +44,9 @@ In your view:
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
-  <!-- 📦 Adds importmap with CKEditor 5 assets. Language is optional. -->
-  <%= ckeditor5_assets language: :en %>
+  <!-- 📦 Adds importmap with CKEditor 5 assets. -->
+  <!-- 🌍 It'll automatically use your `I18n.locale` language. -->
+  <%= ckeditor5_assets %>
 <% end %>
 
 <!-- 🖋️ CKEditor 5 might be placed using simple view helper ... -->
@@ -80,6 +81,7 @@ CKEditor5::Rails.configure do
 
   # Specify global language for the editor.
   # It can be done here, in controller or in the view.
+  # By default the `I18n.locale` is used.
   # language :pl
 end
 ```
@@ -153,6 +155,10 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
   - [How to access editor instance? 🤔](#how-to-access-editor-instance-)
   - [Common Tasks and Solutions 💡](#common-tasks-and-solutions-)
     - [Setting Editor Language 🌐](#setting-editor-language-)
+      - [Setting the language in the assets helper](#setting-the-language-in-the-assets-helper)
+      - [Setting the language in the initializer](#setting-the-language-in-the-initializer)
+      - [Setting the language on the editor level](#setting-the-language-on-the-editor-level)
+      - [Preloading multiple translation packs](#preloading-multiple-translation-packs)
     - [Integrating with Forms 📋](#integrating-with-forms-)
       - [Rails form builder integration](#rails-form-builder-integration)
       - [Simple form integration](#simple-form-integration)
@@ -1411,7 +1417,11 @@ This section covers frequent questions and scenarios when working with CKEditor 
 
 ### Setting Editor Language 🌐
 
-You can set the language of the editor using the `language` keyword argument. The example below shows how to set the language of the editor to Polish:
+By default, CKEditor 5 uses the language specified in your `I18n.locale` configuration. However, you can override the language of the editor by passing the `language` keyword in few places.
+
+#### Setting the language in the assets helper
+
+Language specified here will be used for all editor instances on the page.
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
@@ -1423,7 +1433,9 @@ You can set the language of the editor using the `language` keyword argument. Th
 <%= ckeditor5_editor %>
 ```
 
-It can be also set in the initializer:
+#### Setting the language in the initializer
+
+Language specified here will be used for all editor instances in your application.
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -1434,12 +1446,26 @@ CKEditor5::Rails.configure do
 end
 ```
 
-... or on the editor level (keep in mind to load translations in the assets helper):
+#### Setting the language on the editor level
+
+Language specified here will be used only for this editor instance. Keep in mind that you have to load the translation pack in the assets helper using the `translations` initializer method.
 
 ```erb
 <!-- app/views/demos/index.html.erb -->
 
 <%= ckeditor5_editor language: :pl %>
+```
+
+#### Preloading multiple translation packs
+
+You can preload multiple translation packs in the initializer using the `translations` method:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  translations :pl, :es
+end
 ```
 
 ### Integrating with Forms 📋

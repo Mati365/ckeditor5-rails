@@ -16,6 +16,10 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
     end
   end
 
+  let(:context) do
+    helper.instance_variable_get(:@__ckeditor_context)
+  end
+
   let(:bundle_html) { '<script src="test.js"></script>' }
   let(:serializer) do
     instance_double(CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer, to_html: bundle_html)
@@ -37,7 +41,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
           .with(
             instance_of(CKEditor5::Rails::Semver),
             'ckeditor5',
-            translations: [:pl],
+            translations: %i[pl en],
             cdn: :cloud
           )
           .and_call_original
@@ -61,7 +65,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
             .with(
               instance_of(CKEditor5::Rails::Semver),
               'ckeditor5',
-              translations: [:pl],
+              translations: %i[pl en],
               cdn: :cloud
             )
             .and_call_original
@@ -71,7 +75,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
             .with(
               instance_of(CKEditor5::Rails::Semver),
               'ckeditor5-premium-features',
-              translations: [:pl],
+              translations: %i[pl en],
               cdn: :cloud
             )
             .and_call_original
@@ -111,7 +115,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
         CKEditor5::Rails::Presets::PresetBuilder.new do
           version '34.1.0'
           type :classic
-          translations :pl
+          language :pl
           cdn :cloud
           license_key 'preset-license'
           premium false
@@ -121,19 +125,42 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
       it 'allows overriding preset values' do
         helper.ckeditor5_assets(preset: :default, license_key: 'overridden-license')
 
-        expect(helper.instance_variable_get(:@__ckeditor_context)[:preset].license_key)
-          .to eq('overridden-license')
+        expect(context[:preset].license_key).to eq('overridden-license')
       end
 
       it 'preserves non-overridden preset values' do
         helper.ckeditor5_assets(preset: :default, license_key: 'overridden-license')
-        preset_context = helper.instance_variable_get(:@__ckeditor_context)[:preset]
+        preset_context = context[:preset]
 
         expect(preset_context.version).to eq('34.1.0')
         expect(preset_context.premium?).to be false
         expect(preset_context.cdn).to eq(:cloud)
-        expect(preset_context.translations).to eq([:pl])
+        expect(preset_context.translations).to eq(%i[en pl])
         expect(preset_context.type).to eq(:classic)
+      end
+
+      it 'allows to override language using language parameter' do
+        preset.language(:en)
+        helper.ckeditor5_assets(preset: :default, language: :pl)
+
+        expect(context[:preset].language).to eq({ ui: :pl, content: :pl })
+      end
+
+      it 'should not override language if it\'s specified in preset and not passed to helper' do
+        preset.language(:en)
+        helper.ckeditor5_assets(preset: :default)
+
+        expect(context[:preset].language).to eq({ ui: :en, content: :en })
+      end
+
+      it 'should use I18n.locale as default language if it\'s not specified in preset' do
+        preset.configure :language, nil
+
+        allow(I18n).to receive(:locale).and_return(:pl)
+
+        helper.ckeditor5_assets(preset: :default)
+
+        expect(context[:preset].language).to eq({ ui: :pl, content: :pl })
       end
     end
 

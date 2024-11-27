@@ -293,11 +293,6 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       expect(builder.merge_with_hash!(version: '35.0.0')).to eq(builder)
     end
 
-    it 'merges language configuration' do
-      builder.merge_with_hash!(language: :pl)
-      expect(builder.config[:language]).to eq({ ui: :pl, content: :pl })
-    end
-
     it 'preserves existing values when not overridden' do
       builder.version '34.0.0'
       builder.translations :en, :pl
@@ -325,6 +320,17 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       expect(builder.config[:plugins]).to eq([:Essentials])
       expect(builder.config[:toolbar]).to eq({ items: [:bold] })
       expect(builder.config[:menuBar]).to eq({ isVisible: true })
+    end
+  end
+
+  describe '#language?' do
+    it 'returns false when language is not set' do
+      expect(builder.language?).to be false
+    end
+
+    it 'returns true when language is set' do
+      builder.language(:pl)
+      expect(builder.language?).to be true
     end
   end
 

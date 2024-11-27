@@ -44,7 +44,7 @@ module CKEditor5::Rails
 
     private
 
-    def merge_with_editor_preset(preset, **kwargs)
+    def merge_with_editor_preset(preset, language: nil, **kwargs)
       found_preset = Engine.find_preset(preset)
 
       if found_preset.blank?
@@ -54,6 +54,13 @@ module CKEditor5::Rails
       end
 
       new_preset = found_preset.clone.merge_with_hash!(**kwargs)
+
+      # Assign default language if not present
+      if language.present?
+        new_preset.language(language)
+      elsif !new_preset.language?
+        new_preset.language(I18n.locale)
+      end
 
       %i[version type].each do |key|
         next if new_preset.public_send(key).present?
