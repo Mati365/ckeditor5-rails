@@ -157,6 +157,17 @@ RSpec.describe CKEditor5::Rails::Assets::JSUrlImportMeta do
       expect(meta).to be_translation
     end
   end
+
+  describe '#to_h' do
+    it 'returns hash with url and import meta' do
+      meta = described_class.new(url, import_name: 'module', import_as: 'alias')
+      expect(meta.to_h).to eq({
+                                url: url,
+                                import_name: 'module',
+                                import_as: 'alias'
+                              })
+    end
+  end
 end
 
 RSpec.describe CKEditor5::Rails::Assets::JSImportMeta do

@@ -9,7 +9,7 @@ module CKEditor5::Rails
     end
 
     def self.create_plugin(name, **kwargs)
-      if name.is_a?(Editor::PropsInlinePlugin) || name.is_a?(Editor::PropsPlugin)
+      if name.is_a?(Editor::PropsBasePlugin)
         name
       else
         Editor::PropsPlugin.new(name, **kwargs)

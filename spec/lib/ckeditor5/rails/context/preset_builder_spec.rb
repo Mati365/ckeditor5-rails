@@ -54,7 +54,7 @@ RSpec.describe CKEditor5::Rails::Context::PresetBuilder do
     it 'accepts plugin options' do
       plugin = builder.plugin('Test', premium: true)
 
-      expect(plugin.js_import_meta[:import_name]).to eq('ckeditor5-premium-features')
+      expect(plugin.to_h[:import_name]).to eq('ckeditor5-premium-features')
     end
   end
 
@@ -80,6 +80,43 @@ RSpec.describe CKEditor5::Rails::Context::PresetBuilder do
       end
 
       expect(builder.config[:plugins].map(&:name)).to eq(%w[Test1 Test2])
+    end
+  end
+
+  describe '#inline_plugin' do
+    it 'adds inline plugin to config' do
+      plugin = builder.inline_plugin('Test', 'export default class Abc {}')
+
+      expect(builder.config[:plugins]).to include(plugin)
+      expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsInlinePlugin)
+    end
+
+    it 'accepts plugin options' do
+      plugin = builder.inline_plugin('Test', 'export default class Abc {}')
+
+      expect(plugin.code).to eq('export default class Abc {}')
+    end
+  end
+
+  describe '#external_plugin' do
+    it 'adds external plugin to config' do
+      plugin = builder.external_plugin('Test', script: 'https://example.org/script.js')
+
+      expect(builder.config[:plugins]).to include(plugin)
+      expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsExternalPlugin)
+    end
+
+    it 'accepts plugin options' do
+      plugin = builder.external_plugin(
+        'Test',
+        script: 'https://example.org/script.js',
+        import_as: 'ABC',
+        stylesheets: ['https://example.org/style.css']
+      )
+
+      expect(plugin.to_h[:import_name]).to eq('https://example.org/script.js')
+      expect(plugin.to_h[:import_as]).to eq('ABC')
+      expect(plugin.to_h[:stylesheets]).to include('https://example.org/style.css')
     end
   end
 end

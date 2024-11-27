@@ -4,14 +4,25 @@ module CKEditor5::Rails
   module Presets
     module Concerns
       module PluginMethods
+        private
+
+        def register_plugin(plugin_obj)
+          config[:plugins] << plugin_obj
+          plugin_obj
+        end
+
+        public
+
+        def external_plugin(name, **kwargs)
+          register_plugin(Editor::PropsExternalPlugin.new(name, **kwargs))
+        end
+
         def inline_plugin(name, code)
-          config[:plugins] << Editor::PropsInlinePlugin.new(name, code)
+          register_plugin(Editor::PropsInlinePlugin.new(name, code))
         end
 
         def plugin(name, **kwargs)
-          plugin_obj = PluginsBuilder.create_plugin(name, **kwargs)
-          config[:plugins] << plugin_obj
-          plugin_obj
+          register_plugin(PluginsBuilder.create_plugin(name, **kwargs))
         end
 
         def plugins(*names, **kwargs, &block)

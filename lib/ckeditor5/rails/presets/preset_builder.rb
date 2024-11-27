@@ -204,6 +204,11 @@ module CKEditor5::Rails
         configure(:simpleUpload, { uploadUrl: upload_url })
       end
 
+      def wproofreader(version: nil, cdn: nil, **config)
+        plugin(Plugins::WProofreader.new(version: version, cdn: cdn))
+        configure :wproofreader, config
+      end
+
       private
 
       def deep_copy_toolbar(toolbar)

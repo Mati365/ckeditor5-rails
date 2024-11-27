@@ -4,7 +4,9 @@ require 'rails/engine'
 
 require_relative 'presets/manager'
 require_relative 'hooks/form'
+
 require_relative 'plugins/simple_upload_adapter'
+require_relative 'plugins/wproofreader'
 
 module CKEditor5::Rails
   class Engine < ::Rails::Engine

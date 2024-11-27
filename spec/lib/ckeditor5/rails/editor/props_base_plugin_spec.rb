@@ -33,6 +33,14 @@ RSpec.describe CKEditor5::Rails::Editor::PropsBasePlugin do
     end
   end
 
+  describe '#preload_assets_urls' do
+    it 'returns empty array' do
+      plugin = described_class.new(:Bold)
+
+      expect(plugin.preload_assets_urls).to eq([])
+    end
+  end
+
   describe '#to_h' do
     it 'raises NotImplementedError' do
       plugin = described_class.new(:Bold)

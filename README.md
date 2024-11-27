@@ -130,6 +130,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
       - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
+      - [`wproofreader(version: nil, cdn: nil, **config)` method](#wproofreaderversion-nil-cdn-nil-config-method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
       - [`ckeditor5_preset(name = nil, &block)` method](#ckeditor5_presetname--nil-block-method)
@@ -811,6 +812,43 @@ CKEditor5::Rails.configure do
   # or: simple_upload_adapter '/uploads'
 end
 ```
+</details>
+
+#### `wproofreader(version: nil, cdn: nil, **config)` method
+
+<details>
+  <summary>Configure WProofreader plugin</summary>
+
+<br />
+
+Defines the WProofreader plugin to be included in the editor. The example below shows how to include the WProofreader plugin:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  wproofreader serviceId: 'your-service-ID',
+               srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js'
+end
+```
+
+The `version` keyword argument allows you to specify the version of the WProofreader plugin. The `cdn` keyword argument allows you to specify the CDN to be used for the WProofreader plugin.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  wproofreader version: '2.0.0',
+               cdn: :jsdelivr,
+               serviceId: 'your-service-ID',
+               srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js'
+end
+```
+
 </details>
 
 ### Controller / View helpers 📦

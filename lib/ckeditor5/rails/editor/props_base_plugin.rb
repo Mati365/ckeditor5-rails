@@ -2,10 +2,14 @@
 
 module CKEditor5::Rails::Editor
   class PropsBasePlugin
-    attr_reader :name
+    attr_reader :name, :assets_bundle
 
     def initialize(name)
       @name = name
+    end
+
+    def preload_assets_urls
+      []
     end
 
     def to_h

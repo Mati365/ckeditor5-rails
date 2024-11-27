@@ -41,7 +41,7 @@ module CKEditor5::Rails::Assets
   class JSUrlImportMeta
     attr_reader :url, :import_meta
 
-    delegate :esm?, :window?, :import_name, :window_name, :import_as, :to_h, to: :import_meta
+    delegate :esm?, :window?, :import_name, :window_name, :import_as, to: :import_meta
 
     def initialize(url, translation: false, **import_options)
       @url = url
@@ -51,6 +51,10 @@ module CKEditor5::Rails::Assets
 
     def translation?
       @translation
+    end
+
+    def to_h
+      import_meta.to_h.merge({ url: url })
     end
   end
 
@@ -64,12 +68,12 @@ module CKEditor5::Rails::Assets
       @window_name = window_name
     end
 
-    def esm?
-      import_name.present?
-    end
-
     def window?
       window_name.present?
+    end
+
+    def esm?
+      import_name.present?
     end
 
     def to_h

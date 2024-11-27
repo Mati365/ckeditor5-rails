@@ -380,4 +380,22 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       end
     end
   end
+
+  describe 'wproofreader' do
+    it 'configures WProofreader plugin' do
+      builder.wproofreader(version: '1.0.0', cdn: 'https://cdn.example.com')
+      plugin = builder.config[:plugins].first
+
+      expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsExternalPlugin)
+      expect(plugin.name).to eq(:WProofreader)
+      expect(plugin.to_h[:import_name]).to eq('https://cdn.example.com@1.0.0/dist/browser/index.js')
+      expect(plugin.to_h[:stylesheets]).to eq(['https://cdn.example.com@1.0.0/dist/browser/index.css'])
+    end
+
+    it 'sets proper editor configuration in wproofreader key' do
+      builder.wproofreader(version: '1.0.0', cdn: 'https://cdn.example.com', language: 'en')
+
+      expect(builder.config[:wproofreader]).to eq({ language: 'en' })
+    end
+  end
 end
