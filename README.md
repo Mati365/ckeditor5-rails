@@ -161,6 +161,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [Setting the language in the initializer](#setting-the-language-in-the-initializer)
       - [Setting the language on the editor level](#setting-the-language-on-the-editor-level)
       - [Preloading multiple translation packs](#preloading-multiple-translation-packs)
+    - [Spell and Grammar Checking 📝](#spell-and-grammar-checking-)
     - [Integrating with Forms 📋](#integrating-with-forms-)
       - [Rails form builder integration](#rails-form-builder-integration)
       - [Simple form integration](#simple-form-integration)
@@ -1601,6 +1602,23 @@ CKEditor5::Rails.configure do
   translations :pl, :es
 end
 ```
+
+### Spell and Grammar Checking 📝
+
+CKEditor 5 provides a spell and grammar checking feature through the WProofreader plugin. You can enable this feature by configuring the WProofreader plugin in the initializer.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  wproofreader serviceId: 'your-service-ID',
+               srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js'
+end
+```
+
+See [`wproofreader(version: nil, cdn: nil, **config)` method](#wproofreaderversion-nil-cdn-nil-config-method) for more information about the WProofreader plugin configuration.
+
+See the [official documentation](https://ckeditor.com/docs/ckeditor5/latest/features/spelling-and-grammar-checking.html) for more information about the WProofreader plugin.
 
 ### Integrating with Forms 📋
 
