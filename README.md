@@ -928,6 +928,23 @@ CKEditor5::Rails.configure do
 end
 ```
 
+If no `language` is set, the plugin will use the default language of the editor. If you want to set the language of the WProofreader plugin, you can use the `language` keyword argument:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  wproofreader serviceId: 'your-service-ID',
+               srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js',
+               language: :en_US,
+               localization: :pl
+end
+```
+
+For more info about the WProofreader plugin, check the [official documentation](https://ckeditor.com/docs/ckeditor5/latest/features/spelling-and-grammar-checking.html).
+
 </details>
 
 ### Controller / View helpers 📦
