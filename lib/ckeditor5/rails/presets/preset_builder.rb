@@ -205,8 +205,11 @@ module CKEditor5::Rails
       end
 
       def wproofreader(version: nil, cdn: nil, **config)
-        plugin(Plugins::WProofreader.new(version: version, cdn: cdn))
         configure :wproofreader, config
+        plugins do
+          prepend Plugins::WProofreaderSync.new
+          append Plugins::WProofreader.new(version: version, cdn: cdn)
+        end
       end
 
       private

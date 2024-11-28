@@ -384,7 +384,12 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
   describe 'wproofreader' do
     it 'configures WProofreader plugin' do
       builder.wproofreader(version: '1.0.0', cdn: 'https://cdn.example.com')
-      plugin = builder.config[:plugins].first
+
+      sync_plugin = builder.config[:plugins].first
+
+      expect(sync_plugin).to be_a(CKEditor5::Rails::Plugins::WProofreaderSync)
+
+      plugin = builder.config[:plugins].last
 
       expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsExternalPlugin)
       expect(plugin.name).to eq(:WProofreader)
