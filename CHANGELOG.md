@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.18.3] - 2024-11-28
+
+### Features
+
+* use editor language if no lang provided in wproofreader. ([934b096](https://github.com/Mati365/ckeditor5-rails/commit/934b0968c5e9ec3cfa3f51f72a14cae963fa7fd7))
+
 ## [1.18.1] - 2024-11-27
 
 ### Bug Fixes
