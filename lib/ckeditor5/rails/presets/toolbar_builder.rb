@@ -8,10 +8,30 @@ module CKEditor5::Rails::Presets
       @items = items
     end
 
+    # Remove items from the editor toolbar.
+    #
+    # @param removed_items [Array<Symbol>] Toolbar items to be removed
+    # @example Remove items from toolbar
+    #   toolbar do
+    #     remove :underline, :heading
+    #   end
     def remove(*removed_items)
       removed_items.each { |item| items.delete(item) }
     end
 
+    # Prepend items to the editor toolbar.
+    #
+    # @param prepended_items [Array<Symbol>] Toolbar items to be prepended
+    # @param before [Symbol, nil] Optional item before which to insert new items
+    # @example Prepend items to toolbar
+    #   toolbar do
+    #     prepend :selectAll, :|, :selectAll, :selectAll
+    #   end
+    # @example Insert items before specific item
+    #   toolbar do
+    #     prepend :selectAll, before: :bold
+    #   end
+    # @raise [ArgumentError] When the specified 'before' item is not found
     def prepend(*prepended_items, before: nil)
       if before
         index = items.index(before)
@@ -23,6 +43,19 @@ module CKEditor5::Rails::Presets
       end
     end
 
+    # Append items to the editor toolbar.
+    #
+    # @param appended_items [Array<Symbol>] Toolbar items to be appended
+    # @param after [Symbol, nil] Optional item after which to insert new items
+    # @example Append items to toolbar
+    #   toolbar do
+    #     append :selectAll, :|, :selectAll, :selectAll
+    #   end
+    # @example Insert items after specific item
+    #   toolbar do
+    #     append :selectAll, after: :bold
+    #   end
+    # @raise [ArgumentError] When the specified 'after' item is not found
     def append(*appended_items, after: nil)
       if after
         index = items.index(after)

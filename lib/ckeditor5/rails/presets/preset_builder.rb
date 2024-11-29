@@ -10,6 +10,12 @@ module CKEditor5::Rails
       include Concerns::ConfigurationMethods
       include Concerns::PluginMethods
 
+      # @example Basic initialization
+      #   PresetBuilder.new do
+      #     version '43.3.1'
+      #     gpl
+      #     type :classic
+      #   end
       def initialize(&block)
         @version = nil
         @premium = false
@@ -28,6 +34,9 @@ module CKEditor5::Rails
         instance_eval(&block) if block_given?
       end
 
+      # @example Copy preset and modify it
+      #   original = PresetBuilder.new
+      #   copied = original.initialize_copy(original)
       def initialize_copy(source)
         super
 
@@ -41,10 +50,14 @@ module CKEditor5::Rails
         )
       end
 
+      # Check if preset is using premium features
+      # @return [Boolean]
       def premium?
         @premium
       end
 
+      # Check if preset is using GPL license
+      # @return [Boolean]
       def gpl?
         license_key == 'GPL'
       end
@@ -55,12 +68,24 @@ module CKEditor5::Rails
         end
       end
 
+      # Create a new preset by overriding current configuration
+      # @example Override existing preset
+      #   preset.override do
+      #     menubar visible: false
+      #     toolbar do
+      #       remove :underline, :heading
+      #     end
+      #   end
+      # @return [PresetBuilder] New preset instance
       def override(&block)
         clone.tap do |preset|
           preset.instance_eval(&block)
         end
       end
 
+      # Merge preset with configuration hash
+      # @param overrides [Hash] Configuration options to merge
+      # @return [self]
       def merge_with_hash!(**overrides) # rubocop:disable Metrics/AbcSize
         @version = Semver.new(overrides[:version]) if overrides.key?(:version)
         @premium = overrides.fetch(:premium, premium)
@@ -76,12 +101,22 @@ module CKEditor5::Rails
         self
       end
 
+      # Set or get editable height in pixels
+      # @param height [Integer, nil] Height in pixels
+      # @example Set editor height to 300px
+      #   editable_height 300
+      # @return [Integer, nil] Current height value
       def editable_height(height = nil)
         return @editable_height if height.nil?
 
         @editable_height = height
       end
 
+      # Configure CKBox integration
+      # @param version [String, nil] CKBox version
+      # @param theme [Symbol] Theme name (:lark)
+      # @example Enable CKBox with custom version
+      #   ckbox '2.6.0', theme: :lark
       def ckbox(version = nil, theme: :lark)
         return @ckbox if version.nil?
 
@@ -91,6 +126,11 @@ module CKEditor5::Rails
         }
       end
 
+      # Set or get license key
+      # @param license_key [String, nil] License key
+      # @example Set commercial license
+      #   license_key 'your-license-key'
+      # @return [String, nil] Current license key
       def license_key(license_key = nil)
         return @license_key if license_key.nil?
 
@@ -99,23 +139,41 @@ module CKEditor5::Rails
         cdn(:cloud) unless gpl?
       end
 
+      # Set GPL license and disable premium features
+      # @example Enable GPL license
+      #   gpl
       def gpl
         license_key('GPL')
         premium(false)
       end
 
+      # Enable or check premium features
+      # @param premium [Boolean, nil] Enable/disable premium features
+      # @example Enable premium features
+      #   premium true
+      # @return [Boolean] Premium status
       def premium(premium = nil)
         return @premium if premium.nil?
 
         @premium = premium
       end
 
+      # Set or get translations
+      # @param translations [Array<Symbol>] Language codes
+      # @example Add Polish and Spanish translations
+      #   translations :pl, :es
+      # @return [Array<Symbol>] Current translations
       def translations(*translations)
         return @translations if translations.empty?
 
         @translations = translations
       end
 
+      # Set or get editor version
+      # @param version [String, nil] Editor version
+      # @example Set specific version
+      #   version '43.3.1'
+      # @return [String, nil] Current version
       def version(version = nil)
         return @version&.to_s if version.nil?
 
@@ -127,14 +185,29 @@ module CKEditor5::Rails
         end
       end
 
+      # Enable or disable automatic version upgrades
+      # @param enabled [Boolean] Enable/disable upgrades
+      # @example Enable automatic upgrades
+      #   automatic_upgrades enabled: true
       def automatic_upgrades(enabled: true)
         @automatic_upgrades = enabled
       end
 
+      # Check if automatic upgrades are enabled
+      # @return [Boolean]
       def automatic_upgrades?
         @automatic_upgrades
       end
 
+      # Configure CDN source
+      # @param cdn [Symbol, nil] CDN name or custom block
+      # @example Use jsDelivr CDN
+      #   cdn :jsdelivr
+      # @example Custom CDN configuration
+      #   cdn do |bundle, version, path|
+      #     "https://custom-cdn.com/#{bundle}@#{version}/#{path}"
+      #   end
+      # @return [Symbol, Proc] Current CDN configuration
       def cdn(cdn = nil, &block)
         return @cdn if cdn.nil? && block.nil?
 
@@ -150,6 +223,12 @@ module CKEditor5::Rails
         end
       end
 
+      # Set or get editor type
+      # @param type [Symbol, nil] Editor type (:classic, :inline, :balloon, :decoupled)
+      # @example Set editor type to inline
+      #   type :inline
+      # @raise [ArgumentError] If invalid type provided
+      # @return [Symbol] Current editor type
       def type(type = nil)
         return @type if type.nil?
         raise ArgumentError, "Invalid editor type: #{type}" unless Editor::Props.valid_editor_type?(type)
@@ -157,16 +236,33 @@ module CKEditor5::Rails
         @type = type
       end
 
+      # Configure menubar visibility
+      # @param visible [Boolean] Show/hide menubar
+      # @example Hide menubar
+      #   menubar visible: false
       def menubar(visible: true)
         config[:menuBar] = {
           isVisible: visible
         }
       end
 
+      # Check if menubar is visible
+      # @return [Boolean]
       def menubar?
         config.dig(:menuBar, :isVisible) || false
       end
 
+      # Configure toolbar items and grouping
+      # @param items [Array<Symbol>] Toolbar items
+      # @param should_group_when_full [Boolean] Enable grouping
+      # @example Configure toolbar items
+      #   toolbar :bold, :italic, :|, :link
+      # @example Configure with block
+      #   toolbar do
+      #     append :selectAll
+      #     remove :heading
+      #   end
+      # @return [ToolbarBuilder] Toolbar configuration
       def toolbar(*items, should_group_when_full: true, &block)
         if @config[:toolbar].blank? || !items.empty?
           @config[:toolbar] = {
@@ -180,10 +276,20 @@ module CKEditor5::Rails
         builder
       end
 
+      # Check if language is configured
+      # @return [Boolean]
       def language?
         config[:language].present?
       end
 
+      # Configure editor language
+      # @param ui [Symbol, nil] UI language code
+      # @param content [Symbol] Content language code
+      # @example Set Polish UI and content language
+      #   language :pl
+      # @example Different UI and content languages
+      #   language :pl, content: :en
+      # @return [Hash, nil] Language configuration
       def language(ui = nil, content: ui) # rubocop:disable Naming/MethodParameterName
         return config[:language] if ui.nil?
 
@@ -195,6 +301,10 @@ module CKEditor5::Rails
         }
       end
 
+      # Configure simple upload adapter
+      # @param upload_url [String] Upload endpoint URL
+      # @example Enable upload adapter
+      #   simple_upload_adapter '/uploads'
       def simple_upload_adapter(upload_url = '/uploads')
         plugins do
           remove(:Base64UploadAdapter)
@@ -204,6 +314,13 @@ module CKEditor5::Rails
         configure(:simpleUpload, { uploadUrl: upload_url })
       end
 
+      # Configure WProofreader plugin
+      # @param version [String, nil] Plugin version
+      # @param cdn [String, nil] CDN URL
+      # @param config [Hash] Plugin configuration
+      # @example Basic configuration
+      #   wproofreader serviceId: 'your-service-ID',
+      #              srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js'
       def wproofreader(version: nil, cdn: nil, **config)
         configure :wproofreader, config
         plugins do

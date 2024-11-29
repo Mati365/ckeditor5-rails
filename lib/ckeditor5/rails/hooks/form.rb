@@ -48,6 +48,50 @@ module CKEditor5::Rails::Hooks
     end
 
     module FormBuilderExtension
+      # Creates a CKEditor 5 field for the specified form attribute.
+      #
+      # @param method [Symbol] The model attribute to edit
+      # @param options [Hash] Options for customizing the editor
+      #
+      # @option options [Symbol] :preset (:default) The preset configuration to use
+      # @option options [Symbol] :type (:classic) Editor type (classic, inline, balloon, decoupled)
+      # @option options [Hash] :config Custom editor configuration
+      # @option options [String] :initial_data Initial content for the editor
+      # @option options [Boolean] :required (false) Whether the field is required
+      # @option options [String] :class CSS classes for the editor
+      # @option options [String] :style Inline CSS styles
+      #
+      # @example Basic usage
+      #   <%= form_for @post do |f| %>
+      #     <%= f.ckeditor5 :content %>
+      #   <% end %>
+      #
+      # @example With custom styling and required field
+      #   <%= form_for @post do |f| %>
+      #     <%= f.ckeditor5 :content,
+      #           style: 'width: 700px',
+      #           required: true,
+      #           initial_data: 'Hello World!'
+      #     %>
+      #   <% end %>
+      #
+      # @example Using custom preset and type
+      #   <%= form_for @post do |f| %>
+      #     <%= f.ckeditor5 :content,
+      #           preset: :custom,
+      #           type: :inline,
+      #           class: 'custom-editor'
+      #     %>
+      #   <% end %>
+      #
+      # @example Simple Form integration
+      #   <%= simple_form_for @post do |f| %>
+      #     <%= f.input :content,
+      #           as: :ckeditor5,
+      #           input_html: { style: 'width: 600px' },
+      #           required: true
+      #     %>
+      #   <% end %>
       def ckeditor5(method, options = {})
         EditorInputBuilder.new(object_name, object, @template)
                           .build_editor(method, options)
