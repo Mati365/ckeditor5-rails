@@ -2,7 +2,7 @@
 
 require 'net/http'
 require 'json'
-require_relative '../../lib/ckeditor5/rails/version'
+require_relative '../lib/ckeditor5/rails/version'
 
 def fetch_latest_ckeditor_version
   uri = URI('https://registry.npmjs.org/ckeditor5/latest')

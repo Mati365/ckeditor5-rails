@@ -23,7 +23,7 @@ jobs:
 
       - name: Run version checker
         id: version_check
-        run: ruby .github/scripts/check_version.rb
+        run: ruby bin/check_ckeditor_version.rb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
