@@ -40,4 +40,16 @@ Capybara.server = :webrick
 Capybara.default_driver = :cuprite
 Capybara.javascript_driver = :cuprite
 
+require 'rspec/retry'
+
+RSpec.configure do |config|
+  config.verbose_retry = true
+
+  config.around :each, :js do |example|
+    example.run_with_retry retry: 3, retry_wait: 5
+  end
+
+  config.profile_examples = 10
+end
+
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }

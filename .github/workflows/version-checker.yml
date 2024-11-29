@@ -25,16 +25,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run e2e tests
-        run: bundle exec rake e2e
-        env:
-          HEADLESS: true
-
       - name: Update changelog
         if: steps.version_check.outputs.version_updated == 'true'
         run: |
           chmod +x bin/generate_changelog.rb
           ruby bin/generate_changelog.rb ${{ steps.version_check.outputs.new_version  }}
+
+      - name: Run e2e tests
+        run: bundle exec rake e2e
+        env:
+          HEADLESS: true
 
       - name: Trigger Release Workflow
         if: steps.version_check.outputs.version_updated == 'true'

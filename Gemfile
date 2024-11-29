@@ -28,6 +28,7 @@ group :test, :development do
   gem 'rspec-expectations', '~> 3.13'
   gem 'rspec-html-matchers', '~> 0.10.0'
   gem 'rspec-rails', '~> 7.0'
+  gem 'rspec-retry', '~> 0.6.2'
   gem 'simplecov', '~> 0.21', '>= 0.21.2', require: false
   gem 'simplecov_json_formatter', '~> 0.1.4', require: false
 end

@@ -17,9 +17,10 @@ def update_version_file(new_version)
   version_file_path = 'lib/ckeditor5/rails/version.rb'
   content = File.read(version_file_path)
 
+  new_gem_version = increment_version(CKEditor5::Rails::VERSION)
   updated_content = content
                     .gsub(/VERSION = ['"].*['"]/,
-                          "VERSION = '#{increment_version(CKEditor5::Rails::VERSION)}'")
+                          "VERSION = '#{new_gem_version}'")
                     .gsub(/DEFAULT_CKEDITOR_VERSION = ['"].*['"]/,
                           "DEFAULT_CKEDITOR_VERSION = '#{new_version}'")
 
@@ -32,7 +33,9 @@ def update_version_file(new_version)
     /version ['"][\d.]+['"]/,
     "version '#{new_version}'"
   )
+
   File.write(readme_path, updated_readme)
+  new_gem_version
 end
 
 def increment_version(version)
@@ -70,11 +73,12 @@ def main
 
   if latest_version != current_version
     puts "New version detected: #{latest_version} (current: #{current_version})"
-    update_version_file(latest_version)
+
+    new_gem_version = update_version_file(latest_version)
     commit_changes(latest_version)
 
     puts '::set-output name=version_updated::true'
-    puts "::set-output name=new_version::#{latest_version}"
+    puts "::set-output name=new_version::#{new_gem_version}"
   else
     puts "Version is up to date (#{current_version})"
     puts '::set-output name=version_updated::false'
