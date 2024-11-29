@@ -153,7 +153,7 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
         container.appendChild(newEditable);
       JS
 
-      sleep 0.1 # Wait for component initialization
+      sleep 1 # Wait for component initialization
 
       # Find and interact with new editable
       new_editable = find("[name='new-root']")
