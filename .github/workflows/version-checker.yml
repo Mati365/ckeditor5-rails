@@ -31,6 +31,10 @@ jobs:
           chmod +x bin/generate_changelog.rb
           ruby bin/generate_changelog.rb ${{ steps.version_check.outputs.new_version  }}
 
+          git add CHANGELOG.md
+          git commit -m "Bump version to ${{ steps.version_check.outputs.new_version }} and update dependencies"
+          git push origin HEAD:main
+
       - name: Run e2e tests
         run: bundle exec rake e2e
         env:
