@@ -44,27 +44,9 @@ def increment_version(version)
   "#{major}.#{minor}.#{patch}"
 end
 
-def ensure_main_branch
-  # Check if main branch exists
-  unless system('git show-ref --verify --quiet refs/heads/main')
-    puts 'Creating main branch...'
-    system('git checkout -b main') or raise 'Failed to create main branch'
-  end
-
-  # Ensure we're tracking the remote main
-  system('git branch --set-upstream-to=origin/main main 2>/dev/null || true')
-
-  # Fetch and checkout main
-  system('git fetch origin main') or raise 'Failed to fetch main branch'
-  system('git checkout main') or raise 'Failed to checkout main branch'
-  system('git reset --hard origin/main') or raise 'Failed to reset to origin/main'
-end
-
 def commit_changes(new_gem_version, new_version) # rubocop:disable Metrics/AbcSize
   system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
   system('git config --global user.name "github-actions[bot]"')
-
-  ensure_main_branch
 
   puts 'Running bundle install...'
   system('bundle config set frozen false')
