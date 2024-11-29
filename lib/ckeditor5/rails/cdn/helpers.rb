@@ -26,6 +26,7 @@ module CKEditor5::Rails
       bundle = build_base_cdn_bundle(cdn, version, translations)
       bundle << build_premium_cdn_bundle(cdn, version, translations) if premium
       bundle << build_ckbox_cdn_bundle(ckbox) if ckbox
+      bundle << build_plugins_cdn_bundle(mapped_preset.plugins.items)
 
       @__ckeditor_context = {
         license_key: license_key,
@@ -97,6 +98,12 @@ module CKEditor5::Rails
         theme: ckbox[:theme] || :lark,
         cdn: ckbox[:cdn] || :ckbox
       )
+    end
+
+    def build_plugins_cdn_bundle(plugins)
+      plugins.each_with_object(Assets::AssetsBundle.new(scripts: [], stylesheets: [])) do |plugin, bundle|
+        bundle << plugin.preload_assets_bundle if plugin.preload_assets_bundle.present?
+      end
     end
   end
 end

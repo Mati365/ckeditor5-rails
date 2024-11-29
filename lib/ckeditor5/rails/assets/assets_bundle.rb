@@ -1,11 +1,21 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/module'
+require 'uri'
 
 module CKEditor5::Rails::Assets
   class AssetsBundle
-    def initialize
-      validate_implementation!
+    def initialize(scripts: nil, stylesheets: nil)
+      @scripts = scripts
+      @stylesheets = stylesheets
+    end
+
+    def scripts
+      @scripts || []
+    end
+
+    def stylesheets
+      @stylesheets || []
     end
 
     def empty?
@@ -17,7 +27,7 @@ module CKEditor5::Rails::Assets
     end
 
     def preloads
-      stylesheets + scripts.map(&:url)
+      stylesheets + scripts.map(&:preloads)
     end
 
     def <<(other)
@@ -25,16 +35,6 @@ module CKEditor5::Rails::Assets
 
       @scripts = scripts + other.scripts
       @stylesheets = stylesheets + other.stylesheets
-    end
-
-    private
-
-    def validate_implementation!
-      %i[scripts stylesheets].each do |method|
-        unless respond_to?(method, true)
-          raise NotImplementedError, "#{self.class} must implement the ##{method} method"
-        end
-      end
     end
   end
 
@@ -55,6 +55,14 @@ module CKEditor5::Rails::Assets
 
     def to_h
       import_meta.to_h.merge({ url: url })
+    end
+
+    def preloads
+      {
+        as: 'script',
+        rel: esm? ? 'modulepreload' : 'preload',
+        href: url
+      }
     end
   end
 

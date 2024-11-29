@@ -3,48 +3,45 @@
 require 'spec_helper'
 
 RSpec.describe CKEditor5::Rails::Assets::AssetsBundle do
-  let(:concrete_class) do
-    Class.new(described_class) do
-      def scripts
-        []
-      end
-
-      def stylesheets
-        []
-      end
-    end
-  end
-
   describe '#initialize' do
-    it 'raises error when required methods are not implemented' do
-      expect { described_class.new }.to raise_error(NotImplementedError)
+    it 'initializes with empty arrays by default' do
+      bundle = described_class.new
+      expect(bundle.scripts).to eq([])
+      expect(bundle.stylesheets).to eq([])
     end
 
-    it 'initializes successfully when required methods are implemented' do
-      expect { concrete_class.new }.not_to raise_error
+    it 'accepts scripts and stylesheets' do
+      bundle = described_class.new(scripts: [:script], stylesheets: [:stylesheet])
+      expect(bundle.scripts).to eq([:script])
+      expect(bundle.stylesheets).to eq([:stylesheet])
     end
   end
 
   describe '#empty?' do
-    subject(:bundle) { concrete_class.new }
-
     it 'returns true when no assets are present' do
+      bundle = described_class.new
       expect(bundle).to be_empty
+    end
+
+    it 'returns false when scripts are present' do
+      bundle = described_class.new(scripts: [:script])
+      expect(bundle).not_to be_empty
+    end
+
+    it 'returns false when stylesheets are present' do
+      bundle = described_class.new(stylesheets: [:stylesheet])
+      expect(bundle).not_to be_empty
     end
   end
 
   describe '#translations_scripts' do
-    let(:bundle) { concrete_class.new }
     let(:translation_script) do
       instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta, translation?: true)
     end
     let(:regular_script) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta, translation?: false) }
 
-    before do
-      allow(bundle).to receive(:scripts).and_return([translation_script, regular_script])
-    end
-
     it 'returns only translation scripts' do
+      bundle = described_class.new(scripts: [translation_script, regular_script])
       expect(bundle.translations_scripts).to eq([translation_script])
     end
   end
@@ -54,41 +51,8 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundle do
     let(:script2) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta) }
     let(:stylesheet1) { '/path/to/style1.css' }
     let(:stylesheet2) { '/path/to/style2.css' }
-
-    let(:bundle1) do
-      Class.new(described_class) do
-        attr_writer :scripts, :stylesheets
-
-        def scripts
-          @scripts ||= []
-        end
-
-        def stylesheets
-          @stylesheets ||= []
-        end
-      end.new
-    end
-
-    let(:bundle2) do
-      Class.new(described_class) do
-        attr_writer :scripts, :stylesheets
-
-        def scripts
-          @scripts ||= []
-        end
-
-        def stylesheets
-          @stylesheets ||= []
-        end
-      end.new
-    end
-
-    before do
-      bundle1.scripts = [script1]
-      bundle1.stylesheets = [stylesheet1]
-      bundle2.scripts = [script2]
-      bundle2.stylesheets = [stylesheet2]
-    end
+    let(:bundle1) { described_class.new(scripts: [script1], stylesheets: [stylesheet1]) }
+    let(:bundle2) { described_class.new(scripts: [script2], stylesheets: [stylesheet2]) }
 
     it 'raises TypeError when argument is not an AssetsBundle' do
       expect { bundle1 << 'not a bundle' }.to raise_error(TypeError)
@@ -103,36 +67,23 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundle do
   end
 
   describe '#preloads' do
-    let(:script1) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta, url: '/js/script1.js') }
-    let(:script2) { instance_double(CKEditor5::Rails::Assets::JSUrlImportMeta, url: '/js/script2.js') }
+    let(:script1) { CKEditor5::Rails::Assets::JSUrlImportMeta.new('/js/script1.js', import_name: 'script1') }
+    let(:script2) { CKEditor5::Rails::Assets::JSUrlImportMeta.new('/js/script2.js', import_name: 'script2') }
     let(:stylesheet1) { '/css/style1.css' }
     let(:stylesheet2) { '/css/style2.css' }
-
     let(:bundle) do
-      Class.new(described_class) do
-        attr_writer :scripts, :stylesheets
-
-        def scripts
-          @scripts ||= []
-        end
-
-        def stylesheets
-          @stylesheets ||= []
-        end
-      end.new
-    end
-
-    before do
-      bundle.scripts = [script1, script2]
-      bundle.stylesheets = [stylesheet1, stylesheet2]
+      described_class.new(
+        scripts: [script1, script2],
+        stylesheets: [stylesheet1, stylesheet2]
+      )
     end
 
     it 'returns array of stylesheet paths and script urls' do
       expect(bundle.preloads).to eq([
                                       '/css/style1.css',
                                       '/css/style2.css',
-                                      '/js/script1.js',
-                                      '/js/script2.js'
+                                      { as: 'script', rel: 'modulepreload', href: '/js/script1.js' },
+                                      { as: 'script', rel: 'modulepreload', href: '/js/script2.js' }
                                     ])
     end
   end
@@ -166,6 +117,18 @@ RSpec.describe CKEditor5::Rails::Assets::JSUrlImportMeta do
                                 import_name: 'module',
                                 import_as: 'alias'
                               })
+    end
+  end
+
+  describe '#preloads' do
+    it 'returns preload hash' do
+      meta = described_class.new(url, window_name: 'module')
+      expect(meta.preloads).to eq({ as: 'script', rel: 'preload', href: url })
+    end
+
+    it 'returns modulepreload hash when esm' do
+      meta = described_class.new(url, import_name: 'module')
+      expect(meta.preloads).to include({ as: 'script', rel: 'modulepreload', href: url })
     end
   end
 end

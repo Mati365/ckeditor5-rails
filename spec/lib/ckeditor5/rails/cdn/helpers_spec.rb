@@ -108,6 +108,30 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
           helper.ckeditor5_assets(preset: :default)
         end
       end
+
+      context 'with plugins having preload assets' do
+        let(:plugin_bundle) { CKEditor5::Rails::Assets::AssetsBundle.new(scripts: ['plugin.js']) }
+        let(:plugin) { instance_double('Plugin', preload_assets_bundle: plugin_bundle) }
+        let(:plugin_without_preload) { instance_double('Plugin', preload_assets_bundle: nil) }
+
+        before do
+          allow(preset).to receive_message_chain(:plugins, :items)
+            .and_return([plugin, plugin_without_preload])
+        end
+
+        it 'includes plugin preload assets in the bundle' do
+          helper.ckeditor5_assets(preset: :default)
+          expect(context[:bundle].scripts).to include('plugin.js')
+        end
+
+        it 'merges plugin assets with the main bundle' do
+          expect(serializer).to receive(:to_html)
+          helper.ckeditor5_assets(preset: :default)
+
+          bundle = context[:bundle]
+          expect(bundle.scripts).to include('plugin.js')
+        end
+      end
     end
 
     context 'when overriding preset values' do

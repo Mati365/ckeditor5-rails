@@ -14,12 +14,10 @@ RSpec.describe CKEditor5::Rails::Plugins::WProofreader do
         expect(plugin.name).to eq(:WProofreader)
       end
 
-      it 'returns correct preload assets urls' do
-        expected_urls = [
-          "#{default_cdn}@#{default_version}/dist/browser/index.css",
-          "#{default_cdn}@#{default_version}/dist/browser/index.js"
-        ]
-        expect(plugin.preload_assets_urls).to eq(expected_urls)
+      it 'returns correct preload assets bundle' do
+        bundle = plugin.preload_assets_bundle
+        expect(bundle.stylesheets).to eq(["#{default_cdn}@#{default_version}/dist/browser/index.css"])
+        expect(bundle.scripts.first.url).to eq("#{default_cdn}@#{default_version}/dist/browser/index.js")
       end
 
       it 'returns correct hash representation' do
@@ -39,12 +37,10 @@ RSpec.describe CKEditor5::Rails::Plugins::WProofreader do
       let(:custom_version) { '4.0.0' }
       subject(:plugin) { described_class.new(version: custom_version, cdn: custom_cdn) }
 
-      it 'returns correct preload assets urls with custom CDN' do
-        expected_urls = [
-          "#{custom_cdn}@#{custom_version}/dist/browser/index.css",
-          "#{custom_cdn}@#{custom_version}/dist/browser/index.js"
-        ]
-        expect(plugin.preload_assets_urls).to eq(expected_urls)
+      it 'returns correct preload assets bundle with custom CDN' do
+        bundle = plugin.preload_assets_bundle
+        expect(bundle.stylesheets).to eq(["#{custom_cdn}@#{custom_version}/dist/browser/index.css"])
+        expect(bundle.scripts.first.url).to eq("#{custom_cdn}@#{custom_version}/dist/browser/index.js")
       end
 
       it 'returns correct hash representation with custom CDN' do

@@ -22,6 +22,7 @@ module CKEditor5::Rails
         end
 
         def plugin(name, **kwargs)
+          premium(true) if kwargs[:premium] && respond_to?(:premium)
           register_plugin(PluginsBuilder.create_plugin(name, **kwargs))
         end
 

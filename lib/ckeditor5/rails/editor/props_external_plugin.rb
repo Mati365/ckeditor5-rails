@@ -18,8 +18,11 @@ module CKEditor5::Rails::Editor
       )
     end
 
-    def preload_assets_urls
-      @stylesheets + [@js_import_meta.url]
+    def preload_assets_bundle
+      @preload_assets_bundle ||= CKEditor5::Rails::Assets::AssetsBundle.new(
+        scripts: [@js_import_meta],
+        stylesheets: @stylesheets
+      )
     end
 
     def to_h

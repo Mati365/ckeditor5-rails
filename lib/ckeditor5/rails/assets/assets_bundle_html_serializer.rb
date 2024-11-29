@@ -19,10 +19,10 @@ module CKEditor5::Rails::Assets
 
     def to_html
       safe_join([
+                  scripts_import_map_tag,
                   preload_tags,
                   styles_tags,
                   window_scripts_tags,
-                  scripts_import_map_tag,
                   web_component_tag
                 ])
     end
@@ -51,7 +51,9 @@ module CKEditor5::Rails::Assets
       return @scripts_import_map_tag if defined?(@scripts_import_map_tag)
 
       import_map = bundle.scripts.each_with_object({}) do |script, map|
-        map[script.import_name] = script.url if script.esm?
+        next if !script.esm? || looks_like_url?(script.import_name)
+
+        map[script.import_name] = script.url
       end
 
       @scripts_import_map_tag = tag.script(
@@ -68,10 +70,28 @@ module CKEditor5::Rails::Assets
     end
 
     def preload_tags
-      @preload_tags ||= safe_join(bundle.preloads.map do |url|
-        tag.link(href: url, rel: 'preload', as: self.class.url_resource_preload_type(url),
-                 crossorigin: 'anonymous')
+      @preload_tags ||= safe_join(bundle.preloads.map do |preload|
+        if preload.is_a?(Hash) && preload[:as] && preload[:href]
+          tag.link(
+            **preload,
+            crossorigin: 'anonymous'
+          )
+        else
+          tag.link(
+            href: preload,
+            rel: 'preload',
+            as: self.class.url_resource_preload_type(preload),
+            crossorigin: 'anonymous'
+          )
+        end
       end)
+    end
+
+    def looks_like_url?(str)
+      uri = URI.parse(str)
+      uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+    rescue URI::InvalidURIError
+      false
     end
   end
 end

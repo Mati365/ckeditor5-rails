@@ -8,8 +8,8 @@ module CKEditor5::Rails::Editor
       @name = name
     end
 
-    def preload_assets_urls
-      []
+    def preload_assets_bundle
+      nil
     end
 
     def to_h

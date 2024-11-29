@@ -8,7 +8,7 @@ RSpec.describe CKEditor5::Rails::Editor::PropsExternalPlugin do
       plugin = described_class.new('Test', script: 'https://example.org/plugin.js')
 
       expect(plugin.name).to eq('Test')
-      expect(plugin.preload_assets_urls).to include('https://example.org/plugin.js')
+      expect(plugin.preload_assets_bundle.scripts.first.url).to eq('https://example.org/plugin.js')
     end
 
     it 'accepts optional parameters' do
@@ -20,23 +20,21 @@ RSpec.describe CKEditor5::Rails::Editor::PropsExternalPlugin do
         stylesheets: ['https://example.org/style.css']
       )
 
-      expect(plugin.preload_assets_urls).to include('https://example.org/style.css')
+      expect(plugin.preload_assets_bundle.stylesheets).to include('https://example.org/style.css')
     end
   end
 
-  describe '#preload_assets_urls' do
-    it 'returns array with script and stylesheets urls' do
+  describe '#preload_assets_bundle' do
+    it 'returns bundle with script and stylesheets' do
       plugin = described_class.new(
         'Test',
         script: 'https://example.org/plugin.js',
         stylesheets: ['https://example.org/style1.css', 'https://example.org/style2.css']
       )
 
-      expect(plugin.preload_assets_urls).to eq([
-                                                 'https://example.org/style1.css',
-                                                 'https://example.org/style2.css',
-                                                 'https://example.org/plugin.js'
-                                               ])
+      bundle = plugin.preload_assets_bundle
+      expect(bundle.scripts.first.url).to eq('https://example.org/plugin.js')
+      expect(bundle.stylesheets).to eq(['https://example.org/style1.css', 'https://example.org/style2.css'])
     end
   end
 

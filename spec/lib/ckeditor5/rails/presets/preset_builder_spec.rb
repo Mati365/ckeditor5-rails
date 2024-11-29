@@ -226,6 +226,48 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
     end
   end
 
+  describe '#plugin' do
+    it 'adds normalized plugin to config' do
+      plugin = builder.plugin('Test')
+
+      expect(builder.config[:plugins]).to include(plugin)
+      expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsPlugin)
+    end
+
+    it 'accepts plugin options' do
+      plugin = builder.plugin('Test', premium: true)
+
+      expect(plugin.to_h[:import_name]).to eq('ckeditor5-premium-features')
+    end
+
+    it 'sets premium flag when premium option provided' do
+      builder.plugin('Test', premium: true)
+      expect(builder.premium?).to be true
+    end
+  end
+
+  describe '#external_plugin' do
+    it 'adds external plugin to config' do
+      plugin = builder.external_plugin('Test', script: 'https://example.org/script.js')
+
+      expect(builder.config[:plugins]).to include(plugin)
+      expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsExternalPlugin)
+    end
+
+    it 'accepts plugin options' do
+      plugin = builder.external_plugin(
+        'Test',
+        script: 'https://example.org/script.js',
+        import_as: 'ABC',
+        stylesheets: ['https://example.org/style.css']
+      )
+
+      expect(plugin.to_h[:import_name]).to eq('https://example.org/script.js')
+      expect(plugin.to_h[:import_as]).to eq('ABC')
+      expect(plugin.to_h[:stylesheets]).to include('https://example.org/style.css')
+    end
+  end
+
   describe '#cdn' do
     it 'returns current cdn when called without arguments' do
       expect(builder.cdn).to eq(:jsdelivr)

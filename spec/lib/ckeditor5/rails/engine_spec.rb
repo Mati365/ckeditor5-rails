@@ -78,10 +78,28 @@ RSpec.describe CKEditor5::Rails::Engine do
       end
     end
 
-    describe 'simple_form initializer', if: defined?(SimpleForm) do
-      it 'registers ckeditor5 input type' do
-        expect(SimpleForm::FormBuilder.mappings[:ckeditor5])
-          .to eq(CKEditor5::Rails::Hooks::SimpleForm::CKEditor5Input)
+    describe 'simple_form initializer' do
+      context 'when SimpleForm is defined' do
+        it 'registers ckeditor5 input type' do
+          expect(SimpleForm::FormBuilder.mappings[:ckeditor5])
+            .to eq(CKEditor5::Rails::Hooks::SimpleForm::CKEditor5Input)
+        end
+      end
+
+      context 'when SimpleForm is not defined' do
+        before do
+          @simple_form = SimpleForm if defined?(SimpleForm)
+          Object.send(:remove_const, :SimpleForm) if defined?(SimpleForm)
+        end
+
+        after do
+          Object.const_set(:SimpleForm, @simple_form) if @simple_form
+        end
+
+        it 'does not raise error' do
+          initializer = described_class.initializers.find { |i| i.name == 'ckeditor5.simple_form' }
+          expect { initializer.run(Rails.application) }.not_to raise_error
+        end
       end
     end
   end
