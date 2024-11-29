@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'rspec/retry'
 require 'capybara'
 require 'capybara/rspec'
 require 'capybara/cuprite'
+require 'rspec/retry'
 
 ENV['RAILS_ENV'] ||= 'test'
 
