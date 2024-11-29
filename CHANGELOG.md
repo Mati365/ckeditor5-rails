@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.19.0] - 2024-11-29
+
+### Features
+
+* Faster loading of assets due to use `modulepreload`, automatic detection of premium features in preset. ([03810e6](https://github.com/Mati365/ckeditor5-rails/commit/03810e6e2734a43ef64542236d41d7bc0ed9ff15))
+
+### Documentation
+
+* Add spellcheck section. ([f49f33a](https://github.com/Mati365/ckeditor5-rails/commit/f49f33af5be1c87ebb479c1bab90bd7983846bd3))
+* Adjust spellcheck docs. ([e6ae24a](https://github.com/Mati365/ckeditor5-rails/commit/e6ae24a1b5ad98cf3747d0ecdd04fea0d6261c3c))
+
+### Other Changes
+
+* Fix calls convention. ([49e92da](https://github.com/Mati365/ckeditor5-rails/commit/49e92da76e9a627d84055274a8d1209c9a99fd17))
+
 ## [1.18.3] - 2024-11-28
 
 ### Features
