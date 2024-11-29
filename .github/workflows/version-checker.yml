@@ -30,6 +30,12 @@ jobs:
         env:
           HEADLESS: true
 
+      - name: Update changelog
+        if: steps.version_check.outputs.version_updated == 'true'
+        run: |
+          chmod +x bin/generate_changelog.rb
+          ruby bin/generate_changelog.rb ${{ steps.version_check.outputs.new_version  }}
+
       - name: Trigger Release Workflow
         if: steps.version_check.outputs.version_updated == 'true'
         uses: peter-evans/repository-dispatch@v2

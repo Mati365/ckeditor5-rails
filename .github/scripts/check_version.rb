@@ -55,7 +55,7 @@ def commit_changes(new_version)
   end
 
   system('git add lib/ckeditor5/rails/version.rb README.md Gemfile.lock')
-  system(%(git commit -m "chore: update CKEditor to version #{new_version}"))
+  system(%(git commit -m "feat: Update CKEditor to version #{new_version}"))
   system('git push origin main')
 end
 
@@ -72,7 +72,9 @@ def main
     puts "New version detected: #{latest_version} (current: #{current_version})"
     update_version_file(latest_version)
     commit_changes(latest_version)
+
     puts '::set-output name=version_updated::true'
+    puts "::set-output name=new_version::#{latest_version}"
   else
     puts "Version is up to date (#{current_version})"
     puts '::set-output name=version_updated::false'
