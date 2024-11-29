@@ -4,6 +4,16 @@
 
 ### Features
 
+* Update CKEditor to version 43.3.1 ([9ad58a8](https://github.com/Mati365/ckeditor5-rails/commit/9ad58a8d6b1d5c86a2defb1ddec879910fa79542))
+
+### Bug Fixes
+
+* wrong checkout in version checker ([e84c7c3](https://github.com/Mati365/ckeditor5-rails/commit/e84c7c369d9815fb25a2ac81325215e525317199))
+
+## [1.19.5] - 2024-11-29
+
+### Features
+
 
 ### Bug Fixes
 
