@@ -44,8 +44,7 @@ def increment_version(version)
   "#{major}.#{minor}.#{patch}"
 end
 
-def commit_changes(new_version)
-  # Najpierw konfigurujemy gita
+def commit_changes(new_gem_version, new_version) # rubocop:disable Metrics/AbcSize
   system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
   system('git config --global user.name "github-actions[bot]"')
 
@@ -59,6 +58,17 @@ def commit_changes(new_version)
 
   system('git add lib/ckeditor5/rails/version.rb README.md Gemfile.lock')
   system(%(git commit -m "feat: Update CKEditor to version #{new_version}"))
+
+  puts 'Generating changelog...'
+  unless system('chmod +x bin/generate_changelog.rb') &&
+         system("ruby bin/generate_changelog.rb #{new_gem_version}")
+    puts 'Changelog generation failed!'
+    exit 1
+  end
+
+  system('git add CHANGELOG.md')
+  system(%(git commit -m "Bump version to #{new_gem_version} and update dependencies"))
+
   system('git push origin main')
 end
 
@@ -75,7 +85,7 @@ def main
     puts "New version detected: #{latest_version} (current: #{current_version})"
 
     new_gem_version = update_version_file(latest_version)
-    commit_changes(latest_version)
+    commit_changes(new_gem_version, latest_version)
 
     puts '::set-output name=version_updated::true'
     puts "::set-output name=new_version::#{new_gem_version}"
