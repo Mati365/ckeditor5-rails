@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.19.5] - 2024-11-29
+
+### Features
+
+
+### Bug Fixes
+
+* General improvements and bug fixes ([HEAD](https://github.com/Mati365/ckeditor5-rails/commit/HEAD))
+
+### Documentation
+
+
+### Other Changes
+
+
 ## [1.19.0] - 2024-11-29
 
 ### Features
