@@ -9,22 +9,26 @@ module CKEditor5::Rails::Assets
   class AssetsBundleHtmlSerializer
     include ActionView::Helpers::TagHelper
 
-    attr_reader :bundle
+    attr_reader :bundle, :importmap
 
-    def initialize(bundle)
+    def initialize(bundle, importmap: true)
       raise TypeError, 'bundle must be an instance of AssetsBundle' unless bundle.is_a?(AssetsBundle)
 
+      @importmap = importmap
       @bundle = bundle
     end
 
     def to_html
-      safe_join([
-                  scripts_import_map_tag,
-                  preload_tags,
-                  styles_tags,
-                  window_scripts_tags,
-                  web_component_tag
-                ])
+      tags = [
+        preload_tags,
+        styles_tags,
+        window_scripts_tags,
+        web_component_tag
+      ]
+
+      tags.prepend(AssetsImportMap.new(bundle).to_html) if importmap
+
+      safe_join(tags)
     end
 
     def self.url_resource_preload_type(url)
@@ -45,22 +49,6 @@ module CKEditor5::Rails::Assets
       @window_scripts_tags ||= safe_join(bundle.scripts.filter_map do |script|
         tag.script(src: script.url, nonce: true, crossorigin: 'anonymous') if script.window?
       end)
-    end
-
-    def scripts_import_map_tag
-      return @scripts_import_map_tag if defined?(@scripts_import_map_tag)
-
-      import_map = bundle.scripts.each_with_object({}) do |script, map|
-        next if !script.esm? || looks_like_url?(script.import_name)
-
-        map[script.import_name] = script.url
-      end
-
-      @scripts_import_map_tag = tag.script(
-        { imports: import_map }.to_json.html_safe,
-        type: 'importmap',
-        nonce: true
-      )
     end
 
     def styles_tags
@@ -86,6 +74,36 @@ module CKEditor5::Rails::Assets
         end
       end)
     end
+  end
+
+  class AssetsImportMap
+    include ActionView::Helpers::TagHelper
+
+    attr_reader :bundle
+
+    def initialize(bundle)
+      @bundle = bundle
+    end
+
+    def to_json(*_args)
+      import_map = bundle.scripts.each_with_object({}) do |script, map|
+        next if !script.esm? || looks_like_url?(script.import_name)
+
+        map[script.import_name] = script.url
+      end
+
+      { imports: import_map }.to_json
+    end
+
+    def to_html
+      tag.script(
+        to_json.html_safe,
+        type: 'importmap',
+        nonce: true
+      )
+    end
+
+    private
 
     def looks_like_url?(str)
       uri = URI.parse(str)
