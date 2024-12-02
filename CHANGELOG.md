@@ -20,7 +20,6 @@
 
 ### Other Changes
 
-* Merge pull request #15 from Mati365/feature/align-to-work-with-rails-8 ([f64e322](https://github.com/Mati365/ckeditor5-rails/commit/f64e322eeb65f250cc0ccd4d75df94a45b8b03ea))
 * Tests: Improve coverage for Rails 8 importmap integration ([162e54b](https://github.com/Mati365/ckeditor5-rails/commit/162e54b08bb97cb88f5830795a7f4a7c04516927))
 * Tests: Improve stability of e2e tests. ([da90136](https://github.com/Mati365/ckeditor5-rails/commit/da901363a4feaf8912817eba01b555653211751b))
 * Rename script ([868b707](https://github.com/Mati365/ckeditor5-rails/commit/868b7070c4a4d393026e1a8ea1a6090538b472d3))

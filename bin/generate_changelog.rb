@@ -34,6 +34,7 @@ def categorize_commits(commits)
               when /^(feature:|feat:)/i then 'Features'
               when /^fix:/i then 'Bug Fixes'
               when /^docs:/i then 'Documentation'
+              when /^(test:|tests:)/i then 'Tests'
               when /^internal:/i then next  # Skip internal commits
               else 'Other Changes'
               end
