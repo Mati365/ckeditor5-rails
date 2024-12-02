@@ -30,6 +30,8 @@ In your layout:
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- ⚠️ If you use `rails-importmap` you have to include the importmap somewhere in the head. -->
+    <%= javascript_importmap_tags %>
     <%= yield :head %>
   </head>
   <body>

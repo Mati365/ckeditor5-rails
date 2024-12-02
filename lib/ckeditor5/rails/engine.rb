@@ -3,8 +3,6 @@
 require 'rails/engine'
 
 require_relative 'presets/manager'
-require_relative 'hooks/form'
-
 require_relative 'plugins/simple_upload_adapter'
 require_relative 'plugins/wproofreader'
 
@@ -30,6 +28,16 @@ module CKEditor5::Rails
       ActionView::Helpers::FormBuilder.include(Hooks::Form::FormBuilderExtension)
     end
 
+    initializer 'ckeditor5.importmap', after: :load_config_initializers, before: 'importmap' do |_app|
+      require_relative 'hooks/importmap'
+
+      ActiveSupport.on_load(:action_view) do
+        if defined?(::Importmap::ImportmapTagsHelper)
+          ::Importmap::ImportmapTagsHelper.prepend(Hooks::Importmap::ImportmapTagsHelper)
+        end
+      end
+    end
+
     class << self
       def base
         config.ckeditor5
@@ -45,7 +53,7 @@ module CKEditor5::Rails
       end
 
       def find_preset(preset)
-        return preset if preset.is_a?(CKEditor5::Rails::Presets::PresetBuilder)
+        return preset if preset.is_a?(Presets::PresetBuilder)
 
         base.presets[preset]
       end

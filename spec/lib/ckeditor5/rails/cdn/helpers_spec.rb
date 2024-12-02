@@ -3,7 +3,16 @@
 require 'spec_helper'
 
 RSpec.describe CKEditor5::Rails::Cdn::Helpers do
-  let(:test_class) { Class.new { include CKEditor5::Rails::Cdn::Helpers } }
+  let(:test_class) do
+    Class.new do
+      include CKEditor5::Rails::Cdn::Helpers
+
+      def importmap_rendered?
+        false
+      end
+    end
+  end
+
   let(:helper) { test_class.new }
   let(:preset) do
     CKEditor5::Rails::Presets::PresetBuilder.new do
@@ -32,10 +41,6 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
 
   describe '#ckeditor5_assets' do
     context 'with valid preset' do
-      it 'returns serialized bundle html' do
-        expect(helper.ckeditor5_assets(preset: :default)).to eq(bundle_html)
-      end
-
       it 'creates base bundle' do
         expect(CKEditor5::Rails::Cdn::CKEditorBundle).to receive(:new)
           .with(
@@ -216,6 +221,37 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
       it 'raises error about missing version and type' do
         expect { helper.ckeditor5_assets(preset: :default) }
           .to raise_error(ArgumentError, /forgot to define version/)
+      end
+    end
+
+    context 'when Rails.application.importmap is defined' do
+      before do
+        allow(helper).to receive(:importmap_available?).and_return(true)
+        allow(helper).to receive(:importmap_rendered?).and_return(false)
+      end
+
+      it 'returns nil and stores html tags in context' do
+        result = helper.ckeditor5_assets(preset: :default)
+        expect(result).to be_nil
+        expect(context[:html_tags]).to eq(bundle_html)
+      end
+
+      it 'raise exception if importmap_rendered?' do
+        allow(helper).to receive(:importmap_rendered?).and_return(true)
+        expect { helper.ckeditor5_assets(preset: :default) }
+          .to raise_error(CKEditor5::Rails::Cdn::Helpers::ImportmapAlreadyRenderedError)
+      end
+    end
+
+    context 'when importmap_available? is true returns html' do
+      before do
+        allow(helper).to receive(:importmap_available?).and_return(nil)
+      end
+
+      it 'returns html directly' do
+        result = helper.ckeditor5_assets(preset: :default)
+        expect(result).to eq(bundle_html)
+        expect(context[:html_tags]).to be_nil
       end
     end
   end

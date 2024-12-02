@@ -12,6 +12,8 @@ require_relative 'ckbox_bundle'
 
 module CKEditor5::Rails
   module Cdn::Helpers
+    class ImportmapAlreadyRenderedError < ArgumentError; end
+
     # The `ckeditor5_assets` helper includes CKEditor 5 assets in your application.
     # It's responsible for generating the necessary JavaScript and CSS imports based on
     # the specified preset and configuration.
@@ -55,7 +57,13 @@ module CKEditor5::Rails
     #   <%= ckeditor5_editor type: :inline %>
     #   <%= ckeditor5_editor type: :balloon %>
     #
-    def ckeditor5_assets(preset: :default, **kwargs)
+    def ckeditor5_assets(
+      preset: :default,
+      importmap: true,
+      **kwargs
+    )
+      ensure_importmap_not_rendered!
+
       mapped_preset = merge_with_editor_preset(preset, **kwargs)
       mapped_preset => {
         cdn:,
@@ -77,7 +85,7 @@ module CKEditor5::Rails
         preset: mapped_preset
       }
 
-      Assets::AssetsBundleHtmlSerializer.new(bundle).to_html
+      build_html_tags(bundle, importmap)
     end
 
     Cdn::UrlGenerator::CDN_THIRD_PARTY_GENERATORS.each_key do |key|
@@ -146,6 +154,34 @@ module CKEditor5::Rails
     def build_plugins_cdn_bundle(plugins)
       plugins.each_with_object(Assets::AssetsBundle.new(scripts: [], stylesheets: [])) do |plugin, bundle|
         bundle << plugin.preload_assets_bundle if plugin.preload_assets_bundle.present?
+      end
+    end
+
+    def importmap_available?
+      respond_to?(:importmap_rendered?)
+    end
+
+    def ensure_importmap_not_rendered!
+      return unless importmap_available? && importmap_rendered?
+
+      raise ImportmapAlreadyRenderedError,
+            'CKEditor5 assets must be included before javascript_importmap_tags. ' \
+            'Please move ckeditor5_assets helper before javascript_importmap_tags in your layout.'
+    end
+
+    def build_html_tags(bundle, importmap)
+      serializer = Assets::AssetsBundleHtmlSerializer.new(
+        bundle,
+        importmap: importmap && !importmap_available?
+      )
+
+      html = serializer.to_html
+
+      if importmap_available?
+        @__ckeditor_context[:html_tags] = html
+        nil
+      else
+        html
       end
     end
   end
