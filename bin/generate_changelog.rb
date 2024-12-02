@@ -7,7 +7,11 @@ def get_commits_since_last_bump
     .split("\n")
     .map { |line| line.split('|||') }
     .map { |hash, subject, short_hash| [hash, subject.strip, short_hash] }
-    .reject { |_, subject, _| subject.start_with?('Bump version') }
+    .reject { |_, subject, _|
+      subject.start_with?('Bump version') ||
+      subject.start_with?('Merge') ||
+      subject.downcase.start_with?('internal:')
+    }
     .uniq { |_, subject, _| subject }
 end
 
@@ -30,12 +34,13 @@ def categorize_commits(commits)
               when /^(feature:|feat:)/i then 'Features'
               when /^fix:/i then 'Bug Fixes'
               when /^docs:/i then 'Documentation'
+              when /^internal:/i then next  # Skip internal commits
               else 'Other Changes'
               end
 
     # Remove the prefix from the subject (case insensitive)
-    clean_subject = subject.sub(/^(feature:|feat:|fix:|docs:)\s*/i, '')
-    categories[category] << [clean_subject, hash, short_hash]
+    clean_subject = subject.sub(/^(feature:|feat:|fix:|docs:|internal:)\s*/i, '')
+    categories[category] << [clean_subject, hash, short_hash] if category
   end
 
   # If no conventional commits found, add generic entry
