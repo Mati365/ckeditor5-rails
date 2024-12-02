@@ -14,7 +14,7 @@
 
 ### Documentation
 
-* Add info about `rails-importmap` ([8236e4a](https://github.com/Mati365/ckeditor5-rails/commit/8236e4ac4f43e8b51723d0b7f09d871e9bed2012))
+* Add info about `importmap-rails` ([8236e4a](https://github.com/Mati365/ckeditor5-rails/commit/8236e4ac4f43e8b51723d0b7f09d871e9bed2012))
 * Add documentation to public exposed methods. ([8f063cf](https://github.com/Mati365/ckeditor5-rails/commit/8f063cfd2437fe3139dc101d61cdceef9c9cab4d))
 * remove duplicated sections from changelog. ([d4cdea3](https://github.com/Mati365/ckeditor5-rails/commit/d4cdea3482d21f5942bff8a5c14ac4539f4ac138))
 
