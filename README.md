@@ -47,6 +47,9 @@ In your view:
   <!-- 📦 Adds importmap with CKEditor 5 assets. -->
   <!-- 🌍 It'll automatically use your `I18n.locale` language. -->
   <%= ckeditor5_assets %>
+
+  <!-- ⚠️ If you use `rails-importmap` you have to include the importmap *after* `ckeditor5_assets` helper. -->
+  <%= javascript_importmap_tags %>
 <% end %>
 
 <!-- 🖋️ CKEditor 5 might be placed using simple view helper ... -->
