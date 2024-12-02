@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.20.1] - 2024-12-02
+
+### Features
+
+* Update CKEditor to version 44.0.0 ([d10d6ed](https://github.com/Mati365/ckeditor5-rails/commit/d10d6ed1571bea9e43fc5909853ff30be73ea70d))
+
+### Documentation
+
+* Update head placement info. ([b4207d3](https://github.com/Mati365/ckeditor5-rails/commit/b4207d326b554ff7a8b30e7258b1bedd8d8f07dc))
+
+### Other Changes
+
+* Update README.md ([bf1ebed](https://github.com/Mati365/ckeditor5-rails/commit/bf1ebed508619eb043b499b9adbb1cd62add2e6d))
+
+### Tests
+
+* Tests: Stabilize importmap tests ([87f233c](https://github.com/Mati365/ckeditor5-rails/commit/87f233cc24f0377459942174fc8e3714ea2e4e71))
+
 ## [1.20.0] - 2024-12-02
 
 ### Features
