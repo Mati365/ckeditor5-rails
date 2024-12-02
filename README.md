@@ -81,7 +81,7 @@ CKEditor5::Rails.configure do
 
   # Optionally, you can specify version of CKEditor 5 to use.
   # If it's not specified the default version specified in the gem will be used.
-  # version '43.3.1'
+  # version '44.0.0'
 
   # Upload images to the server using the simple upload adapter, instead of Base64 encoding.
   # simple_upload_adapter
@@ -195,7 +195,7 @@ You can create your own by defining it in the `config/initializers/ckeditor5.rb`
 
 CKEditor5::Rails.configure do
   # It's possible to override the default preset right in the initializer.
-  version '43.3.1'
+  version '44.0.0'
 
   # New presets inherit properties from the default preset defined in the initializer.
   # In this example, the custom preset inherits everything from default but disables the menubar:
@@ -205,7 +205,7 @@ CKEditor5::Rails.configure do
 
   # In order to define preset from scratch, you can use the `inherit: false` option.
   presets.define :blank_preset, inherit: false do
-    version '43.3.1'
+    version '44.0.0'
 
     # It tells the integration to fetch the newest security patches and bug fixes.
     # It may be disabled, but it's highly recommended to keep it enabled to avoid
@@ -327,7 +327,7 @@ Defines the version of CKEditor 5 to be used. The example below shows how to set
 CKEditor5::Rails.configure do
   # ... other configuration
 
-  version '43.3.1'
+  version '44.0.0'
 end
 ```
 </details>
@@ -994,7 +994,7 @@ It may be useful when you want to define a preset based on the current user or r
 class ApplicationController < ActionController::Base
   def show
     @preset = ckeditor5_preset do
-      version '43.3.1'
+      version '44.0.0'
 
       toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
               :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
@@ -1029,7 +1029,7 @@ If you want to override the preset defined in the initializer, you can search fo
 class ApplicationController < ActionController::Base
   def show
     @preset = ckeditor5_preset(:default).override do
-      version '43.3.1'
+      version '44.0.0'
 
       toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
               :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
@@ -1165,7 +1165,7 @@ In that scenario it's recommended to add `gpl` method to the initializer along w
 
 CKEditor5::Rails.configure do
   gpl
-  version '43.3.1'
+  version '44.0.0'
 end
 ```
 
