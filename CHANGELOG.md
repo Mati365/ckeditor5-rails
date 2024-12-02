@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.20.0] - 2024-12-02
+
+### Features
+
+* Add support for Rails 8. ([edd00a1](https://github.com/Mati365/ckeditor5-rails/commit/edd00a1517ba065a11cd955e8789edacb3ee9f76))
+* more stable e2e tests. ([f035365](https://github.com/Mati365/ckeditor5-rails/commit/f035365b409c0acb3e4049a49155f6bb7163d266))
+
+### Bug Fixes
+
+* Not working importmap fallback ([0d78e89](https://github.com/Mati365/ckeditor5-rails/commit/0d78e89155019a7c0300e5c6828f56e3efa848ca))
+* reorder imports ([ce305e6](https://github.com/Mati365/ckeditor5-rails/commit/ce305e628c0e6f921c175858e96a375898edfd53))
+
+### Documentation
+
+* Add info about `rails-importmap` ([8236e4a](https://github.com/Mati365/ckeditor5-rails/commit/8236e4ac4f43e8b51723d0b7f09d871e9bed2012))
+* Add documentation to public exposed methods. ([8f063cf](https://github.com/Mati365/ckeditor5-rails/commit/8f063cfd2437fe3139dc101d61cdceef9c9cab4d))
+* remove duplicated sections from changelog. ([d4cdea3](https://github.com/Mati365/ckeditor5-rails/commit/d4cdea3482d21f5942bff8a5c14ac4539f4ac138))
+
+### Other Changes
+
+* Merge pull request #15 from Mati365/feature/align-to-work-with-rails-8 ([f64e322](https://github.com/Mati365/ckeditor5-rails/commit/f64e322eeb65f250cc0ccd4d75df94a45b8b03ea))
+* Tests: Improve coverage for Rails 8 importmap integration ([162e54b](https://github.com/Mati365/ckeditor5-rails/commit/162e54b08bb97cb88f5830795a7f4a7c04516927))
+* Tests: Improve stability of e2e tests. ([da90136](https://github.com/Mati365/ckeditor5-rails/commit/da901363a4feaf8912817eba01b555653211751b))
+* Rename script ([868b707](https://github.com/Mati365/ckeditor5-rails/commit/868b7070c4a4d393026e1a8ea1a6090538b472d3))
+
 ## [1.19.5] - 2024-11-29
 
 ### Features
