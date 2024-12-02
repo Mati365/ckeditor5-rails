@@ -102,5 +102,37 @@ RSpec.describe CKEditor5::Rails::Engine do
         end
       end
     end
+
+    describe 'importmap initializer' do
+      context 'when Importmap is defined' do
+        module Importmap # rubocop:disable Lint/ConstantDefinitionInBlock
+          module ImportmapTagsHelper; end
+        end
+
+        it 'prepends CKEditor5 importmap helper' do
+          initializer = described_class.initializers.find { |i| i.name == 'ckeditor5.importmap' }
+          initializer.run(Rails.application)
+
+          expect(Importmap::ImportmapTagsHelper.ancestors)
+            .to include(CKEditor5::Rails::Hooks::Importmap::ImportmapTagsHelper)
+        end
+      end
+
+      context 'when Importmap is not defined' do
+        before do
+          @importmap = Importmap if defined?(Importmap)
+          Object.send(:remove_const, :Importmap) if defined?(Importmap)
+        end
+
+        after do
+          Object.const_set(:Importmap, @importmap) if @importmap
+        end
+
+        it 'does not raise error' do
+          initializer = described_class.initializers.find { |i| i.name == 'ckeditor5.importmap' }
+          expect { initializer.run(Rails.application) }.not_to raise_error
+        end
+      end
+    end
   end
 end

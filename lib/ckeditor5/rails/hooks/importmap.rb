@@ -20,10 +20,6 @@ module CKEditor5::Rails::Hooks
         @importmap_rendered
       end
 
-      def reset_importmap_rendered!
-        @importmap_rendered = false
-      end
-
       private
 
       def prepare_importmap_json(importmap)

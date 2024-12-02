@@ -12,6 +12,8 @@ require_relative 'ckbox_bundle'
 
 module CKEditor5::Rails
   module Cdn::Helpers
+    class ImportmapAlreadyRenderedError < ArgumentError; end
+
     # The `ckeditor5_assets` helper includes CKEditor 5 assets in your application.
     # It's responsible for generating the necessary JavaScript and CSS imports based on
     # the specified preset and configuration.
@@ -155,23 +157,31 @@ module CKEditor5::Rails
       end
     end
 
-    def ensure_importmap_not_rendered!
-      return unless respond_to?(:importmap_rendered?) && importmap_rendered?
+    def importmap_available?
+      respond_to?(:importmap_rendered?)
+    end
 
-      raise ArgumentError,
+    def ensure_importmap_not_rendered!
+      return unless importmap_available? && importmap_rendered?
+
+      raise ImportmapAlreadyRenderedError,
             'CKEditor5 assets must be included before javascript_importmap_tags. ' \
             'Please move ckeditor5_assets helper before javascript_importmap_tags in your layout.'
     end
 
     def build_html_tags(bundle, importmap)
-      serializer = Assets::AssetsBundleHtmlSerializer.new(bundle,
-                                                          importmap: defined?(Rails.application.importmap) ? false : importmap)
+      serializer = Assets::AssetsBundleHtmlSerializer.new(
+        bundle,
+        importmap: importmap && !importmap_available?
+      )
 
-      if defined?(Rails.application.importmap)
-        @__ckeditor_context[:html_tags] = serializer.to_html
+      html = serializer.to_html
+
+      if importmap_available?
+        @__ckeditor_context[:html_tags] = html
         nil
       else
-        serializer.to_html
+        html
       end
     end
   end

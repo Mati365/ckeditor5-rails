@@ -28,7 +28,7 @@ module CKEditor5::Rails
       ActionView::Helpers::FormBuilder.include(Hooks::Form::FormBuilderExtension)
     end
 
-    initializer 'ckeditor5.importmap', after: :load_config_initializers, before: 'importmap' do |app|
+    initializer 'ckeditor5.importmap', after: :load_config_initializers, before: 'importmap' do |_app|
       require_relative 'hooks/importmap'
 
       ActiveSupport.on_load(:action_view) do

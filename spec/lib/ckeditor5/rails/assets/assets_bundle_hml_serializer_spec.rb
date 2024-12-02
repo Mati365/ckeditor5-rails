@@ -42,6 +42,13 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
                                })
     end
 
+    it 'should not include importmap if not requested' do
+      serializer = described_class.new(bundle, importmap: false)
+      html = serializer.to_html
+
+      expect(html).not_to have_tag('script', with: { type: 'importmap' })
+    end
+
     it 'includes import map' do
       expect(html).to have_tag('script', with: { type: 'importmap' }) do
         with_text(%r{"@ckeditor/script2":"https://cdn\.com/script2\.js"})
@@ -131,13 +138,6 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
                                  nonce: 'true'
                                })
     end
-
-    it 'memoizes scripts import map' do
-      first_call = serializer.send(:scripts_import_map_tag)
-      second_call = serializer.send(:scripts_import_map_tag)
-
-      expect(first_call.object_id).to eq(second_call.object_id)
-    end
   end
 
   describe '.url_resource_preload_type' do
@@ -153,17 +153,60 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
       expect(described_class.url_resource_preload_type('file.unknown')).to eq('fetch')
     end
   end
+end
+
+RSpec.describe CKEditor5::Rails::Assets::AssetsImportMap do
+  let(:scripts) do
+    [
+      CKEditor5::Rails::Assets::JSUrlImportMeta.new(
+        'https://cdn.com/script1.js',
+        window_name: 'WindowScript'
+      ),
+      CKEditor5::Rails::Assets::JSUrlImportMeta.new(
+        'https://cdn.com/script2.js',
+        import_name: '@ckeditor/module'
+      ),
+      CKEditor5::Rails::Assets::JSUrlImportMeta.new(
+        'https://cdn.com/script3.js',
+        import_name: 'https://example.com/module'
+      )
+    ]
+  end
+
+  let(:bundle) { CKEditor5::Rails::Assets::AssetsBundle.new(scripts: scripts) }
+  subject(:import_map) { described_class.new(bundle) }
+
+  describe '#to_json' do
+    it 'includes only ESM scripts without URL-like imports' do
+      json = JSON.parse(import_map.to_json)
+      expect(json['imports']).to eq({
+                                      '@ckeditor/module' => 'https://cdn.com/script2.js'
+                                    })
+    end
+  end
+
+  describe '#to_html' do
+    it 'generates script tag with import map' do
+      html = import_map.to_html
+      expect(html).to have_tag('script', with: { type: 'importmap', nonce: 'true' }) do
+        with_text('{"imports":{"@ckeditor/module":"https://cdn.com/script2.js"}}')
+      end
+    end
+  end
 
   describe '#looks_like_url? (private)' do
-    subject(:serializer) { described_class.new(CKEditor5::Rails::Assets::AssetsBundle.new) }
-
     it 'returns false for invalid URIs' do
-      expect(serializer.send(:looks_like_url?, '@ckeditor/foo')).to be false
-      expect(serializer.send(:looks_like_url?, 'http')).to be false
-      expect(serializer.send(:looks_like_url?, 'invalid')).to be false
-      expect(serializer.send(:looks_like_url?, 'http://[invalid')).to be false
-      expect(serializer.send(:looks_like_url?, "http://example.com\nmalicious")).to be false
-      expect(serializer.send(:looks_like_url?, 'http://<invalid>')).to be false
+      expect(import_map.send(:looks_like_url?, '@ckeditor/foo')).to be false
+      expect(import_map.send(:looks_like_url?, 'http')).to be false
+      expect(import_map.send(:looks_like_url?, 'invalid')).to be false
+      expect(import_map.send(:looks_like_url?, 'http://[invalid')).to be false
+      expect(import_map.send(:looks_like_url?, "http://example.com\nmalicious")).to be false
+      expect(import_map.send(:looks_like_url?, 'http://<invalid>')).to be false
+    end
+
+    it 'returns true for valid HTTP(S) URLs' do
+      expect(import_map.send(:looks_like_url?, 'http://example.com')).to be true
+      expect(import_map.send(:looks_like_url?, 'https://cdn.com/script.js')).to be true
     end
   end
 end
