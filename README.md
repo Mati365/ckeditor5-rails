@@ -36,7 +36,7 @@ In your layout:
       be included in the head section to ensure proper loading order.
       This is crucial for CKEditor 5 to work correctly.
     -->
-    <%= javascript_importmap_tags %>
+    <!-- <%= javascript_importmap_tags %> -->
     <%= yield :head %>
   </head>
   <body>
