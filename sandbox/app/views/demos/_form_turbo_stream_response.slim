@@ -1,0 +1,12 @@
+
+- if status == "success"
+  .alert.alert-success role="alert"
+    strong Success!
+    | &nbsp;
+    | Form submitted successfully using streams. Content: #{content}.
+
+
+  h2.mb-4 Your stream response preview:
+  = ckeditor5_assets preset: :ultrabasic
+
+  = ckeditor5_editor required: true,  data: { testid: 'rails-form-editor-response' },  initial_data: content

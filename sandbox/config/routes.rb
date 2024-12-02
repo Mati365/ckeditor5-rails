@@ -12,6 +12,8 @@ Sandbox::Application.routes.draw do
       ].each do |action|
         get action
       end
+
+      post :form_ajax, :form_turbo_stream
     end
   end
 end

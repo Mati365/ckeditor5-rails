@@ -70,4 +70,42 @@ class DemosController < ApplicationController
       JS
     end
   end
+
+  def form_ajax
+    return unless request.post?
+
+    sleep(1)
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          'response',
+          partial: 'form_ajax_response',
+          locals: {
+            content: params[:content],
+            status: 'success'
+          }
+        )
+      end
+    end
+  end
+
+  def form_turbo_stream
+    return unless request.post?
+
+    sleep(1)
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          'response-stream',
+          partial: 'form_turbo_stream_response',
+          locals: {
+            content: params[:content],
+            status: 'success'
+          }
+        )
+      end
+    end
+  end
 end

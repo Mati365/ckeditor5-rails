@@ -3,18 +3,32 @@
 - content_for :head
   = ckeditor5_assets preset: :ultrabasic
 
-
 h1.mb-4 AJAX Form Integration
 
 .form-container style="max-width: 800px;"
-  #response.alert.alert-info.mb-3 style="display: none;"
-
-  = form_with url: form_ajax_demos_path, data: { testid: 'rails-form' } do |f|
+  = form_with url: form_ajax_demos_path, data: { testid: 'rails-form', controller: "form", turbo_frame: "response" } do |f|
     .form-group.mb-3
       = f.label :content, class: "form-label" do
         abbr title="required" *
         | &nbsp;Content
-      = f.ckeditor5 :content, required: true, data: { testid: 'rails-form-editor' }, initial_data: 'Hello World!'
+      = f.ckeditor5 :content, required: true,  data: { testid: 'rails-form-editor' },  initial_data: 'Hello World!'
 
     .form-group
-      = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit' }
+      = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit', form_target: "submit" }
+
+    #response.mt-3 style="display: none;" data-form-target="response"
+
+h2.mt-5.mb-4 Turbo Stream Integration
+
+.form-container style="max-width: 800px;"
+  = form_with url: form_turbo_stream_demos_path, data: { testid: 'rails-form-stream', controller: "form", turbo_frame: "response-stream" } do |f|
+    .form-group.mb-3
+      = f.label :content, class: "form-label" do
+        abbr title="required" *
+        | &nbsp;Content
+      = f.ckeditor5 :content, required: true,  data: { testid: 'rails-form-editor-stream' },  initial_data: 'Hello Streams!'
+
+    .form-group
+      = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit-stream', form_target: "submitStream" }
+
+    #response-stream.mt-3 style="display: none;" data-form-target="responseStream"
