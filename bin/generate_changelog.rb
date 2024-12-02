@@ -26,7 +26,8 @@ def categorize_commits(commits)
     'Features' => [],
     'Bug Fixes' => [],
     'Documentation' => [],
-    'Other Changes' => []
+    'Other Changes' => [],
+    'Tests' => []
   }
 
   commits.each do |hash, subject, short_hash|
