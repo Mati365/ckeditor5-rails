@@ -75,6 +75,27 @@ RSpec.describe CKEditor5::Rails::Hooks::Importmap::ImportmapTagsHelper do
         expect(Rails.logger).to receive(:error).with(/Failed to merge import maps/)
         helper.javascript_importmap_tags
       end
+
+      it 'processes importmap in correct order when context is present' do
+        html = CGI.unescapeHTML(helper.javascript_importmap_tags)
+        doc = Nokogiri::HTML::DocumentFragment.parse(html)
+        scripts = doc.css('script')
+
+        expect(scripts[0]['type']).to eq('importmap')
+        expect(scripts[1]['type']).to eq('modulepreload')
+        expect(scripts[2]['type']).to eq('module')
+        expect(scripts[3]['src']).to eq('ckeditor.js')
+      end
+
+      it 'adds inline importmap when context is missing' do
+        helper.instance_variable_set(:@__ckeditor_context, nil)
+        html = CGI.unescapeHTML(helper.javascript_importmap_tags)
+        doc = Nokogiri::HTML::DocumentFragment.parse(html)
+        scripts = doc.css('script')
+
+        expect(scripts[0]['type']).to eq('importmap')
+        expect(doc.css('script[src="ckeditor.js"]')).to be_empty
+      end
     end
   end
 

@@ -12,7 +12,12 @@ module CKEditor5::Rails::Hooks
 
         importmap_json = prepare_importmap_json(importmap)
 
-        process_ckeditor_context(serialized_tags, importmap_json) if @__ckeditor_context.present?
+        if @__ckeditor_context.present?
+          process_ckeditor_context(serialized_tags, importmap_json)
+        else
+          serialized_tags.prepend(javascript_inline_importmap_tag(importmap_json))
+        end
+
         safe_join(serialized_tags, "\n")
       end
 
