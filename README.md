@@ -30,7 +30,9 @@ In your layout:
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- ⚠️ If you use `rails-importmap` you have to include the importmap somewhere in the head. -->
+    <!--
+      ⚠️ **Important**: When using `rails-importmap`, make sure the importmap tags are rendered after `ckeditor5_assets` helper. The importmap must be included in the head section to ensure proper loading order. This is crucial for CKEditor 5 to work correctly.
+    -->
     <%= javascript_importmap_tags %>
     <%= yield :head %>
   </head>
