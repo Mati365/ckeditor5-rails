@@ -138,6 +138,59 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
                                  nonce: 'true'
                                })
     end
+
+    context 'with lazy loading' do
+      subject(:html) { described_class.new(bundle, lazy: true).to_html }
+
+      it 'does not include preload tags' do
+        expect(html).not_to have_tag('link', with: { rel: 'preload' })
+        expect(html).not_to have_tag('link', with: { rel: 'modulepreload' })
+      end
+
+      it 'does not include stylesheet links' do
+        stylesheets.each do |url|
+          expect(html).not_to have_tag('link', with: { href: url, rel: 'stylesheet' })
+        end
+      end
+
+      it 'does not include window script tags' do
+        scripts.each do |script|
+          expect(html).not_to have_tag('script', with: { src: script.url }) if script.window?
+        end
+      end
+
+      it 'includes web component script' do
+        expect(html).to have_tag('script', with: { type: 'module' })
+      end
+    end
+
+    context 'with eager loading (lazy: false)' do
+      subject(:html) { described_class.new(bundle, lazy: false).to_html }
+
+      it 'includes preload tags' do
+        scripts.each do |script|
+          expect(html).to have_tag('link', with: {
+                                     href: script.url,
+                                     rel: script.esm? ? 'modulepreload' : 'preload'
+                                   })
+        end
+      end
+
+      it 'includes stylesheet links' do
+        stylesheets.each do |url|
+          expect(html).to have_tag('link', with: {
+                                     href: url,
+                                     rel: 'stylesheet'
+                                   })
+        end
+      end
+
+      it 'includes window script tags' do
+        scripts.each do |script|
+          expect(html).to have_tag('script', with: { src: script.url }) if script.window?
+        end
+      end
+    end
   end
 
   describe '.url_resource_preload_type' do

@@ -6,7 +6,7 @@ Sandbox::Application.routes.draw do
   resources :demos, only: [], path: '/' do
     collection do
       %i[
-        classic classic_controller_preset decoupled classic_wproofreader
+        classic classic_controller_preset decoupled classic_wproofreader classic_lazy_assets
         form form_ajax multiroot context balloon inline
         locale_via_assets locale_via_editor locale_via_preset locale_via_rails_i18n
       ].each do |action|

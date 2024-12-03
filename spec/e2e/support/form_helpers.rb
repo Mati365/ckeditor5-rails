@@ -6,7 +6,10 @@ module FormHelpers
       window.lastSubmittedForm = null;
 
       document.addEventListener('submit', (e) => {
-        e.preventDefault();
+        if (!e.target.hasAttribute('data-turbo-frame')) {
+          e.preventDefault();
+        }
+
         window.lastSubmittedForm = e.target.id;
       });
     JS

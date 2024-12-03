@@ -118,7 +118,7 @@ RSpec.describe CKEditor5::Rails::VersionDetector do
 
   private
 
-  def setup_http_mock(response) # rubocop:disable Metrics/AbcSize
+  def setup_http_mock(response)
     allow(Net::HTTP).to receive(:new).and_return(
       double('Net::HTTP').tap do |http|
         allow(http).to receive(:use_ssl=)

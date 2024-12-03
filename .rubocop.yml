@@ -7,6 +7,9 @@ AllCops:
   TargetRubyVersion: 3.0.0
   TargetRailsVersion: 6.1
 
+Metrics/AbcSize:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 

@@ -30,6 +30,13 @@ module CKEditor5::Rails::Assets
       stylesheets + scripts.map(&:preloads)
     end
 
+    def to_json(*_args)
+      {
+        scripts: scripts.map(&:to_h),
+        stylesheets: stylesheets
+      }.to_json
+    end
+
     def <<(other)
       raise TypeError, 'other must be an instance of AssetsBundle' unless other.is_a?(AssetsBundle)
 
@@ -54,7 +61,10 @@ module CKEditor5::Rails::Assets
     end
 
     def to_h
-      import_meta.to_h.merge({ url: url })
+      import_meta.to_h.merge({
+                               url: url,
+                               translation: translation?
+                             })
     end
 
     def preloads

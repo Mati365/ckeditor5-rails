@@ -61,6 +61,16 @@ RSpec.describe CKEditor5::Rails::Engine do
         expect(described_class.find_preset(:custom)).to eq(preset)
       end
     end
+
+    describe '.presets' do
+      before do
+        RSpec::Mocks.space.proxy_for(described_class).reset
+      end
+
+      it 'returns presets from configuration' do
+        expect(described_class.presets).to eq(described_class.base.presets)
+      end
+    end
   end
 
   describe 'initializers' do

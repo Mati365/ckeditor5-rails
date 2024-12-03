@@ -14,16 +14,17 @@ module CKEditor5::Rails::Editor
     }.freeze
 
     def initialize(
-      controller_context, type, config,
-      watchdog: true, editable_height: nil, language: nil
+      type, config,
+      bundle: nil,
+      watchdog: true,
+      editable_height: nil
     )
       raise ArgumentError, "Invalid editor type: #{type}" unless Props.valid_editor_type?(type)
 
-      @controller_context = controller_context
+      @bundle = bundle
       @watchdog = watchdog
       @type = type
       @config = config
-      @language = language
       @editable_height = EditableHeightNormalizer.new(type).normalize(editable_height)
     end
 
@@ -40,20 +41,16 @@ module CKEditor5::Rails::Editor
 
     private
 
-    attr_reader :controller_context, :watchdog, :type, :config, :editable_height
+    attr_reader :bundle, :watchdog, :type, :config, :editable_height
 
     def serialized_attributes
       {
-        translations: serialize_translations,
+        bundle: bundle.to_json,
         plugins: serialize_plugins,
         config: serialize_config,
         watchdog: watchdog
       }
         .merge(editable_height ? { 'editable-height' => editable_height } : {})
-    end
-
-    def serialize_translations
-      controller_context[:bundle]&.translations_scripts&.map(&:to_h).to_json || '[]'
     end
 
     def serialize_plugins
@@ -63,10 +60,6 @@ module CKEditor5::Rails::Editor
     def serialize_config
       config
         .except(:plugins)
-        .tap do |cfg|
-          cfg[:licenseKey] = controller_context[:license_key] if controller_context[:license_key]
-          cfg[:language] = { ui: @language } if @language
-        end
         .to_json
     end
   end

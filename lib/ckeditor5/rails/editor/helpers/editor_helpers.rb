@@ -7,9 +7,7 @@ require_relative 'config_helpers'
 module CKEditor5::Rails
   module Editor::Helpers::Editor
     include Editor::Helpers::Config
-
-    class EditorContextError < StandardError; end
-    class PresetNotFoundError < ArgumentError; end
+    include Cdn::Concerns::BundleBuilder
 
     # Creates a CKEditor 5 editor instance in the view.
     #
@@ -67,17 +65,22 @@ module CKEditor5::Rails
     )
       validate_editor_input!(initial_data, block)
 
-      controller_context = validate_and_get_editor_context!
+      context = ckeditor5_context_or_fallback(preset)
 
-      preset = find_preset(preset || controller_context[:preset] || :default)
+      preset = Engine.find_preset!(preset || context[:preset] || :default)
       config = build_editor_config(preset, config, extra_config, initial_data)
+
       type ||= preset.type
 
+      # Add some fallbacks
+      config[:licenseKey] ||= context[:license_key]
+      config[:language] = { ui: language } if language
+
       editor_props = Editor::Props.new(
-        controller_context, type, config,
+        type, config,
+        bundle: context[:bundle],
         watchdog: watchdog,
-        editable_height: editable_height,
-        language: language
+        editable_height: editable_height
       )
 
       tag_attributes = html_attributes.merge(editor_props.to_attributes)
@@ -148,19 +151,22 @@ module CKEditor5::Rails
       editor_config
     end
 
-    def validate_and_get_editor_context!
-      unless defined?(@__ckeditor_context)
-        raise EditorContextError,
-              'CKEditor installation context is not defined. ' \
-              'Ensure ckeditor5_assets is called in the head section.'
+    def ckeditor5_context_or_fallback(preset)
+      return @__ckeditor_context if @__ckeditor_context.present?
+
+      if preset.present?
+        found_preset = Engine.find_preset(preset)
+
+        return {
+          bundle: create_preset_bundle(found_preset),
+          preset: found_preset
+        }
       end
 
-      @__ckeditor_context
-    end
-
-    def find_preset(preset)
-      Engine.find_preset(preset) or
-        raise PresetNotFoundError, "Preset #{preset} is not defined."
+      {
+        bundle: nil,
+        preset: Engine.default_preset
+      }
     end
   end
 end

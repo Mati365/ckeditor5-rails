@@ -11,18 +11,31 @@ RSpec.describe CKEditor5::Rails::Hooks::Form do
     end
 
     before do
-      template.ckeditor5_assets(version: '34.1.0')
+      template.ckeditor5_assets(version: '34.1.0', automatic_upgrades: false, cdn: :jsdelivr)
     end
 
     describe '#build_editor' do
       subject(:rendered_editor) { builder.build_editor(:content) }
 
       it 'renders ckeditor element' do
+        bundle_json = {
+          scripts: [
+            {
+              import_name: 'ckeditor5',
+              url: 'https://cdn.jsdelivr.net/npm/ckeditor5@34.1.0/dist/browser/ckeditor5.js',
+              translation: false
+            }
+          ],
+          stylesheets: [
+            'https://cdn.jsdelivr.net/npm/ckeditor5@34.1.0/dist/browser/ckeditor5.css'
+          ]
+        }.to_json
+
         attrs = {
           name: 'post[content]',
           id: 'post_content',
           type: 'ClassicEditor',
-          translations: '[]',
+          bundle: bundle_json,
           watchdog: 'true'
         }
 

@@ -16,30 +16,68 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
   let(:context) { { preset: :default, cdn: :jsdelivr } }
 
   before do
+    RSpec::Mocks.space.proxy_for(CKEditor5::Rails::Engine).reset
+
     helper.instance_variable_set(:@__ckeditor_context, context)
+
     allow(preset).to receive(:type).and_return(:classic)
     allow(preset).to receive(:config).and_return({})
     allow(preset).to receive(:automatic_upgrades?).and_return(false)
   end
 
+  before do
+    test_class.send(:public, :ckeditor5_context_or_fallback)
+  end
+
+  describe '#ckeditor5_context_or_fallback' do
+    before do
+      if helper.instance_variable_defined?(:@__ckeditor_context)
+        helper.remove_instance_variable(:@__ckeditor_context)
+      end
+    end
+
+    it 'returns existing context when available' do
+      context = { preset: :custom, bundle: 'custom-bundle' }
+      helper.instance_variable_set(:@__ckeditor_context, context)
+
+      expect(helper.ckeditor5_context_or_fallback(nil)).to eq(context)
+    end
+
+    it 'creates context from preset when provided' do
+      custom_preset = instance_double(CKEditor5::Rails::Presets::PresetBuilder)
+
+      allow(CKEditor5::Rails::Engine).to receive(:find_preset)
+        .with(:custom)
+        .and_return(custom_preset)
+
+      allow(helper).to receive(:create_preset_bundle)
+        .with(custom_preset)
+        .and_return('custom-bundle')
+
+      result = helper.ckeditor5_context_or_fallback(:custom)
+      expect(result).to match({
+                                bundle: 'custom-bundle',
+                                preset: custom_preset
+                              })
+    end
+
+    it 'returns fallback context when no context or preset is available' do
+      RSpec::Mocks.space.proxy_for(CKEditor5::Rails::Engine).reset
+
+      allow(CKEditor5::Rails::Engine).to receive(:default_preset)
+        .and_return(:default)
+
+      result = helper.ckeditor5_context_or_fallback(nil)
+      expect(result).to match({
+                                bundle: nil,
+                                preset: :default
+                              })
+    end
+  end
+
   describe '#ckeditor5_editor' do
     before do
-      allow(helper).to receive(:find_preset).and_return(preset)
-    end
-
-    it 'raises error when context is not defined' do
-      helper.remove_instance_variable(:@__ckeditor_context)
-      expect { helper.ckeditor5_editor }.to raise_error(
-        described_class::EditorContextError,
-        /CKEditor installation context is not defined/
-      )
-    end
-
-    it 'raises error when preset is not found' do
-      allow(helper).to receive(:find_preset).and_raise(described_class::PresetNotFoundError)
-      expect do
-        helper.ckeditor5_editor(preset: :unknown)
-      end.to raise_error(described_class::PresetNotFoundError)
+      allow(CKEditor5::Rails::Engine).to receive(:find_preset).with(:default).and_return(preset)
     end
 
     it 'merges extra configuration with preset config' do
@@ -124,10 +162,6 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
     end
 
     context 'when using preset lookup' do
-      before do
-        RSpec::Mocks.space.proxy_for(helper).remove_stub(:find_preset)
-      end
-
       it 'uses default preset when none specified' do
         expect(CKEditor5::Rails::Engine).to receive(:find_preset)
           .with(:default)
@@ -154,16 +188,25 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         helper.ckeditor5_editor(preset: :explicit)
       end
 
-      it 'raises error when preset cannot be found' do
-        allow(CKEditor5::Rails::Engine).to receive(:find_preset)
-          .with(:unknown)
-          .and_return(nil)
-
-        expect { helper.ckeditor5_editor(preset: :unknown) }.to raise_error(
-          described_class::PresetNotFoundError,
-          'Preset unknown is not defined.'
-        )
+      it 'raises error when preset is not found' do
+        allow(CKEditor5::Rails::Engine).to receive(:find_preset).with(:unknown).and_return(nil)
+        expect do
+          helper.ckeditor5_editor(preset: :unknown)
+        end.to raise_error(CKEditor5::Rails::PresetNotFoundError)
       end
+    end
+
+    it 'uses context from ckeditor5_context_or_fallback' do
+      custom_context = { preset: :custom, bundle: 'custom-bundle' }
+      allow(helper).to receive(:ckeditor5_context_or_fallback)
+        .with(nil)
+        .and_return(custom_context)
+
+      allow(CKEditor5::Rails::Engine).to receive(:find_preset)
+        .with(:custom)
+        .and_return(preset)
+
+      helper.ckeditor5_editor
     end
   end
 

@@ -8,6 +8,8 @@ module CKEditor5::Rails::Presets
   class Manager
     attr_reader :presets
 
+    alias to_h presets
+
     # Initializes a new Manager instance and sets up the default preset
     def initialize
       @presets = {}

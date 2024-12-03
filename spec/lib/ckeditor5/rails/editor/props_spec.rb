@@ -3,34 +3,29 @@
 require 'spec_helper'
 
 RSpec.describe CKEditor5::Rails::Editor::Props do
-  let(:controller_context) do
-    {
-      bundle: double('Bundle', translations_scripts: [{ path: 'translations/en.js' }]),
-      license_key: nil
-    }
-  end
+  let(:bundle) { CKEditor5::Rails::Assets::AssetsBundle.new }
   let(:type) { :classic }
   let(:config) { { plugins: [], toolbar: { items: [] } } }
 
   describe '#initialize' do
     it 'accepts valid editor type' do
-      expect { described_class.new(controller_context, :classic, {}) }.not_to raise_error
+      expect { described_class.new(type, {}, bundle: bundle) }.not_to raise_error
     end
 
     it 'raises error for invalid editor type' do
-      expect { described_class.new(controller_context, :invalid, {}) }
+      expect { described_class.new(:invalid, {}, bundle: bundle) }
         .to raise_error(ArgumentError, 'Invalid editor type: invalid')
     end
   end
 
   describe '#to_attributes' do
-    subject(:props) { described_class.new(controller_context, type, config) }
+    subject(:props) { described_class.new(type, config, bundle: bundle) }
 
     it 'includes required attributes' do
       attributes = props.to_attributes
       expect(attributes).to include(
         type: 'ClassicEditor',
-        translations: String,
+        bundle: String,
         plugins: String,
         config: String,
         watchdog: true
@@ -38,33 +33,18 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
     end
 
     context 'with editable height' do
-      subject(:props) { described_class.new(controller_context, type, config, editable_height: '500px') }
+      subject(:props) { described_class.new(type, config, bundle: bundle, editable_height: '500px') }
 
       it 'includes editable-height attribute' do
         expect(props.to_attributes['editable-height']).to eq('500px')
       end
     end
 
-    context 'with language' do
-      subject(:props) { described_class.new(controller_context, type, config, language: 'pl') }
+    context 'with watchdog disabled' do
+      subject(:props) { described_class.new(type, config, bundle: bundle, watchdog: false) }
 
-      it 'includes language in config' do
-        config_json = props.to_attributes[:config]
-
-        expect(config_json).to include('language')
-        expect(JSON.parse(config_json)['language']).to eq({ 'ui' => 'pl' })
-      end
-    end
-
-    context 'with license key' do
-      let(:controller_context) do
-        { bundle: double('Bundle', translations_scripts: []), license_key: 'ABC123' }
-      end
-
-      it 'includes license key in config' do
-        config_json = props.to_attributes[:config]
-        expect(config_json).to include('licenseKey')
-        expect(JSON.parse(config_json)['licenseKey']).to eq('ABC123')
+      it 'includes watchdog: false in attributes' do
+        expect(props.to_attributes[:watchdog]).to be false
       end
     end
   end
@@ -87,7 +67,7 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
 
       it 'raises error when editable height is set' do
         expect do
-          described_class.new(controller_context, type, config, editable_height: '500px')
+          described_class.new(type, config, bundle: bundle, editable_height: '500px')
         end.to raise_error(CKEditor5::Rails::Editor::InvalidEditableHeightError)
       end
     end
@@ -96,18 +76,18 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
       let(:type) { :classic }
 
       it 'accepts integer values' do
-        props = described_class.new(controller_context, type, config, editable_height: 500)
+        props = described_class.new(type, config, bundle: bundle, editable_height: 500)
         expect(props.to_attributes['editable-height']).to eq('500px')
       end
 
       it 'accepts pixel string values' do
-        props = described_class.new(controller_context, type, config, editable_height: '500px')
+        props = described_class.new(type, config, bundle: bundle, editable_height: '500px')
         expect(props.to_attributes['editable-height']).to eq('500px')
       end
 
       it 'raises error for invalid values' do
         expect do
-          described_class.new(controller_context, type, config, editable_height: '500em')
+          described_class.new(type, config, bundle: bundle, editable_height: '500em')
         end.to raise_error(CKEditor5::Rails::Editor::InvalidEditableHeightError)
       end
     end

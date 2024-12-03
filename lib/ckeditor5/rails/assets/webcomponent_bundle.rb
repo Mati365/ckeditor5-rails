@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
+require 'singleton'
+
 module CKEditor5::Rails::Assets
-  module WebComponentBundle
+  class WebComponentBundle
+    include ActionView::Helpers::TagHelper
+    include Singleton
+
     WEBCOMPONENTS_PATH = File.join(__dir__, 'webcomponents')
     WEBCOMPONENTS_MODULES = [
       'utils.mjs',
@@ -11,12 +16,14 @@ module CKEditor5::Rails::Assets
       'components/context.mjs'
     ].freeze
 
-    module_function
-
     def source
       @source ||= WEBCOMPONENTS_MODULES.map do |file|
         File.read(File.join(WEBCOMPONENTS_PATH, file))
       end.join("\n").html_safe
+    end
+
+    def to_html
+      @to_html ||= tag.script(source, type: 'module', nonce: true)
     end
   end
 end

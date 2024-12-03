@@ -9,23 +9,22 @@ module CKEditor5::Rails::Assets
   class AssetsBundleHtmlSerializer
     include ActionView::Helpers::TagHelper
 
-    attr_reader :bundle, :importmap
+    attr_reader :bundle, :importmap, :lazy
 
-    def initialize(bundle, importmap: true)
+    def initialize(bundle, importmap: true, lazy: false)
       raise TypeError, 'bundle must be an instance of AssetsBundle' unless bundle.is_a?(AssetsBundle)
 
       @importmap = importmap
       @bundle = bundle
+      @lazy = lazy
     end
 
     def to_html
       tags = [
-        preload_tags,
-        styles_tags,
-        window_scripts_tags,
-        web_component_tag
+        WebComponentBundle.instance.to_html
       ]
 
+      tags.prepend(preload_tags, styles_tags, window_scripts_tags) unless lazy
       tags.prepend(AssetsImportMap.new(bundle).to_html) if importmap
 
       safe_join(tags)
@@ -40,10 +39,6 @@ module CKEditor5::Rails::Assets
     end
 
     private
-
-    def web_component_tag
-      @web_component_tag ||= tag.script(WebComponentBundle.source, type: 'module', nonce: true)
-    end
 
     def window_scripts_tags
       @window_scripts_tags ||= safe_join(bundle.scripts.filter_map do |script|

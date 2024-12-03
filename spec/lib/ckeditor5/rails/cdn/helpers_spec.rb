@@ -35,8 +35,13 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
   end
 
   before do
-    allow(CKEditor5::Rails::Engine).to receive(:find_preset).and_return(preset)
+    allow(CKEditor5::Rails::Engine).to receive(:find_preset!).and_return(preset)
     allow(CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer).to receive(:new).and_return(serializer)
+  end
+
+  after do
+    RSpec::Mocks.space.proxy_for(CKEditor5::Rails::Engine).reset
+    RSpec::Mocks.space.proxy_for(CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer).reset
   end
 
   describe '#ckeditor5_assets' do
@@ -206,12 +211,13 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
 
     context 'destructure non-matching preset override' do
       before do
-        allow(CKEditor5::Rails::Engine).to receive(:find_preset).and_return(nil)
+        RSpec::Mocks.space.proxy_for(CKEditor5::Rails::Engine).reset
       end
 
       it 'raises error' do
         expect { helper.ckeditor5_assets(preset: :invalid) }
-          .to raise_error(ArgumentError, /forgot to define your invalid preset/)
+          .to raise_error(CKEditor5::Rails::PresetNotFoundError)
+        RSpec::Mocks.space.proxy_for(CKEditor5::Rails::Engine).reset
       end
     end
 
@@ -252,6 +258,92 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
         result = helper.ckeditor5_assets(preset: :default)
         expect(result).to eq(bundle_html)
         expect(context[:html_tags]).to be_nil
+      end
+    end
+  end
+
+  describe '#ckeditor5_lazy_javascript_tags' do
+    let(:web_component_html) do
+      '<script type="module" src="web-component.js">web component code</script>'.html_safe
+    end
+
+    let(:import_map_html) { '<script type="importmap">{"imports":{}}</script>'.html_safe }
+
+    let(:web_component_bundle) do
+      instance_double(CKEditor5::Rails::Assets::WebComponentBundle, to_html: web_component_html)
+    end
+    let(:import_map_bundle) do
+      instance_double(CKEditor5::Rails::Assets::AssetsImportMap, to_html: import_map_html)
+    end
+    let(:preset_manager) { instance_double(CKEditor5::Rails::Presets::Manager) }
+    let(:test_preset1) { instance_double(CKEditor5::Rails::Presets::PresetBuilder) }
+    let(:test_preset2) { instance_double(CKEditor5::Rails::Presets::PresetBuilder) }
+
+    before do
+      allow(CKEditor5::Rails::Assets::WebComponentBundle).to receive(:instance).and_return(
+        web_component_bundle
+      )
+
+      allow(CKEditor5::Rails::Assets::AssetsImportMap).to receive(:new).and_return(
+        import_map_bundle
+      )
+
+      allow(CKEditor5::Rails::Engine).to receive(:presets).and_return(preset_manager)
+      allow(preset_manager).to receive(:to_h).and_return({
+                                                           test1: test_preset1,
+                                                           test2: test_preset2
+                                                         })
+
+      allow(helper).to receive(:create_preset_bundle).with(test_preset1)
+                                                     .and_return(CKEditor5::Rails::Assets::AssetsBundle.new(
+                                                                   scripts: ['test1.js']
+                                                                 ))
+
+      allow(helper).to receive(:create_preset_bundle).with(test_preset2)
+                                                     .and_return(CKEditor5::Rails::Assets::AssetsBundle.new(
+                                                                   scripts: ['test2.js']
+                                                                 ))
+    end
+
+    context 'when importmap is available' do
+      before do
+        allow(helper).to receive(:importmap_available?).and_return(true)
+        allow(helper).to receive(:importmap_rendered?).and_return(false)
+      end
+
+      it 'stores bundle in context and returns web component script' do
+        result = helper.ckeditor5_lazy_javascript_tags
+
+        expect(result).to have_tag('script', with: {
+                                     type: 'module',
+                                     src: 'web-component.js'
+                                   })
+        expect(context[:bundle].scripts).to match_array(['test1.js', 'test2.js'])
+      end
+
+      it 'raises error when importmap is already rendered' do
+        allow(helper).to receive(:importmap_rendered?).and_return(true)
+
+        expect { helper.ckeditor5_lazy_javascript_tags }
+          .to raise_error(CKEditor5::Rails::Cdn::Helpers::ImportmapAlreadyRenderedError)
+      end
+    end
+
+    context 'when importmap is not available' do
+      before do
+        allow(helper).to receive(:importmap_available?).and_return(false)
+      end
+
+      it 'returns both importmap and web component scripts as one string' do
+        result = helper.ckeditor5_lazy_javascript_tags
+
+        expect(result).to have_tag('script', with: { type: 'importmap' },
+                                             text: '{"imports":{}}')
+
+        expect(result).to have_tag('script', with: {
+                                     type: 'module',
+                                     src: 'web-component.js'
+                                   })
       end
     end
   end

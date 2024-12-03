@@ -148,6 +148,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [Custom preset](#custom-preset)
       - [Inline preset definition](#inline-preset-definition)
     - [Lazy loading 🚀](#lazy-loading-)
+      - [`ckeditor5_lazy_javascript_tags` helper](#ckeditor5_lazy_javascript_tags-helper)
     - [GPL usage 🆓](#gpl-usage-)
     - [Commercial usage 💰](#commercial-usage-)
   - [Editor placement 🏗️](#editor-placement-️)
@@ -1135,14 +1136,46 @@ It's possible to define the preset directly in the `ckeditor5_assets` helper met
 
 ### Lazy loading 🚀
 
-<details>
-  <summary>Loading JS and CSS Assets</summary>
-
 All JS assets defined by the `ckeditor5_assets` helper method are loaded **asynchronously**. It means that the assets are loaded in the background without blocking the rendering of the page. However, the CSS assets are loaded **synchronously** to prevent the flash of unstyled content and ensure that the editor is styled correctly.
 
 It has been achieved by using web components, together with import maps, which are supported by modern browsers. The web components are used to define the editor and its plugins, while the import maps are used to define the dependencies between the assets.
 
-</details>
+#### `ckeditor5_lazy_javascript_tags` helper
+
+**This method is slow as content is being loaded on the fly on the client side. Use it only when necessary.**
+
+If you want to include the CKEditor 5 JavaScripts and Stylesheets when the editor is being appended to the DOM using Turbolinks, Stimulus, or other JavaScript frameworks, you can use the `ckeditor5_lazy_javascript_tags` helper method.
+
+This method does not preload the assets, and it's appending web component that loads the assets when the editor is being appended to the DOM. It's useful when turbolinks frame is being replaced or when the editor is being appended to the DOM dynamically.
+
+The example below shows how to include the CKEditor 5 assets lazily:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_lazy_javascript_tags %>
+<% end %>
+
+<%= turbo_frame_tag 'editor' do %>
+  <%= ckeditor5_editor %>
+<% end %>
+```
+
+⚠️ Keep in mind that the `ckeditor5_lazy_javascript_tags` helper method should be included in the `head` section of the layout and it does not create controller context for the editors. In other words, you have to specify `preset` every time you use `ckeditor5_editor` helper (in `ckeditor5_assets` it's not necessary, as it's inherited by all editors).
+
+If you want to keep inheritance of the presets and enforce integration to inject CKEditor 5 files on the fly, you can use the `lazy` keyword argument in the `ckeditor5_assets` helper method:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_assets preset: :custom, lazy: true %>
+<% end %>
+
+<!-- This time preset will be inherited but stylesheets and js files will be injected on the client side. -->
+<%= ckeditor5_editor %>
+```
 
 ### GPL usage 🆓
 
