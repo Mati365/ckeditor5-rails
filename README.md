@@ -173,6 +173,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
     - [Integrating with Forms 📋](#integrating-with-forms-)
       - [Rails form builder integration](#rails-form-builder-integration)
       - [Simple form integration](#simple-form-integration)
+    - [Integration with Turbolinks 🚀](#integration-with-turbolinks-)
     - [Custom Styling 🎨](#custom-styling-)
     - [Custom plugins 🧩](#custom-plugins-)
   - [Events fired by the editor 🔊](#events-fired-by-the-editor-)
@@ -1136,6 +1137,9 @@ It's possible to define the preset directly in the `ckeditor5_assets` helper met
 
 ### Lazy loading 🚀
 
+<details>
+  <summary>Expand to show more information about lazy loading</summary>
+
 All JS assets defined by the `ckeditor5_assets` helper method are loaded **asynchronously**. It means that the assets are loaded in the background without blocking the rendering of the page. However, the CSS assets are loaded **synchronously** to prevent the flash of unstyled content and ensure that the editor is styled correctly.
 
 It has been achieved by using web components, together with import maps, which are supported by modern browsers. The web components are used to define the editor and its plugins, while the import maps are used to define the dependencies between the assets.
@@ -1176,6 +1180,8 @@ If you want to keep inheritance of the presets and enforce integration to inject
 <!-- This time preset will be inherited but stylesheets and js files will be injected on the client side. -->
 <%= ckeditor5_editor %>
 ```
+
+</details>
 
 ### GPL usage 🆓
 
@@ -1690,6 +1696,22 @@ You can integrate CKEditor 5 with Rails form builders like `form_for` or `simple
   </div>
 <% end %>
 ```
+
+### Integration with Turbolinks 🚀
+
+If you're using Turbolinks in your Rails application, you may need to load CKEditor 5 in embeds that are loaded dynamically and not on the initial page load. In this case, you can use the `ckeditor5_lazy_javascript_tags` helper method to load CKEditor 5 assets when the editor is appended to the DOM. This method is useful when you're using Turbolinks or Stimulus to load CKEditor 5 dynamically.
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<% content_for :head do %>
+  <%= ckeditor5_lazy_javascript_tags %>
+<% end %>
+
+<-- Your Turbolinks frame or Stimulus forms... -->
+```
+
+This method does not preload the assets, and it's appending web component that loads the assets when the editor is being appended to the DOM. Please see the [Lazy Loading](#lazy-loading) section for more information and [demos](https://github.com/Mati365/ckeditor5-rails/blob/main/sandbox/app/views/demos/form_ajax.slim) on how to use this method.
 
 ### Custom Styling 🎨
 

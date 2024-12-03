@@ -23,6 +23,7 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
     allow(preset).to receive(:type).and_return(:classic)
     allow(preset).to receive(:config).and_return({})
     allow(preset).to receive(:automatic_upgrades?).and_return(false)
+    allow(preset).to receive(:editable_height).and_return(nil)
   end
 
   before do
@@ -207,6 +208,22 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         .and_return(preset)
 
       helper.ckeditor5_editor
+    end
+
+    context 'when using editable height' do
+      it 'uses editable height from preset when not explicitly provided' do
+        allow(preset).to receive(:editable_height).and_return(400)
+
+        expect(helper.ckeditor5_editor).to include('editable-height="400px"')
+      end
+
+      it 'uses editable height from options when provided' do
+        expect(helper.ckeditor5_editor(editable_height: 500)).to include('editable-height="500px"')
+
+        allow(preset).to receive(:editable_height).and_return(700)
+
+        expect(helper.ckeditor5_editor(editable_height: 600)).to include('editable-height="600px"')
+      end
     end
   end
 

@@ -80,7 +80,7 @@ module CKEditor5::Rails
         type, config,
         bundle: context[:bundle],
         watchdog: watchdog,
-        editable_height: editable_height
+        editable_height: editable_height || preset.editable_height
       )
 
       tag_attributes = html_attributes.merge(editor_props.to_attributes)
