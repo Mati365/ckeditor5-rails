@@ -1,0 +1,18 @@
+- content_for :head
+  = ckeditor5_assets preset: :ultrabasic, lazy: true
+
+= render 'back_to_home'
+
+h1.mb-4 Lazy Assets
+
+- unless params[:no_embed]
+  - if params[:multiple]
+    .mb-4
+      = ckeditor5_editor do
+        | First Editor
+    .mb-4
+      = ckeditor5_editor do
+        | Second Editor
+  - else
+    = ckeditor5_editor do
+      | Hello World

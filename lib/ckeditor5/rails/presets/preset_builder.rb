@@ -86,7 +86,7 @@ module CKEditor5::Rails
       # Merge preset with configuration hash
       # @param overrides [Hash] Configuration options to merge
       # @return [self]
-      def merge_with_hash!(**overrides) # rubocop:disable Metrics/AbcSize
+      def merge_with_hash!(**overrides)
         @version = Semver.new(overrides[:version]) if overrides.key?(:version)
         @premium = overrides.fetch(:premium, premium)
         @cdn = overrides.fetch(:cdn, cdn)

@@ -44,7 +44,7 @@ def increment_version(version)
   "#{major}.#{minor}.#{patch}"
 end
 
-def commit_changes(new_gem_version, new_version) # rubocop:disable Metrics/AbcSize
+def commit_changes(new_gem_version, new_version)
   system('git config --global user.email "github-actions[bot]@users.noreply.github.com"')
   system('git config --global user.name "github-actions[bot]"')
 

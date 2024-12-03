@@ -57,6 +57,13 @@ module CKEditor5::Rails
 
         base.presets[preset]
       end
+
+      def find_preset!(preset)
+        found_preset = find_preset(preset)
+        return found_preset if found_preset.present?
+
+        raise ArgumentError, "Preset '#{preset}' not found. Please define it in the initializer."
+      end
     end
 
     class ConfigurationProxy
