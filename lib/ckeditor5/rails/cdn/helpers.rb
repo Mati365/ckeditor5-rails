@@ -14,6 +14,7 @@ require_relative 'concerns/bundle_builder'
 module CKEditor5::Rails
   module Cdn::Helpers
     include Cdn::Concerns::BundleBuilder
+    include ActionView::Helpers::TagHelper
 
     class ImportmapAlreadyRenderedError < ArgumentError; end
 
@@ -79,21 +80,65 @@ module CKEditor5::Rails
         preset: mapped_preset
       }
 
-      build_assets_html_tags(bundle, importmap, lazy: lazy)
+      build_assets_html_tags(bundle, importmap: importmap, lazy: lazy)
+    end
+
+    # Helper for dynamically loading CKEditor assets when working with Turbo/Stimulus.
+    # Adds importmap containing imports from all presets and includes only web component
+    # initialization code. Useful when dynamically adding editors to the page with
+    # unknown preset configuration.
+    #
+    # @note Do not use this helper if ckeditor5_assets is already included on the page
+    #       as it will cause duplicate imports.
+    #
+    # @example With Turbo/Stimulus dynamic editor loading
+    #   <%= ckeditor5_lazy_javascript_tags %>
+    #
+    def ckeditor5_lazy_javascript_tags
+      ensure_importmap_not_rendered!
+
+      if importmap_available?
+        @__ckeditor_context = {
+          bundle: combined_bundle
+        }
+
+        return Assets::WebComponentBundle.instance.to_html
+      end
+
+      safe_join([
+                  Assets::AssetsImportMap.new(combined_bundle).to_html,
+                  Assets::WebComponentBundle.instance.to_html
+                ])
+    end
+
+    # Dynamically generates helper methods for each third-party CDN provider.
+    # These methods are shortcuts for including CKEditor assets from specific CDNs.
+    # Generated methods follow the pattern: ckeditor5_<cdn>_assets
+    #
+    # @example Using JSDelivr CDN
+    #   <%= ckeditor5_jsdelivr_assets %>
+    #
+    # @example Using UNPKG CDN with version
+    #   <%= ckeditor5_unpkg_assets version: '34.1.0' %>
+    #
+    # @example Using JSDelivr CDN with custom options
+    #   <%= ckeditor5_jsdelivr_assets preset: :custom, translations: [:pl] %>
+    Cdn::UrlGenerator::CDN_THIRD_PARTY_GENERATORS.each_key do |key|
+      define_method(:"ckeditor5_#{key.to_s.parameterize}_assets") do |**kwargs|
+        ckeditor5_assets(**kwargs.merge(cdn: key))
+      end
     end
 
     private
 
     def combined_bundle
-      return @combined_bundle if defined?(@combined_bundle)
-
       acc = Assets::AssetsBundle.new(scripts: [], stylesheets: [])
 
-      Engine.presets.all.each_with_object(acc) do |preset, bundle|
-        bundle.scripts.concat(create_preset_bundle(preset).scripts)
+      Engine.presets.to_h.values.each_with_object(acc) do |preset, bundle|
+        bundle << create_preset_bundle(preset)
       end
 
-      @combined_bundle = acc
+      acc
     end
 
     def merge_with_editor_preset(preset, language: nil, **kwargs)
@@ -130,7 +175,7 @@ module CKEditor5::Rails
             'Please move ckeditor5_assets helper before javascript_importmap_tags in your layout.'
     end
 
-    def build_assets_html_tags(bundle, importmap, lazy: nil)
+    def build_assets_html_tags(bundle, importmap:, lazy: nil)
       serializer = Assets::AssetsBundleHtmlSerializer.new(
         bundle,
         importmap: importmap && !importmap_available?,

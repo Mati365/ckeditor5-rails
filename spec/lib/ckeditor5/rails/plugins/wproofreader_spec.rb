@@ -24,6 +24,7 @@ RSpec.describe CKEditor5::Rails::Plugins::WProofreader do
         expected_hash = {
           type: :external,
           stylesheets: ["#{default_cdn}@#{default_version}/dist/browser/index.css"],
+          translation: false,
           url: "#{default_cdn}@#{default_version}/dist/browser/index.js",
           import_name: "#{default_cdn}@#{default_version}/dist/browser/index.js",
           import_as: 'WProofreader'
@@ -47,6 +48,7 @@ RSpec.describe CKEditor5::Rails::Plugins::WProofreader do
         expected_hash = {
           type: :external,
           stylesheets: ["#{custom_cdn}@#{custom_version}/dist/browser/index.css"],
+          translation: false,
           url: "#{custom_cdn}@#{custom_version}/dist/browser/index.js",
           import_name: "#{custom_cdn}@#{custom_version}/dist/browser/index.js",
           import_as: 'WProofreader'

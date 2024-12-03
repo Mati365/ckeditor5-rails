@@ -7,6 +7,8 @@ require_relative 'plugins/simple_upload_adapter'
 require_relative 'plugins/wproofreader'
 
 module CKEditor5::Rails
+  class PresetNotFoundError < ArgumentError; end
+
   class Engine < ::Rails::Engine
     config.ckeditor5 = ActiveSupport::OrderedOptions.new
     config.ckeditor5.presets = Presets::Manager.new
@@ -47,6 +49,10 @@ module CKEditor5::Rails
         config.ckeditor5.presets.default
       end
 
+      def presets
+        config.ckeditor5.presets
+      end
+
       def configure(&block)
         proxy = ConfigurationProxy.new(config.ckeditor5)
         proxy.instance_eval(&block)
@@ -62,7 +68,7 @@ module CKEditor5::Rails
         found_preset = find_preset(preset)
         return found_preset if found_preset.present?
 
-        raise ArgumentError, "Preset '#{preset}' not found. Please define it in the initializer."
+        raise PresetNotFoundError, "Preset '#{preset}' not found. Please define it in the initializer."
       end
     end
 

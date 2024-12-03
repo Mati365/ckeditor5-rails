@@ -9,9 +9,6 @@ module CKEditor5::Rails
     include Editor::Helpers::Config
     include Cdn::Concerns::BundleBuilder
 
-    class EditorContextError < StandardError; end
-    class PresetNotFoundError < ArgumentError; end
-
     # Creates a CKEditor 5 editor instance in the view.
     #
     # @param preset [Symbol, PresetBuilder] The name of the preset or a PresetBuilder object

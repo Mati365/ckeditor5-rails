@@ -115,7 +115,8 @@ RSpec.describe CKEditor5::Rails::Assets::JSUrlImportMeta do
       expect(meta.to_h).to eq({
                                 url: url,
                                 import_name: 'module',
-                                import_as: 'alias'
+                                import_as: 'alias',
+                                translation: false
                               })
     end
   end
