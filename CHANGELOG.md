@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.21.0] - 2024-12-03
+
+### Features
+
+* Add `ckeditor5_lazy_javascript_tags` helper, improve support for Turbo. ([1718b60](https://github.com/Mati365/ckeditor5-rails/commit/1718b60b874cf73454992a6e85b57d41ac3c8f8c))
+
+### Bug Fixes
+
+* not working `editable_height` in presets. ([0c3e213](https://github.com/Mati365/ckeditor5-rails/commit/0c3e2133a6a0b6ab3a5689b7cabd8e9f249eddc4))
+
+### Documentation
+
+* Improve turbolinks docs ([29309d7](https://github.com/Mati365/ckeditor5-rails/commit/29309d7b94c2b5e588828977f60ea82c5023ca1b))
+
+### Other Changes
+
+* Add missing e2e tests ([f8e774f](https://github.com/Mati365/ckeditor5-rails/commit/f8e774fd7f9238ea9a6148785b76861a919116d8))
+* Add lazy initialization of the editor. ([570e7d3](https://github.com/Mati365/ckeditor5-rails/commit/570e7d3e131482a3bc073fadf13f37642896bdbe))
+* Add AJAX demos. ([64166d7](https://github.com/Mati365/ckeditor5-rails/commit/64166d7ffe77d9be798b2fdd80534014fd8af13a))
+* Update README.md ([e3b4290](https://github.com/Mati365/ckeditor5-rails/commit/e3b42900f6adc652d268cab47e6fb817d2b794e2))
+
 ## [1.20.1] - 2024-12-02
 
 ### Features
