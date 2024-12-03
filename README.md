@@ -1701,14 +1701,23 @@ You can integrate CKEditor 5 with Rails form builders like `form_for` or `simple
 
 If you're using Turbolinks in your Rails application, you may need to load CKEditor 5 in embeds that are loaded dynamically and not on the initial page load. In this case, you can use the `ckeditor5_lazy_javascript_tags` helper method to load CKEditor 5 assets when the editor is appended to the DOM. This method is useful when you're using Turbolinks or Stimulus to load CKEditor 5 dynamically.
 
+Your view should look like this:
+
 ```erb
 <!-- app/views/demos/index.html.erb -->
 
 <% content_for :head do %>
   <%= ckeditor5_lazy_javascript_tags %>
 <% end %>
+```
 
-<-- Your Turbolinks frame or Stimulus forms... -->
+Your ajax partial should look like this:
+
+```erb
+<!-- app/views/demos/_form.html.erb -->
+
+<!-- Presets and other configuration as usual -->
+<%= ckeditor5_editor %>
 ```
 
 This method does not preload the assets, and it's appending web component that loads the assets when the editor is being appended to the DOM. Please see the [Lazy Loading](#lazy-loading) section for more information and [demos](https://github.com/Mati365/ckeditor5-rails/blob/main/sandbox/app/views/demos/form_ajax.slim) on how to use this method.
