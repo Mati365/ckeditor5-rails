@@ -46,10 +46,16 @@ RSpec.describe 'AJAX Form Integration', type: :feature, js: true do
 
       submit_button.click
 
-      eventually(timeout: 10) do
+      eventually(timeout: 13) do
         expect(response_container).to be_visible
         expect(response_container).to have_text('Success!')
         expect(response_container).to have_text(test_content)
+
+        # Verify that CKEditor initializes in the response
+        response_editor = response_container.find('.ck-editor__editable', wait: 10)
+
+        expect(response_editor).to be_visible
+        expect(response_editor).to have_text(test_content)
       end
     end
   end
