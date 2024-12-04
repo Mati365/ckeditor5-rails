@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.22.0] - 2024-12-04
+
+### Features
+
+* It's now possible to define groups in toolbar using `group` method. ([dc8b915](https://github.com/Mati365/ckeditor5-rails/commit/dc8b9154f39967ec46bf9802bdc745df822a5427))
+
+### Documentation
+
+* Add section about groups in the toolbar. ([2a85d7d](https://github.com/Mati365/ckeditor5-rails/commit/2a85d7dfb87c157c514b7a90265342de16d66ced))
+
 ## [1.21.0] - 2024-12-03
 
 ### Features
