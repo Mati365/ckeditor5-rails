@@ -610,7 +610,6 @@ CKEditor5::Rails.configure do
   end
 end
 ```
-</details>
 
 If you want to append groups of items, you can use the `group` method:
 
@@ -643,6 +642,8 @@ CKEditor5::Rails.configure do
   end
 end
 ```
+
+</details>
 
 #### `menubar(visible: true)` method
 
