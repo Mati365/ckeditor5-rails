@@ -612,6 +612,38 @@ end
 ```
 </details>
 
+If you want to append groups of items, you can use the `group` method:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  toolbar do
+    group :text_formatting, label: 'Text Formatting', icon: 'threeVerticalDots' do
+      append :bold, :italic, :underline, :strikethrough, separator,
+             :subscript, :superscript, :removeFormat
+    end
+  end
+end
+```
+
+If you want add new line or the separator, you can use the `break_line` or `separator` methods:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  toolbar do
+    append :bold, break_line
+    append separator, :italic
+  end
+end
+```
+
 #### `menubar(visible: true)` method
 
 <details>

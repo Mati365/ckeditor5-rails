@@ -34,6 +34,31 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
             :Font, :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing
   end
 
+  presets.define :grouped_toolbar, inherit: false do
+    version '43.3.0'
+
+    toolbar do
+      group :text_formatting, label: 'Text Formatting', icon: 'threeVerticalDots' do
+        append :bold, :italic, :underline, :strikethrough, separator,
+               :subscript, :superscript, :removeFormat
+      end
+
+      append separator
+
+      append :bulletedList, :numberedList, :outdent, :indent, :blockQuote
+      append :alignment, :link, :anchor, :insertTable, :horizontalLine
+
+      append separator
+
+      append :fontFamily, :fontSize, :heading, :fontColor, :fontBackgroundColor
+    end
+
+    plugins :Essentials, :Paragraph, :Heading, :Bold, :Italic, :Underline, :Strikethrough,
+            :Subscript, :Superscript, :RemoveFormat, :FindAndReplace, :SelectAll, :Alignment,
+            :List, :Indent, :BlockQuote, :Link, :Table, :TableToolbar, :HorizontalLine,
+            :Font, :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing
+  end
+
   presets.define :ultrabasic, inherit: false do
     automatic_upgrades
 
