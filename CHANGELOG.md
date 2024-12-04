@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.23.0] - 2024-12-04
+
+### Features
+
+* Compress webcomponent JS script. ([7a8e15f](https://github.com/Mati365/ckeditor5-rails/commit/7a8e15fa09141dee038c43fac169e65fa9bacdb1))
+
 ## [1.22.0] - 2024-12-04
 
 ### Features
