@@ -31,4 +31,5 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib']
   s.add_runtime_dependency 'rails', '>= 6.0', '< 9.0'
+  s.add_runtime_dependency 'terser', '~> 1.0'
 end

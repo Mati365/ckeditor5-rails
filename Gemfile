@@ -21,6 +21,7 @@ group :development do
   gem 'slim', '~> 5.2', '>= 5.2.0'
   gem 'sqlite3', '>= 1.4'
   gem 'stimulus-rails'
+  gem 'terser', '~> 1.1', '>= 1.1.1'
   gem 'turbo-rails'
 end
 
