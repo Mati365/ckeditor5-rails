@@ -21,7 +21,7 @@ RUN gem install bundler && \
     bundle install
 
 ENV RAILS_ENV=production
-ENV PORT=3000
+ENV PORT=3002
 
 CMD ["sh", "-c", "cd sandbox/ && bundle exec rails s -p ${PORT} -b '0.0.0.0'"]
 
