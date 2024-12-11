@@ -24,8 +24,10 @@ ARG RAILS_MASTER_KEY
 ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 ENV RAILS_ENV=production
 ENV PORT=3002
+ENV WEB_CONCURRENCY=3
+ENV RAILS_MAX_THREADS=5
 
 RUN cd sandbox/ && bundle exec rake assets:precompile
 
-CMD ["sh", "-c", "cd sandbox/ && bundle exec rails s -p ${PORT} -b '0.0.0.0'"]
+CMD ["sh", "-c", "cd sandbox/ && bundle exec puma -C config/puma.rb"]
 
