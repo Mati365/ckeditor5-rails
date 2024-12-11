@@ -3,7 +3,7 @@ name: Deploy Production
 on:
   push:
     branches:
-      - main
+      - ovh/production
   workflow_dispatch:
     inputs:
       image_tag:

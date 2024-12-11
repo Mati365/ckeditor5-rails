@@ -3,7 +3,7 @@ name: Deploy site infra
 on:
   push:
     branches:
-      - ovh/production
+      - ovh/infra/production
   workflow_dispatch:
     inputs:
       tags:
