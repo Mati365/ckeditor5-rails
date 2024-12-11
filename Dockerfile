@@ -20,6 +20,8 @@ RUN gem install bundler && \
     bundle config set without 'development test' && \
     bundle install
 
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 ENV RAILS_ENV=production
 ENV PORT=3002
 
