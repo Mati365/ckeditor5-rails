@@ -27,6 +27,10 @@ website:
   domain: ckeditor5-rails.mati365.ovh
   ssl: true
 
+certbot:
+  domains:
+    - '{{ website.domain }}'
+
 podman:
   containers_dir: /containers
   volumes_dir: /containers/volumes
