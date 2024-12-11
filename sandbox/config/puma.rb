@@ -17,7 +17,7 @@ port ENV.fetch('PORT', 3002)
 environment ENV.fetch('RAILS_ENV', 'development')
 
 # Specifies the `pidfile` that Puma will use.
-pidfile ENV.fetch('PIDFILE', 'tmp/pids/server.pid')
+pidfile ENV.fetch('PIDFILE', File.expand_path('tmp/pids/server.pid', File.dirname(__dir__)))
 
 # Workers auto-scale between minimum and maximum
 workers ENV.fetch('WEB_CONCURRENCY', 2)

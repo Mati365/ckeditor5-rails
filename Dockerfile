@@ -29,5 +29,9 @@ ENV RAILS_MAX_THREADS=5
 
 RUN cd sandbox/ && bundle exec rake assets:precompile
 
+# Add these lines to create required directories
+RUN mkdir -p sandbox/tmp/pids sandbox/log
+RUN chown -R app:app sandbox/tmp sandbox/log
+
 CMD ["sh", "-c", "cd sandbox/ && bundle exec puma -C config/puma.rb"]
 
