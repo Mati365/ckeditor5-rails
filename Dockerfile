@@ -1,7 +1,7 @@
 FROM docker.io/ruby:3.3-slim-bookworm
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends build-essential libc-dev sqlite3 && \
+    apt-get install -y --no-install-recommends build-essential libc-dev sqlite3 nodejs npm && \
     adduser --disabled-password --uid 1001 --home /app app && \
     mkdir -p /app && \
     rm -rf /var/lib/apt/lists/*
