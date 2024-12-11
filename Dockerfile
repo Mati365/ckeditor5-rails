@@ -23,5 +23,7 @@ RUN gem install bundler && \
 ENV RAILS_ENV=production
 ENV PORT=3002
 
+RUN cd sandbox/ && bundle exec rails assets:precompile
+
 CMD ["sh", "-c", "cd sandbox/ && bundle exec rails s -p ${PORT} -b '0.0.0.0'"]
 
