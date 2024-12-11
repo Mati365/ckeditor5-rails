@@ -1,0 +1,51 @@
+- name: Ensure app-frontend volume dir is present
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: app_front
+    group: app_front
+    mode: '0750'
+  loop:
+    - "{{ podman.volumes_dir }}/app-frontend"
+
+- name: Ensure app-frontend.container exists
+  become_user: app_front
+  register: app_frontend_container_file
+  blockinfile:
+    path: ~/.config/containers/systemd/app-frontend.container
+    create: true
+    owner: app_front
+    group: app_front
+    mode: '0750'
+    block: |
+      [Unit]
+      Description=The app-frontend container
+      After=local-fs.target
+      StartLimitIntervalSec=5
+
+      [Container]
+      Image=0.0.0.0:5000/app-frontend:latest
+      LogDriver=journald
+      Label=io.containers.autoupdate=registry
+      PublishPort=3002:3002
+
+      Environment=RAILS_ENV=production
+      Environment=RAILS_MASTER_KEY={{ apps.frontend.rails_master_key }}
+
+      [Service]
+      TimeoutStartSec=60
+      Restart=always
+      RestartSec=8
+
+      [Install]
+      WantedBy=default.target
+
+- name: Ensure app-frontend service works
+  become_user: app_front
+  ignore_errors: yes
+  systemd:
+    scope: user
+    name: app-frontend
+    state: '{{ "restarted" if app_frontend_container_file.changed else "started" }}'
+    enabled: true
+    daemon_reload: true
