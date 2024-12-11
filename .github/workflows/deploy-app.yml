@@ -37,3 +37,5 @@ jobs:
             ckeditor5-rails.mati365.ovh/app-frontend:${{ github.event.inputs.image_tag || github.sha }}
           cache-from: type=gha,scope=app-frontend
           cache-to: type=gha,scope=app-frontend,mode=max
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.PRODUCTION_RAILS_MASTER_KEY }}
