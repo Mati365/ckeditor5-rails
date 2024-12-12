@@ -18,7 +18,7 @@
             | The code below demonstrates how to integrate CKEditor 5 in Rails. First, we load required assets using&nbsp;
             code.bg-light.px-2.py-1 ckeditor5_assets
             | &nbsp;helper with&nbsp;
-            code.bg-light.px-2.py-1 ultrabasic
+            code.bg-light.px-2.py-1 default
             | &nbsp;preset. Then we create an editor instance using&nbsp;
             code.bg-light.px-2.py-1 ckeditor5_editor
             | &nbsp;helper with some initial content.
@@ -26,7 +26,7 @@
           pre.language-erb.bg-light.p-3.rounded.mb-0
             code
               | <%% content_for :head do %>
-                  <%%= ckeditor5_assets preset: :ultrabasic %>
+                  <%%= ckeditor5_assets %>
                 <%% end %>
 
                 <%%= ckeditor5_editor do %>
@@ -52,18 +52,16 @@
               code
                 |
                   CKEditor5::Rails.configure do
-                    presets.define :my_preset, inherit: false do
-                      version '44.0.0'
-                      gpl
-                      type :classic
+                    version '44.0.0'
+                    gpl
+                    type :classic
 
-                      toolbar :undo, :redo, :|,      # Add separator using :|
-                              :heading, :_, :bold,   # Add line break using :_
-                              :italic, :underline
+                    toolbar :undo, :redo, :|,      # Add separator using :|
+                            :heading, :_, :bold,   # Add line break using :_
+                            :italic, :underline
 
-                      plugins :Essentials, :Heading,
-                              :Bold, :Italic, :Underline
-                    end
+                    plugins :Essentials, :Heading,
+                            :Bold, :Italic, :Underline
                   end
 
           / Language question
