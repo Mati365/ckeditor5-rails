@@ -1,34 +1,76 @@
-= render 'back_to_home'
-
 - content_for :head
   = ckeditor5_lazy_javascript_tags
 
-h1.mb-4 AJAX Form Integration
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-.form-container style="max-width: 800px;"
-  = form_with url: form_ajax_demos_path, data: { testid: 'rails-form', controller: "form", turbo_frame: "response" } do |f|
-    .form-group.mb-3
-      = f.label :content, class: "form-label" do
-        abbr title="required" *
-        | &nbsp;Content
-      = f.ckeditor5 :content, required: true,  data: { testid: 'rails-form-editor' },  initial_data: 'Hello World!'
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'AJAX Forms Integration', subtitle: 'Using CKEditor 5 in AJAX and Turbo forms'
 
-    .form-group
-      = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit', form_target: "submit" }
+        = render 'demos/shared/demo_section' do
+          h2 AJAX Form Example
+          = form_with url: form_ajax_demos_path, data: { testid: 'rails-form', controller: "form", turbo_frame: "response" } do |f|
+            .form-group.mb-3
+              = f.label :content, class: "form-label" do
+                abbr title="required" *
+                | &nbsp;Content
+              = f.ckeditor5 :content, required: true, data: { testid: 'rails-form-editor' }, initial_data: 'Hello World!'
 
-    #response.mt-3 style="display: none;" data-form-target="response"
+            .form-group
+              = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit', form_target: "submit" }
 
-h2.mt-5.mb-4 Turbo Stream Integration
+            #response.mt-3 style="display: none;" data-form-target="response"
 
-.form-container style="max-width: 800px;"
-  = form_with url: form_turbo_stream_demos_path, data: { testid: 'rails-form-stream', controller: "form", turbo_frame: "response-stream" } do |f|
-    .form-group.mb-3
-      = f.label :content, class: "form-label" do
-        abbr title="required" *
-        | &nbsp;Content
-      = f.ckeditor5 :content, required: true,  data: { testid: 'rails-form-editor-stream' },  initial_data: 'Hello Streams!'
+          h2.mt-5.mb-4 Turbo Stream Example
+          = form_with url: form_turbo_stream_demos_path, data: { testid: 'rails-form-stream', controller: "form", turbo_frame: "response-stream" } do |f|
+            .form-group.mb-3
+              = f.label :content, class: "form-label" do
+                abbr title="required" *
+                | &nbsp;Content
+              = f.ckeditor5 :content, required: true, data: { testid: 'rails-form-editor-stream' }, initial_data: 'Hello Streams!'
 
-    .form-group
-      = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit-stream', form_target: "submitStream" }
+            .form-group
+              = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit-stream', form_target: "submitStream" }
 
-    #response-stream.mt-3 style="display: none;" data-form-target="responseStream"
+            #response-stream.mt-3 style="display: none;" data-form-target="responseStream"
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | The code below demonstrates how to use CKEditor 5 with AJAX forms and Turbo Streams. Note the use of&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_lazy_javascript_tags
+            | &nbsp;for deferred loading. It allows loading editor to be injected after the form is submitted and the response is received.
+
+          pre.language-erb.bg-light.p-3.rounded.mb-3
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_lazy_javascript_tags %>
+                <%% end %>
+
+                <%%= form_with url: form_ajax_demos_path, data: { controller: "form" } do |f| %>
+                  <%%= f.ckeditor5 :content, required: true %>
+                  <%%= f.submit 'Save' %>
+                <%% end %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/blob/main/sandbox/app/views/demos/form_ajax.slim',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#ajax-forms',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Gem documentation
+
+          = link_to 'https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/frameworks/frameworks.html',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-box-arrow-up-right.me-2
+            | CKEditor 5 Framework Integration

@@ -1,9 +1,45 @@
 - content_for :head
   = ckeditor5_assets
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-h1.mb-4 Classic Editor (assets locale)
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Editor Language (via I18n)', subtitle: 'Configure editor language via Rails I18n', data: { testid: 'locale-i18n-title' }
 
-= ckeditor5_editor do
-  | Hello World
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_editor data: { testid: 'locale-i18n-editor' } do
+            | Hello World
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | The code below demonstrates automatic CKEditor 5 language setting based on&nbsp;
+            code.bg-light.px-2.py-1 I18n.locale
+            | . The editor automatically uses the language set in Rails I18n.
+
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_assets %>
+                <%% end %>
+
+                <%%= ckeditor5_editor do %>
+                  Hello World
+                <%% end %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/blob/main/sandbox/app/views/demos/locale_via_rails_i18n.slim',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#setting-editor-language-',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | View documentation

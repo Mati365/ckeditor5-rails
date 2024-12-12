@@ -1,9 +1,47 @@
 - content_for :head
   = ckeditor5_assets translations: [:pl, :es]
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-h1.mb-4 Classic Editor (prop locale)
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Editor Language (via editor)', subtitle: 'Configure editor language via editor props', data: { testid: 'locale-editor-title' }
 
-= ckeditor5_editor language: :es do
-  | Hello World
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_editor language: :es, data: { testid: 'locale-editor-instance' } do
+            | Hello World
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | The code below demonstrates how to set up CKEditor 5 language using editor properties. Language packs are loaded using&nbsp;
+            code.bg-light.px-2.py-1 translations
+            | &nbsp;option, while language is set via&nbsp;
+            code.bg-light.px-2.py-1 language
+            | &nbsp;editor property.
+
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_assets translations: [:pl, :es] %>
+                <%% end %>
+
+                <%%= ckeditor5_editor language: :es do %>
+                  Hello World
+                <%% end %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/blob/main/sandbox/app/views/demos/locale_via_editor.slim',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#setting-editor-language-',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | View documentation

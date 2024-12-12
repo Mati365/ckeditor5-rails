@@ -1,9 +1,119 @@
 - content_for :head
   = ckeditor5_assets preset: :ultrabasic
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-h1.mb-4 Classic Editor
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Classic Editor', subtitle: 'Basic Example'
 
-= ckeditor5_editor do
-  | Hello World
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_editor do
+            | Hello World
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | The code below demonstrates how to integrate CKEditor 5 in Rails. First, we load required assets using&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_assets
+            | &nbsp;helper with&nbsp;
+            code.bg-light.px-2.py-1 ultrabasic
+            | &nbsp;preset. Then we create an editor instance using&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_editor
+            | &nbsp;helper with some initial content.
+
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_assets preset: :ultrabasic %>
+                <%% end %>
+
+                <%%= ckeditor5_editor do %>
+                  Hello World
+                <%% end %>
+
+
+        = render 'demos/shared/faq_section' do
+          / Height question
+          = render 'demos/shared/faq_message', question: 'How do I change the editor\'s height?' do
+            pre.language-erb.mb-0.mt-2
+              code
+                | <%= ckeditor5_editor editable_height: 300 %>
+
+          / Toolbar question
+          = render 'demos/shared/faq_message', question: 'How can I customize the toolbar?' do
+            p.mb-2.small
+              | Create or modify initializer file&nbsp;
+              code.bg-light.px-2.py-1 config/initializers/ckeditor5.rb
+              | :
+
+            pre.language-ruby.mb-0
+              code
+                |
+                  CKEditor5::Rails.configure do
+                    presets.define :my_preset, inherit: false do
+                      version '44.0.0'
+                      gpl
+                      type :classic
+
+                      toolbar :undo, :redo, :|,      # Add separator using :|
+                              :heading, :_, :bold,   # Add line break using :_
+                              :italic, :underline
+
+                      plugins :Essentials, :Heading,
+                              :Bold, :Italic, :Underline
+                    end
+                  end
+
+          / Language question
+          = render 'demos/shared/faq_message', question: 'Can I change the editor\'s language?' do
+            p.mb-2 Yes! You have several options:
+
+            p.mb-2.small.fw-bold 1. In initializer (recommended):
+            pre.language-ruby.mb-2
+              code
+                |
+                  # config/initializers/ckeditor5.rb
+                  CKEditor5::Rails.configure do
+                    translations :pl, :es, :de
+                    language :pl
+                  end
+
+          / Instance access question
+          = render 'demos/shared/faq_message', question: 'How do I access the editor instance?' do
+            p.mb-2.small The safest way is to use the <code>runAfterEditorReady</code> helper:
+            pre.language-javascript.mb-0
+              code
+                |
+                  document
+                    .getElementById('editor')
+                    .runAfterEditorReady(editor => {
+                      console.log('Editor is ready:', editor);
+
+                      // Get/set content
+                      const data = editor.getData();
+                      editor.setData('New content');
+                    });
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos/classic',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#classic-editor',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Gem documentation
+
+          = link_to 'https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/predefined-builds.html#classic-editor',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-box-arrow-up-right.me-2
+            | CKEditor 5 Classic Editor documentation

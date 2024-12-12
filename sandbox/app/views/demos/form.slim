@@ -1,35 +1,70 @@
 - content_for :head
   = ckeditor5_assets
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-h1.mb-4 data-testid="forms-title" Forms
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Form Helpers', subtitle: 'Using CKEditor 5 in Rails forms'
 
-.form-container style="max-width: 800px;"
-  h2 data-testid="rails-form-title" Rails Forms
-  = form_with url: '/demos', local: true, data: { testid: 'rails-form' } do |f|
-    .form-group.mb-3
-      = f.label :content, class: "form-label" do
-        abbr title="required" *
-        | &nbsp;Content
-      = f.ckeditor5 :content, required: true, data: { testid: 'rails-form-editor' }, initial_data: 'Hello World!'
+        = render 'demos/shared/demo_section' do
+          h2 data-testid="rails-form-title" Rails Form Builder
+          = form_with url: '/demos', local: true, data: { testid: 'rails-form' } do |f|
+            .form-group.mb-3
+              = f.label :content, class: "form-label" do
+                abbr title="required" *
+                | &nbsp;Content
+              = f.ckeditor5 :content, required: true, data: { testid: 'rails-form-editor' }, initial_data: 'Hello World!'
 
-    .form-group.mb-3
-      = f.label :second, class: "form-label" do
-        abbr title="required" *
-        | &nbsp;Second Field
-      = f.text_field :second, class: 'form-control', data: { testid: 'rails-form-text' }
+            .form-group.mb-3
+              = f.label :second, class: "form-label" do
+                abbr title="required" *
+                | &nbsp;Second Field
+              = f.text_field :second, class: 'form-control', data: { testid: 'rails-form-text' }
 
-    .form-group
-      = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit' }
+            .form-group
+              = f.submit 'Save', class: 'btn btn-primary', data: { testid: 'rails-form-submit' }
 
-  h2.mt-4 data-testid="simple-form-title" Simple form
-  = simple_form_for :demo, url: '/demos', html: { novalidate: false, data: { testid: 'simple-form' } } do |f|
-    .form-group.mb-3
-      = f.input :content, as: :ckeditor5, input_html: { data: { testid: 'simple-form-editor' } }, required: true, initial_data: 'Hello, World!', label: "Content", label_html: { class: 'form-label' }
+          h2.mt-4 data-testid="simple-form-title" Simple Form Integration
+          = simple_form_for :demo, url: '/demos', html: { novalidate: false, data: { testid: 'simple-form' } } do |f|
+            .form-group.mb-3
+              = f.input :content, as: :ckeditor5, input_html: { data: { testid: 'simple-form-editor' } }, required: true, initial_data: 'Hello, World!', label: "Content", label_html: { class: 'form-label' }
 
-    .form-group.mb-3
-      = f.input :second, input_html: { data: { testid: 'simple-form-text' }, class: 'form-control' }, label: "Second Field", label_html: { class: 'form-label' }
+            .form-group.mb-3
+              = f.input :second, input_html: { data: { testid: 'simple-form-text' }, class: 'form-control' }, label: "Second Field", label_html: { class: 'form-label' }
 
-    .form-group
-      = f.button :submit, 'Save', class: 'btn btn-primary', data: { testid: 'simple-form-submit' }
+            .form-group
+              = f.button :submit, 'Save', class: 'btn btn-primary', data: { testid: 'simple-form-submit' }
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | The code below shows how to use CKEditor 5 with different form builders. You can use both the standard Rails form helper and Simple Form.
+
+          pre.language-erb.bg-light.p-3.rounded.mb-3
+            code
+              | <%% form_with url: '/demos' do |f| %>
+                  <%%= f.ckeditor5 :content %>
+                <%% end %>
+
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% simple_form_for :demo do |f| %>
+                  <%%= f.input :content, as: :ckeditor5 %>
+                <%% end %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/blob/main/sandbox/app/views/demos/form.slim',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#form-helpers',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Gem documentation

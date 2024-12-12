@@ -1,16 +1,82 @@
-= render 'back_to_home'
+- content_for :head
+  = ckeditor5_assets preset: :ultrabasic
 
-h1.mb-4 Context Editor
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-strong style="color: red; margin-bottom: 10px; display: block; font-family: Arial;" Your context:
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Context Editor', subtitle: 'Basic Example'
 
-div style="border: 2px solid red; padding: 10px; width: 600px;"
-  - content_for :head
-    = ckeditor5_assets preset: :ultrabasic
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_context @context_preset do
+            = ckeditor5_editor initial_data: 'Context Item 1'
+            br
+            = ckeditor5_editor initial_data: 'Context Item 2'
 
-  = ckeditor5_context @context_preset do
-    = ckeditor5_editor initial_data: 'Context Item 1'
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | This example shows how to use Context Editor which allows multiple editor instances to share the same toolbar. First, wrap your editors with&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_context
+            | &nbsp;helper.
 
-    br
+          h5.mt-4 Controller:
+          pre.language-ruby.bg-light.p-3.rounded.mb-3
+            code
+              | def context
+                  @context_preset = ckeditor5_context_preset do
+                    inline_plugin :MagicContextPlugin, <<~JS
+                      import { Plugin } from 'ckeditor5';
 
-    = ckeditor5_editor initial_data: 'Context Item 2'
+                      export default class MagicContextPlugin extends Plugin {
+                        static get pluginName() {
+                          return 'MagicContextPlugin';
+                        }
+
+                        static get isContextPlugin() {
+                          return true;
+                        }
+
+                        async init() {
+                          console.log('MagicContextPlugin was initialized!');
+                          window.MagicContextPlugin = this;
+                        }
+                      }
+                    JS
+                  end
+                end
+
+          h5.mt-4 View:
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_assets preset: :ultrabasic %>
+                <%% end %>
+
+                <%%= ckeditor5_context @context_preset do %>
+                  <%%= ckeditor5_editor initial_data: 'Context Item 1' %>
+                  <%%= ckeditor5_editor initial_data: 'Context Item 2' %>
+                <%% end %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos/context.slim',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#using-context-',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Gem documentation
+
+          = link_to 'https://ckeditor.com/docs/ckeditor5/latest/features/collaboration/context-and-collaboration-features.html?docId=eafae2df23b5506aff21bb46ee04d2bb5',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-box-arrow-up-right.me-2
+            | CKEditor 5 Context Editor documentation

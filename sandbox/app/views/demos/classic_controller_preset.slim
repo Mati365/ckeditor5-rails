@@ -1,8 +1,59 @@
 - content_for :head
   = ckeditor5_assets preset: @preset
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-h1.mb-4 Classic Editor (preset in controller)
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Classic Editor', subtitle: 'Controller Preset Example'
 
-= ckeditor5_editor preset: @preset, editable_height: 300
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_editor editable_height: 300
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | This example shows how to configure CKEditor 5 preset from the controller level. The preset is passed via the&nbsp;
+            code.bg-light.px-2.py-1 @preset
+            | &nbsp;instance variable.
+
+          pre.language-ruby.bg-light.p-3.rounded.mb-3
+            code
+              |
+                def classic_controller_preset
+                  @preset = ckeditor5_preset do
+                    version '43.3.0'
+
+                    toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
+                            :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
+                            :fontFamily, :fontSize, :|, :link, :anchor, :|,
+                            :fontColor, :fontBackgroundColor, :|, :imageUpload
+
+                    plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
+                            :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
+                            :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials,
+                            :Paragraph, :Base64UploadAdapter
+
+                    plugins :Image, :ImageUpload, :ImageToolbar, :ImageInsert,
+                            :ImageInsertViaUrl, :ImageBlock, :ImageCaption, :ImageInline, :ImageResize,
+                            :AutoImage, :LinkImage
+
+                    simple_upload_adapter
+                  end
+                end
+
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_assets preset: @preset %>
+                <%% end %>
+                <%%= ckeditor5_editor editable_height: 300 %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#presets-',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Presets documentation

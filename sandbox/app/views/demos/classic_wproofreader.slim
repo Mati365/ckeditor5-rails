@@ -1,9 +1,63 @@
 - content_for :head
   = ckeditor5_assets preset: @preset
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-h1.mb-4 Classic Editor (WProofreader)
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Classic Editor - WProofreader', subtitle: 'WProofreader Integration'
 
-= ckeditor5_editor do
-  | Hello World
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_editor do
+            | Hello World
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | This example demonstrates the integration with WProofreader. Configure it in the controller using the preset override:
+
+          pre.language-ruby.bg-light.p-3.rounded.mb-3
+            code
+              |
+                def classic_wproofreader
+                  @preset = ckeditor5_preset(:default).override do
+                    wproofreader serviceId: '... enter your service key ...',
+                                 srcUrl: '... enter service url ...'
+                  end
+                end
+
+          p.mb-4
+            | Then in the view:
+
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_assets preset: @preset %>
+                <%% end %>
+
+                <%%= ckeditor5_editor do %>
+                  Hello World
+                <%% end %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://webspellchecker.com/wsc-proofreader/',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | WProofreader documentation
+
+          = link_to 'https://ckeditor.com/docs/ckeditor5/latest/features/spelling-and-grammar-checking.html',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | CKEditor 5 Spelling and Grammar Checking
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails?tab=readme-ov-file#spell-and-grammar-checking-',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View integration docs

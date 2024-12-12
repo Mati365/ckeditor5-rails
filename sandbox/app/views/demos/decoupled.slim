@@ -1,55 +1,81 @@
 - content_for :head
-  = ckeditor5_assets version: '43.2.0', translations: [ :pl, :es ]
+  = ckeditor5_assets
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-css:
-	.menubar-container,
-	.editable-container,
-	.toolbar-container {
-		position: relative;
-		border: 1px solid red;
-	}
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Decoupled Editor', subtitle: 'Basic Example'
 
-	.menubar-container::after,
-	.editable-container::after,
-	.toolbar-container::after {
-		content: attr(class);
-		position: absolute;
-		background: red;
-		color: #fff;
-		top: 0;
-		right: 0;
-		font: 10px/2 monospace;
-		padding: .1em .3em;
-	}
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_editor type: :decoupled, class: 'bg-light p-3 rounded', style: 'border: 1px solid var(--ck-color-base-border);', data: { testid: 'decoupled-editor' } do
+            .menubar-container.mb-4 style="border: 1px solid var(--ck-color-base-border);"
+              = ckeditor5_menubar
 
-	.menubar-container,
-	.toolbar-container{
-		padding: 1em;
-	}
+            .toolbar-container.mb-4 style="border: 1px solid var(--ck-color-base-border);"
+              = ckeditor5_toolbar
 
-	.editable-container {
-		padding: 3em;
-		overflow-y: scroll;
-		max-height: 300px;
-	}
+            .editable-container.mt-3 style="border: 2px solid var(--ck-color-base-border); background: #fff;"
+              = ckeditor5_editable
 
-	.editable-container .ck-editor__editable {
-		min-height: 21cm;
-		padding: 2em;
-		border: 1px #D3D3D3 solid;
-		border-radius: var(--ck-border-radius);
-		background: white;
-		box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-	}
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | The code below demonstrates how to integrate CKEditor 5 Decoupled editor in Rails. First, we load required assets using&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_assets
+            | &nbsp;helper with&nbsp;
+            code.bg-light.px-2.py-1 default
+            | &nbsp;preset. Then we create an editor instance using&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_editor
+            | &nbsp;helper with some initial content.
 
-h1.mb-4 Decoupled Editor
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_assets %>
+                <%% end %>
 
-= ckeditor5_editor type: :decoupled, style: 'width: 600px'
-  .menubar-container= ckeditor5_menubar
-  br
-  .toolbar-container= ckeditor5_toolbar
-  br
-  .editable-container= ckeditor5_editable
+                <%%= ckeditor5_editor type: :decoupled do %>
+                  <%%= ckeditor5_menubar %>
+                  <%%= ckeditor5_toolbar %>
+                  <%%= ckeditor5_editable %>
+                <%% end %>
+
+        = render 'demos/shared/faq_section' do
+          = render 'demos/shared/faq_message', question: 'How to customize the toolbar?' do
+            p.mb-2.small
+              | Configure it in the initializer:
+            pre.language-ruby.mb-0
+              code
+                |
+                  CKEditor5::Rails.configure do
+                    toolbar do
+                      remove :underline  # Remove items
+                      append :heading    # Add at end
+                      prepend :undo     # Add at start
+                    end
+                  end
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/blob/main/sandbox/app/views/demos/decoupled.slim',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#decoupled-editor-',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Gem documentation
+
+          = link_to 'https://ckeditor.com/docs/ckeditor5/latest/examples/builds/document-editor.html',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-box-arrow-up-right.me-2
+            | CKEditor 5 Decoupled Editor documentation
 

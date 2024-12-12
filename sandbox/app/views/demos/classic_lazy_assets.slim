@@ -1,18 +1,49 @@
 - content_for :head
   = ckeditor5_lazy_javascript_tags
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-h1.mb-4 Lazy Assets
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Classic Editor', subtitle: 'Lazy Loading Example'
 
-- unless params[:no_embed]
-  - if params[:multiple]
-    .mb-4
-      = ckeditor5_editor do
-        | First Editor
-    .mb-4
-      = ckeditor5_editor do
-        | Second Editor
-  - else
-    = ckeditor5_editor do
-      | Hello World
+        = render 'demos/shared/demo_section' do
+          - unless params[:no_embed]
+            - if params[:multiple]
+              .mb-4
+                = ckeditor5_editor do
+                  | First Editor
+              .mb-4
+                = ckeditor5_editor do
+                  | Second Editor
+            - else
+              = ckeditor5_editor do
+                | Hello World
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | This example shows how to lazy load CKEditor 5 assets. Use the&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_lazy_javascript_tags
+            | &nbsp;helper instead of&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_assets
+            | .
+
+          pre.language-erb.bg-light.p-3.rounded.mb-3
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_lazy_javascript_tags %>
+                <%% end %>
+
+                <%%= ckeditor5_editor do %>
+                  Hello World!
+                <%% end %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#lazy-loading-',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Lazy loading documentation

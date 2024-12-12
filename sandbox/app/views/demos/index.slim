@@ -1,19 +1,103 @@
-h1.mb-4 CKEditor 5 Demos
+.container
+  .row.justify-content-center
+    .col-lg-8
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'CKEditor 5 Rails Examples', subtitle: 'Integration Examples & Demos'
 
-.list-group.mb-4
-  = link_to 'Classic Editor', classic_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Classic Editor (grouped toolbar)', classic_grouped_toolbar_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Classic Editor (WProofreader)', classic_wproofreader_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Classic Editor (preset in controller)', classic_controller_preset_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Classic Editor (lazy assets)', classic_lazy_assets_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Decoupled Editor', decoupled_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Balloon Editor', balloon_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Inline Editor', inline_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Form Integration', form_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Form Integration (AJAX)', form_ajax_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Multiroot Editor', multiroot_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Context Demo', context_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Locale via assets', locale_via_assets_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Locale via editor', locale_via_editor_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Locale via preset', locale_via_preset_demos_path, class: 'list-group-item list-group-item-action'
-  = link_to 'Locale via Rails I18n', locale_via_rails_i18n_demos_path, class: 'list-group-item list-group-item-action'
+        p.lead.mb-5
+          | Explore various integration examples of CKEditor 5 with Ruby on Rails.
+          | These demos showcase different editor types, configurations, and features.
+
+        section.mb-5
+          h4.mb-4 Basic Editors
+          .row.g-4.mb-2
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Classic Editor
+                  p.card-text The default editor type with a traditional layout - toolbar at the top and content area below.
+                  = link_to 'View Demo', classic_demos_path, class: 'btn btn-primary'
+
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Decoupled Editor
+                  p.card-text Document-like editing with separated toolbar and editable areas for maximum flexibility.
+                  = link_to 'View Demo', decoupled_demos_path, class: 'btn btn-primary'
+
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Balloon Editor
+                  p.card-text Contextual editing with a floating toolbar that appears near selected text.
+                  = link_to 'View Demo', balloon_demos_path, class: 'btn btn-primary'
+
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Inline Editor
+                  p.card-text Turns any editable element on the page into a WYSIWYG editor instance.
+                  = link_to 'View Demo', inline_demos_path, class: 'btn btn-primary'
+
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Multiroot Editor
+                  p.card-text Multiple independent editor instances that share the same UI and configuration.
+                  = link_to 'View Demo', multiroot_demos_path, class: 'btn btn-primary'
+
+        section.mb-5
+          h4.mb-4 Advanced Features
+          .row.g-4.mb-2
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Form Integration
+                  p.card-text Examples of integrating CKEditor with Rails forms and AJAX submissions.
+                  .d-flex.gap-2
+                    = link_to 'Basic Form', form_demos_path, class: 'btn btn-primary'
+                    = link_to 'AJAX Form', form_ajax_demos_path, class: 'btn btn-outline-primary'
+
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Context & Multiroot
+                  p.card-text Advanced editor configurations for complex use cases.
+                  .d-flex.gap-2
+                    = link_to 'Context Demo', context_demos_path, class: 'btn btn-primary'
+                    = link_to 'Multiroot Editor', multiroot_demos_path, class: 'btn btn-outline-primary'
+
+        section.mb-5
+          h4.mb-4 Configuration & Localization
+          .row.g-4.mb-2
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Editor Configuration
+                  p.card-text Examples of different toolbar configurations and loading strategies.
+                  .d-flex.flex-wrap.gap-2
+                    = link_to 'Grouped Toolbar', classic_grouped_toolbar_demos_path, class: 'btn btn-outline-primary'
+                    = link_to 'Lazy Assets', classic_lazy_assets_demos_path, class: 'btn btn-outline-primary'
+                    = link_to 'WProofreader', classic_wproofreader_demos_path, class: 'btn btn-outline-primary'
+                    = link_to 'Controller Preset', classic_controller_preset_demos_path, class: 'btn btn-outline-primary'
+
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title Localization Options
+                  p.card-text Different approaches to implementing editor localization.
+                  .d-flex.flex-wrap.gap-2
+                    = link_to 'Via Assets', locale_via_assets_demos_path, class: 'btn btn-outline-primary'
+                    = link_to 'Via Editor', locale_via_editor_demos_path, class: 'btn btn-outline-primary'
+                    = link_to 'Via Preset', locale_via_preset_demos_path, class: 'btn btn-outline-primary'
+                    = link_to 'Via Rails I18n', locale_via_rails_i18n_demos_path, class: 'btn btn-outline-primary'
+
+        section.mb-5
+          h4.mb-4 Source Code
+          .row.g-4.mb-2
+            .col-md-6
+              .card.h-100
+                .card-body
+                  h5.card-title GitHub Repository
+                  p.card-text View the source code, documentation, and contribute to the CKEditor 5 Rails integration.
+                  = link_to 'View on GitHub', 'https://github.com/Mati365/ckeditor5-rails', class: 'btn btn-primary', target: '_blank'

@@ -1,19 +1,43 @@
 doctype html
-html
+html lang="en"
   head
-    title CKEditor 5 Rails Sandbox
+    / Basic meta tags
+    title CKEditor 5 Rails Integration ✨ - Rich Text Editor for Ruby on Rails
     meta name="viewport" content="width=device-width,initial-scale=1"
+    meta name="description" content="Unofficial CKEditor 5 Ruby on Rails integration gem ✨. Seamlessly integrate the powerful WYSIWYG editor with Rails through web components and helper methods. Perfect for blogs, CMS and content editing! 📝"
+    meta name="keywords" content="ckeditor5, rails, rich text editor, wysiwyg, text editor, ruby on rails, web components, content editing, cms, blog editor, javascript"
+
+    / Open Graph meta tags
+    meta property="og:title" content="CKEditor 5 Rails Integration ✨"
+    meta property="og:description" content="Seamlessly integrate CKEditor 5 WYSIWYG editor with Ruby on Rails applications through web components and helper methods 🚀"
+    meta property="og:type" content="website"
+
+    / Twitter Card meta tags
+    meta name="twitter:card" content="summary"
+    meta name="twitter:title" content="CKEditor 5 Rails Integration ✨"
+    meta name="twitter:description" content="Seamlessly integrate CKEditor 5 WYSIWYG editor with Ruby on Rails applications 🚀"
+
+    / Standard meta tags
+    meta name="author" content="Mateusz Bagiński"
+    meta name="robots" content="index, follow"
 
     = csrf_meta_tags
     = csp_meta_tag
 
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
+    link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"
+    link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" rel="stylesheet"
 
     = javascript_importmap_tags
     = yield :head
 
-    link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"
-
   body.container.py-4
     = yield
+
+  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"
+  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"
+  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup-templating.min.js"
+  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ruby.min.js"
+  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-erb.min.js"
+  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"

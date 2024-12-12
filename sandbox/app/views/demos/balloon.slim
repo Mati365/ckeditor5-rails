@@ -1,8 +1,80 @@
 - content_for :head
   = ckeditor5_assets
 
-= render 'back_to_home'
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
 
-h1.mb-4 Balloon Editor
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Balloon Editor', subtitle: 'Basic Example'
 
-= ckeditor5_editor type: :balloon, style: 'width: 600px; border: 1px solid #ccc;'
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_editor type: :balloon, class: 'bg-light p-3 rounded' do
+            | Click anywhere in this text to start editing. The toolbar will appear near your selection.
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | The code below demonstrates how to integrate CKEditor 5 Balloon editor in Rails. First, we load required assets using&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_assets
+            | &nbsp;helper with&nbsp;
+            code.bg-light.px-2.py-1 default
+            | &nbsp;preset. Then we create an editor instance using&nbsp;
+            code.bg-light.px-2.py-1 ckeditor5_editor
+            | &nbsp;helper with some initial content.
+
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <%% content_for :head do %>
+                  <%%= ckeditor5_assets %>
+                <%% end %>
+
+                <%%= ckeditor5_editor type: :balloon do %>
+                  Click anywhere in this text to start editing...
+                <%% end %>
+
+        = render 'demos/shared/faq_section' do
+          = render 'demos/shared/faq_message', question: 'How to customize the balloon toolbar?' do
+            p.mb-2.small
+              | Configure it in the initializer:
+            pre.language-ruby.mb-0
+              code
+                |
+                  CKEditor5::Rails.configure do
+                    presets.override :balloon do
+                      toolbar do
+                        remove :underline  # Remove items
+                        append :heading    # Add at end
+                        prepend :undo     # Add at start
+                      end
+                    end
+                  end
+
+          = render 'demos/shared/faq_message', question: 'How to style the editable area?' do
+            pre.language-erb.mb-0.mt-2
+              code
+                | <%= ckeditor5_editor type: :balloon,
+                      class: 'bg-light p-3 rounded',
+                      editable_height: 300 %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos/balloon',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://github.com/Mati365/ckeditor5-rails#balloon-editor',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Gem documentation
+
+          = link_to 'https://ckeditor.com/docs/ckeditor5/latest/examples/builds/balloon-editor',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-box-arrow-up-right.me-2
+            | CKEditor 5 Balloon Editor documentation
