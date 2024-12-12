@@ -66,7 +66,7 @@
 
           / Language question
           = render 'demos/shared/faq_message', question: 'Can I change the editor\'s language?' do
-            p.mb-2 Yes! You have several options:
+            p.mb-2 Yes! By default, the editor uses your application's <code>I18n.locale</code>. However, you have several options to override it:
 
             p.mb-2.small.fw-bold 1. In initializer (recommended):
             pre.language-ruby.mb-2
@@ -76,6 +76,37 @@
                   CKEditor5::Rails.configure do
                     translations :pl, :es, :de
                     language :pl
+                  end
+
+            p.mb-2.small.fw-bold 2. In the assets helper:
+            pre.language-erb.mb-2
+              code
+                |
+                  <%% content_for :head do %>
+                    <%%= ckeditor5_assets language: :pl %>
+                  <%% end %>
+
+            p.mb-2.small.fw-bold 3. On the editor level:
+            pre.language-erb.mb-2
+              code
+                |
+                  <%%= ckeditor5_editor language: :pl %>
+
+            p.mb-2.small.fw-bold 4. Different languages for UI and content:
+            pre.language-ruby.mb-2
+              code
+                |
+                  CKEditor5::Rails.configure do
+                    language :pl, content: :en
+                  end
+
+            p.mb-2.small.fw-bold
+              | Note: Remember to preload translations if you plan to switch languages dynamically:
+            pre.language-ruby.mb-0
+              code
+                |
+                  CKEditor5::Rails.configure do
+                    translations :pl, :es, :de, :fr
                   end
 
           / Instance access question
