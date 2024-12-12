@@ -8,3 +8,35 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+@keyframes octocat-wave {
+  0%, 100% { transform: rotate(0); }
+  20%, 60% { transform: rotate(-25deg); }
+  40%, 80% { transform: rotate(10deg); }
+}
+
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
+}
+
+h4 {
+  position: relative;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.card-img-top {
+  height: 100px;
+  object-fit: contain;
+  object-position: bottom;
+}

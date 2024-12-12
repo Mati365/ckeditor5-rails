@@ -1,18 +1,23 @@
+= render 'demos/shared/github_corner_badge'
+
 .container
   .row.justify-content-center
     .col-lg-8
       article.blog-post
-        = render 'demos/shared/page_header', title: 'CKEditor 5 Rails Examples', subtitle: 'Integration Examples & Demos'
+        .page-header
+          h1.text-center CKEditor 5 Rails Examples
+          p.lead.text-center.mb-0 Integration Examples & Demos
 
-        p.lead.mb-5
+        p.lead.text-center.my-5
           | Explore various integration examples of CKEditor 5 with Ruby on Rails.
+          br
           | These demos showcase different editor types, configurations, and features.
 
         section.mb-5
           h4.mb-4 Basic Editors
           .row.g-4.mb-2
             .col-md-6
-              .card.h-100
+              .editor-card.card.h-100
                 = image_tag 'cards/classic-editor.png', class: 'card-img-top'
                 .card-body
                   h5.card-title Classic Editor
@@ -20,7 +25,7 @@
                   = link_to 'View Demo', classic_demos_path, class: 'btn btn-primary'
 
             .col-md-6
-              .card.h-100
+              .editor-card.card.h-100
                 = image_tag 'cards/decoupled-editor.png', class: 'card-img-top'
                 .card-body
                   h5.card-title Decoupled Editor
@@ -28,7 +33,7 @@
                   = link_to 'View Demo', decoupled_demos_path, class: 'btn btn-primary'
 
             .col-md-6
-              .card.h-100
+              .editor-card.card.h-100
                 = image_tag 'cards/balloon-editor.png', class: 'card-img-top'
                 .card-body
                   h5.card-title Balloon Editor
@@ -36,7 +41,7 @@
                   = link_to 'View Demo', balloon_demos_path, class: 'btn btn-primary'
 
             .col-md-6
-              .card.h-100
+              .editor-card.card.h-100
                 = image_tag 'cards/inline-editor.png', class: 'card-img-top'
                 .card-body
                   h5.card-title Inline Editor
@@ -44,7 +49,7 @@
                   = link_to 'View Demo', inline_demos_path, class: 'btn btn-primary'
 
             .col-md-6
-              .card.h-100
+              .editor-card.card.h-100
                 = image_tag 'cards/multiroot-editor.png', class: 'card-img-top'
                 .card-body
                   h5.card-title Multiroot Editor
@@ -106,3 +111,4 @@
                   h5.card-title GitHub Repository
                   p.card-text View the source code, documentation, and contribute to the CKEditor 5 Rails integration.
                   = link_to 'View on GitHub', 'https://github.com/Mati365/ckeditor5-rails', class: 'btn btn-primary', target: '_blank'
+        = render 'demos/shared/page_footer'
