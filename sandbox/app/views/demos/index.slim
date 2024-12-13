@@ -42,6 +42,14 @@
 
             .col-md-6
               .editor-card.card.h-100
+                = image_tag 'cards/balloon-block-editor.png', class: 'card-img-top'
+                .card-body
+                  h5.card-title Balloon Block Editor
+                  p.card-text Contextual editing with a floating toolbar that appears near selected blocks.
+                  = link_to 'View Demo', balloon_block_demos_path, class: 'btn btn-primary'
+
+            .col-md-6
+              .editor-card.card.h-100
                 = image_tag 'cards/inline-editor.png', class: 'card-img-top'
                 .card-body
                   h5.card-title Inline Editor

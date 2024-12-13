@@ -194,6 +194,50 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
         expect(plugin_names).to include(:SimpleUploadAdapter)
       end
     end
+
+    describe '#block_toolbar' do
+      it 'configures block toolbar items' do
+        builder.block_toolbar(:heading, :paragraph, should_group_when_full: false)
+        expect(builder.config[:blockToolbar]).to eq({
+                                                      items: %i[heading paragraph],
+                                                      shouldNotGroupWhenFull: true
+                                                    })
+      end
+
+      it 'accepts a configuration block' do
+        builder.block_toolbar do
+          append :table
+          remove :paragraph
+        end
+        expect(builder.config[:blockToolbar][:items]).to include(:table)
+      end
+
+      it 'returns ToolbarBuilder instance if no block provided' do
+        expect(builder.block_toolbar).to be_a(CKEditor5::Rails::Presets::ToolbarBuilder)
+      end
+    end
+
+    describe '#balloon_toolbar' do
+      it 'configures balloon toolbar items' do
+        builder.balloon_toolbar(:bold, :italic, should_group_when_full: false)
+        expect(builder.config[:balloonToolbar]).to eq({
+                                                        items: %i[bold italic],
+                                                        shouldNotGroupWhenFull: true
+                                                      })
+      end
+
+      it 'accepts a configuration block' do
+        builder.balloon_toolbar do
+          append :textColor
+          remove :italic
+        end
+        expect(builder.config[:balloonToolbar][:items]).to include(:textColor)
+      end
+
+      it 'returns ToolbarBuilder instance if no block provided' do
+        expect(builder.balloon_toolbar).to be_a(CKEditor5::Rails::Presets::ToolbarBuilder)
+      end
+    end
   end
 
   describe '#inline_plugin' do

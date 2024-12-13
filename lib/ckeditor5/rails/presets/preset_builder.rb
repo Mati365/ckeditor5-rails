@@ -263,17 +263,51 @@ module CKEditor5::Rails
       #     remove :heading
       #   end
       # @return [ToolbarBuilder] Toolbar configuration
-      def toolbar(*items, should_group_when_full: true, &block)
-        if @config[:toolbar].blank? || !items.empty?
-          @config[:toolbar] = {
+      def toolbar(*items, should_group_when_full: true, type: :toolbar, &block)
+        if @config[type].blank? || !items.empty?
+          @config[type] = {
             items: items,
             shouldNotGroupWhenFull: !should_group_when_full
           }
         end
 
-        builder = ToolbarBuilder.new(@config[:toolbar][:items])
+        builder = ToolbarBuilder.new(@config[type][:items])
         builder.instance_eval(&block) if block_given?
         builder
+      end
+
+      # Configure block toolbar items and grouping
+      # @param items [Array<Symbol>] Toolbar items to include
+      # @param kwargs [Hash] Additional toolbar configuration options
+      # @option kwargs [Boolean] :should_group_when_full Enable/disable toolbar item grouping
+      # @yield Optional block for additional toolbar configuration
+      # @return [ToolbarBuilder] Toolbar configuration
+      # @example Configure block toolbar items
+      #   block_toolbar :heading, :paragraph, :blockQuote
+      # @example Configure with block
+      #   block_toolbar do
+      #     append :table
+      #     remove :paragraph
+      #   end
+      def block_toolbar(*items, **kwargs, &block)
+        toolbar(*items, **kwargs, type: :blockToolbar, &block)
+      end
+
+      # Configure balloon toolbar items and grouping
+      # @param items [Array<Symbol>] Toolbar items to include
+      # @param kwargs [Hash] Additional toolbar configuration options
+      # @option kwargs [Boolean] :should_group_when_full Enable/disable toolbar item grouping
+      # @yield Optional block for additional toolbar configuration
+      # @return [ToolbarBuilder] Toolbar configuration
+      # @example Configure balloon toolbar items
+      #   balloon_toolbar :bold, :italic, :link
+      # @example Configure with block
+      #   balloon_toolbar do
+      #     append :textColor
+      #     remove :italic
+      #   end
+      def balloon_toolbar(*items, **kwargs, &block)
+        toolbar(*items, **kwargs, type: :balloonToolbar, &block)
       end
 
       # Check if language is configured

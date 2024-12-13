@@ -1,5 +1,5 @@
 - content_for :head
-  = ckeditor5_assets
+  = ckeditor5_assets preset: :balloon_block
   css:
     .ck.ck-editor__editable_inline {
       background: #fff;
@@ -11,18 +11,18 @@
       = render 'demos/shared/back_to_home'
 
       article.blog-post
-        = render 'demos/shared/page_header', title: 'Balloon Editor', subtitle: 'Basic Example'
+        = render 'demos/shared/page_header', title: 'Balloon Block Editor', subtitle: 'Basic Example'
 
         = render 'demos/shared/demo_section' do
           = ckeditor5_editor type: :balloon, class: 'bg-light p-3 rounded' do
-            | Click anywhere in this text to start editing. The toolbar will appear near your selection.
+            | Click anywhere in this text to start editing. The toolbar will appear near your block selection.
 
         = render 'demos/shared/implementation' do
           p.mb-4
             | The code below demonstrates how to integrate CKEditor 5 Balloon editor in Rails. First, we load required assets using&nbsp;
             code.bg-light.px-2.py-1 ckeditor5_assets
             | &nbsp;helper with&nbsp;
-            code.bg-light.px-2.py-1 default
+            code.bg-light.px-2.py-1 balloon_block
             | &nbsp;preset. Then we create an editor instance using&nbsp;
             code.bg-light.px-2.py-1 ckeditor5_editor
             | &nbsp;helper with some initial content.
@@ -30,12 +30,37 @@
           pre.language-erb.bg-light.p-3.rounded.mb-0
             code
               | <%% content_for :head do %>
-                  <%%= ckeditor5_assets %>
+                  <%%= ckeditor5_assets preset: :balloon_block %>
                 <%% end %>
 
-                <%%= ckeditor5_editor type: :balloon do %>
+                <%%= ckeditor5_editor do %>
                   Click anywhere in this text to start editing...
                 <%% end %>
+
+          p.mt-4.mb-2
+            | The preset configuration in the initializer (make sure to include the
+            code.bg-light.px-2.py-1 BlockToolbar
+            |  plugin):
+
+          pre.language-ruby.bg-light.p-3.rounded.mb-0
+            code
+              | CKEditor5::Rails.configure do
+                  presets.define :balloon_block, inherit: false do
+                    version '43.3.0'
+                    editable_height 100
+
+                    plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline,
+                            :Strikethrough, :Subscript, :Superscript, :RemoveFormat,
+                            :List, :Link, :Font, :FontFamily, :FontSize, :FontColor,
+                            :FontBackgroundColor, :SourceEditing, :BlockToolbar # BlockToolbar is required!
+
+                    block_toolbar :sourceEditing, :|, :bold, :italic, :underline,
+                                :strikethrough, :subscript, :superscript, :removeFormat,
+                                :|, :bulletedList, :numberedList, :fontFamily,
+                                :fontSize, :|, :link, :anchor, :|,
+                                :fontColor, :fontBackgroundColor
+                  end
+                end
 
         = render 'demos/shared/faq_section' do
           = render 'demos/shared/faq_message', question: 'How to customize the balloon toolbar?' do
@@ -46,7 +71,7 @@
                 |
                   CKEditor5::Rails.configure do
                     presets.override :balloon do
-                      balloon_toolbar do
+                      block_toolbar do
                         remove :underline  # Remove items
                         append :heading    # Add at end
                         prepend :undo     # Add at start

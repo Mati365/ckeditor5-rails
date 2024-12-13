@@ -16,6 +16,7 @@ Sandbox::Application.routes.draw do
       multiroot
       context
       balloon
+      balloon_block
       inline
       locale_via_assets
       locale_via_editor

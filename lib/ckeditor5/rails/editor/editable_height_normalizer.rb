@@ -20,10 +20,10 @@ module CKEditor5::Rails::Editor
     attr_reader :editor_type
 
     def validate_editor_type!
-      return if editor_type == :classic
+      return if %i[classic balloon].include?(editor_type)
 
       raise InvalidEditableHeightError,
-            'editable_height can be used only with ClassicEditor'
+            'editable_height can be used only with ClassicEditor or BalloonEditor'
     end
 
     def convert_to_pixel_value(value)

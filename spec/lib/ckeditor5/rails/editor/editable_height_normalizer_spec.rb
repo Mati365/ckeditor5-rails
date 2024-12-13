@@ -6,9 +6,7 @@ RSpec.describe CKEditor5::Rails::Editor::EditableHeightNormalizer do
   subject(:normalizer) { described_class.new(editor_type) }
 
   describe '#normalize' do
-    context 'when editor type is classic' do
-      let(:editor_type) { :classic }
-
+    shared_examples 'height normalization' do
       it 'returns nil when value is nil' do
         expect(normalizer.normalize(nil)).to be_nil
       end
@@ -36,13 +34,23 @@ RSpec.describe CKEditor5::Rails::Editor::EditableHeightNormalizer do
       end
     end
 
-    context 'when editor type is not classic' do
+    context 'when editor type is classic' do
+      let(:editor_type) { :classic }
+      include_examples 'height normalization'
+    end
+
+    context 'when editor type is balloon' do
+      let(:editor_type) { :balloon }
+      include_examples 'height normalization'
+    end
+
+    context 'when editor type is not supported' do
       let(:editor_type) { :inline }
 
       it 'raises error' do
         expect { normalizer.normalize(500) }.to raise_error(
           CKEditor5::Rails::Editor::InvalidEditableHeightError,
-          'editable_height can be used only with ClassicEditor'
+          'editable_height can be used only with ClassicEditor or BalloonEditor'
         )
       end
     end

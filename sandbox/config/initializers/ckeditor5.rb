@@ -77,4 +77,22 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
             :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
             :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph
   end
+
+  presets.define :balloon_block, inherit: false do
+    automatic_upgrades
+
+    version '43.3.0'
+
+    editable_height 100
+
+    plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
+            :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
+            :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph,
+            :BlockToolbar
+
+    block_toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
+                  :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
+                  :fontFamily, :fontSize, :|, :link, :anchor, :|,
+                  :fontColor, :fontBackgroundColor
+  end
 end

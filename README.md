@@ -130,6 +130,8 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`ckbox` method](#ckbox-method)
       - [`type(type)` method](#typetype-method)
       - [`toolbar(*items, should_group_when_full: true, &block)` method](#toolbaritems-should_group_when_full-true-block-method)
+      - [`block_toolbar(*items, should_group_when_full: true, &block)` method](#block_toolbaritems-should_group_when_full-true-block-method)
+      - [`balloon_toolbar(*items, should_group_when_full: true, &block)` method](#balloon_toolbaritems-should_group_when_full-true-block-method)
       - [`menubar(visible: true)` method](#menubarvisible-true-method)
       - [`configure(name, value)` method](#configurename-value-method)
       - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
@@ -641,6 +643,52 @@ CKEditor5::Rails.configure do
   end
 end
 ```
+
+</details>
+
+#### `block_toolbar(*items, should_group_when_full: true, &block)` method
+
+<details>
+  <summary>Define block toolbar items and their grouping behavior</summary>
+
+<br />
+
+API is identical to the `toolbar` method, but it's used for block toolbar items. The example below shows how to define block toolbar items:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  block_toolbar :paragraph, :heading, :blockQuote, :|, :bulletedList, :numberedList, :todoList
+end
+```
+
+It is useful when you want to use Block Balloon Editor or Block Toolbar features.
+
+</details>
+
+#### `balloon_toolbar(*items, should_group_when_full: true, &block)` method
+
+<details>
+  <summary>Define balloon toolbar items and their grouping behavior</summary>
+
+<br />
+
+API is identical to the `toolbar` method, but it's used for balloon toolbar items. The example below shows how to define balloon toolbar items:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  balloon_toolbar :bold, :italic, :underline, :link, :insertImage, :mediaEmbed, :insertTable, :blockQuote
+end
+```
+
+It is useful when you want to use Balloon Editor or Balloon Toolbar features.
 
 </details>
 
