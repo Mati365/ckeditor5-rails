@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.23.1] - 2024-12-13
+
+### Other Changes
+
+* Fix lint ([bd1d003](https://github.com/Mati365/ckeditor5-rails/commit/bd1d00361d6326814a2f6ecee5a897031fcdca54))
+* Add block balloon editor docs ([aedeefa](https://github.com/Mati365/ckeditor5-rails/commit/aedeefaa01aec616d2cac9e03b072ddc941ca5b9))
+* Fix css ([7a637bf](https://github.com/Mati365/ckeditor5-rails/commit/7a637bf387e0153167c21356d61779bbec2adfb4))
+* Add link ([a7f0f1d](https://github.com/Mati365/ckeditor5-rails/commit/a7f0f1db31e7b64226f5315baa5299899aecce63))
+* Add doc ([8169912](https://github.com/Mati365/ckeditor5-rails/commit/8169912bfce2d7acd240ae31f7078a888362ec15))
+* Better site ([e8a1c64](https://github.com/Mati365/ckeditor5-rails/commit/e8a1c6427f9c5b11593bc1a16713379882a2bc6d))
+* Add images to demos ([ee451a3](https://github.com/Mati365/ckeditor5-rails/commit/ee451a3465fc77a06c90622ae6036a5b1f0f7f8e))
+* Fix link ([a427bea](https://github.com/Mati365/ckeditor5-rails/commit/a427bea86a53d01b342f61337f477cdf2a03c2f5))
+* Fix questions ([6c99c7b](https://github.com/Mati365/ckeditor5-rails/commit/6c99c7b332fd5538423d500b2e510a1e34e57f5b))
+* Better docs ([3186fe0](https://github.com/Mati365/ckeditor5-rails/commit/3186fe01c590b0588676c5a8ba00edbd0a55f0b4))
+* Adjust nginx ([094edb4](https://github.com/Mati365/ckeditor5-rails/commit/094edb418e95ce0e97e415f91c211fd0bd89ead0))
+* Fix logs ([a0d4301](https://github.com/Mati365/ckeditor5-rails/commit/a0d43015ee450ddcd3973bd6d9d9b6e0e4a04f3d))
+* Use puma ([a93cf57](https://github.com/Mati365/ckeditor5-rails/commit/a93cf576150645c5081fe4c24086d2210e6ecbfa))
+* Fix CI ([2da63d5](https://github.com/Mati365/ckeditor5-rails/commit/2da63d5aaddd62f14359fb4d7ada8e6ecc46200b))
+* Add precompile ([bc32901](https://github.com/Mati365/ckeditor5-rails/commit/bc329016338c9240814d5a7b3aa26af9e3bd26f1))
+* Fix ([6c42816](https://github.com/Mati365/ckeditor5-rails/commit/6c428161dfdce6743b4969549a77c60f821623d0))
+* Fix infra ([705742c](https://github.com/Mati365/ckeditor5-rails/commit/705742cf92b567f06799c63e01aa394ecd235270))
+* Fix CI again ([1a1d294](https://github.com/Mati365/ckeditor5-rails/commit/1a1d294c072a062bf7757ec7d4d35b6d0c069b5a))
+* Fix certbox ([a8981f4](https://github.com/Mati365/ckeditor5-rails/commit/a8981f4f6e61ff5243cbb80dbbda2c2cd507a140))
+* Fix dependencies ([a01f8ca](https://github.com/Mati365/ckeditor5-rails/commit/a01f8caa5538a1158b8ca97e77e77937ebcc9a7c))
+* Add demo infra ([465b8a1](https://github.com/Mati365/ckeditor5-rails/commit/465b8a1c88fa5d02f67744c6fda77891d271e9e7))
+* Update README.md ([331cace](https://github.com/Mati365/ckeditor5-rails/commit/331cace906fb87c51746a8f890737699d74d89d7))
+
 ## [1.23.0] - 2024-12-04
 
 ### Features
