@@ -26,6 +26,10 @@
   .github-corner .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
   }
+  .github-corner-svg {
+    height: 45px !important;
+    width: 45px !important;
+  }
 }
 
 h4 {
