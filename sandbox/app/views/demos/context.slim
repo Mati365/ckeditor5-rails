@@ -50,14 +50,14 @@
           h5.mt-4 View:
           pre.language-erb.bg-light.p-3.rounded.mb-0
             code
-              | <%% content_for :head do %>
-                  <%%= ckeditor5_assets preset: :ultrabasic %>
-                <%% end %>
+              | <% content_for :head do %>
+                  <%= ckeditor5_assets preset: :ultrabasic %>
+                <% end %>
 
-                <%%= ckeditor5_context @context_preset do %>
-                  <%%= ckeditor5_editor initial_data: 'Context Item 1' %>
-                  <%%= ckeditor5_editor initial_data: 'Context Item 2' %>
-                <%% end %>
+                <%= ckeditor5_context @context_preset do %>
+                  <%= ckeditor5_editor initial_data: 'Context Item 1' %>
+                  <%= ckeditor5_editor initial_data: 'Context Item 2' %>
+                <% end %>
 
         = render 'demos/shared/resources' do
           = link_to 'https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos/context.slim',

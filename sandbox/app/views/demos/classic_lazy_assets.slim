@@ -32,13 +32,13 @@
 
           pre.language-erb.bg-light.p-3.rounded.mb-3
             code
-              | <%% content_for :head do %>
-                  <%%= ckeditor5_lazy_javascript_tags %>
-                <%% end %>
+              | <% content_for :head do %>
+                  <%= ckeditor5_lazy_javascript_tags %>
+                <% end %>
 
-                <%%= ckeditor5_editor do %>
+                <%= ckeditor5_editor do %>
                   Hello World!
-                <%% end %>
+                <% end %>
 
         = render 'demos/shared/resources' do
           = link_to 'https://github.com/Mati365/ckeditor5-rails#lazy-loading-',

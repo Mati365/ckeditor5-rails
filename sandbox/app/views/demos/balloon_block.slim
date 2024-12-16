@@ -29,13 +29,13 @@
 
           pre.language-erb.bg-light.p-3.rounded.mb-0
             code
-              | <%% content_for :head do %>
-                  <%%= ckeditor5_assets preset: :balloon_block %>
-                <%% end %>
+              | <% content_for :head do %>
+                  <%= ckeditor5_assets preset: :balloon_block %>
+                <% end %>
 
-                <%%= ckeditor5_editor do %>
+                <%= ckeditor5_editor do %>
                   Click anywhere in this text to start editing...
-                <%% end %>
+                <% end %>
 
           p.mt-4.mb-2
             | The preset configuration in the initializer (make sure to include the

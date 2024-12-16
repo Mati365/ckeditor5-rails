@@ -45,10 +45,10 @@
 
           pre.language-erb.bg-light.p-3.rounded.mb-0
             code
-              | <%% content_for :head do %>
-                  <%%= ckeditor5_assets preset: @preset %>
-                <%% end %>
-                <%%= ckeditor5_editor editable_height: 300 %>
+              | <% content_for :head do %>
+                  <%= ckeditor5_assets preset: @preset %>
+                <% end %>
+                <%= ckeditor5_editor editable_height: 300 %>
 
         = render 'demos/shared/resources' do
           = link_to 'https://github.com/Mati365/ckeditor5-rails#presets-',

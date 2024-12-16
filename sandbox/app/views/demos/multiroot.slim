@@ -39,17 +39,17 @@
 
           pre.language-erb.bg-light.p-3.rounded.mb-0
             code
-              | <%% content_for :head do %>
-                  <%%= ckeditor5_assets %>
-                <%% end %>
+              | <% content_for :head do %>
+                  <%= ckeditor5_assets %>
+                <% end %>
 
-                <%%= ckeditor5_editor type: :multiroot do %>
-                  <%%= ckeditor5_toolbar %>
-                  <%%= ckeditor5_editable 'toolbar' do %>
+                <%= ckeditor5_editor type: :multiroot do %>
+                  <%= ckeditor5_toolbar %>
+                  <%= ckeditor5_editable 'toolbar' do %>
                     This is a toolbar editable
-                  <%% end %>
-                  <%%= ckeditor5_editable 'content' %>
-                <%% end %>
+                  <% end %>
+                  <%= ckeditor5_editable 'content' %>
+                <% end %>
 
         = render 'demos/shared/resources' do
           = link_to 'https://github.com/Mati365/ckeditor5-rails/blob/main/sandbox/app/views/demos/multiroot.slim',

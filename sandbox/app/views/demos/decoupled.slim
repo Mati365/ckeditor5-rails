@@ -42,15 +42,15 @@
 
           pre.language-erb.bg-light.p-3.rounded.mb-0
             code
-              | <%% content_for :head do %>
-                  <%%= ckeditor5_assets %>
-                <%% end %>
+              | <% content_for :head do %>
+                  <%= ckeditor5_assets %>
+                <% end %>
 
-                <%%= ckeditor5_editor type: :decoupled do %>
-                  <%%= ckeditor5_menubar %>
-                  <%%= ckeditor5_toolbar %>
-                  <%%= ckeditor5_editable %>
-                <%% end %>
+                <%= ckeditor5_editor type: :decoupled do %>
+                  <%= ckeditor5_menubar %>
+                  <%= ckeditor5_toolbar %>
+                  <%= ckeditor5_editable %>
+                <% end %>
 
         = render 'demos/shared/faq_section' do
           = render 'demos/shared/faq_message', question: 'How to customize the toolbar?' do
