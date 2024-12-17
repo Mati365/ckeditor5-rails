@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.23.2] - 2024-12-17
+
+### Features
+
+* Update CKEditor to version 44.1.0 ([39ab2c4](https://github.com/Mati365/ckeditor5-rails/commit/39ab2c4e38b41302c3e933336f2130797a50495d))
+
+### Other Changes
+
+* Fix typo ([de94f3f](https://github.com/Mati365/ckeditor5-rails/commit/de94f3f7937f28bb49adc36cf7173d0ca6298277))
+* fix nginx ([ae1056e](https://github.com/Mati365/ckeditor5-rails/commit/ae1056e96af1c370cdc25228315ee751688c09a0))
+* Fix links ([d219894](https://github.com/Mati365/ckeditor5-rails/commit/d2198949da924e50bcb697fa3e758c4b93bf86dd))
+
 ## [1.23.1] - 2024-12-13
 
 ### Other Changes
