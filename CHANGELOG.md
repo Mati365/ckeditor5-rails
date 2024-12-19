@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.23.4] - 2024-12-19
+
+### Bug Fixes
+
+* It's no longer possible to define unsafe inline plugin in controller preset helper. ([3aa7411](https://github.com/Mati365/ckeditor5-rails/commit/3aa7411ea011535baaefc79c341ae0ba12264ec8))
+
+### Other Changes
+
+* Update links in readme ([8e7b48e](https://github.com/Mati365/ckeditor5-rails/commit/8e7b48e0dc2f464ad241c2ce7dd8784403d6757d))
+* Change ssh key ([ef3f944](https://github.com/Mati365/ckeditor5-rails/commit/ef3f944a5a765043a33b3ace326bfd0278dd67e8))
+
 ## [1.23.2] - 2024-12-17
 
 ### Features
