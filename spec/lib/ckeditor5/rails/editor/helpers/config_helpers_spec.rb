@@ -38,6 +38,22 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Config do
       it 'yields the block to PresetBuilder' do
         expect { |b| helper.ckeditor5_preset(&b) }.to yield_control
       end
+
+      it 'does not allow inline plugins definition' do
+        expect do
+          helper.ckeditor5_preset do
+            inline_plugin :CustomPlugin, <<~JS
+              import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+              export default class CustomPlugin extends Plugin {
+                static get pluginName() { return 'CustomPlugin'; }
+              }
+            JS
+          end
+        end.to raise_error(
+          CKEditor5::Rails::Presets::Concerns::PluginMethods::DisallowedInlinePlugin,
+          'Inline plugins are not allowed here.'
+        )
+      end
     end
 
     context 'when neither name nor block is provided' do

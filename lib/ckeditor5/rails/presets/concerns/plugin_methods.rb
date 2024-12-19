@@ -1,21 +1,18 @@
 # frozen_string_literal: true
 
+require 'active_support'
+
 module CKEditor5::Rails
   module Presets
     module Concerns
       module PluginMethods
-        private
+        extend ActiveSupport::Concern
 
-        # Register a plugin in the editor configuration
-        #
-        # @param plugin_obj [Editor::PropsBasePlugin] Plugin instance to register
-        # @return [Editor::PropsBasePlugin] The registered plugin
-        def register_plugin(plugin_obj)
-          config[:plugins] << plugin_obj
-          plugin_obj
+        class DisallowedInlinePlugin < ArgumentError; end
+
+        included do
+          attr_reader :disallow_inline_plugins
         end
-
-        public
 
         # Registers an external plugin loaded from a URL
         #
@@ -88,6 +85,29 @@ module CKEditor5::Rails
           builder = PluginsBuilder.new(config[:plugins])
           builder.instance_eval(&block) if block_given?
           builder
+        end
+
+        private
+
+        def looks_like_inline_plugin?(plugin)
+          plugin.to_h[:type] == :inline
+        end
+
+        # Register a plugin in the editor configuration.
+        #
+        # It will raise an error if inline plugins are not allowed and the plugin is an inline plugin.
+        # Most likely, this is being thrown when you use inline_plugin definition in a place where
+        # it's not allowed (e.g. in a preset definition placed in controller).
+        #
+        # @param plugin_obj [Editor::PropsBasePlugin] Plugin instance to register
+        # @return [Editor::PropsBasePlugin] The registered plugin
+        def register_plugin(plugin_obj)
+          if disallow_inline_plugins && looks_like_inline_plugin?(plugin_obj)
+            raise DisallowedInlinePlugin, 'Inline plugins are not allowed here.'
+          end
+
+          config[:plugins] << plugin_obj
+          plugin_obj
         end
       end
     end
