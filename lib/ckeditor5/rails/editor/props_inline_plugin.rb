@@ -51,10 +51,6 @@ module CKEditor5::Rails::Editor
       signature
     end
 
-    def registered?(signature)
-      @signatures.include?(signature)
-    end
-
     def to_a
       @signatures.to_a
     end

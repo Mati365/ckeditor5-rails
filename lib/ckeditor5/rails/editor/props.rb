@@ -45,7 +45,7 @@ module CKEditor5::Rails::Editor
 
     def serialized_attributes
       {
-        bundle: bundle.to_json,
+        bundle: bundle&.to_json,
         plugins: serialize_plugins,
         config: serialize_config,
         watchdog: watchdog

@@ -58,6 +58,7 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
       result = helper.ckeditor5_context_or_fallback(:custom)
       expect(result).to match({
                                 bundle: 'custom-bundle',
+                                lazy: true,
                                 preset: custom_preset
                               })
     end
@@ -71,8 +72,32 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
       result = helper.ckeditor5_context_or_fallback(nil)
       expect(result).to match({
                                 bundle: nil,
+                                lazy: true,
                                 preset: :default
                               })
+    end
+
+    it 'includes lazy flag in fallback context' do
+      allow(CKEditor5::Rails::Engine).to receive(:default_preset)
+        .and_return(:default)
+
+      result = helper.ckeditor5_context_or_fallback(nil)
+      expect(result[:lazy]).to be true
+    end
+
+    it 'includes lazy flag in preset context' do
+      custom_preset = instance_double(CKEditor5::Rails::Presets::PresetBuilder)
+
+      allow(CKEditor5::Rails::Engine).to receive(:find_preset)
+        .with(:custom)
+        .and_return(custom_preset)
+
+      allow(helper).to receive(:create_preset_bundle)
+        .with(custom_preset)
+        .and_return('custom-bundle')
+
+      result = helper.ckeditor5_context_or_fallback(:custom)
+      expect(result[:lazy]).to be true
     end
   end
 
@@ -223,6 +248,31 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         allow(preset).to receive(:editable_height).and_return(700)
 
         expect(helper.ckeditor5_editor(editable_height: 600)).to include('editable-height="600px"')
+      end
+    end
+
+    context 'when using bundles' do
+      let(:bundle) { 'test-bundle' }
+      let(:context) { { preset: :default, bundle: bundle, lazy: true } }
+
+      it 'uses bundle from context when lazy is true' do
+        expect(CKEditor5::Rails::Editor::Props).to receive(:new)
+          .with(anything, anything, hash_including(bundle: bundle))
+          .and_call_original
+
+        helper.ckeditor5_editor
+      end
+
+      context 'when lazy is false' do
+        let(:context) { { preset: :default, bundle: bundle, lazy: false } }
+
+        it 'does not use bundle from context' do
+          expect(CKEditor5::Rails::Editor::Props).to receive(:new)
+            .with(anything, anything, hash_including(bundle: nil))
+            .and_call_original
+
+          helper.ckeditor5_editor
+        end
       end
     end
   end

@@ -107,5 +107,18 @@ RSpec.describe CKEditor5::Rails::Context::Helpers do
         preset: :custom
       )
     end
+
+    it 'raises error when trying to define inline plugin' do
+      expect do
+        helper.ckeditor5_context_preset do
+          inline_plugin :TestPlugin, <<~JS
+            export default class TestPlugin { }
+          JS
+        end
+      end.to raise_error(
+        CKEditor5::Rails::Presets::Concerns::PluginMethods::DisallowedInlinePlugin,
+        'Inline plugins are not allowed here.'
+      )
+    end
   end
 end

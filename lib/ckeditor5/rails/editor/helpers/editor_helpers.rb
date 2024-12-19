@@ -56,7 +56,7 @@ module CKEditor5::Rails
     #   <%= form_for @post do |f| %>
     #     <%= f.ckeditor5 :content, required: true %>
     #   <% end %>
-    def ckeditor5_editor( # rubocop:disable Metrics/ParameterLists
+    def ckeditor5_editor( # rubocop:disable Metrics/ParameterLists,Metrics/CyclomaticComplexity
       preset: nil,
       config: nil, extra_config: {}, type: nil,
       initial_data: nil, watchdog: true,
@@ -78,7 +78,9 @@ module CKEditor5::Rails
 
       editor_props = Editor::Props.new(
         type, config,
-        bundle: context[:bundle],
+        # Use fallback only if there is no `ckeditor5_assets` in the head.
+        # So web-component will be loaded from the CDN.
+        bundle: context[:lazy] ? context[:bundle] : nil,
         watchdog: watchdog,
         editable_height: editable_height || preset.editable_height
       )
@@ -159,13 +161,15 @@ module CKEditor5::Rails
 
         return {
           bundle: create_preset_bundle(found_preset),
-          preset: found_preset
+          preset: found_preset,
+          lazy: true
         }
       end
 
       {
         bundle: nil,
-        preset: Engine.default_preset
+        preset: Engine.default_preset,
+        lazy: true
       }
     end
   end

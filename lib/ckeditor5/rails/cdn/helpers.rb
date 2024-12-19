@@ -99,7 +99,8 @@ module CKEditor5::Rails
 
       if importmap_available?
         @__ckeditor_context = {
-          bundle: combined_bundle
+          bundle: combined_bundle,
+          lazy: true
         }
 
         return Assets::WebComponentBundle.instance.to_html

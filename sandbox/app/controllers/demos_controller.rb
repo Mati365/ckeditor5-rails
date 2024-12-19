@@ -49,7 +49,7 @@ class DemosController < ApplicationController
   end
 
   def context
-    @context_preset = ckeditor5_context_preset do
+    @context_preset = ckeditor5_context_preset(disallow_inline_plugins: false) do
       inline_plugin :MagicContextPlugin, <<~JS
         import { Plugin } from 'ckeditor5';
 

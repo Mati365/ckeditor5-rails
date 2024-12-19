@@ -38,7 +38,8 @@ module CKEditor5::Rails
       #     version '43.3.1'
       #     toolbar :bold, :italic
       #   end
-      def initialize(&block)
+      def initialize(disallow_inline_plugins: false, &block)
+        @disallow_inline_plugins = disallow_inline_plugins
         @config = {
           plugins: []
         }

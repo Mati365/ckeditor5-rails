@@ -40,8 +40,8 @@ module CKEditor5::Rails::Context
     #   <% preset = ckeditor5_context_preset do
     #     plugins :Comments, :TrackChanges, :Collaboration  # Shared functionality plugins
     #   end %>
-    def ckeditor5_context_preset(&block)
-      PresetBuilder.new(&block)
+    def ckeditor5_context_preset(**kwargs, &block)
+      PresetBuilder.new(disallow_inline_plugins: true, **kwargs, &block)
     end
   end
 end
