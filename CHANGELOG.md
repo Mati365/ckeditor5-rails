@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.23.3] - 2024-12-19
+
+### Features
+
+* web-component properties are now lighter. ([ed22879](https://github.com/Mati365/ckeditor5-rails/commit/ed22879cb5951bf5dc3272321c1d1a5fb15d4bc0))
+
+### Bug Fixes
+
+* It's no longer possible to pass unsigned inline plugins to web-component. ([7745ee7](https://github.com/Mati365/ckeditor5-rails/commit/7745ee7415730ce201d64d8cb1d834ed2ffb6255))
+* It's no longer possible to define unsafe inline plugin in controller preset helper. ([3aa7411](https://github.com/Mati365/ckeditor5-rails/commit/3aa7411ea011535baaefc79c341ae0ba12264ec8))
+
+### Documentation
+
+* Update context docs. ([818a04d](https://github.com/Mati365/ckeditor5-rails/commit/818a04dcc0e9e119dc78fc8782ee93df626d48d2))
+
+### Other Changes
+
+* Update links in readme ([8e7b48e](https://github.com/Mati365/ckeditor5-rails/commit/8e7b48e0dc2f464ad241c2ce7dd8784403d6757d))
+* Change ssh key ([ef3f944](https://github.com/Mati365/ckeditor5-rails/commit/ef3f944a5a765043a33b3ace326bfd0278dd67e8))
+
 ## [1.23.2] - 2024-12-17
 
 ### Features
