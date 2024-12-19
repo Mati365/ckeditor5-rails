@@ -3,38 +3,54 @@
 require 'singleton'
 require 'terser'
 
-module CKEditor5::Rails::Assets
-  class WebComponentBundle
-    include ActionView::Helpers::TagHelper
-    include Singleton
+require_relative '../editor/props_inline_plugin'
 
-    WEBCOMPONENTS_PATH = File.join(__dir__, 'webcomponents')
-    WEBCOMPONENTS_MODULES = [
-      'utils.mjs',
-      'components/editable.mjs',
-      'components/ui-part.mjs',
-      'components/editor.mjs',
-      'components/context.mjs'
-    ].freeze
+module CKEditor5::Rails
+  module Assets
+    class WebComponentBundle
+      include ActionView::Helpers::TagHelper
+      include Singleton
 
-    def source
-      @source ||= compress_source(raw_source)
-    end
+      WEBCOMPONENTS_PATH = File.join(__dir__, 'webcomponents')
+      WEBCOMPONENTS_MODULES = [
+        'utils.mjs',
+        'components/editable.mjs',
+        'components/ui-part.mjs',
+        'components/editor.mjs',
+        'components/context.mjs'
+      ].freeze
 
-    def to_html
-      @to_html ||= tag.script(source, type: 'module', nonce: true)
-    end
+      def source
+        @source ||= compress_source(raw_source)
+      end
 
-    private
+      def to_html
+        @to_html ||= tag.script(source, type: 'module', nonce: true)
+      end
 
-    def raw_source
-      @raw_source ||= WEBCOMPONENTS_MODULES.map do |file|
-        File.read(File.join(WEBCOMPONENTS_PATH, file))
-      end.join("\n")
-    end
+      private
 
-    def compress_source(code)
-      Terser.new(compress: true, mangle: true).compile(code).html_safe
+      def raw_source
+        @raw_source ||= WEBCOMPONENTS_MODULES.map do |file|
+          content = File.read(File.join(WEBCOMPONENTS_PATH, file))
+
+          if file == 'utils.mjs'
+            inject_inline_code_signatures(content)
+          else
+            content
+          end
+        end.join("\n")
+      end
+
+      def inject_inline_code_signatures(content)
+        json_signatures = Editor::InlinePluginsSignaturesRegistry.instance.to_a.to_json
+
+        content.sub('__INLINE_CODE_SIGNATURES_PLACEHOLDER__', json_signatures)
+      end
+
+      def compress_source(code)
+        Terser.new(compress: true, mangle: true).compile(code).html_safe
+      end
     end
   end
 end
