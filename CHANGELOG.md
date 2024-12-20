@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.24.0] - 2024-12-20
+
+### Features
+
+* No longer inline inline plugins code in web-component props. ([e9a6764](https://github.com/Mati365/ckeditor5-rails/commit/e9a676433c4e56a3a8018a80e9d6788a39e87ea9))
+* Improve CSP in demos. ([b9b5a4f](https://github.com/Mati365/ckeditor5-rails/commit/b9b5a4fd7d2c0ac68a82d421fee2df88c15d190d))
+
+### Documentation
+
+* Add section about CSP. ([2d3357b](https://github.com/Mati365/ckeditor5-rails/commit/2d3357b800f98779129fd7fc989ee6082e343c34))
+
+### Other Changes
+
+* Text: Fix failing tests after refactor of inline plugins handling. ([e8c2e82](https://github.com/Mati365/ckeditor5-rails/commit/e8c2e82477d19e399be350763be362cad1c6d8b5))
+
+### Tests
+
+* Test: Restore coverage ([57e1415](https://github.com/Mati365/ckeditor5-rails/commit/57e1415ef320e807bb0285adfb9f842c7825ca7c))
+
 ## [1.23.5] - 2024-12-20
 
 ### Features
