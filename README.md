@@ -177,6 +177,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
     - [Integration with Turbolinks 🚀](#integration-with-turbolinks-)
     - [Custom Styling 🎨](#custom-styling-)
     - [Custom plugins 🧩](#custom-plugins-)
+    - [Content Security Policy (CSP) 🛡️](#content-security-policy-csp-️)
   - [Events fired by the editor 🔊](#events-fired-by-the-editor-)
     - [`editor-ready` event](#editor-ready-event)
     - [`editor-error` event](#editor-error-event)
@@ -1972,6 +1973,31 @@ class HighlightCommand extends Command {
 ```
 
 </details>
+
+### Content Security Policy (CSP) 🛡️
+
+If you're using a Content Security Policy (CSP) in your Rails application, you may need to adjust it to allow CKEditor 5 to work correctly. CKEditor 5 uses inline scripts and styles to render the editor, so you need to allow them in your CSP configuration. The example below shows how to configure the CSP to allow CKEditor 5 to work correctly:
+
+```rb
+# config/initializers/content_security_policy.rb
+
+Rails.application.configure do
+  config.content_security_policy do |policy|
+    policy.default_src :self, :https
+    policy.font_src :self, :https, :data
+    policy.img_src :self, :https, :data
+    policy.object_src :none
+    policy.script_src "'strict-dynamic'"
+    policy.style_src :self, :https
+    policy.style_src_elem :self, :https, :unsafe_inline
+    policy.style_src_attr :self, :https, :unsafe_inline
+    policy.base_uri :self
+  end
+
+  config.content_security_policy_nonce_generator = ->(_request) { SecureRandom.base64(16) }
+  config.content_security_policy_nonce_directives = %w[script-src style-src]
+end
+```
 
 ## Events fired by the editor 🔊
 
