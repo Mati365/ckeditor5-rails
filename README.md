@@ -848,9 +848,9 @@ CKEditor5::Rails.configure do
   # ... other configuration
 
   inline_plugin :MyCustomPlugin, <<~JS
-    import { Plugin } from 'ckeditor5';
+    const { Plugin } = await import( 'ckeditor5' );
 
-    export default class MyCustomPlugin extends Plugin {
+    return class extends Plugin {
       static get pluginName() {
         return 'MyCustomPlugin';
       }
@@ -1846,9 +1846,9 @@ CKEditor5::Rails.configure do
 
   # 4. Or even define it inline:
   # inline_plugin :MyCustomPlugin,  <<~JS
-  #    import { Plugin } from 'ckeditor5';
+  #    const { Plugin } = await import( 'ckeditor5' );
   #
-  #    export default class MyCustomPlugin extends Plugin {
+  #    return class MyCustomPlugin extends Plugin {
   #      // ...
   #    }
   # JS
@@ -1867,7 +1867,7 @@ end
 // app/javascript/custom_plugins/highlight.js
 import { Plugin, Command, ButtonView } from 'ckeditor5';
 
-export default class MyCustomPlugin extends Plugin {
+return class MyCustomPlugin extends Plugin {
   static get pluginName() {
     return 'MyCustomPlugin';
   }

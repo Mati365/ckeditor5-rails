@@ -243,8 +243,9 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
   describe '#inline_plugin' do
     let(:plugin_code) do
       <<~JAVASCRIPT
-        import Plugin from 'ckeditor5/src/plugin';
-        export default class CustomPlugin extends Plugin {
+        const { Plugin } = await import( 'ckeditor5' );
+
+        return class CustomPlugin extends Plugin {
           init() {
             // plugin initialization
           }

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'active_support'
+require 'terser'
 
 module CKEditor5::Rails
   module Presets
@@ -8,7 +9,9 @@ module CKEditor5::Rails
       module PluginMethods
         extend ActiveSupport::Concern
 
-        class DisallowedInlinePlugin < ArgumentError; end
+        class DisallowedInlinePluginError < ArgumentError; end
+        class MissingInlinePluginError < StandardError; end
+        class UnsupportedESModuleError < StandardError; end
 
         included do
           attr_reader :disallow_inline_plugins
@@ -34,9 +37,9 @@ module CKEditor5::Rails
         # @param code [String] JavaScript code defining the plugin
         # @example Define custom highlight plugin
         #   inline_plugin :MyCustomPlugin, <<~JS
-        #     import { Plugin } from 'ckeditor5';
+        #     const { Plugin } = await import( 'ckeditor5' );
         #
-        #     export default class MyCustomPlugin extends Plugin {
+        #     return class MyCustomPlugin extends Plugin {
         #       static get pluginName() {
         #         return 'MyCustomPlugin';
         #       }
@@ -47,7 +50,21 @@ module CKEditor5::Rails
         #     }
         #   JS
         def inline_plugin(name, code)
-          register_plugin(Editor::PropsInlinePlugin.new(name, code))
+          if code.match?(/export default/)
+            raise UnsupportedESModuleError,
+                  'Inline plugins must not use ES module syntax!' \
+                  'Use async async imports instead!'
+          end
+
+          unless code.match?(/return class(\s+\w+)?\s+extends\s+Plugin/)
+            raise MissingInlinePluginError,
+                  'Plugin code must return a class that extends Plugin!'
+          end
+
+          wrapped_code = "(async () => { #{code} })();"
+          minified_code = Terser.new(compress: false, mangle: true).compile(wrapped_code)
+
+          register_plugin(Editor::PropsInlinePlugin.new(name, minified_code))
         end
 
         # Register a single plugin by name
@@ -103,7 +120,7 @@ module CKEditor5::Rails
         # @return [Editor::PropsBasePlugin] The registered plugin
         def register_plugin(plugin_obj)
           if disallow_inline_plugins && looks_like_inline_plugin?(plugin_obj)
-            raise DisallowedInlinePlugin, 'Inline plugins are not allowed here.'
+            raise DisallowedInlinePluginError, 'Inline plugins are not allowed here.'
           end
 
           config[:plugins] << plugin_obj

@@ -11,7 +11,7 @@ RSpec.describe 'CKEditor5 Context Integration', type: :feature, js: true do
 
   it 'initializes the magic context plugin' do
     eventually do
-      plugin_exists = page.evaluate_script('window.MagicContextPlugin !== undefined')
+      plugin_exists = page.evaluate_script('window.__magicPluginInitialized !== undefined')
       expect(plugin_exists).to be true
     end
   end

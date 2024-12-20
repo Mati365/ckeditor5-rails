@@ -5,8 +5,9 @@ require 'spec_helper'
 RSpec.describe CKEditor5::Rails::Editor::PropsInlinePlugin do
   let(:valid_code) do
     <<~JAVASCRIPT
-      import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-      export default class CustomPlugin extends Plugin {
+      const { Plugin } = await import( 'ckeditor5' );
+
+      return class CustomPlugin extends Plugin {
         init() {
           console.log('Custom plugin initialized');
         }

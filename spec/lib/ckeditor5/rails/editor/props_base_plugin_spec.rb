@@ -23,7 +23,7 @@ RSpec.describe CKEditor5::Rails::Editor::PropsBasePlugin do
     end
 
     it 'returns inline plugin instances unchanged' do
-      inline = CKEditor5::Rails::Editor::PropsInlinePlugin.new(:Custom, 'export default class {}')
+      inline = CKEditor5::Rails::Editor::PropsInlinePlugin.new(:Custom, 'return class {}')
       plugin = described_class.normalize(inline)
       expect(plugin).to be(inline)
     end

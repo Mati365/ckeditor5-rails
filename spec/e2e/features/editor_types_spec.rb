@@ -87,6 +87,15 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
   describe 'Classic Editor' do
     it_behaves_like 'an editor', 'classic'
     it_behaves_like 'an editor that fires change event with main payload', 'classic'
+
+    it 'initializes the inline plugin' do
+      visit 'classic'
+
+      eventually do
+        plugin_exists = page.evaluate_script('window.__customPlugin !== undefined')
+        expect(plugin_exists).to be true
+      end
+    end
   end
 
   describe 'Decoupled Editor' do

@@ -15,9 +15,8 @@ module CKEditor5::Rails::Editor
 
     def to_h
       {
-        type: :inline,
-        name: name,
-        code: code
+        type: :external,
+        window_name: name
       }
     end
 
@@ -25,11 +24,30 @@ module CKEditor5::Rails::Editor
 
     def validate_code!
       raise ArgumentError, 'Code must be a String' unless code.is_a?(String)
+    end
+  end
 
-      return if code.include?('export default')
+  class InlinePluginWindowInitializer
+    include ActionView::Helpers::TagHelper
 
-      raise ArgumentError,
-            'Code must include `export default` that exports plugin definition!'
+    def initialize(plugin)
+      @plugin = plugin
+    end
+
+    def to_html(nonce: nil)
+      code = wrap_with_handlers(@plugin.code)
+
+      tag.script(code.html_safe, nonce: nonce)
+    end
+
+    private
+
+    def wrap_with_handlers(code)
+      <<~JS
+        window.addEventListener('ckeditor:request-cjs-plugin:#{@plugin.name}', () => {
+          window['#{@plugin.name}'] = #{code.html_safe};
+        });
+      JS
     end
   end
 end

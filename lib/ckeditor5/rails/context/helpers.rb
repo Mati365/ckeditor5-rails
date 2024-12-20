@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require_relative '../cdn/concerns/inline_plugins_tags_builder'
+
 require_relative 'preset_builder'
 require_relative 'preset_serializer'
 
 module CKEditor5::Rails::Context
   module Helpers
+    include CKEditor5::Rails::Cdn::Concerns::InlinePluginsTagsBuilder
+
     # Creates a CKEditor context component that can be shared between multiple editors.
     # This allows you to define common plugins that will be available to all editors
     # within the context.
@@ -25,7 +29,11 @@ module CKEditor5::Rails::Context
       preset ||= PresetBuilder.new
       context_props = PresetSerializer.new(preset)
 
-      tag.public_send(:'ckeditor-context-component', **context_props.to_attributes, &block)
+      tags = []
+      tags << ckeditor5_inline_plugins_tags(preset) if preset
+      tags << tag.public_send(:'ckeditor-context-component', **context_props.to_attributes, &block)
+
+      safe_join(tags)
     end
 
     # Creates a new preset builder object for use with ckeditor5_context.

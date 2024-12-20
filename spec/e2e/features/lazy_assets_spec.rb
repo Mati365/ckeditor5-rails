@@ -38,6 +38,13 @@ RSpec.describe 'Lazy Assets', type: :feature do
       expect(editor).to have_text('Test content')
     end
 
+    it 'initializes the inline plugin' do
+      eventually do
+        plugin_exists = page.evaluate_script('window.__customPlugin !== undefined')
+        expect(plugin_exists).to be true
+      end
+    end
+
     it 'supports multiple editor instances' do
       visit 'classic_lazy_assets?multiple=true'
 

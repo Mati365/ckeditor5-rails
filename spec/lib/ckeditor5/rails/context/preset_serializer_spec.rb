@@ -6,7 +6,7 @@ RSpec.describe CKEditor5::Rails::Context::PresetSerializer do
   let(:preset) do
     CKEditor5::Rails::Context::PresetBuilder.new do
       plugin 'Plugin1', import_name: '@ckeditor/plugin1'
-      inline_plugin 'plugin2', 'export default class Plugin2 {}'
+      inline_plugin 'plugin2', 'return class Plugin2 {}'
 
       configure :toolbar, { items: %w[bold italic] }
       configure :language, 'en'
@@ -47,7 +47,7 @@ RSpec.describe CKEditor5::Rails::Context::PresetSerializer do
         expect(plugins.last).to include(
           'type' => 'inline',
           'name' => 'plugin2',
-          'code' => 'export default class Plugin2 {}'
+          'code' => 'return class Plugin2 {}'
         )
       end
     end

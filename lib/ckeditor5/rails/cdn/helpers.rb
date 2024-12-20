@@ -9,12 +9,16 @@ require_relative '../assets/assets_bundle_html_serializer'
 require_relative 'url_generator'
 require_relative 'ckeditor_bundle'
 require_relative 'ckbox_bundle'
+
 require_relative 'concerns/bundle_builder'
+require_relative 'concerns/inline_plugins_tags_builder'
 
 module CKEditor5::Rails
   module Cdn::Helpers
-    include Cdn::Concerns::BundleBuilder
     include ActionView::Helpers::TagHelper
+
+    include Cdn::Concerns::BundleBuilder
+    include Cdn::Concerns::InlinePluginsTagsBuilder
 
     class ImportmapAlreadyRenderedError < ArgumentError; end
 
@@ -80,7 +84,10 @@ module CKEditor5::Rails
         preset: mapped_preset
       }
 
-      build_assets_html_tags(bundle, importmap: importmap, lazy: lazy)
+      safe_join([
+                  build_assets_html_tags(bundle, importmap: importmap, lazy: lazy),
+                  ckeditor5_inline_plugins_tags(mapped_preset)
+                ])
     end
 
     # Helper for dynamically loading CKEditor assets when working with Turbo/Stimulus.
@@ -97,18 +104,22 @@ module CKEditor5::Rails
     def ckeditor5_lazy_javascript_tags
       ensure_importmap_not_rendered!
 
+      tags = [
+        Assets::WebComponentBundle.instance.to_html(nonce: content_security_policy_nonce),
+        ckeditor5_inline_plugins_tags
+      ]
+
       if importmap_available?
         @__ckeditor_context = {
           bundle: combined_bundle
         }
-
-        return Assets::WebComponentBundle.instance.to_html(nonce: content_security_policy_nonce)
+      else
+        tags.prepend(
+          Assets::AssetsImportMap.new(combined_bundle).to_html(nonce: content_security_policy_nonce)
+        )
       end
 
-      safe_join([
-                  Assets::AssetsImportMap.new(combined_bundle).to_html(nonce: content_security_policy_nonce),
-                  Assets::WebComponentBundle.instance.to_html(nonce: content_security_policy_nonce)
-                ])
+      safe_join(tags)
     end
 
     # Dynamically generates helper methods for each third-party CDN provider.

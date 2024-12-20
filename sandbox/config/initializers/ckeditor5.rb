@@ -78,11 +78,12 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
             :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph
 
     inline_plugin 'MyCustomPlugin', <<~JS
-      import { Plugin } from 'ckeditor5';
+      const { Plugin } = await import('ckeditor5');
 
-      export default class MyCustomPlugin extends Plugin {
+      return class extends Plugin {
           init() {
             console.info('MyCustomPlugin was initialized');
+            window.__customPlugin = true;
           }
       }
     JS

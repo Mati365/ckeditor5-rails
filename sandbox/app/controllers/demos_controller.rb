@@ -51,9 +51,9 @@ class DemosController < ApplicationController
   def context
     @context_preset = ckeditor5_context_preset do
       inline_plugin :MagicContextPlugin, <<~JS
-        import { Plugin } from 'ckeditor5';
+        const { Plugin } = await import( 'ckeditor5' );
 
-        export default class MagicContextPlugin extends Plugin {
+        return class MagicContextPlugin extends Plugin {
           static get pluginName() {
             return 'MagicContextPlugin';
           }
@@ -64,7 +64,7 @@ class DemosController < ApplicationController
 
           async init() {
             console.log('MagicContextPlugin was initialized!');
-            window.MagicContextPlugin = this;
+            window.__magicPluginInitialized = this;
           }
         }
       JS

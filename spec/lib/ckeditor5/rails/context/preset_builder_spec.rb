@@ -84,17 +84,27 @@ RSpec.describe CKEditor5::Rails::Context::PresetBuilder do
   end
 
   describe '#inline_plugin' do
+    let(:plugin_code) do
+      <<~JAVASCRIPT
+        const { Plugin } = await import( 'ckeditor5' );
+
+        return class Abc extends Plugin {}
+      JAVASCRIPT
+    end
+
     it 'adds inline plugin to config' do
-      plugin = builder.inline_plugin('Test', 'export default class Abc {}')
+      plugin = builder.inline_plugin('Test', plugin_code)
 
       expect(builder.config[:plugins]).to include(plugin)
       expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsInlinePlugin)
     end
 
     it 'accepts plugin options' do
-      plugin = builder.inline_plugin('Test', 'export default class Abc {}')
+      plugin = builder.inline_plugin('Test', plugin_code)
 
-      expect(plugin.code).to eq('export default class Abc {}')
+      expect(plugin.code).to eq(
+        '(async()=>{const{Plugin:t}=await import("ckeditor5");return class i extends t{init(){}}})();'
+      )
     end
   end
 

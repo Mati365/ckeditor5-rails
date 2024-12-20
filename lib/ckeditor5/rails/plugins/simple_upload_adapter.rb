@@ -5,7 +5,7 @@ module CKEditor5::Rails::Plugins
     PLUGIN_CODE = <<~JS
       import { Plugin, FileRepository } from 'ckeditor5';
 
-      export default class SimpleUploadAdapter extends Plugin {
+      return class SimpleUploadAdapter extends Plugin {
         static get requires() {
           return [FileRepository];
         }

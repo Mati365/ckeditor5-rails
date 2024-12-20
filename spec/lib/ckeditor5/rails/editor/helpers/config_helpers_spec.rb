@@ -44,7 +44,7 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Config do
           helper.ckeditor5_preset do
             inline_plugin :CustomPlugin, <<~JS
               import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-              export default class CustomPlugin extends Plugin {
+              return class CustomPlugin extends Plugin {
                 static get pluginName() { return 'CustomPlugin'; }
               }
             JS
