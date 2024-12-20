@@ -84,10 +84,7 @@ module CKEditor5::Rails
         preset: mapped_preset
       }
 
-      safe_join([
-                  build_assets_html_tags(bundle, importmap: importmap, lazy: lazy),
-                  ckeditor5_inline_plugins_tags(mapped_preset)
-                ])
+      build_assets_html_tags(bundle, mapped_preset, importmap: importmap, lazy: lazy)
     end
 
     # Helper for dynamically loading CKEditor assets when working with Turbo/Stimulus.
@@ -201,17 +198,21 @@ module CKEditor5::Rails
     # Builds HTML tags for CKEditor assets with proper configuration.
     #
     # @param bundle [AssetsBundle] Bundle containing assets to include
+    # @param preset [PresetBuilder] Preset configuration
     # @param importmap [Boolean] Whether to use importmap for dependencies
     # @param lazy [Boolean] Whether to enable lazy loading
     # @return [String, nil] HTML tags string or nil if using importmap
-    def build_assets_html_tags(bundle, importmap:, lazy: nil)
+    def build_assets_html_tags(bundle, preset, importmap:, lazy: nil)
       serializer = Assets::AssetsBundleHtmlSerializer.new(
         bundle,
         importmap: importmap && !importmap_available?,
         lazy: lazy
       )
 
-      html = serializer.to_html(nonce: content_security_policy_nonce)
+      html = safe_join([
+                         serializer.to_html(nonce: content_security_policy_nonce),
+                         ckeditor5_inline_plugins_tags(preset)
+                       ])
 
       if importmap_available?
         @__ckeditor_context[:html_tags] = html

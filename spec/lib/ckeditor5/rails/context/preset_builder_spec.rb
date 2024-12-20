@@ -103,7 +103,7 @@ RSpec.describe CKEditor5::Rails::Context::PresetBuilder do
       plugin = builder.inline_plugin('Test', plugin_code)
 
       expect(plugin.code).to eq(
-        '(async()=>{const{Plugin:t}=await import("ckeditor5");return class i extends t{init(){}}})();'
+        '(async()=>{const{Plugin:t}=await import("ckeditor5");return class n extends t{}})();'
       )
     end
   end

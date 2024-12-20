@@ -259,7 +259,9 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       plugin = builder.config[:plugins].first
       expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsInlinePlugin)
       expect(plugin.name).to eq(:CustomPlugin)
-      expect(plugin.code).to eq(plugin_code)
+      expect(plugin.code).to eq(
+        '(async()=>{const{Plugin:t}=await import("ckeditor5");return class i extends t{init(){}}})();'
+      )
     end
 
     it 'allows multiple inline plugins' do

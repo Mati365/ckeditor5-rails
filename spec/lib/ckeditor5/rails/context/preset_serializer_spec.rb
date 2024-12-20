@@ -6,7 +6,11 @@ RSpec.describe CKEditor5::Rails::Context::PresetSerializer do
   let(:preset) do
     CKEditor5::Rails::Context::PresetBuilder.new do
       plugin 'Plugin1', import_name: '@ckeditor/plugin1'
-      inline_plugin 'plugin2', 'return class Plugin2 {}'
+      inline_plugin 'plugin2', <<~JAVASCRIPT
+        const { Plugin } = await import( 'ckeditor5' );
+
+        return class Abc extends Plugin {}
+      JAVASCRIPT
 
       configure :toolbar, { items: %w[bold italic] }
       configure :language, 'en'
@@ -39,15 +43,15 @@ RSpec.describe CKEditor5::Rails::Context::PresetSerializer do
 
       it 'normalizes and includes all plugins' do
         plugins = JSON.parse(plugins_json)
+
         expect(plugins.size).to eq(2)
         expect(plugins.first).to include(
           'type' => 'external',
           'import_name' => '@ckeditor/plugin1'
         )
         expect(plugins.last).to include(
-          'type' => 'inline',
-          'name' => 'plugin2',
-          'code' => 'return class Plugin2 {}'
+          'type' => 'external',
+          'window_name' => 'plugin2'
         )
       end
     end

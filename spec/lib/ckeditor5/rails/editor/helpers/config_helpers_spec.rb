@@ -50,7 +50,7 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Config do
             JS
           end
         end.to raise_error(
-          CKEditor5::Rails::Presets::Concerns::PluginMethods::DisallowedInlinePlugin,
+          CKEditor5::Rails::Presets::Concerns::PluginMethods::DisallowedInlinePluginError,
           'Inline plugins are not allowed here.'
         )
       end

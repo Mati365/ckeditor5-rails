@@ -33,7 +33,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
     helper.instance_variable_get(:@__ckeditor_context)
   end
 
-  let(:bundle_html) { '<script src="test.js"></script>' }
+  let(:bundle_html) { '<script src="test.js"></script>'.html_safe }
   let(:serializer) do
     instance_double(CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer, to_html: bundle_html)
   end
@@ -307,6 +307,14 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
                                                      .and_return(CKEditor5::Rails::Assets::AssetsBundle.new(
                                                                    scripts: ['test2.js']
                                                                  ))
+
+      allow(test_preset1).to receive(:plugins).and_return(
+        instance_double('PluginsBuilder', items: [])
+      )
+
+      allow(test_preset2).to receive(:plugins).and_return(
+        instance_double('PluginsBuilder', items: [])
+      )
     end
 
     context 'when importmap is available' do
@@ -316,8 +324,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
       end
 
       it 'stores bundle in context and returns web component script' do
-        result = helper.ckeditor5_lazy_javascript_tags
-
+        result = helper.ckeditor5_lazy_javascript_tags.html_safe
         expect(result).to have_tag('script', with: {
                                      type: 'module',
                                      src: 'web-component.js'
