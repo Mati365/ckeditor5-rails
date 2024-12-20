@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.23.5] - 2024-12-20
+
+### Features
+
+* Add `nonce` support for script tags included using gem helpers. ([82fc9c1](https://github.com/Mati365/ckeditor5-rails/commit/82fc9c1baa87afb787b4cda8e949b07327941295))
+
 ## [1.23.4] - 2024-12-19
 
 ### Bug Fixes
