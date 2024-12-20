@@ -39,6 +39,7 @@ module CKEditor5::Rails
       #     toolbar :bold, :italic
       #   end
       def initialize(&block)
+        @disallow_inline_plugin_compression = true
         @config = {
           plugins: []
         }

@@ -14,7 +14,7 @@ module CKEditor5::Rails
         class UnsupportedESModuleError < StandardError; end
 
         included do
-          attr_reader :disallow_inline_plugins
+          attr_reader :disallow_inline_plugins, :disallow_inline_plugin_compression
         end
 
         # Registers an external plugin loaded from a URL
@@ -62,7 +62,11 @@ module CKEditor5::Rails
           end
 
           wrapped_code = "(async () => { #{code} })();"
-          minified_code = Terser.new(compress: false, mangle: true).compile(wrapped_code)
+          minified_code = wrapped_code
+
+          unless disallow_inline_plugin_compression
+            minified_code = Terser.new(compress: false, mangle: true).compile(minified_code)
+          end
 
           register_plugin(Editor::PropsInlinePlugin.new(name, minified_code))
         end
