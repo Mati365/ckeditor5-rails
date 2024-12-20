@@ -76,6 +76,16 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
     plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
             :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
             :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph
+
+    inline_plugin 'MyCustomPlugin', <<~JS
+      import { Plugin } from 'ckeditor5';
+
+      export default class MyCustomPlugin extends Plugin {
+          init() {
+            console.info('MyCustomPlugin was initialized');
+          }
+      }
+    JS
   end
 
   presets.define :balloon_block, inherit: false do
