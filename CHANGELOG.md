@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.1] - 2024-12-20
+
+### Bug Fixes
+
+* Disable minification of inline plugins for context plugins. ([7071ca3](https://github.com/Mati365/ckeditor5-rails/commit/7071ca39d0757022d64fe1fa370a6ed81e976de5))
+
 ## [1.24.0] - 2024-12-20
 
 ### Features
