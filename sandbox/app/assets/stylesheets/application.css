@@ -13,6 +13,20 @@
   animation: octocat-wave 560ms ease-in-out;
 }
 
+.github-corner__svg {
+  fill: #151513;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  border: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.octo-arm {
+  transform-origin: 130px 106px;
+}
+
 @keyframes octocat-wave {
   0%, 100% { transform: rotate(0); }
   20%, 60% { transform: rotate(-25deg); }
@@ -43,4 +57,16 @@ h4 {
   height: 100px;
   object-fit: contain;
   object-position: bottom;
+}
+
+.ck.ck-editor__editable_inline {
+  background: #fff;
+}
+
+.bordered-editor {
+  & .ck.ck-toolbar,
+  & .ck.ck-menu-bar,
+  & .ck.ck-editor__editable_inline {
+    border: 2px solid #ccc;
+  }
 }

@@ -7,7 +7,11 @@ RSpec.describe CKEditor5::Rails::Hooks::Form do
     let(:post) { Post.new(content: 'Initial content') }
     let(:builder) { described_class.new(:post, post, template) }
     let(:template) do
-      ActionView::Base.new(ActionView::LookupContext.new([]), {}, nil)
+      Class.new(ActionView::Base) do
+        def content_security_policy_nonce
+          'test-nonce'
+        end
+      end.new(ActionView::LookupContext.new([]), {}, nil)
     end
 
     before do

@@ -10,6 +10,10 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
       def importmap_rendered?
         false
       end
+
+      def content_security_policy_nonce
+        'test-nonce'
+      end
     end
   end
 

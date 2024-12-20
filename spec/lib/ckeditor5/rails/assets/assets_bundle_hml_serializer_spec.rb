@@ -32,7 +32,7 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsBundleHtmlSerializer do
   end
 
   describe '#to_html' do
-    subject(:html) { serializer.to_html }
+    subject(:html) { serializer.to_html(nonce: 'true') }
 
     it 'includes window script tags' do
       expect(html).to have_tag('script', with: {
@@ -240,7 +240,7 @@ RSpec.describe CKEditor5::Rails::Assets::AssetsImportMap do
 
   describe '#to_html' do
     it 'generates script tag with import map' do
-      html = import_map.to_html
+      html = import_map.to_html(nonce: 'true')
       expect(html).to have_tag('script', with: { type: 'importmap', nonce: 'true' }) do
         with_text('{"imports":{"@ckeditor/module":"https://cdn.com/script2.js"}}')
       end

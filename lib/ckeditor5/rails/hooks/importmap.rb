@@ -47,6 +47,7 @@ module CKEditor5::Rails::Hooks
       def merge_import_maps_json(a_json, b_json)
         a = JSON.parse(a_json)
         b = JSON.parse(b_json)
+
         a['imports'].merge!(b['imports'])
         a.to_json
       rescue JSON::ParserError => e

@@ -102,12 +102,12 @@ module CKEditor5::Rails
           bundle: combined_bundle
         }
 
-        return Assets::WebComponentBundle.instance.to_html
+        return Assets::WebComponentBundle.instance.to_html(nonce: content_security_policy_nonce)
       end
 
       safe_join([
-                  Assets::AssetsImportMap.new(combined_bundle).to_html,
-                  Assets::WebComponentBundle.instance.to_html
+                  Assets::AssetsImportMap.new(combined_bundle).to_html(nonce: content_security_policy_nonce),
+                  Assets::WebComponentBundle.instance.to_html(nonce: content_security_policy_nonce)
                 ])
     end
 
@@ -182,7 +182,7 @@ module CKEditor5::Rails
         lazy: lazy
       )
 
-      html = serializer.to_html
+      html = serializer.to_html(nonce: content_security_policy_nonce)
 
       if importmap_available?
         @__ckeditor_context[:html_tags] = html

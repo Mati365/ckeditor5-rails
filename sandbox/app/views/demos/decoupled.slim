@@ -1,15 +1,5 @@
 - content_for :head
   = ckeditor5_assets
-  css:
-    .ck.ck-toolbar,
-    .ck.ck-menu-bar,
-    .ck.ck-editor__editable_inline {
-      border: 2px solid #ccc;
-    }
-
-    .ck.ck-editor__editable_inline {
-      background: #fff;
-    }
 
 .container
   .row.justify-content-center
@@ -20,7 +10,7 @@
         = render 'demos/shared/page_header', title: 'Decoupled Editor', subtitle: 'Basic Example'
 
         = render 'demos/shared/demo_section' do
-          = ckeditor5_editor type: :decoupled, class: 'bg-light', data: { testid: 'decoupled-editor' } do
+          = ckeditor5_editor type: :decoupled, class: 'bg-light bordered-editor', data: { testid: 'decoupled-editor' } do
             .menubar-container.mb-3
               = ckeditor5_menubar
 

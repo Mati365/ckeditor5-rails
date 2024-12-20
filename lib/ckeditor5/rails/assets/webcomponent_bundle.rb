@@ -21,8 +21,8 @@ module CKEditor5::Rails::Assets
       @source ||= compress_source(raw_source)
     end
 
-    def to_html
-      @to_html ||= tag.script(source, type: 'module', nonce: true)
+    def to_html(nonce: nil)
+      tag.script(source, type: 'module', nonce: nonce)
     end
 
     private

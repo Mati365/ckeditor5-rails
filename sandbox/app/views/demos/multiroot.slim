@@ -1,16 +1,6 @@
 - content_for :head
   = ckeditor5_assets
 
-  css:
-    .ck.ck-toolbar,
-    .ck.ck-editor__editable_inline {
-      border: 2px solid #ccc;
-    }
-
-    .ck.ck-editor__editable_inline {
-      background: #fff;
-    }
-
 .container
   .row.justify-content-center
     .col-lg-8
@@ -20,7 +10,7 @@
         = render 'demos/shared/page_header', title: 'Multiroot Editor', subtitle: 'Basic Example', data: { testid: 'multiroot-editor-title' }
 
         = render 'demos/shared/demo_section' do
-          = ckeditor5_editor type: :multiroot, data: { testid: 'multiroot-editor' } do
+          = ckeditor5_editor type: :multiroot, class: 'bordered-editor', data: { testid: 'multiroot-editor' } do
             = ckeditor5_toolbar data: { testid: 'multiroot-toolbar' }
             br
             = ckeditor5_editable 'toolbar', style: 'margin-bottom: 20px', data: { testid: 'toolbar-editable' } do

@@ -19,13 +19,24 @@ module CKEditor5::Rails::Assets
       @lazy = lazy
     end
 
-    def to_html
+    def to_html(nonce: nil)
       tags = [
-        WebComponentBundle.instance.to_html
+        WebComponentBundle.instance.to_html(nonce: nonce)
       ]
 
-      tags.prepend(preload_tags, styles_tags, window_scripts_tags) unless lazy
-      tags.prepend(AssetsImportMap.new(bundle).to_html) if importmap
+      unless lazy
+        tags.prepend(
+          preload_tags(nonce: nonce),
+          styles_tags(nonce: nonce),
+          window_scripts_tags(nonce: nonce)
+        )
+      end
+
+      if importmap
+        tags.prepend(
+          AssetsImportMap.new(bundle).to_html(nonce: nonce)
+        )
+      end
 
       safe_join(tags)
     end
@@ -40,34 +51,42 @@ module CKEditor5::Rails::Assets
 
     private
 
-    def window_scripts_tags
-      @window_scripts_tags ||= safe_join(bundle.scripts.filter_map do |script|
-        tag.script(src: script.url, nonce: true, crossorigin: 'anonymous') if script.window?
-      end)
+    def window_scripts_tags(nonce: nil)
+      scripts = bundle.scripts.filter_map do |script|
+        tag.script(src: script.url, nonce: nonce, crossorigin: 'anonymous') if script.window?
+      end
+
+      safe_join(scripts)
     end
 
-    def styles_tags
-      @styles_tags ||= safe_join(bundle.stylesheets.map do |url|
-        tag.link(href: url, rel: 'stylesheet', crossorigin: 'anonymous')
-      end)
+    def styles_tags(nonce: nil)
+      styles = bundle.stylesheets.map do |url|
+        tag.link(href: url, nonce: nonce, rel: 'stylesheet', crossorigin: 'anonymous')
+      end
+
+      safe_join(styles)
     end
 
-    def preload_tags
-      @preload_tags ||= safe_join(bundle.preloads.map do |preload|
+    def preload_tags(nonce: nil)
+      preloads = bundle.preloads.map do |preload|
         if preload.is_a?(Hash) && preload[:as] && preload[:href]
           tag.link(
             **preload,
+            nonce: nonce,
             crossorigin: 'anonymous'
           )
         else
           tag.link(
             href: preload,
             rel: 'preload',
+            nonce: nonce,
             as: self.class.url_resource_preload_type(preload),
             crossorigin: 'anonymous'
           )
         end
-      end)
+      end
+
+      safe_join(preloads)
     end
   end
 
@@ -90,11 +109,11 @@ module CKEditor5::Rails::Assets
       { imports: import_map }.to_json
     end
 
-    def to_html
+    def to_html(nonce: nil)
       tag.script(
         to_json.html_safe,
         type: 'importmap',
-        nonce: true
+        nonce: nonce
       )
     end
 

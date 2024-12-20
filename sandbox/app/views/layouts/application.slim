@@ -24,20 +24,20 @@ html lang="en"
     = csrf_meta_tags
     = csp_meta_tag
 
-    = stylesheet_link_tag :app, "data-turbo-track": "reload"
-    link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"
-    link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" rel="stylesheet"
+    = stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css", nonce: true
+    = stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css", nonce: true
+    = stylesheet_link_tag "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css", nonce: true
 
     = javascript_importmap_tags
     = yield :head
+    = stylesheet_link_tag :app, "data-turbo-track": "reload", nonce: true
 
   body.container.py-4
     = yield
 
-  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"
-  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"
-  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup-templating.min.js"
-  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ruby.min.js"
-  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-erb.min.js"
-  script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"
+  = javascript_include_tag "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js", nonce: true
+  = javascript_include_tag "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js", nonce: true
+  = javascript_include_tag "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup-templating.min.js", nonce: true
+  = javascript_include_tag "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ruby.min.js", nonce: true
+  = javascript_include_tag "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-erb.min.js", nonce: true
+  = javascript_include_tag "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js", nonce: true
