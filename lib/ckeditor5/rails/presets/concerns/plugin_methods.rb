@@ -50,8 +50,6 @@ module CKEditor5::Rails
         #     }
         #   JS
         def inline_plugin(name, code)
-          raise DisallowedInlinePluginError, 'Inline plugins are not allowed here.' if disallow_inline_plugins
-
           if code.match?(/export default/)
             raise UnsupportedESModuleError,
                   'Inline plugins must not use ES module syntax!' \
@@ -108,6 +106,9 @@ module CKEditor5::Rails
 
         private
 
+        # Check if the plugin looks like an inline plugin
+        # @param plugin [Editor::PropsBasePlugin] Plugin instance
+        # @return [Boolean] True if the plugin is an inline plugin
         def looks_like_inline_plugin?(plugin)
           plugin.respond_to?(:code) && plugin.code.present?
         end

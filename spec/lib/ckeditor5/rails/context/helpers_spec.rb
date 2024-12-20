@@ -8,6 +8,10 @@ RSpec.describe CKEditor5::Rails::Context::Helpers do
     Class.new do
       include ActionView::Helpers::TagHelper
       include CKEditor5::Rails::Context::Helpers
+
+      def content_security_policy_nonce
+        'test-nonce'
+      end
     end
   end
 
@@ -33,6 +37,14 @@ RSpec.describe CKEditor5::Rails::Context::Helpers do
         configure :preset, :custom
         configure :cdn, :jsdelivr
       end
+    end
+
+    it 'returns empty component when preset is nil' do
+      result = helper.ckeditor5_context(nil)
+
+      expect(result).to be_html_safe
+      expect(result).to have_tag('ckeditor-context-component', count: 1)
+      expect(result).not_to have_tag('script')
     end
 
     it 'is optional to pass a preset' do
@@ -85,6 +97,26 @@ RSpec.describe CKEditor5::Rails::Context::Helpers do
           config: '{"preset":"custom","cdn":"jsdelivr"}'
         }
       )
+    end
+
+    it 'includes inline plugins script tags when preset has inline plugins' do
+      preset = CKEditor5::Rails::Context::PresetBuilder.new do
+        inline_plugin :CustomPlugin, <<~JS
+          const { Plugin } = await import('ckeditor5');
+
+          return class CustomPlugin extends Plugin {
+            static get pluginName() { return 'CustomPlugin'; }
+          }
+        JS
+      end
+
+      result = helper.ckeditor5_context(preset)
+
+      expect(result).to have_tag('script', with: { nonce: 'test-nonce' }) do
+        with_text(/CustomPlugin/)
+      end
+
+      expect(result).to have_tag('ckeditor-context-component')
     end
 
     it 'accepts block content' do

@@ -30,7 +30,7 @@ module CKEditor5::Rails::Context
       context_props = PresetSerializer.new(preset)
 
       tags = []
-      tags << ckeditor5_inline_plugins_tags(preset) if preset
+      tags << ckeditor5_inline_plugins_tags(preset)
       tags << tag.public_send(:'ckeditor-context-component', **context_props.to_attributes, &block)
 
       safe_join(tags)

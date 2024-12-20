@@ -43,7 +43,8 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Config do
         expect do
           helper.ckeditor5_preset do
             inline_plugin :CustomPlugin, <<~JS
-              import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+              const { Plugin } = await import( 'ckeditor5' );
+
               return class CustomPlugin extends Plugin {
                 static get pluginName() { return 'CustomPlugin'; }
               }

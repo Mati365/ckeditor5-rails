@@ -359,6 +359,100 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
     end
   end
 
+  describe '#ckeditor5_inline_plugins_tags' do
+    let(:preset) do
+      CKEditor5::Rails::Presets::PresetBuilder.new do
+        inline_plugin 'Plugin1', <<~JAVASCRIPT
+          const { Plugin } = await import( 'ckeditor5' );
+
+          return class Plugin1 extends Plugin {
+            init() {
+              window.Plugin1 = true;
+            }
+          }
+        JAVASCRIPT
+
+        inline_plugin 'Plugin2', <<~JAVASCRIPT
+          const { Plugin } = await import( 'ckeditor5' );
+
+          return class Plugin2 extends Plugin {
+            init() {
+              window.Plugin2 = true;
+            }
+          }
+        JAVASCRIPT
+      end
+    end
+
+    let(:another_preset) do
+      CKEditor5::Rails::Presets::PresetBuilder.new do
+        inline_plugin 'Plugin3', <<~JAVASCRIPT
+          const { Plugin } = await import( 'ckeditor5' );
+
+          return class Plugin3 extends Plugin {
+            init() {
+              window.Plugin3 = true;
+            }
+          }
+        JAVASCRIPT
+      end
+    end
+
+    before do
+      allow(CKEditor5::Rails::Engine).to receive(:presets).and_return(
+        double('PresetManager', to_h: { default: preset, another: another_preset })
+      )
+    end
+
+    it 'generates script tags for inline plugins from given preset' do
+      result = helper.ckeditor5_inline_plugins_tags(preset)
+
+      expect(result).to have_tag('script', count: 2)
+      expect(result).to include('window.Plugin1=true')
+      expect(result).to include('window.Plugin2=true')
+      expect(result).not_to include('window.Plugin3=true')
+    end
+
+    it 'generates script tags for inline plugins from all presets when no preset given' do
+      result = helper.ckeditor5_inline_plugins_tags
+
+      expect(result).to have_tag('script', count: 3)
+      expect(result).to include('window.Plugin1=true')
+      expect(result).to include('window.Plugin2=true')
+      expect(result).to include('window.Plugin3=true')
+    end
+
+    it 'adds nonce to script tags when available' do
+      result = helper.ckeditor5_inline_plugins_tags(preset)
+      expect(result).to have_tag('script', with: { nonce: 'test-nonce' })
+    end
+
+    context 'with preset having no inline plugins' do
+      let(:empty_preset) do
+        CKEditor5::Rails::Presets::PresetBuilder.new do
+          plugins :Bold, :Italic # Regular plugins, not inline
+        end
+      end
+
+      it 'returns empty safe buffer when no inline plugins are present' do
+        result = helper.ckeditor5_inline_plugins_tags(empty_preset)
+        expect(result).to be_html_safe
+        expect(result).to be_empty
+      end
+    end
+
+    context 'with nil preset' do
+      it 'includes plugins from all registered presets' do
+        result = helper.ckeditor5_inline_plugins_tags(nil)
+
+        expect(result).to have_tag('script', count: 3)
+        expect(result).to include('window.Plugin1=true')
+        expect(result).to include('window.Plugin2=true')
+        expect(result).to include('window.Plugin3=true')
+      end
+    end
+  end
+
   describe 'cdn helper methods' do
     it 'generates helper methods for third-party CDNs' do
       expect(helper).to respond_to(:ckeditor5_unpkg_assets)

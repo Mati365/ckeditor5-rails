@@ -271,6 +271,18 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       plugin_names = builder.config[:plugins].map(&:name)
       expect(plugin_names).to eq(%i[Plugin1 Plugin2])
     end
+
+    it 'should raise UnsupportedESModuleError when ES module is passed' do
+      expect do
+        builder.inline_plugin(:CustomPlugin, 'export default class CustomPlugin {}')
+      end.to raise_error(CKEditor5::Rails::Presets::Concerns::PluginMethods::UnsupportedESModuleError)
+    end
+
+    it 'should raise MissingInlinePluginError when plugin code is invalid' do
+      expect do
+        builder.inline_plugin(:CustomPlugin, 'return class CustomPlugin {}')
+      end.to raise_error(CKEditor5::Rails::Presets::Concerns::PluginMethods::MissingInlinePluginError)
+    end
   end
 
   describe '#plugin' do
