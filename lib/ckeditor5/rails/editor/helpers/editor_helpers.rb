@@ -132,12 +132,24 @@ module CKEditor5::Rails
 
     private
 
+    # Validates that initial_data and block are not provided simultaneously
+    #
+    # @param initial_data [String] Initial content for the editor
+    # @param block [Proc] Block containing nested components
+    # @raise [ArgumentError] If both initial_data and block are provided
     def validate_editor_input!(initial_data, block)
       return unless initial_data && block
 
       raise ArgumentError, 'Cannot pass initial data and block at the same time.'
     end
 
+    # Builds the complete editor configuration by merging preset, custom and extra configs
+    #
+    # @param preset [PresetBuilder] The preset configuration object
+    # @param config [Hash] Custom configuration that overrides preset config
+    # @param extra_config [Hash] Additional configuration to merge
+    # @param initial_data [String] Initial content for the editor
+    # @return [Hash] The merged configuration hash
     def build_editor_config(preset, config, extra_config, initial_data)
       editor_config = config || preset.config
       editor_config = editor_config.deep_merge(extra_config)
@@ -151,6 +163,10 @@ module CKEditor5::Rails
       editor_config
     end
 
+    # Retrieves or creates a context for the editor initialization
+    #
+    # @param preset [Symbol, PresetBuilder] The preset name or object
+    # @return [Hash] Context hash containing bundle and preset information
     def ckeditor5_context_or_fallback(preset)
       return @__ckeditor_context if @__ckeditor_context.present?
 

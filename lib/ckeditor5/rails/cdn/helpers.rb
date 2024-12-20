@@ -131,6 +131,10 @@ module CKEditor5::Rails
 
     private
 
+    # Combines all preset bundles into a single bundle for lazy loading.
+    # This is useful when dynamically loading editors with unknown preset configurations.
+    #
+    # @return [AssetsBundle] Combined bundle containing all preset assets
     def combined_bundle
       acc = Assets::AssetsBundle.new(scripts: [], stylesheets: [])
 
@@ -141,6 +145,14 @@ module CKEditor5::Rails
       acc
     end
 
+    # Merges user-provided configuration with the editor preset.
+    # Sets default language if not specified and validates required parameters.
+    #
+    # @param preset [Symbol, PresetBuilder] Base preset to merge with
+    # @param language [Symbol, nil] UI language code
+    # @param kwargs [Hash] Additional configuration options
+    # @return [PresetBuilder] New preset instance with merged configuration
+    # @raise [ArgumentError] If required parameters are missing
     def merge_with_editor_preset(preset, language: nil, **kwargs)
       found_preset = Engine.find_preset!(preset)
       new_preset = found_preset.clone.merge_with_hash!(**kwargs)
@@ -152,21 +164,21 @@ module CKEditor5::Rails
         new_preset.language(I18n.locale)
       end
 
-      %i[version type].each do |key|
-        next if new_preset.public_send(key).present?
-
-        raise ArgumentError,
-              "Poor thing. You forgot to define #{key}. Make sure you passed `#{key}:` parameter to " \
-              "`ckeditor5_assets` or defined default one in your `#{preset}` preset!"
-      end
+      validate_required_preset_params!(new_preset, preset)
 
       new_preset
     end
 
+    # Checks if importmap support is available in the current context.
+    #
+    # @return [Boolean] true if importmap is supported
     def importmap_available?
       respond_to?(:importmap_rendered?)
     end
 
+    # Ensures that importmap hasn't been rendered yet to prevent conflicts.
+    #
+    # @raise [ImportmapAlreadyRenderedError] If importmap was already rendered
     def ensure_importmap_not_rendered!
       return unless importmap_available? && importmap_rendered?
 
@@ -175,6 +187,12 @@ module CKEditor5::Rails
             'Please move ckeditor5_assets helper before javascript_importmap_tags in your layout.'
     end
 
+    # Builds HTML tags for CKEditor assets with proper configuration.
+    #
+    # @param bundle [AssetsBundle] Bundle containing assets to include
+    # @param importmap [Boolean] Whether to use importmap for dependencies
+    # @param lazy [Boolean] Whether to enable lazy loading
+    # @return [String, nil] HTML tags string or nil if using importmap
     def build_assets_html_tags(bundle, importmap:, lazy: nil)
       serializer = Assets::AssetsBundleHtmlSerializer.new(
         bundle,
@@ -189,6 +207,21 @@ module CKEditor5::Rails
         nil
       else
         html
+      end
+    end
+
+    # Validates that required parameters are present in the preset configuration.
+    #
+    # @param preset [PresetBuilder] Preset to validate
+    # @param preset_name [Symbol] Name of the preset for error messages
+    # @raise [ArgumentError] If version or type is missing
+    def validate_required_preset_params!(preset, preset_name)
+      %i[version type].each do |key|
+        next if preset.public_send(key).present?
+
+        raise ArgumentError,
+              "Poor thing. You forgot to define #{key}. Make sure you passed `#{key}:` parameter to " \
+              "`ckeditor5_assets` or defined default one in your `#{preset_name}` preset!"
       end
     end
   end
