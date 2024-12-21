@@ -69,6 +69,7 @@ module CKEditor5::Rails::Plugins
 
     def initialize
       super(:WProofreaderSync, PLUGIN_CODE)
+      compress!
     end
   end
 end
