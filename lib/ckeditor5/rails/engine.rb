@@ -76,7 +76,8 @@ module CKEditor5::Rails
       delegate :presets, to: :@configuration
 
       delegate :version, :gpl, :premium, :cdn, :translations, :license_key,
-               :type, :menubar, :toolbar, :plugins, :plugin, :inline_plugin,
+               :type, :menubar, :plugins, :plugin, :inline_plugin,
+               :toolbar, :block_toolbar, :balloon_toolbar,
                :language, :ckbox, :configure, :automatic_upgrades, :simple_upload_adapter,
                :editable_height, :wproofreader, to: :default_preset
 
