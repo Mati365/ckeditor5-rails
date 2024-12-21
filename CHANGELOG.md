@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.2] - 2024-12-21
+
+### Bug Fixes
+
+* Add missing `once` attribute to `request-cjs-plugin` event. ([cb46578](https://github.com/Mati365/ckeditor5-rails/commit/cb465782f37935bea961dd2f8be7dbb15daa3552))
+
 ## [1.24.1] - 2024-12-20
 
 ### Bug Fixes
