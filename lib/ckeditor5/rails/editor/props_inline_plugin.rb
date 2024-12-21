@@ -46,7 +46,7 @@ module CKEditor5::Rails::Editor
       <<~JS
         window.addEventListener('ckeditor:request-cjs-plugin:#{@plugin.name}', () => {
           window['#{@plugin.name}'] = #{code.html_safe};
-        });
+        }, { once: true });
       JS
     end
   end

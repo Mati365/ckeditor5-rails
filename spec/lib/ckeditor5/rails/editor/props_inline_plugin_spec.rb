@@ -36,3 +36,35 @@ RSpec.describe CKEditor5::Rails::Editor::PropsInlinePlugin do
     end
   end
 end
+
+RSpec.describe CKEditor5::Rails::Editor::InlinePluginWindowInitializer do
+  let(:plugin) do
+    CKEditor5::Rails::Editor::PropsInlinePlugin.new(:CustomPlugin, 'const plugin = {}')
+  end
+
+  subject(:initializer) { described_class.new(plugin) }
+
+  describe '#to_html' do
+    it 'generates script tag with event listener' do
+      result = initializer.to_html
+
+      expect(result).to be_html_safe
+      expect(result).to include('script')
+      expect(result).to include("window.addEventListener('ckeditor:request-cjs-plugin:CustomPlugin'")
+      expect(result).to include("window['CustomPlugin']")
+    end
+
+    it 'adds nonce attribute when provided' do
+      result = initializer.to_html(nonce: 'test-nonce')
+
+      expect(result).to include('nonce="test-nonce"')
+    end
+
+    it 'wraps plugin code in event handler' do
+      result = initializer.to_html
+
+      expect(result).to include('const plugin = {}')
+      expect(result).to include('{ once: true }')
+    end
+  end
+end

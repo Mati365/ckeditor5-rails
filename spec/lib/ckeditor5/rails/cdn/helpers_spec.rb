@@ -427,6 +427,29 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
       expect(result).to have_tag('script', with: { nonce: 'test-nonce' })
     end
 
+    context 'event listener' do
+      it 'adds event listeners for ckeditor:request-cjs-plugin' do
+        result = helper.ckeditor5_inline_plugins_tags(preset)
+
+        expect(result).to include("window.addEventListener('ckeditor:request-cjs-plugin:Plugin1'")
+        expect(result).to include("window.addEventListener('ckeditor:request-cjs-plugin:Plugin2'")
+      end
+
+      it 'adds event listeners only once' do
+        result = helper.ckeditor5_inline_plugins_tags(preset)
+
+        expect(result.scan("window.addEventListener('ckeditor:request-cjs-plugin:Plugin1'").count).to eq(1)
+        expect(result.scan("window.addEventListener('ckeditor:request-cjs-plugin:Plugin2'").count).to eq(1)
+      end
+
+      it('each event listener has once option') do
+        result = helper.ckeditor5_inline_plugins_tags(preset)
+
+        expect(result).to include('{ once: true }')
+        expect(result.scan('{ once: true }').length).to eq(2)
+      end
+    end
+
     context 'with preset having no inline plugins' do
       let(:empty_preset) do
         CKEditor5::Rails::Presets::PresetBuilder.new do
