@@ -61,14 +61,10 @@ module CKEditor5::Rails
                   'Plugin code must return a class that extends Plugin!'
           end
 
-          wrapped_code = "(async () => { #{code} })();"
-          minified_code = wrapped_code
+          plugin = Editor::PropsInlinePlugin.new(name, code)
+          plugin.compress! unless disallow_inline_plugin_compression
 
-          unless disallow_inline_plugin_compression
-            minified_code = Terser.new(compress: false, mangle: true).compile(minified_code)
-          end
-
-          register_plugin(Editor::PropsInlinePlugin.new(name, minified_code))
+          register_plugin(plugin)
         end
 
         # Register a single plugin by name

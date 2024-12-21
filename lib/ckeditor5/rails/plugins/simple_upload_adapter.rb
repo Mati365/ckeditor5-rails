@@ -3,7 +3,7 @@
 module CKEditor5::Rails::Plugins
   class SimpleUploadAdapter < CKEditor5::Rails::Editor::PropsInlinePlugin
     PLUGIN_CODE = <<~JS
-      import { Plugin, FileRepository } from 'ckeditor5';
+      const { Plugin, FileRepository } = await import( 'ckeditor5' );
 
       return class SimpleUploadAdapter extends Plugin {
         static get requires() {

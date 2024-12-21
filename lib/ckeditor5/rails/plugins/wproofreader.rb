@@ -26,6 +26,7 @@ module CKEditor5::Rails::Plugins
   # Sync I18n language from editor to WProofreader plugin
   class WProofreaderSync < CKEditor5::Rails::Editor::PropsInlinePlugin
     PLUGIN_CODE = <<~JS
+      const { Plugin, FileRepository } = await import( 'ckeditor5' );
       const CORRECTION_LANGUAGES = [
         'en_US', 'en_GB', 'pt_BR', 'da_DK',
         'nl_NL', 'en_CA', 'fi_FI', 'fr_FR',
@@ -34,27 +35,35 @@ module CKEditor5::Rails::Plugins
         'uk_UA', 'auto'
       ];
 
-      export default function WProofreaderSync(editor) {
-        const wproofreaderConfig = editor.config.get('wproofreader');
-        const editorLangCode = (() => {
-          const config = editor.config.get('language');
-
-          return config.content || config.ui;
-        })();
-
-        if (!wproofreaderConfig || !editorLangCode) {
-          return;
+      return class WproofreaderSync extends Plugin {
+        static get pluginName() {
+          return 'WProofreaderSync';
         }
 
-        const lang = CORRECTION_LANGUAGES.find(
-          lang => lang.startsWith(editorLangCode.toLowerCase())
-        ) || 'auto';
+        async init() {
+          const { editor } = this;
 
-        editor.config.set('wproofreader', {
-          lang,
-          localization: editorLangCode,
-          ...wproofreaderConfig,
-        });
+          const wproofreaderConfig = editor.config.get('wproofreader');
+          const editorLangCode = (() => {
+            const config = editor.config.get('language');
+
+            return config.content || config.ui;
+          })();
+
+          if (!wproofreaderConfig || !editorLangCode) {
+            return;
+          }
+
+          const lang = CORRECTION_LANGUAGES.find(
+            lang => lang.startsWith(editorLangCode.toLowerCase())
+          ) || 'auto';
+
+          editor.config.set('wproofreader', {
+            lang,
+            localization: editorLangCode,
+            ...wproofreaderConfig,
+          });
+        }
       }
     JS
 

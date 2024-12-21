@@ -77,6 +77,8 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
             :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
             :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph
 
+    simple_upload_adapter
+
     inline_plugin 'MyCustomPlugin', <<~JS
       const { Plugin } = await import('ckeditor5');
 

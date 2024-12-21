@@ -102,7 +102,7 @@ RSpec.describe CKEditor5::Rails::Context::PresetBuilder do
     it 'accepts plugin options' do
       plugin = builder.inline_plugin('Test', plugin_code)
 
-      expect(plugin.code).to eq("(async () => { #{plugin_code} })();")
+      expect(plugin.code).to eq("(async () => { #{plugin_code} })()")
     end
   end
 

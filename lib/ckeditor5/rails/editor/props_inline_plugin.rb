@@ -9,8 +9,13 @@ module CKEditor5::Rails::Editor
     def initialize(name, code)
       super(name)
 
-      @code = code
-      validate_code!
+      raise ArgumentError, 'Code must be a String' unless code.is_a?(String)
+
+      @code = "(async () => { #{code.html_safe} })()"
+    end
+
+    def compress!
+      @code = Terser.new(compress: false, mangle: true).compile(@code)
     end
 
     def to_h
@@ -18,12 +23,6 @@ module CKEditor5::Rails::Editor
         type: :external,
         window_name: name
       }
-    end
-
-    private
-
-    def validate_code!
-      raise ArgumentError, 'Code must be a String' unless code.is_a?(String)
     end
   end
 
