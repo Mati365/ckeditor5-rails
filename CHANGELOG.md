@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.5] - 2024-12-21
+
+### Features
+
+* Compress custom plugins by default. ([c319c0c](https://github.com/Mati365/ckeditor5-rails/commit/c319c0c7f58f996371a40215e149fcf49365df5d))
+
 ## [1.24.4] - 2024-12-21
 
 ### Bug Fixes
