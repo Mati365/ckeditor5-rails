@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.4] - 2024-12-21
+
+### Bug Fixes
+
+* Broken wproofreader / upload adapter plugins. ([f329228](https://github.com/Mati365/ckeditor5-rails/commit/f329228e30c9207fe1f3125f3891ba9e73f71d3d))
+
 ## [1.24.3] - 2024-12-21
 
 ### Bug Fixes
