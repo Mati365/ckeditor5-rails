@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.3] - 2024-12-21
+
+### Bug Fixes
+
+* Add `block_toolbar` and `balloon_toolbar` to default configuration proxy. ([0d3b552](https://github.com/Mati365/ckeditor5-rails/commit/0d3b55248f5729c80fd6d26a893860909c048a10))
+
 ## [1.24.2] - 2024-12-21
 
 ### Bug Fixes
