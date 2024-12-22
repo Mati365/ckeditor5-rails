@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.6] - 2024-12-22
+
+### Features
+
+* Smaller size of output web-component due to compression of plugin names ([8a0bad1](https://github.com/Mati365/ckeditor5-rails/commit/8a0bad10ef22368175be5b28aadac0dbf949765f))
+
 ## [1.24.5] - 2024-12-21
 
 ### Features
