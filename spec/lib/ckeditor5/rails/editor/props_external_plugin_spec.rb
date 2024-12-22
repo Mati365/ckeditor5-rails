@@ -49,7 +49,6 @@ RSpec.describe CKEditor5::Rails::Editor::PropsExternalPlugin do
       )
 
       expect(plugin.to_h).to include(
-        type: :external,
         import_name: 'https://example.org/plugin.js',
         import_as: 'TestPlugin',
         window_name: 'TestWindow',

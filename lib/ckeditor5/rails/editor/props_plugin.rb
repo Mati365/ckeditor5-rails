@@ -19,8 +19,13 @@ module CKEditor5::Rails::Editor
       )
     end
 
+    # Compress a little bit default plugins to make output smaller
     def to_h
-      @js_import_meta.to_h.merge(type: :external)
+      if @js_import_meta.import_name == 'ckeditor5'
+        @js_import_meta.import_as.to_s
+      else
+        @js_import_meta.to_h
+      end
     end
   end
 end

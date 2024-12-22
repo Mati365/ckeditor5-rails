@@ -29,10 +29,7 @@ RSpec.describe CKEditor5::Rails::Editor::PropsInlinePlugin do
   describe '#to_h' do
     it 'returns correct hash representation' do
       plugin = described_class.new(:CustomPlugin, valid_code)
-      expect(plugin.to_h).to eq({
-                                  type: :external,
-                                  window_name: :CustomPlugin
-                                })
+      expect(plugin.to_h).to eq({ window_name: :CustomPlugin })
     end
   end
 end

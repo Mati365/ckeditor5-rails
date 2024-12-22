@@ -20,7 +20,6 @@ module CKEditor5::Rails::Editor
 
     def to_h
       {
-        type: :external,
         window_name: name
       }
     end

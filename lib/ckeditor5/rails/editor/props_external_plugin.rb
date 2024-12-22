@@ -26,10 +26,7 @@ module CKEditor5::Rails::Editor
     end
 
     def to_h
-      @js_import_meta.to_h.merge(
-        type: :external,
-        stylesheets: @stylesheets
-      )
+      @js_import_meta.to_h.merge(stylesheets: @stylesheets)
     end
   end
 end

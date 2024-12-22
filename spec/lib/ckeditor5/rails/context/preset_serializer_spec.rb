@@ -45,12 +45,12 @@ RSpec.describe CKEditor5::Rails::Context::PresetSerializer do
         plugins = JSON.parse(plugins_json)
 
         expect(plugins.size).to eq(2)
+
         expect(plugins.first).to include(
-          'type' => 'external',
           'import_name' => '@ckeditor/plugin1'
         )
+
         expect(plugins.last).to include(
-          'type' => 'external',
           'window_name' => 'plugin2'
         )
       end
