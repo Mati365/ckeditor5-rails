@@ -1,6 +1,6 @@
 # CKEditor 5 Rails Integration ✨
 
-[![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg?style=flat-square)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Gem Version](https://img.shields.io/gem/v/ckeditor5?style=flat-square)](https://rubygems.org/gems/ckeditor5)
 [![Gem Total Downloads](https://img.shields.io/gem/dt/ckeditor5?style=flat-square&color=orange)](https://rubygems.org/gems/ckeditor5)
 [![Coverage](https://img.shields.io/codecov/c/github/mati365/ckeditor5-rails?style=flat-square)](https://codecov.io/gh/mati365/ckeditor5-rails)
