@@ -51,6 +51,13 @@
                 <%= ckeditor5_editor editable_height: 300 %>
 
         = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos/classic_controller_preset.slim',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
           = link_to 'https://github.com/Mati365/ckeditor5-rails#presets-',
             class: 'list-group-item list-group-item-action',
             target: '_blank',
