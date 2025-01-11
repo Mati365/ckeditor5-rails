@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
     'Łukasz Modliński'
   ]
 
-  s.license = 'GPL-2.0'
+  s.license = 'MIT'
   s.email = 'cziken58@gmail.com'
   s.homepage = 'https://github.com/Mati365/ckeditor5-rails'
   s.required_ruby_version = '>= 3.0.0'
