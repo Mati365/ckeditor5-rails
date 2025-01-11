@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.8] - 2025-01-11
+
+### Other Changes
+
+* Other: Incorrect ruby version in CI ([d12a70d](https://github.com/Mati365/ckeditor5-rails/commit/d12a70dc892b62378f2c001b85cda8d437e2f7d5))
+
 ## [1.24.7] - 2025-01-11
 
 ### Bug Fixes
