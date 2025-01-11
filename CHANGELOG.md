@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.24.7] - 2025-01-11
+
+### Bug Fixes
+
+* Incorrect license in gemspec ([751b57c](https://github.com/Mati365/ckeditor5-rails/commit/751b57c5247763e0b2be4b93349a7b7f14c60838))
+
+### Documentation
+
+* Update license links in docs ([9eda4c6](https://github.com/Mati365/ckeditor5-rails/commit/9eda4c68ac5d08754cf344c102f45930878c1ed9))
+* Fix links in docs ([d5c0416](https://github.com/Mati365/ckeditor5-rails/commit/d5c041619246140b3df5b084829694366e5ecf9e))
+
 ## [1.24.6] - 2024-12-22
 
 ### Features
