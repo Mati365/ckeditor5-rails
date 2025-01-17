@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.24.9] - 2025-01-17
+
+### Features
+
+* Better language normalization in presets. ([b850d81](https://github.com/Mati365/ckeditor5-rails/commit/b850d810505b7417268c95f5bbbd49657663e5ca))
+
 ## [1.24.8] - 2025-01-11
 
 ### Other Changes
