@@ -167,7 +167,7 @@ module CKEditor5::Rails
       def translations(*translations)
         return @translations if translations.empty?
 
-        @translations = translations
+        @translations = translations.map { |t| t.to_sym.downcase }
       end
 
       # Set or get editor version
@@ -328,7 +328,11 @@ module CKEditor5::Rails
       def language(ui = nil, content: ui) # rubocop:disable Naming/MethodParameterName
         return config[:language] if ui.nil?
 
-        @translations << ui.to_sym unless @translations.map(&:to_sym).include?(ui.to_sym)
+        # Normalize language codes, as the translation packs used to be in lowercase
+        ui = ui.to_sym.downcase
+        content = content.to_sym.downcase
+
+        @translations << ui unless @translations.map(&:to_sym).include?(ui)
 
         config[:language] = {
           ui: ui,

@@ -450,6 +450,22 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       builder.language(:pl, content: :en)
       expect(builder.config[:language]).to eq({ ui: :pl, content: :en })
     end
+
+    it 'normalizes language codes to lowercase symbols when string provided' do
+      builder.language('PL', content: 'EN')
+      expect(builder.config[:language]).to eq({ ui: :pl, content: :en })
+    end
+
+    it 'adds normalized UI language to translations' do
+      builder.language('PL')
+      expect(builder.translations).to include(:pl)
+      expect(builder.translations).not_to include('PL')
+    end
+
+    it 'handles mixed string and symbol inputs' do
+      builder.language('PL', content: :EN)
+      expect(builder.config[:language]).to eq({ ui: :pl, content: :en })
+    end
   end
 
   describe '#deep_copy_toolbar' do
