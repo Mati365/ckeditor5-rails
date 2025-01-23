@@ -30,8 +30,6 @@ class DemosController < ApplicationController
       plugins :Image, :ImageUpload, :ImageToolbar, :ImageInsert,
               :ImageInsertViaUrl, :ImageBlock, :ImageCaption, :ImageInline, :ImageResize,
               :AutoImage, :LinkImage
-
-      simple_upload_adapter
     end
   end
 

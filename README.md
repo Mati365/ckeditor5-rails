@@ -1865,7 +1865,7 @@ end
 
 ```js
 // app/javascript/custom_plugins/highlight.js
-import { Plugin, Command, ButtonView } from 'ckeditor5';
+const { Plugin, Command, ButtonView } = await import('ckeditor5');
 
 return class MyCustomPlugin extends Plugin {
   static get pluginName() {
