@@ -79,6 +79,8 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
 
     simple_upload_adapter
 
+    plugin :MyCustomWindowPlugin, window_name: 'MyCustomWindowPlugin'
+
     inline_plugin 'MyCustomPlugin', <<~JS
       const { Plugin } = await import('ckeditor5');
 

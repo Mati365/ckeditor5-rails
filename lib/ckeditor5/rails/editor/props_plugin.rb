@@ -7,16 +7,20 @@ module CKEditor5::Rails::Editor
     def initialize(name, premium: false, **js_import_meta_attrs)
       super(name)
 
-      js_import_meta_attrs[:import_name] ||= if premium
-                                               'ckeditor5-premium-features'
-                                             else
-                                               'ckeditor5'
-                                             end
+      if js_import_meta_attrs[:window_name]
+        @js_import_meta = ::CKEditor5::Rails::Assets::JSImportMeta.new(**js_import_meta_attrs)
+      else
+        js_import_meta_attrs[:import_name] ||= if premium
+                                                 'ckeditor5-premium-features'
+                                               else
+                                                 'ckeditor5'
+                                               end
 
-      @js_import_meta = ::CKEditor5::Rails::Assets::JSImportMeta.new(
-        import_as: js_import_meta_attrs[:window_name] ? nil : name,
-        **js_import_meta_attrs
-      )
+        @js_import_meta = ::CKEditor5::Rails::Assets::JSImportMeta.new(
+          import_as: name,
+          **js_import_meta_attrs
+        )
+      end
     end
 
     # Compress a little bit default plugins to make output smaller

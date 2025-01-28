@@ -96,6 +96,15 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
         expect(plugin_exists).to be true
       end
     end
+
+    it 'initializes the window plugin' do
+      visit 'classic'
+
+      eventually do
+        plugin_exists = page.evaluate_script('window.__customWindowPlugin !== undefined')
+        expect(plugin_exists).to be true
+      end
+    end
   end
 
   describe 'Decoupled Editor' do
