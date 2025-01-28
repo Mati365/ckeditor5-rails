@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.24.10] - 2025-01-28
+
+### Bug Fixes
+
+* fix not working `window_name` attribute in plugins ([95cdb11](https://github.com/Mati365/ckeditor5-rails/commit/95cdb11bbfff0b3fd3408349d9dcbeb257493a8e))
+* Add missing yaml dependency to dockerfile. ([90584a5](https://github.com/Mati365/ckeditor5-rails/commit/90584a5c4d5aecf329863c97d81820102442290c))
+* Not working demo. ([d8b8995](https://github.com/Mati365/ckeditor5-rails/commit/d8b89950cebe0a2f48d8911fef50f4278efe2be6))
+
+### Other Changes
+
+* Update docs. ([cdcb4a0](https://github.com/Mati365/ckeditor5-rails/commit/cdcb4a017b54571dacb0df359c96961a8a06e848))
+
 ## [1.24.9] - 2025-01-17
 
 ### Features
