@@ -794,6 +794,37 @@ CKEditor5::Rails.configure do
   plugin :YourPlugin, window_name: 'YourPlugin'
 end
 ```
+
+If there is no `window.YourPlugin` object, the plugin will dispatch window event to load. To handle this event, you can use the `window.addEventListener` method:
+
+**Sync:**
+
+```js
+window.addEventListener('ckeditor:request-cjs-plugin:YourPlugin', () => {
+  const { Plugin } = window.CKEDITOR;
+
+  return class YourPlugin extends Plugin {
+    // Your plugin code
+  };
+});
+```
+
+**Async:**
+
+```js
+window.addEventListener('ckeditor:request-cjs-plugin:YourPlugin', () => {
+  window.YourPlugin = (async () => {
+    const { Plugin } = await import('ckeditor5');
+
+    return class YourPlugin extends Plugin {
+      // Your plugin code
+    };
+  })();
+});
+```
+
+⚠️ The event handler must be attached before the plugin is requested. If the plugin is requested before the event handler is attached, the plugin will not be loaded.
+
 </details>
 
 #### `plugins(*names, **kwargs)` method
