@@ -1,0 +1,83 @@
+- content_for :head
+  = ckeditor5_assets preset: @preset
+
+.container
+  .row.justify-content-center
+    .col-lg-8
+      = render 'demos/shared/back_to_home'
+
+      article.blog-post
+        = render 'demos/shared/page_header', title: 'Special Characters', subtitle: 'Configuration Example'
+
+        = render 'demos/shared/demo_section' do
+          = ckeditor5_editor editable_height: 300
+
+        = render 'demos/shared/implementation' do
+          p.mb-4
+            | This example demonstrates how to configure special characters in CKEditor 5. The configuration allows you to define custom groups of special characters with labels and specific ordering.
+
+          pre.language-ruby.bg-light.p-3.rounded.mb-3
+            code
+              |
+                @preset = ckeditor5_preset do
+                  version '43.3.0'
+
+                  toolbar :sourceEditing, :|, :bold, :italic, :underline,
+                          :strikethrough, :|, :specialCharacters, :|,
+                          :bulletedList, :numberedList, :|,
+                          :fontFamily, :fontSize, :|,
+                          :fontColor, :fontBackgroundColor
+
+                  plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline,
+                          :Strikethrough, :List, :Font, :FontFamily, :FontSize,
+                          :FontColor, :FontBackgroundColor, :SourceEditing
+
+                  special_characters do
+                    # Enable built-in packs using symbols
+                    packs :Text, :Essentials, :Currency, :Mathematical, :Latin
+
+                    # Custom groups
+                    group 'Emoji', label: 'Emoticons' do
+                      item 'smiley', '😊'
+                      item 'heart', '❤️'
+                    end
+
+                    group 'Arrows',
+                          items: [
+                            { title: 'right arrow', character: '→' },
+                            { title: 'left arrow', character: '←' }
+                          ]
+
+                    group 'Mixed',
+                          items: [{ title: 'star', character: '⭐' }],
+                          label: 'Mixed Characters' do
+                      item 'heart', '❤️'
+                    end
+
+                    order :Text, :Currency, :Mathematical, :Latin, :Emoji, :Arrows, :Mixed
+                  end
+                end
+
+          pre.language-erb.bg-light.p-3.rounded.mb-0
+            code
+              | <% content_for :head do %>
+                  <%= ckeditor5_assets preset: @preset %>
+                <% end %>
+                <%= ckeditor5_editor editable_height: 300 %>
+
+        = render 'demos/shared/resources' do
+          = link_to 'https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos/special_characters.slim',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-code-square.me-2
+            | View demo source code
+
+          = link_to 'https://ckeditor.com/docs/ckeditor5/latest/features/special-characters.html',
+            class: 'list-group-item list-group-item-action',
+            target: '_blank',
+            rel: 'noopener' do
+            i.bi.bi-book.me-2
+            | Special Characters documentation
+
+      = render 'demos/shared/page_footer'

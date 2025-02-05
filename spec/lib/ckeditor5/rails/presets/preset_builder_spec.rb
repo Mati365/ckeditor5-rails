@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require_relative './plugins_builder_spec'
-require_relative './toolbar_builder_spec'
 
 RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
   let(:builder) { described_class.new }
@@ -518,6 +516,81 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       builder.wproofreader(version: '1.0.0', cdn: 'https://cdn.example.com', language: 'en')
 
       expect(builder.config[:wproofreader]).to eq({ language: 'en' })
+    end
+  end
+
+  describe '#special_characters' do
+    it 'configures special characters with groups and items' do # rubocop:disable Metrics/BlockLength
+      builder.special_characters do
+        group 'Emoji', label: 'Emoticons' do
+          item 'smiley', '😊'
+          item 'heart', '❤️'
+        end
+
+        group 'Arrows',
+              items: [
+                { title: 'right', character: '→' },
+                { title: 'left', character: '←' }
+              ]
+
+        group 'Mixed',
+              items: [{ title: 'star', character: '⭐' }],
+              label: 'Mixed Characters' do
+          item 'heart', '❤️'
+        end
+
+        order :Text, :Arrows, :Emoji, :Mixed
+      end
+
+      expect(builder.config[:specialCharactersBootstrap]).to eq({
+                                                                  groups: [
+                                                                    {
+                                                                      name: 'Emoji',
+                                                                      items: [
+                                                                        { title: 'smiley', character: '😊' },
+                                                                        { title: 'heart', character: '❤️' }
+                                                                      ],
+                                                                      options: { label: 'Emoticons' }
+                                                                    },
+                                                                    {
+                                                                      name: 'Arrows',
+                                                                      items: [
+                                                                        { title: 'right', character: '→' },
+                                                                        { title: 'left', character: '←' }
+                                                                      ],
+                                                                      options: {}
+                                                                    },
+                                                                    {
+                                                                      name: 'Mixed',
+                                                                      items: [
+                                                                        { title: 'star', character: '⭐' },
+                                                                        { title: 'heart', character: '❤️' }
+                                                                      ],
+                                                                      options: { label: 'Mixed Characters' }
+                                                                    }
+                                                                  ],
+                                                                  order: %w[Text Arrows Emoji Mixed],
+                                                                  packs: []
+                                                                })
+
+      plugin_names = builder.config[:plugins].map(&:name)
+      expect(plugin_names).to include(:SpecialCharacters)
+      expect(plugin_names).to include(:SpecialCharactersBootstrap)
+    end
+
+    it 'enables special characters packs' do
+      builder.special_characters do
+        packs :Text, :Mathematical, :Currency
+      end
+
+      plugin_names = builder.config[:plugins].map(&:name)
+      expect(plugin_names).to include(
+        :SpecialCharactersBootstrap,
+        :SpecialCharacters,
+        'SpecialCharactersText',
+        'SpecialCharactersMathematical',
+        'SpecialCharactersCurrency'
+      )
     end
   end
 end

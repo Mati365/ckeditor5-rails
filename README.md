@@ -139,6 +139,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
       - [`external_plugin(name, script:, import_as: nil, window_name: nil, stylesheets: [])` method](#external_pluginname-script-import_as-nil-window_name-nil-stylesheets--method)
       - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
+      - [`special_characters(&block)` method](#special_charactersblock-method)
       - [`wproofreader(version: nil, cdn: nil, **config)` method](#wproofreaderversion-nil-cdn-nil-config-method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
@@ -999,6 +1000,52 @@ CKEditor5::Rails.configure do
   # or: simple_upload_adapter '/uploads'
 end
 ```
+</details>
+
+#### `special_characters(&block)` method
+
+<details>
+  <summary>Configure special characters plugin</summary>
+
+<br />
+
+Defines the special characters plugin to be included in the editor. The example below shows how to include the special characters plugin:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  special_characters do
+    # Enable built-in packs using symbols
+    packs :Text, :Essentials, :Currency, :Mathematical, :Latin
+
+    # Custom groups
+    group 'Emoji', label: 'Emoticons' do
+      item 'smiley', '😊'
+      item 'heart', '❤️'
+    end
+
+    group 'Arrows',
+          items: [
+            { title: 'right arrow', character: '→' },
+            { title: 'left arrow', character: '←' }
+          ]
+
+    group 'Mixed',
+          items: [{ title: 'star', character: '⭐' }],
+          label: 'Mixed Characters' do
+      item 'heart', '❤️'
+    end
+
+    order :Text, :Currency, :Mathematical, :Latin, :Emoji, :Arrows, :Mixed
+  end
+end
+```
+
+For more info about the special characters plugin, check the [official documentation](https://ckeditor.com/docs/ckeditor5/latest/features/special-characters.html).
+
 </details>
 
 #### `wproofreader(version: nil, cdn: nil, **config)` method

@@ -22,6 +22,7 @@ Sandbox::Application.routes.draw do # rubocop:disable Metrics/BlockLength
       locale_via_editor
       locale_via_preset
       locale_via_rails_i18n
+      special_characters
     ].each do |route|
       get route, as: "#{route}_demos"
     end

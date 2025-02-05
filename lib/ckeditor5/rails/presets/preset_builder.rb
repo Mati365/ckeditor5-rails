@@ -2,6 +2,7 @@
 
 require_relative 'concerns/configuration_methods'
 require_relative 'concerns/plugin_methods'
+require_relative 'special_characters_builder'
 
 module CKEditor5::Rails
   module Presets
@@ -366,6 +367,46 @@ module CKEditor5::Rails
           prepend(Plugins::WProofreaderSync.new)
           append(Plugins::WProofreader.new(version: version, cdn: cdn))
         end
+      end
+
+      # Configure special characters plugin
+      #
+      # @yield Block for configuring special characters
+      # @example Basic configuration with block
+      #   special_characters do
+      #     group 'Emoji', label: 'Emoticons' do
+      #       item 'smiley', '😊'
+      #       item 'heart', '❤️'
+      #     end
+      #     order :Text, :Emoji
+      #   end
+      # @example Configuration with direct items array
+      #   special_characters do
+      #     group 'Arrows',
+      #           items: [
+      #             { title: 'right', character: '→' },
+      #             { title: 'left', character: '←' }
+      #           ]
+      #   end
+      # @example Mixed configuration
+      #   special_characters do
+      #     group 'Mixed',
+      #           items: [{ title: 'star', character: '⭐' }],
+      #           label: 'Mixed Characters' do
+      #       item 'heart', '❤️'
+      #     end
+      #   end
+      def special_characters(&block)
+        builder = SpecialCharactersBuilder.new
+        builder.instance_eval(&block) if block_given?
+
+        plugins do
+          append(:SpecialCharacters)
+          builder.packs_plugins.each { |pack| append(pack) }
+          prepend(Plugins::SpecialCharactersBootstrap.new)
+        end
+
+        configure(:specialCharactersBootstrap, builder.to_h)
       end
 
       private

@@ -106,4 +106,45 @@ class DemosController < ApplicationController
       end
     end
   end
+
+  def special_characters
+    @preset = ckeditor5_preset do # rubocop:disable Metrics/BlockLength
+      version '43.3.0'
+
+      toolbar :sourceEditing, :|, :bold, :italic, :underline,
+              :strikethrough, :|, :specialCharacters, :|,
+              :bulletedList, :numberedList, :|,
+              :fontFamily, :fontSize, :|,
+              :fontColor, :fontBackgroundColor
+
+      plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline,
+              :Strikethrough, :List, :Font, :FontFamily, :FontSize,
+              :FontColor, :FontBackgroundColor, :SourceEditing
+
+      special_characters do
+        # Enable built-in packs using symbols
+        packs :Text, :Essentials, :Currency, :Mathematical, :Latin
+
+        # Custom groups
+        group 'Emoji', label: 'Emoticons' do
+          item 'smiley', '😊'
+          item 'heart', '❤️'
+        end
+
+        group 'Arrows',
+              items: [
+                { title: 'right arrow', character: '→' },
+                { title: 'left arrow', character: '←' }
+              ]
+
+        group 'Mixed',
+              items: [{ title: 'star', character: '⭐' }],
+              label: 'Mixed Characters' do
+          item 'heart', '❤️'
+        end
+
+        order :Text, :Currency, :Mathematical, :Latin, :Emoji, :Arrows, :Mixed
+      end
+    end
+  end
 end

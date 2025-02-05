@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../editor/props_inline_plugin'
+
 module CKEditor5::Rails::Plugins
   class SimpleUploadAdapter < CKEditor5::Rails::Editor::PropsInlinePlugin
     PLUGIN_CODE = <<~JS
