@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.25.0] - 2025-02-05
+
+### Features
+
+* Add special characters helpers. ([fb27f3c](https://github.com/Mati365/ckeditor5-rails/commit/fb27f3c38045b318203689774c5457bb641b8a73))
+
 ## [1.24.10] - 2025-01-28
 
 ### Bug Fixes
