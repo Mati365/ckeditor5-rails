@@ -1037,7 +1037,7 @@ class YourPatch < CKEditor5::Rails::Editor::PropsPatchPlugin
   JS
 
   def initialize
-    super(:YourPatch, PLUGIN_CODE)
+    super(:YourPatch, PLUGIN_CODE, min_version: nil, max_version: '45.0.0')
     compress!
   end
 end
