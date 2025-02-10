@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.26.0] - 2025-02-10
+
+### Bug Fixes
+
+* Apply patch that fixes color picker behavior ([620cbc7](https://github.com/Mati365/ckeditor5-rails/commit/620cbc73b3da10a519f2744e6c34341c9995b49e))
+
+### Documentation
+
+* Adjust patch plugin docs ([ab5e7bf](https://github.com/Mati365/ckeditor5-rails/commit/ab5e7bfb44d0301042b9f79133f788dcb9cba2e9))
+
 ## [1.25.0] - 2025-02-05
 
 ### Features
