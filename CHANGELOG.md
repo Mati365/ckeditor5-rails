@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.1] - 2025-02-10
+
+### Bug Fixes
+
+* Missing license key error no longer happen in lazy assets context ([1e056fb](https://github.com/Mati365/ckeditor5-rails/commit/1e056fb695047741b50e0f1c11b0bfb5bf119e16))
+* No longer crash if no license passed to editor with version >= `44` ([bf8a739](https://github.com/Mati365/ckeditor5-rails/commit/bf8a7393b1a1b01ac042de5b07d9dd277363122d))
+
 ## [1.26.0] - 2025-02-10
 
 ### Bug Fixes
