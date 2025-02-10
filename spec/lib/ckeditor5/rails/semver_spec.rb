@@ -8,6 +8,15 @@ RSpec.describe CKEditor5::Rails::Semver do
       it 'accepts version in x.y.z format' do
         expect { described_class.new('1.2.3') }.not_to raise_error
       end
+
+      it 'accepts Semver object' do
+        original = described_class.new('1.2.3')
+        copied = described_class.new(original)
+
+        expect(copied.major).to eq(1)
+        expect(copied.minor).to eq(2)
+        expect(copied.patch).to eq(3)
+      end
     end
 
     context 'with invalid version' do

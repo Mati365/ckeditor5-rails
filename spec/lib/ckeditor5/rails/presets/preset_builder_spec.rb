@@ -31,6 +31,34 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
     end
   end
 
+  describe '#version' do
+    it 'sets version' do
+      builder.version '35.0.0'
+      expect(builder.version).to eq('35.0.0')
+    end
+
+    context 'with version >= 44.0.0' do
+      it 'sets GPL license when no license key is set' do
+        builder.version('44.0.0')
+        expect(builder.license_key).to eq('GPL')
+        expect(builder.premium?).to be false
+      end
+
+      it 'does not change license when license key is already set' do
+        builder.license_key('commercial-key')
+        builder.version('44.0.0')
+        expect(builder.license_key).to eq('commercial-key')
+      end
+    end
+
+    context 'with version < 44.0.0' do
+      it 'does not set GPL license automatically' do
+        builder.version('43.0.0')
+        expect(builder.license_key).to be_nil
+      end
+    end
+  end
+
   describe '#initialize_copy' do
     let(:original) do
       described_class.new do
@@ -520,6 +548,10 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
   end
 
   describe '#special_characters' do
+    it 'should not crash if block is not provided' do
+      expect { builder.special_characters }.not_to raise_error
+    end
+
     it 'configures special characters with groups and items' do # rubocop:disable Metrics/BlockLength
       builder.special_characters do
         group 'Emoji', label: 'Emoticons' do
@@ -542,36 +574,38 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
         order :Text, :Arrows, :Emoji, :Mixed
       end
 
-      expect(builder.config[:specialCharactersBootstrap]).to eq({
-                                                                  groups: [
-                                                                    {
-                                                                      name: 'Emoji',
-                                                                      items: [
-                                                                        { title: 'smiley', character: '😊' },
-                                                                        { title: 'heart', character: '❤️' }
-                                                                      ],
-                                                                      options: { label: 'Emoticons' }
-                                                                    },
-                                                                    {
-                                                                      name: 'Arrows',
-                                                                      items: [
-                                                                        { title: 'right', character: '→' },
-                                                                        { title: 'left', character: '←' }
-                                                                      ],
-                                                                      options: {}
-                                                                    },
-                                                                    {
-                                                                      name: 'Mixed',
-                                                                      items: [
-                                                                        { title: 'star', character: '⭐' },
-                                                                        { title: 'heart', character: '❤️' }
-                                                                      ],
-                                                                      options: { label: 'Mixed Characters' }
-                                                                    }
-                                                                  ],
-                                                                  order: %w[Text Arrows Emoji Mixed],
-                                                                  packs: []
-                                                                })
+      data = {
+        groups: [
+          {
+            name: 'Emoji',
+            items: [
+              { title: 'smiley', character: '😊' },
+              { title: 'heart', character: '❤️' }
+            ],
+            options: { label: 'Emoticons' }
+          },
+          {
+            name: 'Arrows',
+            items: [
+              { title: 'right', character: '→' },
+              { title: 'left', character: '←' }
+            ],
+            options: {}
+          },
+          {
+            name: 'Mixed',
+            items: [
+              { title: 'star', character: '⭐' },
+              { title: 'heart', character: '❤️' }
+            ],
+            options: { label: 'Mixed Characters' }
+          }
+        ],
+        order: %w[Text Arrows Emoji Mixed],
+        packs: []
+      }
+
+      expect(builder.config[:specialCharactersBootstrap]).to eq(data)
 
       plugin_names = builder.config[:plugins].map(&:name)
       expect(plugin_names).to include(:SpecialCharacters)

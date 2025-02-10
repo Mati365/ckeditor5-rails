@@ -80,7 +80,7 @@ module CKEditor5::Rails
             raise InvalidPatchPluginError, 'Provided plugin must be a PropsPatchPlugin instance'
           end
 
-          return unless plugin.applicable_for_version?(config[:version])
+          return unless !@version || plugin.applicable_for_version?(@version)
 
           register_plugin(plugin)
         end

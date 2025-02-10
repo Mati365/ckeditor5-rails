@@ -44,7 +44,7 @@ module CKEditor5::Rails::Plugins::Patches
     JS
 
     def initialize
-      super(:FixColorPickerRaceCondition, PLUGIN_CODE)
+      super(:FixColorPickerRaceCondition, PLUGIN_CODE, max_version: '44.4.0')
       compress!
     end
   end

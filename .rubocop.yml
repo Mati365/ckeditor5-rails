@@ -31,6 +31,12 @@ Metrics/ClassLength:
 Metrics/ModuleLength:
   Max: 200
 
+Metrics/CyclomaticComplexity:
+  Max: 11
+
+Metrics/PerceivedComplexity:
+  Max: 11
+
 Rails:
   Enabled: true
 

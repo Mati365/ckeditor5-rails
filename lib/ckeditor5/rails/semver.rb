@@ -10,6 +10,13 @@ module CKEditor5
       include Comparable
 
       def initialize(version_string)
+        if version_string.is_a?(Semver)
+          @major = version_string.major
+          @minor = version_string.minor
+          @patch = version_string.patch
+          return
+        end
+
         validate!(version_string)
         @major, @minor, @patch = version_string.split('.').map(&:to_i)
       end

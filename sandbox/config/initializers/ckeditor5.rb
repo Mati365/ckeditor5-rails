@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
-  version '43.3.0'
+  version '44.1.0'
 
   presets.define :custom do
     toolbar :sourceEditing, :undo, :redo, :|, :bold, :italic, :underline, :strikethrough, :subscript,
@@ -21,7 +21,7 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
   end
 
   presets.define :basic, inherit: false do
-    version '43.3.0'
+    version '44.1.0'
 
     toolbar :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
             :outdent, :indent, :blockQuote, :|, :alignment, :link, :anchor, :|,
@@ -35,7 +35,7 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
   end
 
   presets.define :grouped_toolbar, inherit: false do
-    version '43.3.0'
+    version '44.1.0'
 
     toolbar do
       group :text_formatting, label: 'Text Formatting', icon: 'threeVerticalDots' do
@@ -62,7 +62,7 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
   presets.define :ultrabasic, inherit: false do
     automatic_upgrades
 
-    version '43.3.0'
+    version '44.1.0'
 
     editable_height 100
 
@@ -96,7 +96,7 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
   presets.define :balloon_block, inherit: false do
     automatic_upgrades
 
-    version '43.3.0'
+    version '44.1.0'
 
     editable_height 100
 

@@ -191,6 +191,9 @@ module CKEditor5::Rails
           @version = Semver.new(version)
         end
 
+        # If there is no license key set, and the version if newer than 44.0.0, switch to GPL
+        # as the license key is now required in all versions
+        gpl if license_key.nil? && @version.major >= 44
         apply_integration_patches if apply_patches
       end
 
