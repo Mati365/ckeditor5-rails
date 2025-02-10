@@ -127,8 +127,10 @@ module CKEditor5::Rails
         # Check if the plugin looks like an inline plugin
         # @param plugin [Editor::PropsBasePlugin] Plugin instance
         # @return [Boolean] True if the plugin is an inline plugin
-        def looks_like_inline_plugin?(plugin)
-          plugin.respond_to?(:code) && plugin.code.present?
+        def looks_like_unsafe_inline_plugin?(plugin)
+          plugin.respond_to?(:code) &&
+            plugin.code.present? &&
+            !plugin.is_a?(CKEditor5::Rails::Editor::PropsPatchPlugin)
         end
 
         # Register a plugin in the editor configuration.
@@ -140,7 +142,7 @@ module CKEditor5::Rails
         # @param plugin_obj [Editor::PropsBasePlugin] Plugin instance to register
         # @return [Editor::PropsBasePlugin] The registered plugin
         def register_plugin(plugin_obj)
-          if disallow_inline_plugins && looks_like_inline_plugin?(plugin_obj)
+          if disallow_inline_plugins && looks_like_unsafe_inline_plugin?(plugin_obj)
             raise DisallowedInlinePluginError, 'Inline plugins are not allowed here.'
           end
 

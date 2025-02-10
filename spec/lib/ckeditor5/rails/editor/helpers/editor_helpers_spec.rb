@@ -24,6 +24,7 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
     allow(preset).to receive(:config).and_return({})
     allow(preset).to receive(:automatic_upgrades?).and_return(false)
     allow(preset).to receive(:editable_height).and_return(nil)
+    allow(preset).to receive(:license_key).and_return(nil)
   end
 
   before do
@@ -223,6 +224,18 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         allow(preset).to receive(:editable_height).and_return(700)
 
         expect(helper.ckeditor5_editor(editable_height: 600)).to include('editable-height="600px"')
+      end
+    end
+
+    context 'when using license key' do
+      it 'uses license key from preset when no other license key is provided' do
+        custom_context = { preset: :default, bundle: 'custom-bundle' }
+        allow(helper).to receive(:ckeditor5_context_or_fallback).and_return(custom_context)
+
+        allow(preset).to receive(:license_key).and_return('preset-license-key')
+
+        result = helper.ckeditor5_editor
+        expect(result).to include('preset-license-key')
       end
     end
   end

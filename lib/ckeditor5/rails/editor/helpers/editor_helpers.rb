@@ -73,7 +73,7 @@ module CKEditor5::Rails
       type ||= preset.type
 
       # Add some fallbacks
-      config[:licenseKey] ||= context[:license_key]
+      config[:licenseKey] ||= context[:license_key] || preset.license_key
       config[:language] = { ui: language } if language
 
       editor_props = Editor::Props.new(
