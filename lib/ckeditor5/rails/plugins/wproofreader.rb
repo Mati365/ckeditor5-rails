@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../editor/props_external_plugin'
 require_relative '../editor/props_inline_plugin'
 
 module CKEditor5::Rails::Plugins

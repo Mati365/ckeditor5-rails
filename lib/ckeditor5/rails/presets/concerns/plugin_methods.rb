@@ -12,6 +12,7 @@ module CKEditor5::Rails
         class DisallowedInlinePluginError < ArgumentError; end
         class MissingInlinePluginError < StandardError; end
         class UnsupportedESModuleError < StandardError; end
+        class InvalidPatchPluginError < ArgumentError; end
 
         included do
           attr_reader :disallow_inline_plugins, :disallow_inline_plugin_compression
@@ -63,6 +64,23 @@ module CKEditor5::Rails
 
           plugin = Editor::PropsInlinePlugin.new(name, code)
           plugin.compress! unless disallow_inline_plugin_compression
+
+          register_plugin(plugin)
+        end
+
+        # Registers a patch plugin that modifies CKEditor behavior for specific versions
+        #
+        # @param plugin [Editor::PropsPatchPlugin] Patch plugin instance to register
+        # @raise [InvalidPatchPluginError] When provided plugin is not a PropsPatchPlugin
+        # @return [Editor::PropsPatchPlugin, nil] Returns plugin if registered, nil if not applicable
+        # @example Apply patch for specific CKEditor versions
+        #   patch_plugin PropsPatchPlugin.new(:PatchName, code, min_version: '35.0.0', max_version: '36.0.0')
+        def patch_plugin(plugin)
+          unless plugin.is_a?(Editor::PropsPatchPlugin)
+            raise InvalidPatchPluginError, 'Provided plugin must be a PropsPatchPlugin instance'
+          end
+
+          return unless plugin.applicable_for_version?(config[:version])
 
           register_plugin(plugin)
         end

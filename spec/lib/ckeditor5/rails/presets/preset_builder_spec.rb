@@ -593,4 +593,70 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       )
     end
   end
+
+  describe '#patch_plugin' do
+    let(:patch_plugin) do
+      CKEditor5::Rails::Editor::PropsPatchPlugin.new(
+        :TestPatch,
+        <<~JAVASCRIPT
+          const { Plugin } = await import('ckeditor5');
+          return class TestPatch extends Plugin {
+            init() {}
+          }
+        JAVASCRIPT
+      )
+    end
+
+    it 'raises error when plugin is not a PropsPatchPlugin' do
+      invalid_plugin = CKEditor5::Rails::Editor::PropsPlugin.new(:InvalidPatch)
+
+      expect { builder.patch_plugin(invalid_plugin) }
+        .to raise_error(
+          CKEditor5::Rails::Presets::Concerns::PluginMethods::InvalidPatchPluginError,
+          'Provided plugin must be a PropsPatchPlugin instance'
+        )
+    end
+
+    it 'applies patch when applicable' do
+      allow(patch_plugin).to receive(:applicable_for_version?).and_return(true)
+
+      builder.version('35.0.0', apply_patches: false)
+      builder.patch_plugin(patch_plugin)
+
+      plugin_names = builder.config[:plugins].map(&:name)
+      expect(plugin_names).to include(:TestPatch)
+    end
+
+    it 'skips patch when not applicable' do
+      allow(patch_plugin).to receive(:applicable_for_version?).and_return(false)
+
+      builder.version('35.0.0')
+      builder.patch_plugin(patch_plugin)
+
+      plugin_names = builder.config[:plugins].map(&:name)
+      expect(plugin_names).not_to include(:TestPatch)
+    end
+
+    it 'applies patch when version is not set' do
+      builder.patch_plugin(patch_plugin)
+
+      plugin_names = builder.config[:plugins].map(&:name)
+      expect(plugin_names).to include(:TestPatch)
+    end
+  end
+
+  describe '#apply_integration_patches' do
+    it 'applies known integration patches' do
+      builder.version('35.0.0', apply_patches: false)
+      expect { builder.apply_integration_patches }
+        .to change { builder.config[:plugins].count }
+        .by(1)
+    end
+
+    it 'apply patches when version is not set' do
+      expect { builder.apply_integration_patches }
+        .to change { builder.config[:plugins].count }
+        .by(1)
+    end
+  end
 end
