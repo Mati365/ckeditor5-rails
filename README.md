@@ -350,9 +350,6 @@ end
 ```
 
 The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory. If you want to apply custom patches, you can use the `patch_plugin` method.
-
-```rb
-
 </details>
 
 #### `automatic_upgrades(enabled: true)` method
