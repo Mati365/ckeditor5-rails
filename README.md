@@ -1060,7 +1060,7 @@ CKEditor5::Rails.configure do
 end
 ```
 
-It's useful when you want to apply patches to the specific versions of CKEditor 5. The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory.
+It's useful when you want to apply patches to the specific versions of CKEditor 5. The patches are defined in the [lib/ckeditor5/rails/plugins/patches](lib/ckeditor5/rails/plugins/patches) directory.
 
 </details>
 
