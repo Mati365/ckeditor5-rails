@@ -8,7 +8,10 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/mati365/ckeditor5-rails?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/mati365/ckeditor5-rails?style=flat-square)](https://github.com/Mati365/ckeditor5-rails/issues)
 
-Unofficial CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEditor 5 with Rails applications through web components and helper methods.
+CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEditor 5 with Rails applications through web components and helper methods. This gem supports various editor types, including classic, inline, balloon, and decoupled editors. It also includes support for custom plugins, translations, and configuration options.
+
+> [!IMPORTANT]
+> This gem is unofficial and not maintained by CKSource. For official CKEditor 5 documentation, visit [ckeditor.com](https://ckeditor.com/docs/ckeditor5/latest/). If you encounter any issues in integration, please report them on the [GitHub repository](https://github.com/Mati365/ckeditor5-rails/issues).
 
 <p align="center">
   <img src="docs/intro-classic-editor.png" alt="CKEditor 5 Classic Editor in Ruby on Rails application">
@@ -21,6 +24,10 @@ Add this line to your application's Gemfile:
 ```ruby
 gem 'ckeditor5'
 ```
+
+> [!NOTE]
+> This gem uses importmaps and does not require Webpacker or any other JavaScript bundler. It's compatible with Rails 6.0+ and `importmap-rails` gem.
+> While installation is simplified, it's recommended to check if jsdelivr or unpkg CDN is accessible in your environment, otherwise, you may need to configure a custom CDN (or use a commercial CDN).
 
 In your layout:
 
@@ -350,6 +357,9 @@ end
 ```
 
 The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory. If you want to apply custom patches, you can use the `patch_plugin` method.
+
+```rb
+
 </details>
 
 #### `automatic_upgrades(enabled: true)` method
@@ -1060,7 +1070,7 @@ CKEditor5::Rails.configure do
 end
 ```
 
-It's useful when you want to apply patches to the specific versions of CKEditor 5. The patches are defined in the [lib/ckeditor5/rails/plugins/patches](lib/ckeditor5/rails/plugins/patches) directory.
+It's useful when you want to apply patches to the specific versions of CKEditor 5. The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory.
 
 </details>
 
