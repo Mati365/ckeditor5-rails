@@ -27,7 +27,7 @@ gem 'ckeditor5'
 
 > [!NOTE]
 > This gem uses importmaps and does not require Webpacker or any other JavaScript bundler. It's compatible with Rails 6.0+ and `importmap-rails` gem.
-> While installation is simplified, it's recommended to check if jsdelivr or unpkg CDN is accessible in your environment, otherwise, you may need to configure a custom CDN (or use a commercial CDN).
+> While installation is simplified, it's recommended to check if jsdelivr or unpkg CDN is accessible in your environment, otherwise, you may need to configure a custom CDN (or use a commercial one).
 
 In your layout:
 
