@@ -50,10 +50,7 @@ module CKEditor5::Rails::Editor::Helpers
 
       raise ArgumentError, 'Configuration block is required for preset definition' unless block_given?
 
-      CKEditor5::Rails::Presets::PresetBuilder.new(
-        disallow_inline_plugins: true,
-        &block
-      )
+      CKEditor5::Rails::Presets::PresetBuilder.new(&block)
     end
   end
 end

@@ -17,8 +17,7 @@ module CKEditor5::Rails
       #     gpl
       #     type :classic
       #   end
-      def initialize(disallow_inline_plugins: false, &block)
-        @disallow_inline_plugins = disallow_inline_plugins
+      def initialize(&block)
         @version = nil
         @premium = false
         @cdn = :jsdelivr
