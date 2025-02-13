@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.26.2] - 2025-02-13
+
+### Features
+
+* Update CKEditor to version 44.2.0 ([31f29cd](https://github.com/Mati365/ckeditor5-rails/commit/31f29cd2dc3bf383a166de3526bf092b6679416d))
+* Less strict inline plugin registration in controller ([30b9195](https://github.com/Mati365/ckeditor5-rails/commit/30b9195ab10242b296809d0ab32128a480a76983))
+
+### Documentation
+
+* Add few notes to documentation. ([33dcaf7](https://github.com/Mati365/ckeditor5-rails/commit/33dcaf74aabe47ecdc2cf229bdea553b4fe55ee7))
+* Update link in `apply_integration_patches` section ([e85e991](https://github.com/Mati365/ckeditor5-rails/commit/e85e991de3afdff5af4fd8827c8f6fa00d17231d))
+
+### Other Changes
+
+* Update README.md ([f8cb474](https://github.com/Mati365/ckeditor5-rails/commit/f8cb47465dacf718d99b5718b17a9d9f39387714))
+
 ## [1.26.1] - 2025-02-10
 
 ### Bug Fixes
