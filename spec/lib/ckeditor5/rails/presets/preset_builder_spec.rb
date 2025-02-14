@@ -494,6 +494,61 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
     end
   end
 
+  describe '#custom_translations' do
+    it 'returns empty hash when called without arguments' do
+      expect(builder.custom_translations).to eq({})
+    end
+
+    it 'stores translations for a language' do
+      translations = { 'my.button': 'My Button' }
+      builder.custom_translations(:en, translations)
+      expect(builder.custom_translations).to eq({ en: translations })
+    end
+
+    it 'merges translations for the same language' do
+      builder.custom_translations(:en, { 'button.one': 'One' })
+      builder.custom_translations(:en, { 'button.two': 'Two' })
+
+      expect(builder.custom_translations[:en]).to eq({
+                                                       'button.one': 'One',
+                                                       'button.two': 'Two'
+                                                     })
+    end
+
+    it 'handles multiple languages' do
+      builder.custom_translations(:en, { 'button': 'Button' })
+      builder.custom_translations(:pl, { 'button': 'Przycisk' })
+
+      expect(builder.custom_translations).to eq({
+                                                  en: { button: 'Button' },
+                                                  pl: { button: 'Przycisk' }
+                                                })
+    end
+
+    it 'normalizes language codes to symbols' do
+      builder.custom_translations('EN', { 'button': 'Button' })
+      expect(builder.custom_translations.keys).to eq([:EN])
+    end
+
+    it 'adds and replaces CustomTranslationsLoader plugin' do
+      translations = { 'my.button': 'My Button' }
+
+      expect do
+        builder.custom_translations(:en, translations)
+      end.to change { builder.config[:plugins].count }.by(1)
+
+      plugin = builder.config[:plugins].first
+      expect(plugin).to be_a(CKEditor5::Rails::Plugins::CustomTranslationsLoader)
+
+      # Adding more translations should replace the plugin
+      expect do
+        builder.custom_translations(:pl, { 'my.button': 'Mój przycisk' })
+      end.not_to(change { builder.config[:plugins].count })
+
+      expect(builder.config[:plugins].first).to be_a(CKEditor5::Rails::Plugins::CustomTranslationsLoader)
+    end
+  end
+
   describe '#deep_copy_toolbar' do
     context 'with array toolbar' do
       it 'returns duplicated array' do
@@ -552,7 +607,7 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
       expect { builder.special_characters }.not_to raise_error
     end
 
-    it 'configures special characters with groups and items' do # rubocop:disable Metrics/BlockLength
+    it 'configures special characters with groups and items' do
       builder.special_characters do
         group 'Emoji', label: 'Emoticons' do
           item 'smiley', '😊'

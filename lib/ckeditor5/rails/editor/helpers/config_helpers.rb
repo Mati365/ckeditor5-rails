@@ -17,6 +17,20 @@ module CKEditor5::Rails::Editor::Helpers
       { '$element': selector }
     end
 
+    # Creates a reference to a translation key that will be used by CKEditor.
+    # This helper creates a special object that CKEditor recognizes as a translation reference.
+    #
+    # @param key [String] The translation key to reference
+    # @return [Hash] A hash with the translation reference in CKEditor's format
+    #
+    # @example Referencing a translation in plugin configuration
+    #   configure :toolbar, {
+    #     placeholder: ckeditor5_translation_ref("editor.placeholder")
+    #   }
+    def ckeditor5_translation_ref(key)
+      { '$translation': key }
+    end
+
     # Creates or retrieves a preset configuration for CKEditor.
     # When called with a name, finds and returns an existing preset.
     # When called with a block, creates a new preset with the given configuration.

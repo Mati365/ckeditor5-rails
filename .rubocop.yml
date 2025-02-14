@@ -44,4 +44,4 @@ Rails/OutputSafety:
   Enabled: false
 
 Metrics/BlockLength:
-  AllowedMethods: ['describe', 'context']
+  Enabled: false

@@ -149,7 +149,9 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
       - [`special_characters(&block)` method](#special_charactersblock-method)
       - [`wproofreader(version: nil, cdn: nil, **config)` method](#wproofreaderversion-nil-cdn-nil-config-method)
+      - [`custom_translations(lang_code = nil, translations = {})` method](#custom_translationslang_code--nil-translations---method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
+      - [`ckeditor5_translation_ref(key)` method](#ckeditor5_translation_refkey-method)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
       - [`ckeditor5_preset(name = nil, &block)` method](#ckeditor5_presetname--nil-block-method)
   - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
@@ -1197,7 +1199,70 @@ For more info about the WProofreader plugin, check the [official documentation](
 
 </details>
 
+#### `custom_translations(lang_code = nil, translations = {})` method
+
+<details>
+  <summary>Define custom translations for CKEditor components and UI</summary>
+
+<br />
+
+Allows setting custom translations for editor components, UI elements, and headings. The translations are applied globally since they override the global translation object.
+
+> [!NOTE]
+> This helper allows overriding builtin translations of the editor, but translations are overridden globally, as the CKEditor 5 uses a single translation object for all instances of the editor. It's recommended to use the `ckeditor5_translation_ref` helper to reference the translations in the configuration.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  custom_translations :en, {
+    'Heading 1': 'Your custom translation value'
+  }
+
+  configure :heading, {
+    options: [
+      { model: 'heading1', title: ckeditor5_translation_ref('Heading 1') },
+      # ...
+    ]
+  }
+end
+```
+
+</details>
+
 ### Controller / View helpers 📦
+
+#### `ckeditor5_translation_ref(key)` method
+
+<details>
+  <summary>Defines a reference to a CKEditor 5 translation</summary>
+
+<br />
+
+Allows you to reference CKEditor 5 translations in the configuration. It's particularly useful when you want to use custom translations in the editor configuration.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  custom_translations :en, {
+    'Heading 1': 'Your custom translation value'
+  }
+
+  configure :heading, {
+    options: [
+      { model: 'heading1', title: ckeditor5_translation_ref('Heading 1') },
+      # ...
+    ]
+  }
+end
+```
+
+</details>
 
 #### `ckeditor5_element_ref(selector)` method
 

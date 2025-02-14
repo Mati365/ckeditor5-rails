@@ -6,7 +6,7 @@ require_relative 'special_characters_builder'
 
 module CKEditor5::Rails
   module Presets
-    class PresetBuilder
+    class PresetBuilder # rubocop:disable Metrics/ClassLength
       include Editor::Helpers::Config
       include Concerns::ConfigurationMethods
       include Concerns::PluginMethods
@@ -27,12 +27,19 @@ module CKEditor5::Rails
         @ckbox = nil
         @editable_height = nil
         @automatic_upgrades = false
+        @custom_translations = {}
         @config = {
           plugins: [],
           toolbar: []
         }
 
         instance_eval(&block) if block_given?
+      end
+
+      def deconstruct_keys(keys)
+        keys.index_with do |key|
+          public_send(key)
+        end
       end
 
       # @example Copy preset and modify it
@@ -43,6 +50,7 @@ module CKEditor5::Rails
 
         @translations = source.translations.dup
         @ckbox = source.ckbox.dup if source.ckbox
+        @custom_translations = source.custom_translations.deep_dup
         @config = {
           plugins: source.config[:plugins].map(&:dup),
           toolbar: deep_copy_toolbar(source.config[:toolbar])
@@ -61,12 +69,6 @@ module CKEditor5::Rails
       # @return [Boolean]
       def gpl?
         license_key == 'GPL'
-      end
-
-      def deconstruct_keys(keys)
-        keys.index_with do |key|
-          public_send(key)
-        end
       end
 
       # Create a new preset by overriding current configuration
@@ -199,7 +201,7 @@ module CKEditor5::Rails
       # Apply integration patches for the current version
       # @return [void]
       def apply_integration_patches
-        patch_plugin Plugins::Patches::FixColorPickerRaceCondition.new
+        patch_plugin(Plugins::Patches::FixColorPickerRaceCondition.new)
       end
 
       # Enable or disable automatic version upgrades
@@ -331,6 +333,37 @@ module CKEditor5::Rails
       # @return [Boolean]
       def language?
         config[:language].present?
+      end
+
+      # Configure custom translations for the editor
+      # @param lang_code [Symbol] Language code for translations (e.g. :en, :pl)
+      # @param translations [Hash] A hash containing translations in format { key => translation }
+      # @example Add multiple translations
+      #   custom_translations :en, {
+      #     'my.button': 'My Button'
+      #   }
+      #   custom_translations :pl, {
+      #     'my.button': 'Mój przycisk'
+      #   }
+      # @example Use translations in configuration with ckeditor5_translation_ref
+      #   custom_translations :en, {
+      #     'custom.heading': 'Custom Section'
+      #   }
+      #
+      #   configure :heading, {
+      #     options: [
+      #       { model: 'heading1', title: ckeditor5_translation_ref('custom.heading') }
+      #     ]
+      #   }
+      # @return [void]
+      def custom_translations(lang_code = nil, translations = {})
+        return @custom_translations if lang_code.blank?
+
+        @custom_translations[lang_code.to_sym] ||= {}
+        @custom_translations[lang_code.to_sym].merge!(translations)
+
+        plugins.remove(:CustomTranslationsLoader)
+        plugins.prepend(Plugins::CustomTranslationsLoader.new(@custom_translations))
       end
 
       # Configure editor language

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
+CKEditor5::Rails.configure do
   version '44.1.0'
 
   presets.define :custom do
@@ -68,16 +68,38 @@ CKEditor5::Rails.configure do # rubocop:disable Metrics/BlockLength
 
     ckbox '2.6.0', theme: :lark
 
-    toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
+    toolbar :sourceEditing, :|, :heading, :|, :bold, :italic, :underline, :strikethrough,
             :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
             :fontFamily, :fontSize, :|, :link, :anchor, :|,
             :fontColor, :fontBackgroundColor
 
-    plugins :Essentials, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
+    plugins :Essentials, :Heading, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
             :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
             :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph
 
     simple_upload_adapter
+
+    custom_translations :en, {
+      'Source' => 'Show HTML',
+      'Heading 1' => 'Medium Heading',
+      'Heading 2' => 'Small Heading',
+      'Heading 3' => 'Tiny Heading',
+      'Heading 4' => 'Micro Heading'
+    }
+
+    configure :heading, {
+      options: [
+        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+        { model: 'heading1', view: 'h1', title: ckeditor5_translation_ref('Heading 1'),
+          class: 'ck-heading_heading1' },
+        { model: 'heading2', view: 'h2', title: ckeditor5_translation_ref('Heading 2'),
+          class: 'ck-heading_heading2' },
+        { model: 'heading3', view: 'h3', title: ckeditor5_translation_ref('Heading 3'),
+          class: 'ck-heading_heading3' },
+        { model: 'heading4', view: 'h4', title: ckeditor5_translation_ref('Heading 4'),
+          class: 'ck-heading_heading4' }
+      ]
+    }
 
     plugin :MyCustomWindowPlugin, window_name: 'MyCustomWindowPlugin'
 
