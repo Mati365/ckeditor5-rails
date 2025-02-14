@@ -8,14 +8,20 @@ module CKEditor5::Rails::Plugins
       code = <<~JS.freeze
         const { Plugin } = await import('ckeditor5');
 
-        function resolveTranslationReferences(uiLanguage, config) {
+        function resolveTranslationReferences(uiLanguage, config, visited = new WeakSet()) {
           if (!config || typeof config !== 'object') {
             return config;
           }
 
+          if (visited.has(config)) {
+            return config;
+          }
+
+          visited.add(config);
+
           if (Array.isArray(config)) {
             config.forEach((item, index) => {
-              config[index] = resolveTranslationReferences(uiLanguage, item);
+              config[index] = resolveTranslationReferences(uiLanguage, item, visited);
             });
 
             return config;
@@ -35,7 +41,7 @@ module CKEditor5::Rails::Plugins
 
                 config[key] = translations?.dictionary[translationKey] || translationKey;
               } else {
-                resolveTranslationReferences(uiLanguage, value);
+                resolveTranslationReferences(uiLanguage, value, visited);
               }
             }
           }
