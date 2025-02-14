@@ -108,7 +108,7 @@ class DemosController < ApplicationController
   end
 
   def special_characters
-    @preset = ckeditor5_preset do # rubocop:disable Metrics/BlockLength
+    @preset = ckeditor5_preset do
       version '43.3.0'
 
       toolbar :sourceEditing, :|, :bold, :italic, :underline,

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Sandbox::Application.routes.draw do # rubocop:disable Metrics/BlockLength
+Sandbox::Application.routes.draw do
   root to: 'demos#index'
 
   scope '/', controller: 'demos' do

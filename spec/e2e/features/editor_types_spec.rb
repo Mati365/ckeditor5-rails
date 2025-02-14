@@ -44,10 +44,10 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
     end
   end
 
-  shared_examples 'a multiroot editor that fires change events' do |path, editables| # rubocop:disable Metrics/BlockLength
+  shared_examples 'a multiroot editor that fires change events' do |path, editables|
     before { visit path }
 
-    it 'sends properly change events with proper payload for editables' do # rubocop:disable Metrics/BlockLength
+    it 'sends properly change events with proper payload for editables' do
       editors = editables.map do |name|
         find("[data-testid='#{name}-editable']")
       end
@@ -151,7 +151,7 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
       expect(page).to have_css('.ck-toolbar', count: 1)
     end
 
-    it 'handles dynamically added editables' do # rubocop:disable Metrics/BlockLength
+    it 'handles dynamically added editables' do
       # Set up event listener
       page.execute_script(<<~JS)
         window._newEditableEvents = [];

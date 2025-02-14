@@ -8,7 +8,7 @@ RSpec.describe 'Form Integration', type: :feature, js: true do
     setup_form_tracking(page)
   end
 
-  shared_examples 'a form with CKEditor' do |form_testid, editor_testid, submit_testid| # rubocop:disable Metrics/BlockLength
+  shared_examples 'a form with CKEditor' do |form_testid, editor_testid, submit_testid|
     let(:form) { find("[data-testid='#{form_testid}']") }
     let(:editor) { find("[data-testid='#{editor_testid}']") }
     let(:editable) { editor.find('.ck-editor__editable') }
