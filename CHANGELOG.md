@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.27.0] - 2025-02-14
+
+### Features
+
+* Add `custom_translations` helper that allows to translate configuration entries ([7aaea4a](https://github.com/Mati365/ckeditor5-rails/commit/7aaea4a698fe8aeb3e1779bbd0bef24a99b7daf8))
+
 ## [1.26.2] - 2025-02-13
 
 ### Features
