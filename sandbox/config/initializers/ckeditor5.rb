@@ -64,18 +64,20 @@ CKEditor5::Rails.configure do
 
     version '44.1.0'
 
-    editable_height 100
+    editable_height 260
 
     ckbox '2.6.0', theme: :lark
 
-    toolbar :sourceEditing, :|, :heading, :|, :bold, :italic, :underline, :strikethrough,
+    toolbar :sourceEditing, :|, :heading, :|, :alignment, :bold, :italic, :underline, :strikethrough,
             :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
             :fontFamily, :fontSize, :|, :link, :anchor, :|,
             :fontColor, :fontBackgroundColor
 
     plugins :Essentials, :Heading, :Paragraph, :Bold, :Italic, :Underline, :Strikethrough,
-            :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font,
-            :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph
+            :Subscript, :Superscript, :RemoveFormat, :List, :Link, :Font, :Alignment,
+            :FontFamily, :FontSize, :FontColor, :FontBackgroundColor, :SourceEditing, :Essentials, :Paragraph,
+            :Image, :ImageUpload, :ImageToolbar, :ImageInsert,
+            :ImageInsertViaUrl, :ImageBlock, :ImageCaption, :ImageInline, :ImageResize
 
     simple_upload_adapter
 
