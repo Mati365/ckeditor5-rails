@@ -20,9 +20,11 @@ module CKEditor5::Rails
                     Engine.presets.to_h.values.flat_map { |p| p.plugins.items }
                   end
 
-        initializers = plugins.filter_map do |plugin|
-          next unless plugin.is_a?(Editor::PropsInlinePlugin)
-
+        # Filter inline plugins and deduplicate by name in one chain
+        initializers = plugins
+                       .select { |plugin| plugin.is_a?(Editor::PropsInlinePlugin) }
+                       .uniq(&:name)
+                       .map do |plugin|
           Editor::InlinePluginWindowInitializer.new(plugin).to_html(
             nonce: content_security_policy_nonce
           )
