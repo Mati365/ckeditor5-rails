@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.27.3] - 2025-03-08
+
+### Bug Fixes
+
+* No longer duplicate inline plugins tags when loaded using `ckeditor5_lazy_javascript_tags`. ([22f3dd6](https://github.com/Mati365/ckeditor5-rails/commit/22f3dd6b4e8c818fca9ae5358bdda81d66dc5072))
+
 ## [1.27.2] - 2025-03-06
 
 ### Features
