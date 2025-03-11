@@ -32,16 +32,34 @@ module CKEditor5::Rails::Assets
 
     def to_json(*_args)
       {
-        scripts: scripts.map(&:to_h),
-        stylesheets: stylesheets
+        scripts: unique_scripts(scripts).map(&:to_h),
+        stylesheets: unique_stylesheets(stylesheets)
       }.to_json
     end
 
     def <<(other)
       raise TypeError, 'other must be an instance of AssetsBundle' unless other.is_a?(AssetsBundle)
 
-      @scripts = scripts + other.scripts
-      @stylesheets = stylesheets + other.stylesheets
+      @scripts = unique_scripts(scripts + other.scripts)
+      @stylesheets = unique_stylesheets(stylesheets + other.stylesheets)
+    end
+
+    private
+
+    def unique_scripts(scripts_array)
+      with_url, without_url = scripts_array.partition { |script| script.respond_to?(:url) && script.url }
+      unique_with_url = with_url.uniq { |script| drop_version_from_url(script.url) }
+      unique_with_url + without_url
+    end
+
+    def unique_stylesheets(stylesheets_array)
+      stylesheets_array.uniq { |stylesheet| drop_version_from_url(stylesheet) }
+    end
+
+    def drop_version_from_url(url)
+      url.to_s
+         .gsub(%r{/v?\d+\.\d+\.\d+(-[a-z0-9.]+)?/}, '/')
+         .gsub(%r{@\d+\.\d+\.\d+(-[a-z0-9.]+)?/?}, '')
     end
   end
 
