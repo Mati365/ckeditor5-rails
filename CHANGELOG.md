@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.1] - 2025-03-11
+
+### Bug Fixes
+
+* Make scripts unique in lazy bundle. ([a92be5c](https://github.com/Mati365/ckeditor5-rails/commit/a92be5ccb990a01984d02f8d659240ffe886e5be))
+* Add `type: 'module' to inline plugin html. ([9b5a1ec](https://github.com/Mati365/ckeditor5-rails/commit/9b5a1ec2aaf527656def25549526cee0c64cf90b))
+
 ## [1.28.0] - 2025-03-11
 
 ### Bug Fixes
