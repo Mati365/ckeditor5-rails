@@ -35,7 +35,7 @@ module CKEditor5::Rails::Editor
     def to_html(nonce: nil)
       code = wrap_with_handlers(@plugin.code)
 
-      tag.script(code.html_safe, nonce: nonce)
+      tag.script(code.html_safe, type: 'module', nonce: nonce)
     end
 
     private
