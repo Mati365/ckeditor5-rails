@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.28.0] - 2025-03-11
+
+### Bug Fixes
+
+* Drop patches support due to server issues. ([a323c3d](https://github.com/Mati365/ckeditor5-rails/commit/a323c3d8fd20ac41aaa22837825e3b2021bcd0d1))
+
 ## [1.27.3] - 2025-03-08
 
 ### Bug Fixes
