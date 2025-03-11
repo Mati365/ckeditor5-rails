@@ -20,7 +20,7 @@ RSpec.describe CKEditor5::Rails::Presets::Manager do
       it 'creates new preset based on default' do
         manager.define(:custom) do
           automatic_upgrades enabled: false
-          version '36.0.0', apply_patches: false
+          version '36.0.0'
         end
 
         expect(manager[:custom].version).to eq('36.0.0')
@@ -32,7 +32,7 @@ RSpec.describe CKEditor5::Rails::Presets::Manager do
       it 'creates completely new preset' do
         manager.define(:custom, inherit: false) do
           automatic_upgrades enabled: false
-          version '36.0.0', apply_patches: false
+          version '36.0.0'
         end
 
         expect(manager[:custom].version).to eq('36.0.0')

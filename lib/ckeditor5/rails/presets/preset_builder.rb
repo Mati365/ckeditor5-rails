@@ -6,14 +6,14 @@ require_relative 'special_characters_builder'
 
 module CKEditor5::Rails
   module Presets
-    class PresetBuilder # rubocop:disable Metrics/ClassLength
+    class PresetBuilder
       include Editor::Helpers::Config
       include Concerns::ConfigurationMethods
       include Concerns::PluginMethods
 
       # @example Basic initialization
       #   PresetBuilder.new do
-      #     version '43.3.1'
+      #     version '44.3.0'
       #     gpl
       #     type :classic
       #   end
@@ -174,15 +174,12 @@ module CKEditor5::Rails
 
       # Set or get editor version
       # @param version [String, nil] Editor version to set
-      # @param apply_patches [Boolean] Whether to apply integration patches after setting version
       # @example Set specific version
-      #   version '43.3.1'
-      # @example Set version without applying patches
-      #   version '43.3.1', apply_patches: false
+      #   version '44.3.0'
       # @example Get current version
       #   version # => "43.3.1"
       # @return [String, nil] Current version string or nil if not set
-      def version(version = nil, apply_patches: true)
+      def version(version = nil)
         return @version&.to_s if version.nil?
 
         if @automatic_upgrades && version
@@ -195,13 +192,6 @@ module CKEditor5::Rails
         # If there is no license key set, and the version if newer than 44.0.0, switch to GPL
         # as the license key is now required in all versions
         gpl if license_key.nil? && @version.major >= 44
-        apply_integration_patches if apply_patches
-      end
-
-      # Apply integration patches for the current version
-      # @return [void]
-      def apply_integration_patches
-        patch_plugin(Plugins::Patches::FixColorPickerRaceCondition.new)
       end
 
       # Enable or disable automatic version upgrades

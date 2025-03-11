@@ -27,7 +27,7 @@ module CKEditor5::Rails::Presets
     #   end
     # @example Define preset from scratch
     #   presets.define :blank, inherit: false do
-    #     version '43.3.1'
+    #     version '44.3.0'
     #     gpl
     #     type :classic
     #   end
@@ -78,7 +78,7 @@ module CKEditor5::Rails::Presets
     # @example Basic configuration
     #   CKEditor5::Rails.configure do
     #     presets.define :default do
-    #       version '43.3.1'
+    #       version '44.3.0'
     #       gpl
     #       type :classic
     #       menubar

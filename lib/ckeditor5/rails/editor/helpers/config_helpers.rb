@@ -44,7 +44,7 @@ module CKEditor5::Rails::Editor::Helpers
     #
     # @example Creating a custom preset in controller
     #   @preset = ckeditor5_preset do
-    #     version '43.3.1'
+    #     version '44.3.0'
     #     toolbar :sourceEditing, :|, :bold, :italic
     #     plugins :Essentials, :Paragraph, :Bold, :Italic
     #   end

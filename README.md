@@ -127,6 +127,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
     - [Available Configuration Methods ⚙️](#available-configuration-methods-️)
       - [`cdn(cdn = nil, &block)` method](#cdncdn--nil-block-method)
       - [`version(version, apply_patches: true)` method](#versionversion-apply_patches-true-method)
+      - [`automatic_upgrades(enabled: true)` method](#automatic_upgradesenabled-true-method)
       - [`gpl` method](#gpl-method)
       - [`license_key(key)` method](#license_keykey-method)
       - [`premium` method](#premium-method)
@@ -145,7 +146,6 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
       - [`external_plugin(name, script:, import_as: nil, window_name: nil, stylesheets: [])` method](#external_pluginname-script-import_as-nil-window_name-nil-stylesheets--method)
       - [`patch_plugin(plugin)`](#patch_pluginplugin)
-      - [`apply_integration_patches` method](#apply_integration_patches-method)
       - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
       - [`special_characters(&block)` method](#special_charactersblock-method)
       - [`wproofreader(version: nil, cdn: nil, **config)` method](#wproofreaderversion-nil-cdn-nil-config-method)
@@ -345,22 +345,6 @@ CKEditor5::Rails.configure do
   version '44.3.0'
 end
 ```
-
-In order to disable default patches, you can pass the `apply_patches: false` keyword argument to the `version` method.
-
-```rb
-# config/initializers/ckeditor5.rb
-
-CKEditor5::Rails.configure do
-  # ... other configuration
-
-  version '44.3.0', apply_patches: false
-end
-```
-
-The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory. If you want to apply custom patches, you can use the `patch_plugin` method.
-
-```rb
 
 </details>
 
@@ -1051,29 +1035,6 @@ class YourPatch < CKEditor5::Rails::Editor::PropsPatchPlugin
   end
 end
 ```
-</details>
-
-#### `apply_integration_patches` method
-
-<details>
-  <summary>Apply patches to the specific versions of CKEditor 5</summary>
-
-<br />
-
-Defines a method that applies patches to the specific versions of CKEditor 5. The example below shows how to apply patches to the `44.1.0` version:
-
-```rb
-# config/initializers/ckeditor5.rb
-
-CKEditor5::Rails.configure do
-  # ... other configuration
-
-  apply_integration_patches
-end
-```
-
-It's useful when you want to apply patches to the specific versions of CKEditor 5. The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory.
-
 </details>
 
 #### `simple_upload_adapter(url)` method

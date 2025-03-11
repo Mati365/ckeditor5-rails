@@ -20,7 +20,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
   let(:helper) { test_class.new }
   let(:preset) do
     CKEditor5::Rails::Presets::PresetBuilder.new do
-      version '34.1.0', apply_patches: false
+      version '34.1.0'
       type :classic
       translations :pl
       cdn :cloud
@@ -151,7 +151,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
     context 'when overriding preset values' do
       let(:preset) do
         CKEditor5::Rails::Presets::PresetBuilder.new do
-          version '34.1.0', apply_patches: false
+          version '34.1.0'
           type :classic
           language :pl
           cdn :cloud

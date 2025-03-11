@@ -3,7 +3,10 @@
 require 'rails/engine'
 
 require_relative 'presets/manager'
-require_relative 'plugins'
+require_relative 'plugins/simple_upload_adapter'
+require_relative 'plugins/wproofreader'
+require_relative 'plugins/special_characters_bootstrap'
+require_relative 'plugins/custom_translations_loader'
 
 module CKEditor5::Rails
   class PresetNotFoundError < ArgumentError; end
