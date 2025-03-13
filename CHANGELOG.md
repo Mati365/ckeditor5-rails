@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.82.3] - 2025-03-13
+
+### Bug Fixes
+
+* Change JS wrapper format. ([7768a07](https://github.com/Mati365/ckeditor5-rails/commit/7768a0791f7539079dc511838167cf310ac6fdf5))
+
 ## [1.28.2] - 2025-03-13
 
 ### Bug Fixes
