@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.28.2] - 2025-03-13
+
+### Bug Fixes
+
+* Revert `type: module` modification. ([3e2d3be](https://github.com/Mati365/ckeditor5-rails/commit/3e2d3be306e7194921be0c5cd9294bf10d8a595d))
+
 ## [1.28.1] - 2025-03-11
 
 ### Bug Fixes
