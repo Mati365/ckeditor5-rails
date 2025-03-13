@@ -11,7 +11,7 @@ module CKEditor5::Rails::Editor
 
       raise ArgumentError, 'Code must be a String' unless code.is_a?(String)
 
-      @code = "(async () => { #{code.html_safe} })()"
+      @code = "(async () => { #{code} })()"
     end
 
     def compress!
@@ -33,19 +33,17 @@ module CKEditor5::Rails::Editor
     end
 
     def to_html(nonce: nil)
-      code = wrap_with_handlers(@plugin.code)
-
-      tag.script(code.html_safe, nonce: nonce)
-    end
-
-    private
-
-    def wrap_with_handlers(code)
-      <<~JS
+      code = <<~JS
         window.addEventListener('ckeditor:request-cjs-plugin:#{@plugin.name}', () => {
-          window['#{@plugin.name}'] = #{code.html_safe};
+          try {
+            window['#{@plugin.name}'] = #{@plugin.code};
+          } catch(e) {
+            console.error('Error initializing CKEditor plugin #{@plugin.name}:', e);
+          }
         }, { once: true });
       JS
+
+      tag.script(code.html_safe, nonce: nonce)
     end
   end
 end
