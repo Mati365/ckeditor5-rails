@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.29.1] - 2025-03-17
+
+### Bug Fixes
+
+* It was impossible to use `I18n.t` in gem configure method. Fill presets *after* initializae. ([1447eed](https://github.com/Mati365/ckeditor5-rails/commit/1447eed888bf245c5d10e86dd3efec28c1bdc1d9))
+
 ## [1.29.0] - 2025-03-17
 
 ### Features
