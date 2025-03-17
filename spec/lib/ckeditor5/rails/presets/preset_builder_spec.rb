@@ -280,7 +280,8 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
     end
 
     it 'adds inline plugin to configuration' do
-      builder.inline_plugin(:CustomPlugin, plugin_code)
+      builder.inline_plugin(:CustomPlugin, plugin_code, compress: true)
+      builder.try_compress_inline_plugins!
 
       plugin = builder.config[:plugins].first
       expect(plugin).to be_a(CKEditor5::Rails::Editor::PropsInlinePlugin)

@@ -83,6 +83,24 @@ RSpec.describe CKEditor5::Rails::Context::PresetBuilder do
     end
   end
 
+  describe 'try_compress_inline_plugins!' do
+    let(:plugin_code) do
+      <<~JAVASCRIPT
+        const { Plugin } = await import( 'ckeditor5' );
+
+        return class Abc extends Plugin {}
+      JAVASCRIPT
+    end
+
+    it 'raises CompressionDisabledError when compression is disabled' do
+      builder.instance_variable_set(:@disallow_inline_plugin_compression, true)
+
+      expect do
+        builder.try_compress_inline_plugins!
+      end.to raise_error(CKEditor5::Rails::Presets::Concerns::PluginMethods::CompressionDisabledError)
+    end
+  end
+
   describe '#inline_plugin' do
     let(:plugin_code) do
       <<~JAVASCRIPT

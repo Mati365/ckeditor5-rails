@@ -328,6 +328,7 @@ module CKEditor5::Rails
       # Configure custom translations for the editor
       # @param lang_code [Symbol] Language code for translations (e.g. :en, :pl)
       # @param translations [Hash] A hash containing translations in format { key => translation }
+      # @param compress [Boolean] Whether to compress the translations
       # @example Add multiple translations
       #   custom_translations :en, {
       #     'my.button': 'My Button'
@@ -346,14 +347,14 @@ module CKEditor5::Rails
       #     ]
       #   }
       # @return [void]
-      def custom_translations(lang_code = nil, translations = {})
+      def custom_translations(lang_code = nil, translations = {}, compress: true)
         return @custom_translations if lang_code.blank?
 
         @custom_translations[lang_code.to_sym] ||= {}
         @custom_translations[lang_code.to_sym].merge!(translations)
 
         plugins.remove(:CustomTranslationsLoader)
-        plugins.prepend(Plugins::CustomTranslationsLoader.new(@custom_translations))
+        plugins.prepend(Plugins::CustomTranslationsLoader.new(@custom_translations, compress: compress))
       end
 
       # Configure editor language
@@ -381,34 +382,37 @@ module CKEditor5::Rails
 
       # Configure simple upload adapter
       # @param upload_url [String] Upload endpoint URL
+      # @param compress [Boolean] Enable compression
       # @example Enable upload adapter
       #   simple_upload_adapter '/uploads'
-      def simple_upload_adapter(upload_url = '/uploads')
+      def simple_upload_adapter(upload_url = '/uploads', compress: true)
         plugins do
           remove(:Base64UploadAdapter)
         end
 
-        plugin(Plugins::SimpleUploadAdapter.new)
+        plugin(Plugins::SimpleUploadAdapter.new(compress: compress))
         configure(:simpleUpload, { uploadUrl: upload_url })
       end
 
       # Configure WProofreader plugin
       # @param version [String, nil] Plugin version
       # @param cdn [String, nil] CDN URL
+      # @param compress [Boolean] Enable compression
       # @param config [Hash] Plugin configuration
       # @example Basic configuration
       #   wproofreader serviceId: 'your-service-ID',
       #              srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js'
-      def wproofreader(version: nil, cdn: nil, **config)
+      def wproofreader(version: nil, cdn: nil, compress: true, **config)
         configure :wproofreader, config
         plugins do
-          prepend(Plugins::WProofreaderSync.new)
+          prepend(Plugins::WProofreaderSync.new(compress: compress))
           append(Plugins::WProofreader.new(version: version, cdn: cdn))
         end
       end
 
       # Configure special characters plugin
       #
+      # @param compress [Boolean] Enable compression
       # @yield Block for configuring special characters
       # @example Basic configuration with block
       #   special_characters do
@@ -434,14 +438,14 @@ module CKEditor5::Rails
       #       item 'heart', '❤️'
       #     end
       #   end
-      def special_characters(&block)
+      def special_characters(compress: true, &block)
         builder = SpecialCharactersBuilder.new
         builder.instance_eval(&block) if block_given?
 
         plugins do
           append(:SpecialCharacters)
           builder.packs_plugins.each { |pack| append(pack) }
-          prepend(Plugins::SpecialCharactersBootstrap.new)
+          prepend(Plugins::SpecialCharactersBootstrap.new(compress: compress))
         end
 
         configure(:specialCharactersBootstrap, builder.to_h)

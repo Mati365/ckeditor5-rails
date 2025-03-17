@@ -50,9 +50,8 @@ module CKEditor5::Rails::Plugins
       }
     JS
 
-    def initialize
-      super(:SpecialCharactersBootstrap, PLUGIN_CODE)
-      compress!
+    def initialize(**kwargs)
+      super(:SpecialCharactersBootstrap, PLUGIN_CODE, **kwargs)
     end
   end
 end

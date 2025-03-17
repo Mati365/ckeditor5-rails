@@ -12,6 +12,7 @@ module CKEditor5::Rails
         class MissingInlinePluginError < StandardError; end
         class UnsupportedESModuleError < StandardError; end
         class InvalidPatchPluginError < ArgumentError; end
+        class CompressionDisabledError < StandardError; end
 
         included do
           attr_reader :disallow_inline_plugin_compression
@@ -35,6 +36,7 @@ module CKEditor5::Rails
         #
         # @param name [Symbol] Plugin name
         # @param code [String] JavaScript code defining the plugin
+        # @param compress [Boolean] Whether to compress the code (default: true)
         # @example Define custom highlight plugin
         #   inline_plugin :MyCustomPlugin, <<~JS
         #     const { Plugin } = await import( 'ckeditor5' );
@@ -49,7 +51,7 @@ module CKEditor5::Rails
         #       }
         #     }
         #   JS
-        def inline_plugin(name, code)
+        def inline_plugin(name, code, compress: true)
           if code.match?(/export default/)
             raise UnsupportedESModuleError,
                   'Inline plugins must not use ES module syntax!' \
@@ -61,8 +63,8 @@ module CKEditor5::Rails
                   'Plugin code must return a class that extends Plugin!'
           end
 
-          plugin = Editor::PropsInlinePlugin.new(name, code)
-          plugin.compress! unless disallow_inline_plugin_compression
+          compress = false if @disallow_inline_plugin_compression
+          plugin = Editor::PropsInlinePlugin.new(name, code, compress: compress)
 
           register_plugin(plugin)
         end
@@ -119,6 +121,23 @@ module CKEditor5::Rails
           builder = PluginsBuilder.new(config[:plugins])
           builder.instance_eval(&block) if block_given?
           builder
+        end
+
+        # Compresses inline plugins to reduce bundle size
+        #
+        # @raise [CompressionDisabledError] If inline plugin compression is disabled
+        # @example Compress inline plugins
+        #   try_compress_inline_plugins!
+        # @return [void]
+        # @note This method is called automatically when defining a preset
+        def try_compress_inline_plugins!
+          raise CompressionDisabledError if @disallow_inline_plugin_compression
+
+          config[:plugins].each do |plugin|
+            next unless plugin.is_a?(Editor::PropsInlinePlugin)
+
+            plugin.try_compress!
+          end
         end
 
         private

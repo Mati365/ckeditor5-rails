@@ -26,6 +26,34 @@ RSpec.describe CKEditor5::Rails::Editor::PropsInlinePlugin do
     end
   end
 
+  describe '#try_compress!' do
+    let(:plugin) { described_class.new(:CustomPlugin, valid_code) }
+    let(:compiled_code) { '(async()=>{const compressed_code})()' }
+    let(:terser_instance) { instance_double('Terser') }
+
+    context 'when compression is enabled' do
+      it 'compresses the code using Terser' do
+        expect(Terser).to receive(:new).with(compress: false, mangle: true).and_return(terser_instance)
+        expect(terser_instance).to receive(:compile).with(plugin.code).and_return(compiled_code)
+
+        plugin.try_compress!
+        expect(plugin.code).to eq(compiled_code)
+      end
+    end
+
+    context 'when compression is disabled' do
+      let(:plugin) { described_class.new(:CustomPlugin, valid_code, compress: false) }
+      let(:original_code) { plugin.code.dup }
+
+      it 'does not modify the code' do
+        expect(Terser).not_to receive(:new)
+
+        plugin.try_compress!
+        expect(plugin.code).to eq(original_code)
+      end
+    end
+  end
+
   describe '#to_h' do
     it 'returns correct hash representation' do
       plugin = described_class.new(:CustomPlugin, valid_code)

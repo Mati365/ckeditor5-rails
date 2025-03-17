@@ -12,8 +12,6 @@ module CKEditor5::Rails::Editor
 
       @min_version = min_version && CKEditor5::Rails::Semver.new(min_version)
       @max_version = max_version && CKEditor5::Rails::Semver.new(max_version)
-
-      compress!
     end
 
     def self.applicable_for_version?(editor_version, min_version: nil, max_version: nil)

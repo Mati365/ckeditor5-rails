@@ -361,7 +361,7 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
 
   describe '#ckeditor5_inline_plugins_tags' do
     let(:preset) do
-      CKEditor5::Rails::Presets::PresetBuilder.new do
+      preset = CKEditor5::Rails::Presets::PresetBuilder.new do
         inline_plugin 'Plugin1', <<~JAVASCRIPT
           const { Plugin } = await import( 'ckeditor5' );
 
@@ -382,10 +382,13 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
           }
         JAVASCRIPT
       end
+
+      preset.try_compress_inline_plugins!
+      preset
     end
 
     let(:another_preset) do
-      CKEditor5::Rails::Presets::PresetBuilder.new do
+      preset = CKEditor5::Rails::Presets::PresetBuilder.new do
         inline_plugin 'Plugin3', <<~JAVASCRIPT
           const { Plugin } = await import( 'ckeditor5' );
 
@@ -396,6 +399,9 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
           }
         JAVASCRIPT
       end
+
+      preset.try_compress_inline_plugins!
+      preset
     end
 
     before do

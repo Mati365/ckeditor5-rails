@@ -4,7 +4,7 @@ require_relative '../editor/props_inline_plugin'
 
 module CKEditor5::Rails::Plugins
   class CustomTranslationsLoader < CKEditor5::Rails::Editor::PropsInlinePlugin
-    def initialize(translations) # rubocop:disable Metrics/MethodLength
+    def initialize(translations, **kwargs) # rubocop:disable Metrics/MethodLength
       code = <<~JS.freeze
         const { Plugin } = await import('ckeditor5');
 
@@ -90,8 +90,7 @@ module CKEditor5::Rails::Plugins
         }
       JS
 
-      super(:CustomTranslationsLoader, code)
-      compress!
+      super(:CustomTranslationsLoader, code, **kwargs)
     end
   end
 end

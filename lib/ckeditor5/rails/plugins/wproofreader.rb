@@ -67,9 +67,8 @@ module CKEditor5::Rails::Plugins
       }
     JS
 
-    def initialize
-      super(:WProofreaderSync, PLUGIN_CODE)
-      compress!
+    def initialize(**kwargs)
+      super(:WProofreaderSync, PLUGIN_CODE, **kwargs)
     end
   end
 end

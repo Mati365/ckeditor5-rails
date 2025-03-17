@@ -82,9 +82,8 @@ module CKEditor5::Rails::Plugins
       }
     JS
 
-    def initialize
-      super(:SimpleUploadAdapter, PLUGIN_CODE)
-      compress!
+    def initialize(**kwargs)
+      super(:SimpleUploadAdapter, PLUGIN_CODE, **kwargs)
     end
   end
 end

@@ -4,17 +4,20 @@ require_relative 'props_base_plugin'
 
 module CKEditor5::Rails::Editor
   class PropsInlinePlugin < PropsBasePlugin
-    attr_reader :code
+    attr_reader :code, :compress
 
-    def initialize(name, code)
+    def initialize(name, code, compress: true)
       super(name)
 
       raise ArgumentError, 'Code must be a String' unless code.is_a?(String)
 
       @code = "(async () => { #{code} })()"
+      @compress = compress
     end
 
-    def compress!
+    def try_compress!
+      return unless @compress
+
       @code = Terser.new(compress: false, mangle: true).compile(@code)
     end
 

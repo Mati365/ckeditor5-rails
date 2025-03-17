@@ -146,10 +146,10 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
       - [`external_plugin(name, script:, import_as: nil, window_name: nil, stylesheets: [])` method](#external_pluginname-script-import_as-nil-window_name-nil-stylesheets--method)
       - [`patch_plugin(plugin)`](#patch_pluginplugin)
-      - [`simple_upload_adapter(url)` method](#simple_upload_adapterurl-method)
-      - [`special_characters(&block)` method](#special_charactersblock-method)
-      - [`wproofreader(version: nil, cdn: nil, **config)` method](#wproofreaderversion-nil-cdn-nil-config-method)
-      - [`custom_translations(lang_code = nil, translations = {})` method](#custom_translationslang_code--nil-translations---method)
+      - [`simple_upload_adapter(url, compress: true)` method](#simple_upload_adapterurl-compress-true-method)
+      - [`special_characters(compress: true, &block)` method](#special_characterscompress-true-block-method)
+      - [`wproofreader(version: nil, cdn: nil, compress: true, **config)` method](#wproofreaderversion-nil-cdn-nil-compress-true-config-method)
+      - [`custom_translations(lang_code = nil, translations = {}, compress: true)` method](#custom_translationslang_code--nil-translations---compress-true-method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_translation_ref(key)` method](#ckeditor5_translation_refkey-method)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
@@ -1031,13 +1031,12 @@ class YourPatch < CKEditor5::Rails::Editor::PropsPatchPlugin
 
   def initialize
     super(:YourPatch, PLUGIN_CODE, min_version: nil, max_version: '45.0.0')
-    compress!
   end
 end
 ```
 </details>
 
-#### `simple_upload_adapter(url)` method
+#### `simple_upload_adapter(url, compress: true)` method
 
 <details>
   <summary>Configure server-side image upload endpoint</summary>
@@ -1060,7 +1059,7 @@ end
 ```
 </details>
 
-#### `special_characters(&block)` method
+#### `special_characters(compress: true, &block)` method
 
 <details>
   <summary>Configure special characters plugin</summary>
@@ -1106,7 +1105,7 @@ For more info about the special characters plugin, check the [official documenta
 
 </details>
 
-#### `wproofreader(version: nil, cdn: nil, **config)` method
+#### `wproofreader(version: nil, cdn: nil, compress: true, **config)` method
 
 <details>
   <summary>Configure WProofreader plugin</summary>
@@ -1160,7 +1159,7 @@ For more info about the WProofreader plugin, check the [official documentation](
 
 </details>
 
-#### `custom_translations(lang_code = nil, translations = {})` method
+#### `custom_translations(lang_code = nil, translations = {}, compress: true)` method
 
 <details>
   <summary>Define custom translations for CKEditor components and UI</summary>

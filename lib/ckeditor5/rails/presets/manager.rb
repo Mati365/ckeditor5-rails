@@ -40,6 +40,8 @@ module CKEditor5::Rails::Presets
                end
 
       preset.instance_eval(&block)
+      preset.try_compress_inline_plugins!
+
       @presets[name] = preset
     end
 
@@ -54,7 +56,10 @@ module CKEditor5::Rails::Presets
     #     end
     #   end
     def override(name, &block)
-      @presets[name].instance_eval(&block)
+      preset = @presets[name]
+
+      preset.instance_eval(&block)
+      preset.try_compress_inline_plugins!
     end
 
     alias extend override
