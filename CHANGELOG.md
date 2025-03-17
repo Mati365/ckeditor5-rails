@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.29.0] - 2025-03-17
+
+### Features
+
+* Add ability to disable compression for specific inline plugins using `compress:` kwarg. ([e2cd145](https://github.com/Mati365/ckeditor5-rails/commit/e2cd145e74309228987b7129b69c6aca9b8e3617))
+
 ## [1.82.3] - 2025-03-13
 
 ### Bug Fixes
