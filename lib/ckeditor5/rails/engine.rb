@@ -57,7 +57,10 @@ module CKEditor5::Rails
 
       def configure(&block)
         proxy = ConfigurationProxy.new(config.ckeditor5)
-        proxy.instance_eval(&block)
+
+        config.after_initialize do
+          proxy.instance_eval(&block)
+        end
       end
 
       def find_preset(preset)

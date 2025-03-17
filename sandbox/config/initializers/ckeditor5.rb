@@ -82,11 +82,11 @@ CKEditor5::Rails.configure do
     simple_upload_adapter
 
     custom_translations :en, {
-      'Source' => 'Show HTML',
-      'Heading 1' => 'Medium Heading',
-      'Heading 2' => 'Small Heading',
-      'Heading 3' => 'Tiny Heading',
-      'Heading 4' => 'Micro Heading'
+      'Source' => I18n.t('source'),
+      'Heading 1' => I18n.t('heading_1'),
+      'Heading 2' => I18n.t('heading_2'),
+      'Heading 3' => I18n.t('heading_3'),
+      'Heading 4' => I18n.t('heading_4')
     }
 
     configure :heading, {
