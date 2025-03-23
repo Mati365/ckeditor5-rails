@@ -712,7 +712,7 @@ It is useful when you want to use Balloon Editor or Balloon Toolbar features.
 
 <br />
 
-Defines the visibility of the menubar. By default, it's set to `true`.
+Defines the visibility of the menubar. By default, it's set to `true`. In order to hide the menubar, you can pass the `visible: false` keyword argument. The example below shows how to set the menubar visibility:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -720,9 +720,7 @@ Defines the visibility of the menubar. By default, it's set to `true`.
 CKEditor5::Rails.configure do
   # ... other configuration
 
-  toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
-          :link, :insertImage, :ckbox, :mediaEmbed, :insertTable, :blockQuote, :|,
-          :bulletedList, :numberedList, :todoList, :outdent, :indent
+  menubar visible: false
 end
 ```
 </details>
@@ -868,7 +866,7 @@ end
 
 <br />
 
-⚠️ **Warning:** Use with caution as this is an inline definition of the plugin code, and it can potentially cause XSS vulnerabilities. Only use this method with static, trusted JavaScript code. The example below shows how to define a custom plugin that highlights the text:
+⚠️ **Warning:** Use with caution as this is an inline definition of the plugin code, and it can potentially cause XSS vulnerabilities. Only use this method with static, trusted JavaScript code. In order to pass some dynamic data to such plugin, you can use the `configure` method and override the selected preset in your controller. The example below shows how to define a custom plugin that doesn't do anything:
 
 ```rb
 # config/initializers/ckeditor5.rb
