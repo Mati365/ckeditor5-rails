@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.29.2] - 2025-04-08
+
+### Features
+
+* Update CKEditor to version 45.0.0 ([bbc2cb0](https://github.com/Mati365/ckeditor5-rails/commit/bbc2cb07ebf41fdee49354ff9c734e38949cb5a0))
+
+### Documentation
+
+* improve align of section ([493e749](https://github.com/Mati365/ckeditor5-rails/commit/493e7498b3613d427b90a2e82d486981fd162fb2))
+* update `inline_plugin` and `menubar` docs. ([6eb6d48](https://github.com/Mati365/ckeditor5-rails/commit/6eb6d485cb3a2e9990a00081cbdc44c6608e3ac0))
+
 ## [1.29.1] - 2025-03-17
 
 ### Bug Fixes
