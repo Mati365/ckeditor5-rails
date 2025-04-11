@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.30.0] - 2025-04-11
+
+### Features
+
+* Retore editor patching support. ([53da8c9](https://github.com/Mati365/ckeditor5-rails/commit/53da8c9baebbdff3694ad1007d6f81c45dea2150))
+
 ## [1.29.2] - 2025-04-08
 
 ### Features
