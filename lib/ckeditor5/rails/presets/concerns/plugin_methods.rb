@@ -69,7 +69,7 @@ module CKEditor5::Rails
         #       }
         #     }
         #   JS
-        def inline_plugin(name, code, compress: true)
+        def inline_plugin(name, code, compress: !@disallow_inline_plugin_compression)
           if code.match?(/export default/)
             raise UnsupportedESModuleError,
                   'Inline plugins must not use ES module syntax!' \
@@ -81,7 +81,6 @@ module CKEditor5::Rails
                   'Plugin code must return a class that extends Plugin!'
           end
 
-          compress = false if @disallow_inline_plugin_compression
           plugin = Editor::PropsInlinePlugin.new(name, code, compress: compress)
 
           register_plugin(plugin)

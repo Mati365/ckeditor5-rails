@@ -39,6 +39,35 @@ RSpec.describe CKEditor5::Rails::Presets::Manager do
         expect(manager[:custom].config).to eq({ plugins: [], toolbar: [] })
       end
     end
+
+    context 'with compression settings' do
+      it 'attempts compression when compression? returns true' do
+        preset = manager.define(:with_compression, inherit: false) do
+          version '36.0.0', apply_patches: true
+          inline_plugin 'Test', <<~JAVASCRIPT
+            const { Plugin } = await import( 'ckeditor5' );
+
+            return class Abc extends Plugin {}
+          JAVASCRIPT
+        end
+
+        expect(preset.config[:plugins].first.code).to include('const{Plugin:t,ColorPickerView:i,debounce:o}=')
+      end
+
+      it 'does not attempt compression when compression? returns false' do
+        preset = manager.define(:without_compression, inherit: false) do
+          compression enabled: false
+          version '36.0.0', apply_patches: true
+          inline_plugin 'Test', <<~JAVASCRIPT
+            const { Plugin } = await import( 'ckeditor5' );
+
+            return class Abc extends Plugin {}
+          JAVASCRIPT
+        end
+
+        expect(preset.config[:plugins].first.code).to include('const { Plugin, ColorPickerView, debounce }')
+      end
+    end
   end
 
   describe '#override/#extend' do
@@ -68,6 +97,33 @@ RSpec.describe CKEditor5::Rails::Presets::Manager do
       end
 
       expect(manager[:custom].version).to eq('36.0.0')
+    end
+
+    context 'with compression settings' do
+      let(:preset_builder) { instance_double(CKEditor5::Rails::Presets::PresetBuilder) }
+
+      before do
+        allow(preset_builder).to receive(:instance_eval)
+        manager.instance_variable_set(:@presets, { custom: preset_builder })
+      end
+
+      it 'attempts compression when compression? returns true' do
+        allow(preset_builder).to receive(:compression?).and_return(true)
+        allow(preset_builder).to receive(:try_compress_inline_plugins!)
+
+        manager.override(:custom) {}
+
+        expect(preset_builder).to have_received(:try_compress_inline_plugins!).once
+      end
+
+      it 'does not attempt compression when compression? returns false' do
+        allow(preset_builder).to receive(:compression?).and_return(false)
+        allow(preset_builder).to receive(:try_compress_inline_plugins!)
+
+        manager.override(:custom) {}
+
+        expect(preset_builder).not_to have_received(:try_compress_inline_plugins!)
+      end
     end
   end
 

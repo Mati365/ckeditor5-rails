@@ -27,6 +27,7 @@ module CKEditor5::Rails
         @ckbox = nil
         @editable_height = nil
         @automatic_upgrades = false
+        @disallow_inline_plugin_compression = false
         @custom_translations = {}
         @config = {
           plugins: [],
