@@ -7,8 +7,8 @@ module CKEditor5::Rails::Editor
   class PropsPatchPlugin < PropsInlinePlugin
     attr_reader :min_version, :max_version
 
-    def initialize(name, code, min_version: nil, max_version: nil)
-      super(name, code)
+    def initialize(name, code, min_version: nil, max_version: nil, compress: true)
+      super(name, code, compress: compress)
 
       @min_version = min_version && CKEditor5::Rails::Semver.new(min_version)
       @max_version = max_version && CKEditor5::Rails::Semver.new(max_version)

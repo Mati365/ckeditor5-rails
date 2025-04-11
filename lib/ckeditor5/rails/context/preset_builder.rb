@@ -12,7 +12,7 @@ module CKEditor5::Rails
     #
     # @example Basic preset definition
     #   preset = PresetBuilder.new do
-    #     version '44.3.0'
+    #     version '43.3.1'
     #     gpl
     #     type :classic
     #     toolbar :bold, :italic
@@ -35,7 +35,7 @@ module CKEditor5::Rails
       # @param block [Proc] Optional configuration block
       # @example Initialize with block
       #   PresetBuilder.new do
-      #     version '44.3.0'
+      #     version '43.3.1'
       #     toolbar :bold, :italic
       #   end
       def initialize(&block)

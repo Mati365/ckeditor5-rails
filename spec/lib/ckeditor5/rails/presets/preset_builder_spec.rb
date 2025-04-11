@@ -332,6 +332,14 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
     end
   end
 
+  describe '#disable_compression' do
+    it 'disables compression for inline plugins' do
+      builder.compression(enabled: false)
+      expect(builder.compression?).to be false
+      expect(builder.disallow_inline_plugin_compression).to be true
+    end
+  end
+
   describe '#external_plugin' do
     it 'adds external plugin to config' do
       plugin = builder.external_plugin('Test', script: 'https://example.org/script.js')
@@ -710,7 +718,7 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
     it 'applies patch when applicable' do
       allow(patch_plugin).to receive(:applicable_for_version?).and_return(true)
 
-      builder.version('35.0.0')
+      builder.version('35.0.0', apply_patches: false)
       builder.patch_plugin(patch_plugin)
 
       plugin_names = builder.config[:plugins].map(&:name)
@@ -732,6 +740,21 @@ RSpec.describe CKEditor5::Rails::Presets::PresetBuilder do
 
       plugin_names = builder.config[:plugins].map(&:name)
       expect(plugin_names).to include(:TestPatch)
+    end
+  end
+
+  describe '#apply_integration_patches' do
+    it 'applies known integration patches' do
+      builder.version('35.0.0', apply_patches: false)
+      expect { builder.apply_integration_patches }
+        .to change { builder.config[:plugins].count }
+        .by(1)
+    end
+
+    it 'apply patches when version is not set' do
+      expect { builder.apply_integration_patches }
+        .to change { builder.config[:plugins].count }
+        .by(1)
     end
   end
 end

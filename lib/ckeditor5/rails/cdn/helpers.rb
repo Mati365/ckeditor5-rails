@@ -55,7 +55,7 @@ module CKEditor5::Rails
     #
     # @example Using preset builder object
     #   <% @preset = ckeditor5_preset do
-    #     version '44.3.0'
+    #     version '43.3.1'
     #     toolbar :bold, :italic
     #     plugins :Bold, :Italic
     #   end %>

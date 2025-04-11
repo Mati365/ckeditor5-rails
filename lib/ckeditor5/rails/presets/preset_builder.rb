@@ -6,14 +6,14 @@ require_relative 'special_characters_builder'
 
 module CKEditor5::Rails
   module Presets
-    class PresetBuilder
+    class PresetBuilder # rubocop:disable Metrics/ClassLength
       include Editor::Helpers::Config
       include Concerns::ConfigurationMethods
       include Concerns::PluginMethods
 
       # @example Basic initialization
       #   PresetBuilder.new do
-      #     version '44.3.0'
+      #     version '43.3.1'
       #     gpl
       #     type :classic
       #   end
@@ -174,12 +174,15 @@ module CKEditor5::Rails
 
       # Set or get editor version
       # @param version [String, nil] Editor version to set
+      # @param apply_patches [Boolean] Whether to apply integration patches after setting version
       # @example Set specific version
-      #   version '44.3.0'
+      #   version '43.3.1'
+      # @example Set version without applying patches
+      #   version '43.3.1', apply_patches: false
       # @example Get current version
       #   version # => "43.3.1"
       # @return [String, nil] Current version string or nil if not set
-      def version(version = nil)
+      def version(version = nil, apply_patches: true)
         return @version&.to_s if version.nil?
 
         if @automatic_upgrades && version
@@ -192,6 +195,13 @@ module CKEditor5::Rails
         # If there is no license key set, and the version if newer than 44.0.0, switch to GPL
         # as the license key is now required in all versions
         gpl if license_key.nil? && @version.major >= 44
+        apply_integration_patches if apply_patches
+      end
+
+      # Apply integration patches for the current version
+      # @return [void]
+      def apply_integration_patches(compress: !@disallow_inline_plugin_compression)
+        patch_plugin(Plugins::Patches::FixColorPickerRaceCondition.new(compress: compress))
       end
 
       # Enable or disable automatic version upgrades
@@ -347,7 +357,8 @@ module CKEditor5::Rails
       #     ]
       #   }
       # @return [void]
-      def custom_translations(lang_code = nil, translations = {}, compress: true)
+      def custom_translations(lang_code = nil, translations = {},
+                              compress: !@disallow_inline_plugin_compression)
         return @custom_translations if lang_code.blank?
 
         @custom_translations[lang_code.to_sym] ||= {}
@@ -385,7 +396,7 @@ module CKEditor5::Rails
       # @param compress [Boolean] Enable compression
       # @example Enable upload adapter
       #   simple_upload_adapter '/uploads'
-      def simple_upload_adapter(upload_url = '/uploads', compress: true)
+      def simple_upload_adapter(upload_url = '/uploads', compress: !@disallow_inline_plugin_compression)
         plugins do
           remove(:Base64UploadAdapter)
         end
@@ -402,7 +413,7 @@ module CKEditor5::Rails
       # @example Basic configuration
       #   wproofreader serviceId: 'your-service-ID',
       #              srcUrl: 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js'
-      def wproofreader(version: nil, cdn: nil, compress: true, **config)
+      def wproofreader(version: nil, cdn: nil, compress: !@disallow_inline_plugin_compression, **config)
         configure :wproofreader, config
         plugins do
           prepend(Plugins::WProofreaderSync.new(compress: compress))
@@ -438,7 +449,7 @@ module CKEditor5::Rails
       #       item 'heart', '❤️'
       #     end
       #   end
-      def special_characters(compress: true, &block)
+      def special_characters(compress: !@disallow_inline_plugin_compression, &block)
         builder = SpecialCharactersBuilder.new
         builder.instance_eval(&block) if block_given?
 

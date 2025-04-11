@@ -18,6 +18,24 @@ module CKEditor5::Rails
           attr_reader :disallow_inline_plugin_compression
         end
 
+        # Sets compression of inline plugin code. Make sure that it is called before setting the version
+        # or adding plugins.
+        # @example Disable compression
+        #   compression(enabled: false)
+        # @return [void]
+        # @note This method is useful for debugging purposes, as it allows you to see the uncompressed code.
+        def compression(enabled: false)
+          @disallow_inline_plugin_compression = !enabled
+        end
+
+        # Check if compression is enabled
+        # @return [Boolean] True if compression is enabled, false otherwise
+        # @example Check if compression is enabled
+        #  compression? # => true
+        def compression?
+          !@disallow_inline_plugin_compression
+        end
+
         # Registers an external plugin loaded from a URL
         #
         # @param name [Symbol] Plugin name

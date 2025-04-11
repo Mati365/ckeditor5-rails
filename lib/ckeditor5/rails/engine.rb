@@ -3,10 +3,7 @@
 require 'rails/engine'
 
 require_relative 'presets/manager'
-require_relative 'plugins/simple_upload_adapter'
-require_relative 'plugins/wproofreader'
-require_relative 'plugins/special_characters_bootstrap'
-require_relative 'plugins/custom_translations_loader'
+require_relative 'plugins'
 
 module CKEditor5::Rails
   class PresetNotFoundError < ArgumentError; end
@@ -84,7 +81,8 @@ module CKEditor5::Rails
                :type, :menubar, :plugins, :plugin, :inline_plugin,
                :toolbar, :block_toolbar, :balloon_toolbar,
                :language, :ckbox, :configure, :automatic_upgrades, :simple_upload_adapter,
-               :editable_height, :wproofreader, :custom_translations, to: :default_preset
+               :editable_height, :wproofreader, :custom_translations, :apply_integration_patches,
+               :compression, :compression?, to: :default_preset
 
       def initialize(configuration)
         @configuration = configuration

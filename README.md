@@ -146,10 +146,99 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
       - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
       - [`external_plugin(name, script:, import_as: nil, window_name: nil, stylesheets: [])` method](#external_pluginname-script-import_as-nil-window_name-nil-stylesheets--method)
       - [`patch_plugin(plugin)`](#patch_pluginplugin)
+      - [`apply_integration_patches(compress: false)` method](#apply_integration_patchescompress-false-method)
       - [`simple_upload_adapter(url, compress: true)` method](#simple_upload_adapterurl-compress-true-method)
       - [`special_characters(compress: true, &block)` method](#special_characterscompress-true-block-method)
       - [`wproofreader(version: nil, cdn: nil, compress: true, **config)` method](#wproofreaderversion-nil-cdn-nil-compress-true-config-method)
       - [`custom_translations(lang_code = nil, translations = {}, compress: true)` method](#custom_translationslang_code--nil-translations---compress-true-method)
+      - [`compression(enabled: true)` method](#compressionenabled-true-method)
+    - [Controller / View helpers 📦](#controller--view-helpers-)
+      - [`ckeditor5_translation_ref(key)` method](#ckeditor5_translation_refkey-method)
+      - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
+      - [`ckeditor5_preset(name = nil, &block)` method](#ckeditor5_presetname--nil-block-method)
+  - [Including CKEditor 5 assets 📦](#including-ckeditor-5-assets-)
+    - [Format 📝](#format-)
+      - [Using default preset](#using-default-preset)
+      - [Custom preset](#custom-preset)
+      - [Inline preset definition](#inline-preset-definition)
+    - [Lazy loading 🚀](#lazy-loading-)
+      - [`ckeditor5_lazy_javascript_tags` helper](#ckeditor5_lazy_javascript_tags-helper)
+    - [GPL usage 🆓](#gpl-usage-)
+    - [Commercial usage 💰](#commercial-usage-)
+  - [Editor placement 🏗️](#editor-placement-️)
+    - [Setting Initial Content 📝](#setting-initial-content-)
+    - [Watchdog 🐕](#watchdog-)
+    - [Classic editor 📝](#classic-editor-)
+    - [Multiroot editor 🌳](#multiroot-editor-)
+    - [Inline editor 📝](#inline-editor-)
+    - [Balloon editor 🎈](#balloon-editor-)
+    - [Decoupled editor 🌐](#decoupled-editor-)
+  - [Using Context 📦](#using-context-)
+    - [Using Context in CKEditor 5 🔄](#using-context-in-ckeditor-5-)
+    - [Example usage of `ckeditor5_context` helper 📝](#example-usage-of-ckeditor5_context-helper-)
+  - [How to access editor instance? 🤔](#how-to-access-editor-instance-)
+  - [Common Tasks and Solutions 💡](#common-tasks-and-solutions-)
+    - [Setting Editor Language 🌐](#setting-editor-language-)
+      - [Setting the language in the assets helper](#setting-the-language-in-the-assets-helper)
+      - [Setting the language in the initializer](#setting-the-language-in-the-initializer)
+      - [Setting the language on the editor level](#setting-the-language-on-the-editor-level)
+      - [Preloading multiple translation packs](#preloading-multiple-translation-packs)
+    - [Spell and Grammar Checking 📝](#spell-and-grammar-checking-)
+    - [Integrating with Forms 📋](#integrating-with-forms-)
+      - [Rails form builder integration](#rails-form-builder-integration)
+      - [Simple form integration](#simple-form-integration)
+    - [Integration with Turbolinks 🚀](#integration-with-turbolinks-)
+    - [Custom Styling 🎨](#custom-styling-)
+    - [Custom plugins 🧩](#custom-plugins-)
+    - [Content Security Policy (CSP) 🛡️](#content-security-policy-csp-️)
+  - [Events fired by the editor 🔊](#events-fired-by-the-editor-)
+    - [`editor-ready` event](#editor-ready-event)
+    - [`editor-error` event](#editor-error-event)
+    - [`editor-change` event](#editor-change-event)
+    - [Inline event handling](#inline-event-handling)
+  - [Gem Development 🛠](#gem-development-)
+    - [Running tests 🧪](#running-tests-)
+  - [Trademarks 📜](#trademarks-)
+  - [License 📜](#license-)
+>>>>>>> parent of a323c3d (Fix: Drop patches support due to server issues.)
+    - [Controller / View helpers 📦](#controller--view-helpers-)
+      - [`ckeditor5_translation_ref(key)` method](#ckeditor5_translation_refkey-method)
+      - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
+      - [`ckeditor5_preset(name = nil, &block)` method](#ckeditor5_presetname--nil-block-method)
+- [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
+  - [Installation 🛠️](#installation-️)
+  - [Try Demos! 🎮 ✨](#try-demos--)
+  - [Table of Contents 📚](#table-of-contents-)
+  - [Presets 🎨](#presets-)
+    - [Automatic upgrades 🔄](#automatic-upgrades-)
+    - [Available Configuration Methods ⚙️](#available-configuration-methods-️)
+      - [`cdn(cdn = nil, &block)` method](#cdncdn--nil-block-method)
+      - [`version(version, apply_patches: true)` method](#versionversion-apply_patches-true-method)
+      - [`automatic_upgrades(enabled: true)` method](#automatic_upgradesenabled-true-method)
+      - [`gpl` method](#gpl-method)
+      - [`license_key(key)` method](#license_keykey-method)
+      - [`premium` method](#premium-method)
+      - [`editable_height(height)` method](#editable_heightheight-method)
+      - [`language(ui, content:)` method](#languageui-content-method)
+      - [`translations(*languages)` method](#translationslanguages-method)
+      - [`ckbox` method](#ckbox-method)
+      - [`type(type)` method](#typetype-method)
+      - [`toolbar(*items, should_group_when_full: true, &block)` method](#toolbaritems-should_group_when_full-true-block-method)
+      - [`block_toolbar(*items, should_group_when_full: true, &block)` method](#block_toolbaritems-should_group_when_full-true-block-method)
+      - [`balloon_toolbar(*items, should_group_when_full: true, &block)` method](#balloon_toolbaritems-should_group_when_full-true-block-method)
+      - [`menubar(visible: true)` method](#menubarvisible-true-method)
+      - [`configure(name, value)` method](#configurename-value-method)
+      - [`plugin(name, premium:, import_name:)` method](#pluginname-premium-import_name-method)
+      - [`plugins(*names, **kwargs)` method](#pluginsnames-kwargs-method)
+      - [`inline_plugin(name, code)` method](#inline_pluginname-code-method)
+      - [`external_plugin(name, script:, import_as: nil, window_name: nil, stylesheets: [])` method](#external_pluginname-script-import_as-nil-window_name-nil-stylesheets--method)
+      - [`patch_plugin(plugin)`](#patch_pluginplugin)
+      - [`apply_integration_patches(compress: false)` method](#apply_integration_patchescompress-false-method)
+      - [`simple_upload_adapter(url, compress: true)` method](#simple_upload_adapterurl-compress-true-method)
+      - [`special_characters(compress: true, &block)` method](#special_characterscompress-true-block-method)
+      - [`wproofreader(version: nil, cdn: nil, compress: true, **config)` method](#wproofreaderversion-nil-cdn-nil-compress-true-config-method)
+      - [`custom_translations(lang_code = nil, translations = {}, compress: true)` method](#custom_translationslang_code--nil-translations---compress-true-method)
+      - [`compression(enabled: true)` method](#compressionenabled-true-method)
     - [Controller / View helpers 📦](#controller--view-helpers-)
       - [`ckeditor5_translation_ref(key)` method](#ckeditor5_translation_refkey-method)
       - [`ckeditor5_element_ref(selector)` method](#ckeditor5_element_refselector-method)
@@ -345,6 +434,20 @@ CKEditor5::Rails.configure do
   version '45.0.0'
 end
 ```
+
+In order to disable default patches, you can pass the `apply_patches: false` keyword argument to the `version` method.
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  version '44.3.0', apply_patches: false
+end
+```
+
+The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory. If you want to apply custom patches, you can use the `patch_plugin` method.
 
 </details>
 
@@ -1038,6 +1141,29 @@ end
 ```
 </details>
 
+#### `apply_integration_patches(compress: false)` method
+
+<details>
+  <summary>Apply patches to the specific versions of CKEditor 5</summary>
+
+<br />
+
+Defines a method that applies patches to the specific versions of CKEditor 5. The example below shows how to apply patches to the `44.1.0` version:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  apply_integration_patches
+end
+```
+
+It's useful when you want to apply patches to the specific versions of CKEditor 5. The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory.
+
+</details>
+
 #### `simple_upload_adapter(url, compress: true)` method
 
 <details>
@@ -1192,6 +1318,26 @@ CKEditor5::Rails.configure do
 end
 ```
 
+</details>
+
+#### `compression(enabled: true)` method
+
+<details>
+  <summary>Enable or disable compression of the inline plugins or patches</summary>
+
+<br />
+
+Defines whether the inline plugins should be compressed. The example below shows how to disable compression:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  # ... other configuration
+
+  compression enabled: false
+end
+```
 </details>
 
 ### Controller / View helpers 📦
