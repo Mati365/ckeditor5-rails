@@ -1240,7 +1240,20 @@ end
 
 <br />
 
-Defines whether the inline plugins should be compressed. The example below shows how to disable compression:
+Defines whether the inline plugins should be compressed. It **must** be called before the `inline_plugin` and `version` methods. The example below shows how to disable compression:
+
+```rb
+# config/initializers/ckeditor5.rb
+
+CKEditor5::Rails.configure do
+  compression enabled: false
+
+  # ... other configuration
+end
+```
+
+:warning: Compression is enabled by default, and it's recommended to keep it enabled for production environments. It reduces the size of the inline plugins and patches, which improves the loading time of the editor.
+If you want to disable compression for a specific plugin, you can pass the `compress: false` keyword argument to the `inline_plugin` method:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -1248,9 +1261,10 @@ Defines whether the inline plugins should be compressed. The example below shows
 CKEditor5::Rails.configure do
   # ... other configuration
 
-  compression enabled: false
+  inline_plugin :MyCustomPlugin, plugin_code, compress: false
 end
 ```
+
 </details>
 
 ### Controller / View helpers 📦
