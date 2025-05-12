@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.31.0] - 2025-05-12
+
+### Features
+
+* Added support for Rails 5.x and Ruby 2.5 for legacy compatibility ([463fbc4](https://github.com/Mati365/ckeditor5-rails/commit/463fbc45254907a1ae5003a5e7f6a01e514efd0c))
+
+### Other Changes
+
+* syntax compatibility changes for ruby 2.5 ([867084a](https://github.com/Mati365/ckeditor5-rails/commit/867084affffb264058e2fa7bac6300c4583cf7d3))
+* compatibility issue with syntax for private is fix. ([274577f](https://github.com/Mati365/ckeditor5-rails/commit/274577fd69f1abe2db7b5bcd2474314be48d238d))
+* Trying if this gem works with rails 5 and ruby 2.5 ([3d0d8e5](https://github.com/Mati365/ckeditor5-rails/commit/3d0d8e52d45ab4c7b52cc93a0e13a06f1b788db5))
+* Update README.md ([ffe13f4](https://github.com/Mati365/ckeditor5-rails/commit/ffe13f431a24e1324b98fc77fb799abfca7a3005))
+
+### Tests
+
+* Tests: Add tests for various versions of ruby. ([c4f9345](https://github.com/Mati365/ckeditor5-rails/commit/c4f93455e385b4b7e9f48cfe8e2b866bfb06f8c0))
+
 ## [1.30.0] - 2025-04-11
 
 ### Features
