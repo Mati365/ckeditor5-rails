@@ -3,7 +3,7 @@
 module CKEditor5
   module Rails
     class Semver
-      SEMVER_PATTERN = /\A\d+\.\d+\.\d+\z/
+      SEMVER_PATTERN = /\A\d+\.\d+\.\d+\z/.freeze
 
       attr_reader :major, :minor, :patch
 

@@ -5,7 +5,7 @@ require_relative '../editor/props_inline_plugin'
 module CKEditor5::Rails::Plugins
   class CustomTranslationsLoader < CKEditor5::Rails::Editor::PropsInlinePlugin
     def initialize(translations, **kwargs) # rubocop:disable Metrics/MethodLength
-      code = <<~JS.freeze
+      code = <<~JS
         const { Plugin } = await import('ckeditor5');
 
         function resolveTranslationReferences(uiLanguage, config, visited = new WeakSet()) {

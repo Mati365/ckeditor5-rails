@@ -34,7 +34,7 @@ require 'rspec/rails'
 require 'rspec/expectations'
 require 'rspec-html-matchers'
 
-Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
+Dir[File.expand_path('support/**/*.rb', __dir__)].sort.each { |f| require f }
 
 Rails.application.initialize! unless Rails.application.initialized?
 
