@@ -37,12 +37,6 @@ module CKEditor5::Rails
         instance_eval(&block) if block_given?
       end
 
-      def deconstruct_keys(keys)
-        keys.index_with do |key|
-          public_send(key)
-        end
-      end
-
       # @example Copy preset and modify it
       #   original = PresetBuilder.new
       #   copied = original.initialize_copy(original)

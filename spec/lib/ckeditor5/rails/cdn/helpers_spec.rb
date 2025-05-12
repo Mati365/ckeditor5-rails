@@ -202,17 +202,6 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
       end
     end
 
-    context 'with missing required parameters' do
-      before do
-        allow(helper).to receive(:merge_with_editor_preset).and_return({})
-      end
-
-      it 'raises error about missing required parameters' do
-        expect { helper.ckeditor5_assets(preset: :default) }
-          .to raise_error(NoMatchingPatternKeyError)
-      end
-    end
-
     context 'destructure non-matching preset override' do
       before do
         RSpec::Mocks.space.proxy_for(CKEditor5::Rails::Engine).reset

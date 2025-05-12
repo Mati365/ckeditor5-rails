@@ -20,11 +20,7 @@ module CKEditor5::Rails::Presets
     #   group = Group.new('Emoji', label: 'Emoticons')
     #   group.item('smiley', '😊')
     class Group
-      attr_reader :name, :label
-
-      private
-
-      attr_reader :items
+      attr_reader :name, :label, :items
 
       # Initialize a new special characters group
       #

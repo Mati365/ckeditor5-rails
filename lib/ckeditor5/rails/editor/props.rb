@@ -30,9 +30,9 @@ module CKEditor5::Rails::Editor
 
     def to_attributes
       {
-        type: EDITOR_TYPES[@type],
-        **serialized_attributes.transform_keys(&:to_sym)
+        type: EDITOR_TYPES[@type]
       }
+        .merge(serialized_attributes)
     end
 
     def self.valid_editor_type?(type)
