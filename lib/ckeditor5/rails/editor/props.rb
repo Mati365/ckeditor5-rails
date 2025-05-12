@@ -31,7 +31,7 @@ module CKEditor5::Rails::Editor
     def to_attributes
       {
         type: EDITOR_TYPES[@type],
-        **serialized_attributes
+        **serialized_attributes.transform_keys(&:to_sym)
       }
     end
 

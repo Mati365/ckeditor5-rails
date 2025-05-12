@@ -4,13 +4,11 @@ module CKEditor5::Rails
   module Cdn::Concerns
     module BundleBuilder
       def create_preset_bundle(preset)
-        preset => {
-          cdn:,
-          version:,
-          translations:,
-          ckbox:,
-          premium:
-        }
+        cdn = preset.cdn
+        version = preset.version
+        translations = preset.translations
+        ckbox = preset.ckbox
+        premium = preset.premium
 
         bundle = build_base_cdn_bundle(cdn, version, translations)
         bundle << build_premium_cdn_bundle(cdn, version, translations) if premium

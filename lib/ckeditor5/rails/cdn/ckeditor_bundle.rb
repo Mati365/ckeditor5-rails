@@ -43,7 +43,7 @@ module CKEditor5::Rails
       end
 
       def translations_js_url_imports
-        translations.filter_map do |lang|
+        translations.map do |lang|
           next if lang == :en
 
           url = create_cdn_url(import_name, version, "translations/#{lang}.js")
@@ -53,7 +53,7 @@ module CKEditor5::Rails
             import_name: "#{import_name}/translations/#{lang}.js",
             translation: true
           )
-        end
+        end.compact
       end
     end
   end
