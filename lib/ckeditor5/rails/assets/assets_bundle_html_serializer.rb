@@ -52,9 +52,11 @@ module CKEditor5::Rails::Assets
     private
 
     def window_scripts_tags(nonce: nil)
-      scripts = bundle.scripts.filter_map do |script|
-        tag.script(src: script.url, nonce: nonce, crossorigin: 'anonymous') if script.window?
-      end
+      scripts = bundle.scripts.map do |script|
+        if script.window?
+          tag.script(src: script.url, nonce: nonce, crossorigin: 'anonymous')
+        end
+      end.compact
 
       safe_join(scripts)
     end

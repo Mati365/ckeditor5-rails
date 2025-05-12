@@ -21,7 +21,10 @@ module CKEditor5::Rails::Presets
     #   group.item('smiley', '😊')
     class Group
       attr_reader :name, :label
-      private attr_reader :items
+
+      private
+
+      attr_reader :items
 
       # Initialize a new special characters group
       #

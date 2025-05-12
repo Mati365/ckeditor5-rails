@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.email = 'cziken58@gmail.com'
   s.homepage = 'https://github.com/Mati365/ckeditor5-rails'
-  s.required_ruby_version = '>= 3.0.0'
+  s.required_ruby_version = '>= 2.5.0'
   s.metadata = {
     'homepage_uri' => 'https://github.com/Mati365/ckeditor5-rails',
     'documentation_uri' => 'https://github.com/Mati365/ckeditor5-rails',
@@ -30,6 +30,6 @@ Gem::Specification.new do |s|
   s.files = Dir['lib/**/*'] + ['LICENSE', 'Gemfile', 'README.md']
 
   s.require_paths = ['lib']
-  s.add_runtime_dependency 'rails', '>= 6.0', '< 9.0'
+  s.add_runtime_dependency 'rails', '>= 5.2', '< 9.0'
   s.add_runtime_dependency 'terser', '~> 1.0'
 end
