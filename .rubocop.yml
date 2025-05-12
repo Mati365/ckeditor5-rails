@@ -4,8 +4,8 @@ require:
 AllCops:
   NewCops: disable
   SuggestExtensions: false
-  TargetRubyVersion: 3.0.0
-  TargetRailsVersion: 6.1
+  TargetRubyVersion: 2.5.0
+  TargetRailsVersion: 5.0
 
 Metrics/AbcSize:
   Enabled: false
