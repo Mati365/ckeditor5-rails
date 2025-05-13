@@ -36,7 +36,7 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
       subject(:props) { described_class.new(type, config, bundle: bundle, editable_height: '500px') }
 
       it 'includes editable-height attribute' do
-        expect(props.to_attributes['editable-height']).to eq('500px')
+        expect(props.to_attributes[:'editable-height']).to eq('500px')
       end
     end
 
@@ -77,12 +77,12 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
 
       it 'accepts integer values' do
         props = described_class.new(type, config, bundle: bundle, editable_height: 500)
-        expect(props.to_attributes['editable-height']).to eq('500px')
+        expect(props.to_attributes[:'editable-height']).to eq('500px')
       end
 
       it 'accepts pixel string values' do
         props = described_class.new(type, config, bundle: bundle, editable_height: '500px')
-        expect(props.to_attributes['editable-height']).to eq('500px')
+        expect(props.to_attributes[:'editable-height']).to eq('500px')
       end
 
       it 'raises error for invalid values' do

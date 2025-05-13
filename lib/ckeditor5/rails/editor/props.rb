@@ -30,9 +30,14 @@ module CKEditor5::Rails::Editor
 
     def to_attributes
       {
+        bundle: bundle.to_json,
+        plugins: serialize_plugins,
+        config: serialize_config,
+        watchdog: watchdog,
         type: EDITOR_TYPES[@type]
       }
-        .merge(serialized_attributes)
+        .merge(editable_height ? { 'editable-height': editable_height } : {})
+        .transform_keys(&:to_sym)
     end
 
     def self.valid_editor_type?(type)
@@ -42,16 +47,6 @@ module CKEditor5::Rails::Editor
     private
 
     attr_reader :bundle, :watchdog, :type, :config, :editable_height
-
-    def serialized_attributes
-      {
-        bundle: bundle.to_json,
-        plugins: serialize_plugins,
-        config: serialize_config,
-        watchdog: watchdog
-      }
-        .merge(editable_height ? { 'editable-height' => editable_height } : {})
-    end
 
     def serialize_plugins
       (config[:plugins] || []).map { |plugin| PropsBasePlugin.normalize(plugin).to_h }.to_json
