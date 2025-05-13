@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.31.1] - 2025-05-13
+
+### Bug Fixes
+
+* Incorrect properties serialization on Ruby 2.5. ([af8d426](https://github.com/Mati365/ckeditor5-rails/commit/af8d426eff0960ae75412a6c44fac57f69ca2359))
+
 ## [1.31.0] - 2025-05-12
 
 ### Features
