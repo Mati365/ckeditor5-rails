@@ -10,6 +10,10 @@
 
 CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEditor 5 with Rails applications through web components and helper methods. This gem supports various editor types, including classic, inline, balloon, and decoupled editors. It also includes support for custom plugins, translations, and configuration options.
 
+**Requirements:**
+  * Ruby >= 2.5
+  * Rails >= 5.0*
+  
 > [!IMPORTANT]
 > This gem is unofficial and not maintained by CKSource. For official CKEditor 5 documentation, visit [ckeditor.com](https://ckeditor.com/docs/ckeditor5/latest/). If you encounter any issues in editor, please report them on the [GitHub repository](https://github.com/ckeditor/ckeditor5/issues).
 
