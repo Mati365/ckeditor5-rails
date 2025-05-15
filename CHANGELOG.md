@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.31.2] - 2025-05-15
+
+### Features
+
+* Update CKEditor to version 45.1.0 ([568b034](https://github.com/Mati365/ckeditor5-rails/commit/568b034dc308375f05bdd27b9adec96d23819a21))
+
+### Documentation
+
+* Add minimum Ruby / Rails version info. ([b535931](https://github.com/Mati365/ckeditor5-rails/commit/b535931f9547c29fc477e1e56ad32d035ea8ddb9))
+
 ## [1.31.1] - 2025-05-13
 
 ### Bug Fixes
