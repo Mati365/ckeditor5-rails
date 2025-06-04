@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.3] - 2025-06-04
+
+### Features
+
+* Update CKEditor to version 45.2.0 ([7d9002c](https://github.com/Mati365/ckeditor5-rails/commit/7d9002ceba2cb4c4adb243d2619f9cb38dbf90ba))
+* bump editor in manual demos ([f23b26e](https://github.com/Mati365/ckeditor5-rails/commit/f23b26e5f695e0fc9bbaa5329123b73c538054f2))
+
 ## [1.31.2] - 2025-05-15
 
 ### Features
