@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.31.4] - 2025-06-25
+
+### Features
+
+* Update CKEditor to version 45.2.1 ([76e2363](https://github.com/Mati365/ckeditor5-rails/commit/76e23633cf1fffb8f7b9a5c2f99dc20f3f2f813b))
+
+### Other Changes
+
+* Update README.md ([796ae66](https://github.com/Mati365/ckeditor5-rails/commit/796ae66339dae0d1de7a6e869e868a9b30800fe9))
+
 ## [1.31.3] - 2025-06-04
 
 ### Features
