@@ -200,6 +200,14 @@ RSpec.describe CKEditor5::Rails::Cdn::Helpers do
 
         expect(context[:preset].language).to eq({ ui: :pl, content: :pl })
       end
+
+      it 'should set language with normalized separated code' do
+        preset.language(:'zh-CN')
+
+        helper.ckeditor5_assets(preset: :default)
+
+        expect(context[:preset].language).to eq({ ui: :'zh-cn', content: :'zh-cn' })
+      end
     end
 
     context 'destructure non-matching preset override' do
