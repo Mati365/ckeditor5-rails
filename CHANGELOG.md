@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.31.6] - 2025-06-30
+
+### Bug Fixes
+
+* add missing normalization in inline initialziation ([f6859f0](https://github.com/Mati365/ckeditor5-rails/commit/f6859f0ca4e216643282e8233a1452af94f9b5d6))
+
 ## [1.31.5] - 2025-06-30
 
 ### Bug Fixes
