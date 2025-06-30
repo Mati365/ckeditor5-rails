@@ -169,7 +169,7 @@ module CKEditor5::Rails
       if language.present?
         new_preset.language(language)
       elsif !new_preset.language?
-        new_preset.language(I18n.locale)
+        new_preset.language(I18n.locale.downcase)
       end
 
       validate_required_preset_params!(new_preset, preset)
