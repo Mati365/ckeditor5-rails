@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.31.5] - 2025-06-30
+
+### Bug Fixes
+
+* not working `zn-CN` language ([93ecb4b](https://github.com/Mati365/ckeditor5-rails/commit/93ecb4bbbe4b649489e644a2f9ba80172ec8ed97))
+
 ## [1.31.4] - 2025-06-25
 
 ### Features
