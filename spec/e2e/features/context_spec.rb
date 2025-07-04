@@ -17,7 +17,7 @@ RSpec.describe 'CKEditor5 Context Integration', type: :feature, js: true do
   end
 
   it 'allows editing content in context editors' do
-    editors = all('.ck-editor__editable')
+    editors = all('.ck-editor__editable', count: 2, wait: 10)
 
     # Test first editor
     editors[0].click
