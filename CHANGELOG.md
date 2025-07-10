@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.31.7] - 2025-07-10
+
+### Features
+
+* Update CKEditor to version 46.0.0 ([6db0753](https://github.com/Mati365/ckeditor5-rails/commit/6db0753013374c9c7e53bdfb455f8dfe3dae0e0a))
+
+### Bug Fixes
+
+* add regression tests for chineese lang. ([1143a7f](https://github.com/Mati365/ckeditor5-rails/commit/1143a7fc8d329366eb52245a51a9102201eb8624))
+
+### Tests
+
+* Tests: less flaky context checks ([ec43689](https://github.com/Mati365/ckeditor5-rails/commit/ec43689b80407c626446ff83e3b8b22e0b8fec00))
+
 ## [1.31.6] - 2025-06-30
 
 ### Bug Fixes
