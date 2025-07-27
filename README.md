@@ -21,6 +21,17 @@ CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEdi
   <img src="docs/intro-classic-editor.png" alt="CKEditor 5 Classic Editor in Ruby on Rails application">
 </p>
 
+## Psst... 👀
+
+If you're looking for similar stuff, check these out:
+
+* [ckeditor5-phoenix](https://github.com/Mati365/ckeditor5-phoenix)
+  Seamless CKEditor 5 integration for Phoenix Framework. Plug & play support for LiveView forms with dynamic content, localization, and custom builds.
+
+* [ckeditor5-livewire](https://github.com/Mati365/ckeditor5-livewire)
+  Drop-in CKEditor 5 solution for Laravel + Livewire apps. Works great with Blade forms too. Includes JS hooks, flexible config, and easy customization.
+
+
 ## Installation 🛠️
 
 Add this line to your application's Gemfile:
