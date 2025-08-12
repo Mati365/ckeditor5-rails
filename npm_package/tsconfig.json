@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es2024",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": true,
+    "outDir": "./dist/esm"
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.test.ts"
+  ]
+}

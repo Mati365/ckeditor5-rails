@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       tags:
-        description: 'Tags to specify which parts of the playbook to run'
+        description: Tags to specify which parts of the playbook to run
         required: false
         default: ''
   schedule:
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.12'
-          cache: 'pip'
+          cache: pip
 
       - name: Save ansible private key to file
         run: |

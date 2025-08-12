@@ -1,27 +1,31 @@
-class CKEditorContextComponent extends HTMLElement {
+import type { ContextWatchdog } from 'ckeditor5';
+
+import { execIfDOMReady, loadAsyncImports, resolveConfigElementReferences } from 'src/helpers';
+
+import type { CKEditorComponent } from './editor';
+
+export class CKEditorContextComponent extends HTMLElement {
+  instance: ContextWatchdog | null = null;
+
+  instancePromise = Promise.withResolvers<ContextWatchdog>();
+
+  #connectedEditors = new Set<CKEditorComponent>();
+
   static get observedAttributes() {
     return ['plugins', 'config'];
   }
 
-  /** @type {import('ckeditor5').Context|null} */
-  instance = null;
-
-  /** @type {Promise<import('ckeditor5').Context>} */
-  instancePromise = Promise.withResolvers();
-
-  /** @type {Set<CKEditorComponent>} */
-  #connectedEditors = new Set();
-
   async connectedCallback() {
     try {
       execIfDOMReady(() => this.#initializeContext());
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to initialize context:', error);
       this.dispatchEvent(new CustomEvent('context-error', { detail: error }));
     }
   }
 
-  async attributeChangedCallback(name, oldValue, newValue) {
+  async attributeChangedCallback(_: unknown, oldValue: string | null, newValue: string | null) {
     if (oldValue !== null && oldValue !== newValue) {
       await this.#initializeContext();
     }
@@ -37,18 +41,18 @@ class CKEditorContextComponent extends HTMLElement {
   /**
    * Register editor component with this context
    *
-   * @param {CKEditorComponent} editor
+   * @param editor - Editor component to register.
    */
-  registerEditor(editor) {
+  registerEditor(editor: CKEditorComponent) {
     this.#connectedEditors.add(editor);
   }
 
   /**
    * Unregister editor component from this context
    *
-   * @param {CKEditorComponent} editor
+   * @param editor - Editor component to unregister
    */
-  unregisterEditor(editor) {
+  unregisterEditor(editor: CKEditorComponent) {
     this.#connectedEditors.delete(editor);
   }
 
@@ -59,7 +63,7 @@ class CKEditorContextComponent extends HTMLElement {
    */
   async #initializeContext() {
     if (this.instance) {
-      this.instancePromise = Promise.withResolvers();
+      this.instancePromise = Promise.withResolvers<ContextWatchdog>();
 
       await this.instance.destroy();
 
@@ -68,7 +72,7 @@ class CKEditorContextComponent extends HTMLElement {
 
     // Broadcast context initialization event
     window.dispatchEvent(
-      new CustomEvent('ckeditor:context:attach:before', { detail: { element: this } })
+      new CustomEvent('ckeditor:context:attach:before', { detail: { element: this } }),
     );
 
     const { Context, ContextWatchdog } = await import('ckeditor5');
@@ -77,16 +81,16 @@ class CKEditorContextComponent extends HTMLElement {
 
     // Broadcast context mounting event with configuration
     window.dispatchEvent(
-      new CustomEvent('ckeditor:context:attach', { detail: { config, element: this } })
+      new CustomEvent('ckeditor:context:attach', { detail: { config, element: this } }),
     );
 
     this.instance = new ContextWatchdog(Context, {
-      crashNumberLimit: 10
+      crashNumberLimit: 10,
     });
 
     await this.instance.create({
       ...config,
-      plugins
+      plugins,
     });
 
     this.instance.on('itemError', (...args) => {
@@ -98,7 +102,7 @@ class CKEditorContextComponent extends HTMLElement {
 
     // Reinitialize connected editors.
     await Promise.all(
-      [...this.#connectedEditors].map(editor => editor.reinitializeEditor())
+      [...this.#connectedEditors].map(editor => editor.reinitializeEditor()),
     );
   }
 
@@ -116,7 +120,7 @@ class CKEditorContextComponent extends HTMLElement {
   #getConfig() {
     const config = JSON.parse(this.getAttribute('config') || '{}');
 
-    return resolveElementReferences(config);
+    return resolveConfigElementReferences(config);
   }
 }
 

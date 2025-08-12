@@ -59,3 +59,7 @@ sandbox/tmp/
 sandbox/log/
 infra/keys/ansible/*
 !infra/keys/ansible/.gitkeep
+
+# Node things
+**/node_modules/
+**/dist
