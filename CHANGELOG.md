@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.32.1] - 2025-08-12
+
+### Other Changes
+
+* infra: sync release gem with npm package ([d29c36d](https://github.com/Mati365/ckeditor5-rails/commit/d29c36d879b4ed9e05c5af6b8a41bd62d53481c2))
+
 ## [1.32.0] - 2025-08-12
 
 ### Features
