@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.32.2] - 2025-08-12
+
+### Other Changes
+
+* infra: revert publisher ([3e25232](https://github.com/Mati365/ckeditor5-rails/commit/3e252322f62cf086e5052b768c891b1561030ae9))
+
 ## [1.32.1] - 2025-08-12
 
 ### Other Changes
