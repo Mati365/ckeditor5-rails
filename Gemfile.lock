@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ckeditor5 (1.31.7)
+    ckeditor5 (1.31.8)
       rails (>= 5.2, < 9.0)
       terser (~> 1.0)
 
