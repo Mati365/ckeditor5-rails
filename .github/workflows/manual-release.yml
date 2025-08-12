@@ -27,8 +27,6 @@ jobs:
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Configure Git
         run: |
@@ -54,6 +52,9 @@ jobs:
 
       - name: Install npm dependencies
         run: npm ci
+
+      - name: Build npm_package
+        run: npm run npm_package:build
 
       - name: Show changes
         run: |
