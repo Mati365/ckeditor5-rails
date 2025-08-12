@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.32.3] - 2025-08-12
+
+### Other Changes
+
+* infra: adjust registry url ([28d4c22](https://github.com/Mati365/ckeditor5-rails/commit/28d4c22657b77e9726d24a281d2584a1996c5beb))
+
 ## [1.32.2] - 2025-08-12
 
 ### Other Changes
