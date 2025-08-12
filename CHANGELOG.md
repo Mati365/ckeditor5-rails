@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.31.8] - 2025-08-12
+
+### Features
+
+* Update CKEditor to version 46.0.1 ([0a0e98d](https://github.com/Mati365/ckeditor5-rails/commit/0a0e98d8be677b5707819f73d191ece4b14b9642))
+
+### Other Changes
+
+* Update README.md ([3501367](https://github.com/Mati365/ckeditor5-rails/commit/35013677925c5dba54a918654f5f24d0d91badcb))
+* Build(deps): Bump requests from 2.32.3 to 2.32.4 in /infra ([6810b5a](https://github.com/Mati365/ckeditor5-rails/commit/6810b5a5ab79b91ba71e38d79ae8c3fb82d55184))
+
 ## [1.31.7] - 2025-07-10
 
 ### Features
