@@ -5,9 +5,10 @@ RUN apt-get update && \
     build-essential \
     libc-dev \
     sqlite3 \
-    nodejs \
-    npm \
+    curl \
     libyaml-dev && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
     adduser --disabled-password --uid 1001 --home /app app && \
     mkdir -p /app && \
     rm -rf /var/lib/apt/lists/*
@@ -17,12 +18,15 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ckeditor5.gemspec ./
 COPY lib/ lib/
 COPY sandbox/ sandbox/
+COPY package.json package-lock.json ./
+COPY npm_package/ npm_package/
 
 RUN chown -R app:app /app
 
 USER app
 
-RUN gem install bundler && \
+RUN npm ci && \
+    gem install bundler && \
     bundle config set without 'development test' && \
     bundle install
 
