@@ -3,6 +3,9 @@ name: JS Checks
 on:
   push:
 
+permissions:
+  contents: read
+
 jobs:
   js-checks:
     runs-on: ubuntu-latest
