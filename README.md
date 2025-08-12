@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Gem Version](https://img.shields.io/gem/v/ckeditor5?style=flat-square)](https://rubygems.org/gems/ckeditor5)
 [![Gem Total Downloads](https://img.shields.io/gem/dt/ckeditor5?style=flat-square&color=orange)](https://rubygems.org/gems/ckeditor5)
+![NPM Version](https://img.shields.io/npm/v/ckeditor5-rails?style=flat-square)
 [![Coverage](https://img.shields.io/codecov/c/github/mati365/ckeditor5-rails?style=flat-square)](https://codecov.io/gh/mati365/ckeditor5-rails)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](http://makeapullrequest.com)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/mati365/ckeditor5-rails?style=flat-square)
