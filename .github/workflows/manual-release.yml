@@ -37,6 +37,10 @@ jobs:
         run: |
           sed -i "/^[[:space:]]*VERSION = / {/DEFAULT_CKEDITOR_VERSION/! s/'[0-9.]*'/'${{ github.event.inputs.version }}'/}" lib/ckeditor5/rails/version.rb
 
+      - name: Bump npm package version
+        run: |
+          npm version --no-git-tag-version ${{ github.event.inputs.version }} --prefix npm_package
+
       - name: Update changelog
         run: |
           chmod +x bin/generate_changelog.rb
@@ -56,7 +60,7 @@ jobs:
 
       - name: Commit changes
         run: |
-          git add lib/ckeditor5/rails/version.rb Gemfile.lock CHANGELOG.md
+          git add lib/ckeditor5/rails/version.rb Gemfile.lock CHANGELOG.md npm_package/package.json
           git commit -m "Bump version to ${{ github.event.inputs.version }} and update dependencies"
           git push origin HEAD:main
 

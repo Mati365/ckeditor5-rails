@@ -1,4 +1,4 @@
-name: Publish Gem
+name: Publish Gem and JS package
 
 on:
   push:
@@ -39,4 +39,11 @@ jobs:
         env:
           HEADLESS: true
 
-      - uses: rubygems/release-gem@v1
+      - name: Publish gem
+        uses: rubygems/release-gem@v1
+
+      - name: Publish npm package
+        run: npm publish --access public
+        working-directory: ./npm_package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
