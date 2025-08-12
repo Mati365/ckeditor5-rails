@@ -18,7 +18,7 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ckeditor5.gemspec ./
 COPY lib/ lib/
 COPY sandbox/ sandbox/
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json tsconfig.json tsconfig.base.json ./
 COPY npm_package/ npm_package/
 
 RUN chown -R app:app /app
