@@ -2,9 +2,9 @@ name: Ruby
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
   schedule:
     - cron: '0 8 * * *'
 
@@ -20,32 +20,41 @@ jobs:
         ruby-version: ['3.3']
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
 
-    - name: Run Brakeman
-      run: bundle exec brakeman --force --skip-files demo/
+      - name: Install npm dependencies
+        run: npm ci
 
-    - name: Run RuboCop
-      run: bundle exec rubocop
+      - name: Build npm_package
+        run: npm run npm_package:build
 
-    - name: Run spec tests
-      run: bundle exec rake spec
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
 
-    - name: Run e2e tests
-      run: bundle exec rake e2e
-      env:
-        HEADLESS: true
+      - name: Run Brakeman
+        run: bundle exec brakeman --force --skip-files demo/
 
-    - name: Run build
-      run: bundle exec rake build
+      - name: Run RuboCop
+        run: bundle exec rubocop
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v5
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Run spec tests
+        run: bundle exec rake spec
+
+      - name: Run e2e tests
+        run: bundle exec rake e2e
+        env:
+          HEADLESS: true
+
+      - name: Run build
+        run: bundle exec rake build
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

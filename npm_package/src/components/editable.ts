@@ -1,4 +1,8 @@
-class CKEditorEditableComponent extends HTMLElement {
+import type { CKEditorComponent } from './editor';
+
+import { execIfDOMReady } from '../helpers/exec-if-dom-ready';
+
+export class CKEditorEditableComponent extends HTMLElement {
   /**
    * List of attributes that trigger updates when changed
    *
@@ -11,33 +15,27 @@ class CKEditorEditableComponent extends HTMLElement {
 
   /**
    * Gets the name of this editable region
-   *
-   * @returns {string} The name attribute value
    */
   get name() {
-    // The default value is set mainly for decoupled editors where the name is not required.
     return this.getAttribute('name') || 'editable';
   }
 
   /**
-   * Gets the actual editable DOM element
-   * @returns {HTMLDivElement|null} The div element containing editable content
+   * Gets the actual editable DOM element.
    */
   get editableElement() {
-    return this.querySelector('div');
+    return this.querySelector('div')!;
   }
 
   /**
    * Lifecycle callback when element is added to DOM
    * Sets up the editable element and registers it with the parent editor
-   *
-   * @throws {Error} If not used as child of ckeditor-component
    */
   connectedCallback() {
     execIfDOMReady(() => {
       const editorComponent = this.#queryEditorElement();
 
-      if (!editorComponent ) {
+      if (!editorComponent) {
         throw new Error('ckeditor-editable-component must be a child of ckeditor-component');
       }
 
@@ -45,15 +43,16 @@ class CKEditorEditableComponent extends HTMLElement {
       this.style.display = 'block';
 
       if (editorComponent.isDecoupled()) {
-        editorComponent.runAfterEditorReady(editor => {
-          this.appendChild(editor.ui.view[this.name].element);
+        editorComponent.runAfterEditorReady((editor) => {
+          this.appendChild((editor.ui.view as any)[this.name].element);
         });
-      } else {
+      }
+      else {
         if (!this.name) {
           throw new Error('Editable component missing required "name" attribute');
         }
 
-        editorComponent.editables[this.name] = this;
+        editorComponent.editables![this.name] = this;
       }
     });
   }
@@ -61,12 +60,8 @@ class CKEditorEditableComponent extends HTMLElement {
   /**
    * Lifecycle callback for attribute changes
    * Handles name changes and propagates other attributes to editable element
-   *
-   * @param {string} name - Name of changed attribute
-   * @param {string|null} oldValue - Previous value
-   * @param {string|null} newValue - New value
    */
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (oldValue === newValue) {
       return;
     }
@@ -79,11 +74,12 @@ class CKEditorEditableComponent extends HTMLElement {
       const editorComponent = this.#queryEditorElement();
 
       if (editorComponent) {
-        editorComponent.editables[newValue] = editorComponent.editables[oldValue];
-        delete editorComponent.editables[oldValue];
+        editorComponent.editables![newValue] = editorComponent.editables![oldValue]!;
+        delete editorComponent.editables![oldValue];
       }
-    } else {
-      this.editableElement.setAttribute(name, newValue);
+    }
+    else {
+      this.editableElement.setAttribute(name, newValue!);
     }
   }
 
@@ -95,17 +91,14 @@ class CKEditorEditableComponent extends HTMLElement {
     const editorComponent = this.#queryEditorElement();
 
     if (editorComponent) {
-      delete editorComponent.editables[this.name];
+      delete editorComponent.editables![this.name];
     }
   }
 
   /**
    * Finds the parent editor component
-   *
-   * @private
-   * @returns {CKEditorComponent|null} Parent editor component or null if not found
    */
-  #queryEditorElement() {
+  #queryEditorElement(): CKEditorComponent | null {
     return this.closest('ckeditor-component') || document.body.querySelector('ckeditor-component');
   }
 }

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version number (X.Y.Z)'
+        description: Version number (X.Y.Z)
         required: true
         type: string
 
@@ -24,6 +24,9 @@ jobs:
         with:
           ruby-version: '3.3'
           bundler-cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
 
       - name: Configure Git
         run: |
@@ -46,6 +49,12 @@ jobs:
         run: |
           bundle config set frozen false
           bundle install
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build npm_package
+        run: npm run npm_package:build
 
       - name: Show changes
         run: |

@@ -13,7 +13,7 @@ CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEdi
 **Requirements:**
   * Ruby >= 2.5
   * Rails >= 5.0
-  
+
 > [!IMPORTANT]
 > This gem is unofficial and not maintained by CKSource. For official CKEditor 5 documentation, visit [ckeditor.com](https://ckeditor.com/docs/ckeditor5/latest/). If you encounter any issues in editor, please report them on the [GitHub repository](https://github.com/ckeditor/ckeditor5/issues).
 
@@ -134,6 +134,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
 ## Table of Contents 📚
 
 - [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
+  - [Psst... 👀](#psst-)
   - [Installation 🛠️](#installation-️)
   - [Try Demos! 🎮 ✨](#try-demos--)
   - [Table of Contents 📚](#table-of-contents-)
@@ -212,6 +213,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
     - [`editor-change` event](#editor-change-event)
     - [Inline event handling](#inline-event-handling)
   - [Gem Development 🛠](#gem-development-)
+    - [Building NPM package 📦](#building-npm-package-)
     - [Running tests 🧪](#running-tests-)
   - [Trademarks 📜](#trademarks-)
   - [License 📜](#license-)
@@ -1928,13 +1930,13 @@ For example:
 ⚠️ Direct access of `instance` property of the web component. Keep in mind it's unsafe and may cause issues if the editor is not loaded yet.
 
 ```js
-document.getElementById('editor').instance
+document.getElementById('editor').instance;
 ```
 
 👌 Accessing the editor instance using `instancePromise` property. It's a promise that resolves to the editor instance when the editor is ready.
 
 ```js
-document.getElementById('editor').instancePromise.then(editor => {
+document.getElementById('editor').instancePromise.then((editor) => {
   console.log(editor);
 });
 ```
@@ -1942,7 +1944,7 @@ document.getElementById('editor').instancePromise.then(editor => {
 ✅ Accessing the editor through the `runAfterEditorReady` helper method. It's a safe way to access the editor instance when the editor is ready.
 
 ```js
-document.getElementById('editor').runAfterEditorReady(editor => {
+document.getElementById('editor').runAfterEditorReady((editor) => {
   console.log(editor);
 });
 ```
@@ -2342,7 +2344,16 @@ If you want to contribute to the gem, you can clone the repository and run the f
 ```sh
 gem install bundler -v 2.5.22
 bundle install
+npm install
 bundle exec guard -g rails
+```
+
+### Building NPM package 📦
+
+To build the NPM package, you can run the following command:
+
+```sh
+npm run build
 ```
 
 ### Running tests 🧪

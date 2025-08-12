@@ -21,11 +21,17 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+
       - name: Run version checker
         id: version_check
         run: ruby bin/check_ckeditor_version.rb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build npm_package
+        run: npm run npm_package:build
 
       - name: Run e2e tests
         run: bundle exec rake e2e

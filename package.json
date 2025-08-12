@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "scripts": {
+    "lint": "npx eslint",
+    "npm_package:watch": "npm run watch --workspace=ckeditor5-rails",
+    "npm_package:build": "npm run build --workspace=ckeditor5-rails"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.15.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "esbuild": "^0.25.5",
+    "eslint": "^9.29.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "typescript": "^5.8.3"
+  },
+  "workspaces": [
+    "npm_package"
+  ],
+  "lint-staged": {
+    "*.{ts,js,mjs}": [
+      "eslint --fix"
+    ]
+  }
+}

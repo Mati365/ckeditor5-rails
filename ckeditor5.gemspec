@@ -27,7 +27,10 @@ Gem::Specification.new do |s|
 
   s.extra_rdoc_files = ['README.md']
   s.test_files = Dir['spec/**/*']
-  s.files = Dir['lib/**/*'] + ['LICENSE', 'Gemfile', 'README.md']
+  s.files =
+    Dir['lib/**/*'] +
+    Dir['npm_package/dist/**/*'] +
+    ['npm_package/package.json', 'LICENSE', 'Gemfile', 'README.md']
 
   s.require_paths = ['lib']
   s.add_runtime_dependency 'rails', '>= 5.2', '< 9.0'
