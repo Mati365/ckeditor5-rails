@@ -2,7 +2,7 @@
 
 module CKEditor5
   module Rails
-    VERSION = '1.31.8'
+    VERSION = '1.32.0'
 
     DEFAULT_CKEDITOR_VERSION = '46.0.1'
   end

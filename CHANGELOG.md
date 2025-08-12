@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.32.0] - 2025-08-12
+
+### Features
+
+* convert npm package to typescript ([7821fa3](https://github.com/Mati365/ckeditor5-rails/commit/7821fa37e0eed1e387b9d53aba16d710cabdfd4b))
+
+### Other Changes
+
+* infra: simplify infra ([dc16172](https://github.com/Mati365/ckeditor5-rails/commit/dc161727b434bb49a8cce59cdbdca9858fe63c50))
+* infra: add missing installer ([e5d3202](https://github.com/Mati365/ckeditor5-rails/commit/e5d3202352c31a31959c6fdadf01dbe75dde098a))
+* infra: improve dockerfile ([085f999](https://github.com/Mati365/ckeditor5-rails/commit/085f99905c65d693678a9299d123f7e7e794f44e))
+* infra: add missing permissions ([e1f9b3d](https://github.com/Mati365/ckeditor5-rails/commit/e1f9b3d2a28a709ba84267961b39ed4e3e2bbde0))
+* infra: adjust ci ([fa59c7b](https://github.com/Mati365/ckeditor5-rails/commit/fa59c7b9f95aaf68211d312450f180819cc87f40))
+
 ## [1.31.8] - 2025-08-12
 
 ### Features
