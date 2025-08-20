@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.32.4] - 2025-08-20
+
+### Features
+
+* Update CKEditor to version 46.0.2 ([f3ee348](https://github.com/Mati365/ckeditor5-rails/commit/f3ee3488356cce770d13fcae5067ee07920904cb))
+
+### Documentation
+
+* reorder sections ([a1be461](https://github.com/Mati365/ckeditor5-rails/commit/a1be461a5219b84aec1328ff2cccb03d43cc9412))
+
+### Other Changes
+
+* Update README.md ([4609092](https://github.com/Mati365/ckeditor5-rails/commit/460909285cd48aae46da2c5450cdb683f9df59f2))
+
 ## [1.32.3] - 2025-08-12
 
 ### Other Changes
