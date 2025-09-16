@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.32.7] - 2025-09-16
+
+### Features
+
+* Update CKEditor to version 46.1.1 ([d4b6ac7](https://github.com/Mati365/ckeditor5-rails/commit/d4b6ac741fb0e5587f911915a967e4d0c2799f4e))
+
+### Other Changes
+
+* Build(deps-dev): Bump vite from 7.1.2 to 7.1.5 ([1aeda4e](https://github.com/Mati365/ckeditor5-rails/commit/1aeda4ea1a19b53138a71059590282df7fbfacb8))
+
 ## [1.32.6] - 2025-09-11
 
 ### Features
