@@ -32,6 +32,16 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
       )
     end
 
+    context 'when bundle is nil' do
+      let(:bundle) { nil }
+
+      it 'includes bundle attribute with nil value' do
+        attributes = props.to_attributes
+        expect(attributes).to have_key(:bundle)
+        expect(attributes[:bundle]).to be_nil
+      end
+    end
+
     context 'with editable height' do
       subject(:props) { described_class.new(type, config, bundle: bundle, editable_height: '500px') }
 

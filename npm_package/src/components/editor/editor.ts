@@ -576,14 +576,14 @@ export class CKEditorComponent extends HTMLElement {
    * Checks if all required stylesheets are injected. If not, inject.
    */
   async #ensureStylesheetsInjected() {
-    await loadAsyncCSS(this.#getBundle().stylesheets || []);
+    await loadAsyncCSS(this.#getBundle()?.stylesheets || []);
   }
 
   /**
    * Checks if all required scripts are injected. If not, inject.
    */
   async #ensureWindowScriptsInjected() {
-    const windowScripts = (this.#getBundle().scripts || []).filter(script => !!script.window_name);
+    const windowScripts = (this.#getBundle()?.scripts || []).filter(script => !!script.window_name);
 
     await loadAsyncImports(windowScripts);
   }
@@ -592,7 +592,7 @@ export class CKEditorComponent extends HTMLElement {
    * Loads translation modules
    */
   async #getTranslations() {
-    const translations = this.#getBundle().scripts.filter(script => script.translation);
+    const translations = this.#getBundle()?.scripts.filter(script => script.translation);
 
     return loadAsyncImports(translations);
   }

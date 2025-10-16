@@ -46,8 +46,12 @@ In your layout:
       ⚠️ **Important**: When using `importmap-rails`, make sure the importmap
       tags are rendered after `ckeditor5_assets` helper. In this scenario,
       content is yielded before rendering `javascript_importmap_tags`.
+
+      If you are not using `importmap-rails`, you can ignore this note and just
+      include `ckeditor5_assets` helper in the head section of your layout (or using `content_for`).
     -->
     <!-- javascript_importmap_tags -->
+
     <%= yield :head %>
   </head>
   <body>
