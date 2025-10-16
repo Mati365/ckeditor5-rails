@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.33.0] - 2025-10-16
+
+### Bug Fixes
+
+* no longer crash JS scripts if `ckeditor5_assets` was rendered after `ckeditor5_editor` ([fec53c4](https://github.com/Mati365/ckeditor5-rails/commit/fec53c4bf9c30da37203551eb7a1b242785f3017))
+
 ## [1.32.8] - 2025-10-02
 
 ### Features
