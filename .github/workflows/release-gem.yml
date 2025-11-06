@@ -45,7 +45,21 @@ jobs:
       - name: Publish gem
         uses: rubygems/release-gem@v1
 
+      - name: Check if npm version exists
+        id: check_npm_version
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./npm_package/package.json').version")
+          PACKAGE_NAME=$(node -p "require('./npm_package/package.json').name")
+          if npm view "$PACKAGE_NAME@$PACKAGE_VERSION" version 2>/dev/null; then
+            echo "Version $PACKAGE_VERSION already exists in npm registry"
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Version $PACKAGE_VERSION does not exist in npm registry"
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Publish npm package
+        if: steps.check_npm_version.outputs.exists == 'false'
         run: npm publish --access public
         working-directory: ./npm_package
         env:
