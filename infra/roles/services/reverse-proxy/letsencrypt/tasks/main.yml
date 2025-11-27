@@ -1,3 +1,0 @@
-- name: Configure letsencrypt only if website.domain is set
-  include_tasks: configure.yml
-  when: website.domain

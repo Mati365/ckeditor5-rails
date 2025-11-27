@@ -1,3 +1,0 @@
-- name: Set timezone to Europe/Warsaw
-  community.general.timezone:
-    name: Europe/Warsaw
