@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.33.3] - 2025-12-04
+
+### Features
+
+* Update CKEditor to version 47.3.0 ([bc10d20](https://github.com/Mati365/ckeditor5-rails/commit/bc10d20cb4b95e800786117b38f6ccbbe8634c35))
+
+### Bug Fixes
+
+* drop self hosted site / infra ([73572a2](https://github.com/Mati365/ckeditor5-rails/commit/73572a2a715d2939e6014ca1f473ee2618c87d9a))
+
+### Other Changes
+
+* Build(deps-dev): Bump js-yaml from 4.1.0 to 4.1.1 ([66e77e4](https://github.com/Mati365/ckeditor5-rails/commit/66e77e450cfbd23c2a61987e52319a6294ae48fe))
+* chore: check if npm version already published before publishing ([6ef9ea6](https://github.com/Mati365/ckeditor5-rails/commit/6ef9ea6d558fe19450a9d3e563815130f38c3c96))
+
 ## [1.33.2] - 2025-11-06
 
 ### Features
