@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.34.0] - 2026-01-05
+
+### Features
+
+
+### Bug Fixes
+
+* General improvements and bug fixes ([HEAD](https://github.com/Mati365/ckeditor5-rails/commit/HEAD))
+
+### Documentation
+
+
+### Other Changes
+
+
+### Tests
+
+
 ## [1.33.1] - 2026-01-05
 
 ### Bug Fixes
