@@ -238,6 +238,13 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         expect(result).to include('preset-license-key')
       end
     end
+
+    context 'turbo temporary attribute' do
+      it 'includes data-turbo-temporary attribute in the editor component' do
+        result = helper.ckeditor5_editor
+        expect(result).to include('data-turbo-temporary="true"')
+      end
+    end
   end
 
   describe '#ckeditor5_editable' do
@@ -246,6 +253,11 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         'ckeditor-editable-component',
         with: { name: 'content' }
       )
+    end
+
+    it 'includes data-turbo-temporary attribute in the editable component' do
+      result = helper.ckeditor5_editable('content')
+      expect(result).to include('data-turbo-temporary="true"')
     end
   end
 
@@ -256,6 +268,11 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         with: { name: 'toolbar' }
       )
     end
+
+    it 'includes data-turbo-temporary attribute in the ui part component' do
+      result = helper.ckeditor5_ui_part('toolbar')
+      expect(result).to include('data-turbo-temporary="true"')
+    end
   end
 
   describe '#ckeditor5_toolbar' do
@@ -265,6 +282,11 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         with: { name: 'toolbar' }
       )
     end
+
+    it 'includes data-turbo-temporary attribute in the toolbar component' do
+      result = helper.ckeditor5_toolbar
+      expect(result).to include('data-turbo-temporary="true"')
+    end
   end
 
   describe '#ckeditor5_menubar' do
@@ -273,6 +295,11 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
         'ckeditor-ui-part-component',
         with: { name: 'menuBarView' }
       )
+    end
+
+    it 'includes data-turbo-temporary attribute in the menubar component' do
+      result = helper.ckeditor5_menubar
+      expect(result).to include('data-turbo-temporary="true"')
     end
   end
 end

@@ -31,7 +31,12 @@ module CKEditor5::Rails::Context
 
       tags = []
       tags << ckeditor5_inline_plugins_tags(preset)
-      tags << tag.public_send(:'ckeditor-context-component', **context_props.to_attributes, &block)
+      tags << tag.public_send(
+        :'ckeditor-context-component',
+        'data-turbo-temporary': true,
+        **context_props.to_attributes,
+        &block
+      )
 
       safe_join(tags)
     end

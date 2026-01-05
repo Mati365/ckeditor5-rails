@@ -85,7 +85,7 @@ module CKEditor5::Rails
 
       tag_attributes = html_attributes.merge(editor_props.to_attributes)
 
-      tag.public_send(:'ckeditor-component', **tag_attributes, &block)
+      tag.public_send(:'ckeditor-component', 'data-turbo-temporary': true, **tag_attributes, &block)
     end
 
     # Creates an editable area for multiroot or decoupled editors.
@@ -96,7 +96,12 @@ module CKEditor5::Rails
     # @example Creating a named editable area in multiroot editor
     #   <%= ckeditor5_editable 'content', style: 'border: 1px solid gray' %>
     def ckeditor5_editable(name = nil, **kwargs, &block)
-      tag.public_send(:'ckeditor-editable-component', name: name, **kwargs, &block)
+      tag.public_send(
+        :'ckeditor-editable-component',
+        'data-turbo-temporary': true,
+        name: name,
+        **kwargs, &block
+      )
     end
 
     # Creates a UI part component for the editor (toolbar, menubar).
@@ -107,7 +112,12 @@ module CKEditor5::Rails
     # @example Creating a toolbar component
     #   <%= ckeditor5_ui_part 'toolbar' %>
     def ckeditor5_ui_part(name, **kwargs, &block)
-      tag.public_send(:'ckeditor-ui-part-component', name: name, **kwargs, &block)
+      tag.public_send(
+        :'ckeditor-ui-part-component',
+        'data-turbo-temporary': true,
+        name: name,
+        **kwargs, &block
+      )
     end
 
     # Creates a toolbar component for decoupled editor.
