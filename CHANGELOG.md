@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.33.1] - 2026-01-05
+
+### Bug Fixes
+
+* possible crashes when used with `Turbo` ([3497744](https://github.com/Mati365/ckeditor5-rails/commit/34977448488a3441246efbd6187f2a48e65cf3a8))
+
+### Documentation
+
+* update screen ([18c76a4](https://github.com/Mati365/ckeditor5-rails/commit/18c76a476d5c6ddc5aa46d94c20f7f355275f095))
+* add symfony info ([334d833](https://github.com/Mati365/ckeditor5-rails/commit/334d833754f1573e2b92078383e5d68900ba61a6))
+
 ## [1.33.3] - 2025-12-04
 
 ### Features
