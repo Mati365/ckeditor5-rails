@@ -28,7 +28,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Install npm dependencies
@@ -60,7 +60,5 @@ jobs:
 
       - name: Publish npm package
         if: steps.check_npm_version.outputs.exists == 'false'
-        run: npm publish --access public
+        run: npm publish --access public --provenance
         working-directory: ./npm_package
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
