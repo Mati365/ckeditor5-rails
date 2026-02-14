@@ -110,6 +110,31 @@ end
 
 Voilà! You have CKEditor 5 integrated with your Rails application. 🎉
 
+### If you are not using importmap (custom bundler) 📦
+
+If your app uses a custom JS bundler (for example Vite, esbuild, or Webpack), install the npm packages and import the integration in your JavaScript bundle.
+
+```bash
+npm install ckeditor5-rails ckeditor5
+```
+
+```js
+// app/javascript/application.js (or your main bundle entry)
+
+import 'ckeditor5-rails';
+import 'ckeditor5/ckeditor5.css';
+```
+
+If you use premium features, also install `ckeditor5-premium-features` and import its CSS.
+
+```bash
+npm install ckeditor5-premium-features
+```
+
+```js
+import 'ckeditor5-premium-features/ckeditor5-premium-features.css';
+```
+
 ## Try Demos! 🎮 ✨
 
 Explore various editor configurations with the interactive [demo application](https://github.com/Mati365/ckeditor5-rails/tree/main/sandbox/app/views/demos). For additional inspiration, visit the official CKEditor 5 [examples](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html).
@@ -129,6 +154,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
 
 - [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
   - [Installation 🛠️](#installation-️)
+    - [If you are not using importmap (custom bundler) 📦](#if-you-are-not-using-importmap-custom-bundler-)
   - [Try Demos! 🎮 ✨](#try-demos--)
   - [Table of Contents 📚](#table-of-contents-)
   - [Presets 🎨](#presets-)
