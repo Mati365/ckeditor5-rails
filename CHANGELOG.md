@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.35.0] - 2026-02-14
+
+### Other Changes
+
+* ci: switch to trusted publishing ([4cfe661](https://github.com/Mati365/ckeditor5-rails/commit/4cfe66128cbee79aa117610f7239d0c30c6f5d01))
+
 ## [1.34.2] - 2026-02-12
 
 ### Features
