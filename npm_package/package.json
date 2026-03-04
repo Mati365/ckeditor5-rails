@@ -29,7 +29,7 @@
     "typecheck": "tsc --noEmit --pretty"
   },
   "dependencies": {
-    "ckeditor5": "^45.2.2",
+    "ckeditor5": "^47.6.0",
     "ckeditor5-premium-features": "^45.2.1"
   },
   "devDependencies": {
