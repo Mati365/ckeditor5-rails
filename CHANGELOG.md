@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.35.1] - 2026-03-05
+
+### Features
+
+* Update CKEditor to version 47.6.0 ([b61ea85](https://github.com/Mati365/ckeditor5-rails/commit/b61ea85d38b1492eaf029c310c54d8ebf95cc528))
+
+### Documentation
+
+* add info about bundlers setup ([d4da492](https://github.com/Mati365/ckeditor5-rails/commit/d4da492770532b96759aacb3c8d5a3c8eea52221))
+
+### Other Changes
+
+* Build(deps-dev): Bump lodash from 4.17.21 to 4.17.23 ([ab4643e](https://github.com/Mati365/ckeditor5-rails/commit/ab4643ea16b3da01c3bb8c5aec55b8cff6af6b1b))
+
 ## [1.35.0] - 2026-02-14
 
 ### Other Changes
