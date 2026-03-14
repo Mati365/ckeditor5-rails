@@ -100,9 +100,10 @@ module CKEditor5::Rails::Presets
         menubar
 
         # Configure default toolbar items
-        toolbar :undo, :redo, :|, :heading, :|, :fontFamily, :fontSize, :fontColor, :fontBackgroundColor, :alignment, :|,
-                :bold, :italic, :underline, :strikethrough, :superscript, :subscript,
-                :|, :link, :insertImage, :insertTable, :insertTableLayout, :blockQuote, :emoji, :mediaEmbed, :|,
+        toolbar :undo, :redo, :|, :heading, :|, :fontFamily, :fontSize, :fontColor,
+                :fontBackgroundColor, :alignment, :|, :bold, :italic, :underline,
+                :strikethrough, :superscript, :subscript, :|, :link, :insertImage,
+                :insertTable, :insertTableLayout, :blockQuote, :emoji, :mediaEmbed, :|,
                 :bulletedList, :numberedList, :todoList, :outdent, :indent
 
         # Configure default plugins
@@ -120,12 +121,23 @@ module CKEditor5::Rails::Presets
 
         # Configure default table toolbar
         configure :table, {
-          contentToolbar: %i[tableColumn tableRow mergeTableCells tableProperties tableCellProperties toggleTableCaption]
+          contentToolbar: %i[
+            tableColumn tableRow mergeTableCells tableProperties
+            tableCellProperties toggleTableCaption
+          ]
         }
 
         # Configure default image toolbar
         configure :image, {
-          toolbar: ['imageStyle:inline', 'imageStyle:block', 'imageStyle:wrapText', :|, :toggleImageCaption, :imageTextAlternative, :imageResize]
+          toolbar: [
+            'imageStyle:inline',
+            'imageStyle:block',
+            'imageStyle:wrapText',
+            :|,
+            :toggleImageCaption,
+            :imageTextAlternative,
+            :imageResize
+          ]
         }
       end
     end
