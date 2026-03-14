@@ -79,9 +79,10 @@ module CKEditor5::Rails
 
       delegate :version, :gpl, :premium, :cdn, :translations, :license_key,
                :type, :menubar, :plugins, :plugin, :inline_plugin,
-               :toolbar, :block_toolbar, :balloon_toolbar,
+               :toolbar, :block_toolbar, :balloon_toolbar, :special_characters,
                :language, :ckbox, :configure, :automatic_upgrades, :simple_upload_adapter,
                :editable_height, :wproofreader, :custom_translations, :apply_integration_patches,
+               :patch_plugin, :external_plugin,
                :compression, :compression?, to: :default_preset
 
       def initialize(configuration)

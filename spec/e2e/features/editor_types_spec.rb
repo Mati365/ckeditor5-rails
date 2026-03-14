@@ -63,12 +63,16 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
         });
       JS
 
+      expect(page).to have_css('.ck-editor__editable', minimum: editables.size, wait: 10)
+
       # Test each editable
       expected_data = {}
       editors.each_with_index do |editor, index|
         editor.click
         editor.send_keys([[:control, 'a'], :backspace])
+
         content = "Content for #{editables[index]}"
+
         editor.send_keys(content)
         expected_data[editables[index]] = "<p>#{content}</p>"
       end
@@ -152,7 +156,6 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
     end
 
     it 'handles dynamically added editables' do
-      # Set up event listener
       page.execute_script(<<~JS)
         window._newEditableEvents = [];
         document.querySelector('ckeditor-component').addEventListener('editor-change', (e) => {
@@ -163,7 +166,6 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
         });
       JS
 
-      # Add new editable component
       page.execute_script(<<~JS)
         const container = document.querySelector('[data-testid="multiroot-editor"]');
         const newEditable = document.createElement('ckeditor-editable-component');
@@ -171,14 +173,15 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
         container.appendChild(newEditable);
       JS
 
-      sleep 1 # Wait for component initialization
+      # Wait for the new editable to be fully initialized by CKEditor,
+      # not just present in the DOM — minimum: 3 because multiroot already has 2
+      expect(page).to have_css('.ck-editor__editable', minimum: 3, wait: 10)
 
-      # Find and interact with new editable
       new_editable = find("[name='new-root']")
       new_editable.click
+      new_editable.send_keys([[:control, 'a'], :backspace])
       new_editable.send_keys('Content for new root')
 
-      # Verify the change event
       eventually do
         events = page.evaluate_script('window._newEditableEvents')
         last_event = events.last
