@@ -21,7 +21,7 @@ CKEditor5::Rails.configure do
   end
 
   presets.define :basic, inherit: false do
-    version '45.1.0'
+    version '47.6.0'
 
     toolbar :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
             :outdent, :indent, :blockQuote, :|, :alignment, :link, :anchor, :|,
@@ -35,7 +35,7 @@ CKEditor5::Rails.configure do
   end
 
   presets.define :grouped_toolbar, inherit: false do
-    version '45.1.0'
+    version '47.6.0'
 
     toolbar do
       group :text_formatting, label: 'Text Formatting', icon: 'threeVerticalDots' do
@@ -62,7 +62,7 @@ CKEditor5::Rails.configure do
   presets.define :ultrabasic, inherit: false do
     automatic_upgrades
 
-    version '45.1.0'
+    version '47.6.0'
 
     editable_height 260
 
@@ -120,7 +120,7 @@ CKEditor5::Rails.configure do
   presets.define :balloon_block, inherit: false do
     automatic_upgrades
 
-    version '45.1.0'
+    version '47.6.0'
 
     editable_height 100
 

@@ -100,25 +100,32 @@ module CKEditor5::Rails::Presets
         menubar
 
         # Configure default toolbar items
-        toolbar :undo, :redo, :|, :heading, :|, :bold, :italic, :underline, :|,
-                :link, :insertImage, :mediaEmbed, :insertTable, :blockQuote, :|,
+        toolbar :undo, :redo, :|, :heading, :|, :fontFamily, :fontSize, :fontColor, :fontBackgroundColor, :alignment, :|,
+                :bold, :italic, :underline, :strikethrough, :superscript, :subscript,
+                :|, :link, :insertImage, :insertTable, :insertTableLayout, :blockQuote, :emoji, :mediaEmbed, :|,
                 :bulletedList, :numberedList, :todoList, :outdent, :indent
 
         # Configure default plugins
-        plugins :AccessibilityHelp, :Autoformat, :AutoImage, :Autosave,
+        plugins :Alignment, :AccessibilityHelp, :Autoformat, :AutoImage, :Autosave,
                 :BlockQuote, :Bold, :CloudServices,
-                :Essentials, :Heading, :ImageBlock, :ImageCaption, :ImageInline,
-                :ImageInsert, :ImageInsertViaUrl, :ImageResize, :ImageStyle,
-                :ImageTextAlternative, :ImageToolbar, :ImageUpload, :Indent,
-                :IndentBlock, :Italic, :Link, :LinkImage, :List, :ListProperties,
-                :MediaEmbed, :Paragraph, :PasteFromOffice, :PictureEditing,
-                :SelectAll, :Table, :TableCaption, :TableCellProperties,
+                :Essentials, :Emoji, :Heading, :FontFamily, :FontSize, :FontColor, :FontBackgroundColor,
+                :ImageBlock, :ImageCaption, :ImageInline, :ImageInsert, :ImageInsertViaUrl,
+                :ImageResize, :ImageStyle, :ImageTextAlternative, :ImageToolbar, :ImageUpload,
+                :Indent, :IndentBlock, :Italic, :Link, :LinkImage, :List, :ListProperties,
+                :MediaEmbed, :Mention, :Paragraph, :PasteFromOffice, :PictureEditing,
+                :SelectAll, :Table, :TableLayout, :TableCaption, :TableCellProperties,
                 :TableColumnResize, :TableProperties, :TableToolbar,
-                :TextTransformation, :TodoList, :Underline, :Undo, :Base64UploadAdapter
+                :TextTransformation, :TodoList, :Underline, :Strikethrough, :Superscript,
+                :Subscript, :Undo, :Base64UploadAdapter
+
+        # Configure default table toolbar
+        configure :table, {
+          contentToolbar: %i[tableColumn tableRow mergeTableCells tableProperties tableCellProperties toggleTableCaption]
+        }
 
         # Configure default image toolbar
         configure :image, {
-          toolbar: ['imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side']
+          toolbar: ['imageStyle:inline', 'imageStyle:block', 'imageStyle:wrapText', :|, :toggleImageCaption, :imageTextAlternative, :imageResize]
         }
       end
     end

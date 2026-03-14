@@ -278,8 +278,6 @@ export class CKEditorComponent extends HTMLElement {
       new CustomEvent('ckeditor:attach', { detail: { config, ...beforeInitEventDetails } }),
     );
 
-    console.warn('Initializing CKEditor with:', { config, watchdog: this.hasWatchdog(), context: this.#context });
-
     // Initialize watchdog if needed
     let watchdog: EditorWatchdog | null = null;
     let instance: Editor | null = null;
@@ -311,12 +309,6 @@ export class CKEditorComponent extends HTMLElement {
       // Let's create the editor without watchdog.
       instance = await Editor.create(content, config);
     }
-
-    console.warn('CKEditor initialized:', {
-      instance,
-      watchdog,
-      config: (instance!.config as any)._config,
-    });
 
     return {
       contextId,
