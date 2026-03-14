@@ -89,7 +89,7 @@ module CKEditor5::Rails::Presets
     #       menubar
     #     end
     #   end
-    def define_default_preset
+    def define_default_preset # rubocop:disable Metrics/MethodLength
       define :default do
         # Set default version from gem constant
         version CKEditor5::Rails::DEFAULT_CKEDITOR_VERSION
