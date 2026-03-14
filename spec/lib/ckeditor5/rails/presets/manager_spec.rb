@@ -147,7 +147,7 @@ RSpec.describe CKEditor5::Rails::Presets::Manager do
     it 'has default configuration' do
       expect(manager.default.version).to eq(CKEditor5::Rails::DEFAULT_CKEDITOR_VERSION)
       expect(manager.default.type).to eq(:classic)
-      expect(manager.default.automatic_upgrades?).to be true
+      expect(manager.default.automatic_upgrades?).to be false
       expect(manager.default.menubar?).to be true
       expect(manager.default.config[:plugins]).not_to be_empty
       expect(manager.default.config[:toolbar][:items]).not_to be_empty

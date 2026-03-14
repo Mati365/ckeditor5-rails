@@ -94,9 +94,6 @@ module CKEditor5::Rails::Presets
         # Set default version from gem constant
         version CKEditor5::Rails::DEFAULT_CKEDITOR_VERSION
 
-        # Enable automatic version upgrades for security patches
-        automatic_upgrades
-
         # Use GPL license and classic editor type
         gpl
         type :classic

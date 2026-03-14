@@ -314,9 +314,9 @@ Configuration of the editor can be complex, and it's recommended to use the [CKE
 
 ### Automatic upgrades 🔄
 
-The gem includes a feature that automatically upgrades the CKEditor&nbsp;5 version when it's released. It's enabled by default for the `:default` preset. It means that the editor will automatically check the version of the editor during the initialization and upgrade it to the latest version if the new patch or minor version is released.
+The gem includes a feature that automatically upgrades the CKEditor&nbsp;5 version when it's released. It's **disabled** by default for the `:default` preset. It means that the editor will automatically check the version of the editor during the initialization and upgrade it to the latest version if the new patch or minor version is released.
 
-If you want to disable automatic upgrades, you can pass the `enabled: false` keyword argument to the `automatic_upgrades` method.
+If you want to enable automatic upgrades, you can use the `automatic_upgrades` method in the preset configuration.
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -324,7 +324,7 @@ If you want to disable automatic upgrades, you can pass the `enabled: false` key
 CKEditor5::Rails.configure do
   # ... other configuration
 
-  automatic_upgrades enabled: false
+  automatic_upgrades
 end
 ```
 
