@@ -328,6 +328,8 @@ CKEditor5::Rails.configure do
 end
 ```
 
+Keep in mind that the version is checked every 4 days, so the editor will not be upgraded immediately after the new version is released. However, it'll slow down the application for certain requests when the version check is performed.
+
 ### Available Configuration Methods ⚙️
 
 #### `cdn(cdn = nil, &block)` method
@@ -408,7 +410,7 @@ The patches are defined in the `lib/ckeditor5/rails/plugins/patches` directory. 
 
 <br />
 
-Defines if automatic upgrades should be enabled. It's enabled for the `:default` preset by default. The example below shows how to disable automatic upgrades:
+Defines if automatic upgrades should be enabled. It's disabled for the `:default` preset by default. The example below shows how to enable automatic upgrades:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -416,7 +418,7 @@ Defines if automatic upgrades should be enabled. It's enabled for the `:default`
 CKEditor5::Rails.configure do
   # ... other configuration
 
-  automatic_upgrades enabled: false
+  automatic_upgrades
 end
 ```
 
