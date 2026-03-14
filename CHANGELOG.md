@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.36.0] - 2026-03-14
+
+### Features
+
+* extend default preset with newer CKEditor features ([27f9518](https://github.com/Mati365/ckeditor5-rails/commit/27f95182f0d39fccede1c79254b35145cc833ffa))
+
+### Bug Fixes
+
+* disable automatic upgrades on default preset ([9e37107](https://github.com/Mati365/ckeditor5-rails/commit/9e3710742055fd2b11571da2a5488da3e92ef469))
+
+### Other Changes
+
+* chore: fix code style ([6169385](https://github.com/Mati365/ckeditor5-rails/commit/6169385ca418334c7227e9325dc038721664d129))
+* chore: regenerate lock files ([4620f1c](https://github.com/Mati365/ckeditor5-rails/commit/4620f1c9df0fdda025346569976294a1b8d8e16d))
+
+### Tests
+
+* tests: adjust tests ([0fe1b40](https://github.com/Mati365/ckeditor5-rails/commit/0fe1b405f324d924aa4883308f7b014e424351a6))
+
 ## [1.35.2] - 2026-03-12
 
 ### Features
