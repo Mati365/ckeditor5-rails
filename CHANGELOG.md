@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.36.1] - 2026-04-01
+
+### Features
+
+* Update CKEditor to version 48.0.0 ([bb01ea2](https://github.com/Mati365/ckeditor5-rails/commit/bb01ea24e78e0f605534067ccae9b748510ac716))
+
+### Other Changes
+
+* Build(deps): Bump picomatch from 4.0.3 to 4.0.4 ([a305ed0](https://github.com/Mati365/ckeditor5-rails/commit/a305ed0e75cc84ca2fdb5647f6af8eb18b77f166))
+* Build(deps-dev): Bump flatted from 3.4.1 to 3.4.2 ([3354d92](https://github.com/Mati365/ckeditor5-rails/commit/3354d92957fb4d06b6abf72448328a463d516eba))
+
 ## [1.36.0] - 2026-03-14
 
 ### Features
