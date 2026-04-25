@@ -47,12 +47,12 @@ export class CKEditorEditableComponent extends HTMLElement {
           this.appendChild((editor.ui.view as any)[this.name].element);
         });
       }
-      else {
+      else if (editorComponent.editables) {
         if (!this.name) {
           throw new Error('Editable component missing required "name" attribute');
         }
 
-        editorComponent.editables![this.name] = this;
+        editorComponent.editables[this.name] = this;
       }
     });
   }
@@ -73,9 +73,9 @@ export class CKEditorEditableComponent extends HTMLElement {
 
       const editorComponent = this.#queryEditorElement();
 
-      if (editorComponent) {
-        editorComponent.editables![newValue] = editorComponent.editables![oldValue]!;
-        delete editorComponent.editables![oldValue];
+      if (editorComponent?.editables?.[oldValue]) {
+        editorComponent.editables[newValue] = editorComponent.editables[oldValue];
+        delete editorComponent.editables[oldValue];
       }
     }
     else {
@@ -90,8 +90,8 @@ export class CKEditorEditableComponent extends HTMLElement {
   disconnectedCallback() {
     const editorComponent = this.#queryEditorElement();
 
-    if (editorComponent) {
-      delete editorComponent.editables![this.name];
+    if (editorComponent?.editables) {
+      delete editorComponent.editables[this.name];
     }
   }
 

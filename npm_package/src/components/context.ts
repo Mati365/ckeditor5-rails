@@ -1,8 +1,8 @@
 import type { ContextWatchdog } from 'ckeditor5';
 
-import { execIfDOMReady, loadAsyncImports, resolveConfigElementReferences } from 'src/helpers';
-
 import type { CKEditorComponent } from './editor';
+
+import { execIfDOMReady, loadAsyncImports, resolveConfigElementReferences } from '../helpers';
 
 export class CKEditorContextComponent extends HTMLElement {
   instance: ContextWatchdog | null = null;
