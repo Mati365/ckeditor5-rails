@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.36.2] - 2026-04-25
+
+### Bug Fixes
+
+* unstable unmount of editables ([22a5473](https://github.com/Mati365/ckeditor5-rails/commit/22a5473b140ad533274f5a22acddad1963bfefcc))
+* no longer use auto upgrade in sandbox ([563c9ea](https://github.com/Mati365/ckeditor5-rails/commit/563c9ea58afa5e3794ec006446778b2a9fc06141))
+
+### Other Changes
+
+* ci: do not use codecov token if missing ([57ce4e3](https://github.com/Mati365/ckeditor5-rails/commit/57ce4e3daabcdeb28493732a867968671d2e4ecf))
+* Build(deps-dev): Bump vite from 7.3.1 to 7.3.2 ([9d84128](https://github.com/Mati365/ckeditor5-rails/commit/9d841286010f656edb90a4994b4fc6bb62071b68))
+
 ## [1.36.2] - 2026-04-23
 
 ### Features
