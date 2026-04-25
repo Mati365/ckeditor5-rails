@@ -2392,6 +2392,12 @@ If you want to watch the tests, you can use the following command:
 bundle exec guard -g rspec
 ```
 
+If you want to run E2E tests:
+
+```sh
+bundle exec rake e2e
+```
+
 ## Psst... 👀
 
 If you're looking for similar stuff, check these out:
