@@ -40,6 +40,7 @@ end
 Capybara.server = :webrick
 Capybara.default_driver = :cuprite
 Capybara.javascript_driver = :cuprite
+Capybara.default_max_wait_time = 10
 
 RSpec.configure do |config|
   config.around :each, :js do |example|
