@@ -29,9 +29,7 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
       JS
 
       # Clear editor and type text
-      editor.click
-      editor.send_keys([[:control, 'a'], :backspace])
-      editor.send_keys('Hello from keyboard!')
+      replace_editor_content(editor, 'Hello from keyboard!')
 
       # Wait for change events and verify the last one
       eventually do
@@ -68,12 +66,8 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
       # Test each editable
       expected_data = {}
       editors.each_with_index do |editor, index|
-        editor.click
-        editor.send_keys([[:control, 'a'], :backspace])
-
         content = "Content for #{editables[index]}"
-
-        editor.send_keys(content)
+        replace_editor_content(editor, content)
         expected_data[editables[index]] = "<p>#{content}</p>"
       end
 
@@ -178,9 +172,7 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
       expect(page).to have_css('.ck-editor__editable', minimum: 3, wait: 10)
 
       new_editable = find("[name='new-root']")
-      new_editable.click
-      new_editable.send_keys([[:control, 'a'], :backspace])
-      new_editable.send_keys('Content for new root')
+      replace_editor_content(new_editable, 'Content for new root')
 
       eventually do
         events = page.evaluate_script('window._newEditableEvents')

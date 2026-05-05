@@ -20,14 +20,10 @@ RSpec.describe 'CKEditor5 Context Integration', type: :feature, js: true do
     editors = all('.ck-editor__editable', count: 2, wait: 10)
 
     # Test first editor
-    editors[0].click
-    editors[0].send_keys([[:control, 'a'], :backspace])
-    editors[0].send_keys('Modified Context Item 1')
+    replace_editor_content(editors[0], 'Modified Context Item 1')
 
     # Test second editor
-    editors[1].click
-    editors[1].send_keys([[:control, 'a'], :backspace])
-    editors[1].send_keys('Modified Context Item 2')
+    replace_editor_content(editors[1], 'Modified Context Item 2')
 
     # Verify content
     expect(editors[0].text).to eq('Modified Context Item 1')

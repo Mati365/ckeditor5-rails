@@ -1,6 +1,25 @@
 # frozen_string_literal: true
 
 module FormHelpers
+  def clear_editor_content(editor)
+    editor.click
+    editor.send_keys([select_all_modifier, :backspace])
+  end
+
+  def replace_editor_content(editor, new_content)
+    clear_editor_content(editor)
+    editor.send_keys(new_content)
+  end
+
+  def select_all_modifier
+    case RbConfig::CONFIG['host_os']
+    when /darwin/i
+      [:command, 'a']
+    else
+      [:control, 'a']
+    end
+  end
+
   def setup_form_tracking(driver)
     driver.execute_script <<~JS
       window.lastSubmittedForm = null;
