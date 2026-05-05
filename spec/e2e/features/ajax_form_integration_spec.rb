@@ -26,8 +26,7 @@ RSpec.describe 'AJAX Form Integration', type: :feature, js: true do
     end
 
     it 'validates required fields' do
-      editable.click
-      editable.send_keys([[:control, 'a'], :backspace])
+      clear_editor_content(editable)
       text_field.set('')
       submit_button.click
 
@@ -38,9 +37,7 @@ RSpec.describe 'AJAX Form Integration', type: :feature, js: true do
     it 'submits form and shows response' do
       test_content = "Test content #{Time.now.to_i}"
 
-      editable.click
-      editable.send_keys([[:control, 'a'], :backspace])
-      editable.send_keys(test_content)
+      replace_editor_content(editable, test_content)
 
       sleep 1
 

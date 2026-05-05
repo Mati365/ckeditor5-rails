@@ -21,8 +21,7 @@ RSpec.describe 'Form Integration', type: :feature, js: true do
     end
 
     it 'validates required fields' do
-      editable.click
-      editable.send_keys([[:control, 'a'], :backspace])
+      clear_editor_content(editable)
 
       text_field.set('')
       submit_button.click
