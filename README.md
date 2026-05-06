@@ -244,9 +244,9 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
 
 ## Presets 🎨
 
-Presets are predefined configurations of CKEditor 5, allowing quick setup with specific features. The gem includes a `:default` preset with common features like bold, italic, underline, and link for the classic editor.
+Presets are predefined configurations of CKEditor 5, allowing quick setup with specific features. The gem includes a [`:default`](/lib/ckeditor5/rails/presets/manager.rb) preset with common features like bold, italic, underline, and link for the classic editor.
 
-You can create your own by defining it in the `config/initializers/ckeditor5.rb` file using the `config.presets.define` method. The example below illustrates the setup of a custom preset with a classic editor and a custom toolbar:
+You can create your own by defining it in the [`config/initializers/ckeditor5.rb`](/sandbox/config/initializers/ckeditor5.rb) file using the [`config.presets.define`](/lib/ckeditor5/rails/presets/manager.rb) method. The example below illustrates the setup of a custom preset with a classic editor and a custom toolbar:
 
 ```rb
 # config/initializers/ckeditor5.rb
