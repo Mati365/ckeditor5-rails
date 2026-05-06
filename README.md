@@ -296,7 +296,7 @@ CKEditor5::Rails.configure do
 end
 ```
 
-In order to override existing presets, you can use the `presets.override` method. The method takes the name of the preset you want to override and a block with the old configuration. The example below shows how to hide the menubar in the default preset:
+In order to override existing presets, you can use the [`presets.override`](/lib/ckeditor5/rails/presets/manager.rb) method. The method takes the name of the preset you want to override and a block with the old configuration. The example below shows how to hide the menubar in the default preset:
 
 ```rb
 # config/initializers/ckeditor5.rb
@@ -312,7 +312,7 @@ CKEditor5::Rails.configure do
 end
 ```
 
-You can define presets in the controller using the [`ckeditor5_preset`](/lib/ckeditor5/rails/presets/manager.rb) helper method. See it in the section below ([Controller / View helpers](#controller--view-helpers-)).
+You can define presets in the controller using the [`ckeditor5_preset`](/lib/ckeditor5/rails/editor/helpers/config_helpers.rb) helper method. See it in the section below ([Controller / View helpers](#controller--view-helpers-)).
 
 Configuration of the editor can be complex, and it's recommended to use the [CKEditor 5 online builder](https://ckeditor.com/ckeditor-5/online-builder/) to generate the configuration. It allows you to select the features you want to include and generate the configuration code in JavaScript format. Keep in mind that you need to convert the JavaScript configuration to Ruby format before using it in this gem.
 
