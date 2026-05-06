@@ -144,8 +144,10 @@ To run the demos locally, follow these steps:
 ```bash
 npm install
 bundle install
+
+# Start the server
 npm run npm_package:watch
-bundle exec guard -g rails # Start the server
+bundle exec guard -g rails 
 ```
 
 Open [http://localhost:3000/](http://localhost:3000/) in a browser to start experimenting. Modify the code as needed.
