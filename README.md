@@ -142,7 +142,9 @@ Explore various editor configurations with the interactive [demo application](ht
 To run the demos locally, follow these steps:
 
 ```bash
-bundle install # Install dependencies
+npm install
+bundle install
+npm run npm_package:watch
 bundle exec guard -g rails # Start the server
 ```
 
