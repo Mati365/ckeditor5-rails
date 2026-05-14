@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.36.3] - 2026-05-14
+
+### Features
+
+* Update CKEditor to version 48.1.0 ([f2c5e92](https://github.com/Mati365/ckeditor5-rails/commit/f2c5e92e35ebf415bbd7e6351c5ec63ea90a66f1))
+
+### Other Changes
+
+* Update README.md ([879b777](https://github.com/Mati365/ckeditor5-rails/commit/879b7774994662ff8722cffe51112f8dda4a4264))
+* Use OS-aware select-all modifier in editor E2E tests ([a0df4de](https://github.com/Mati365/ckeditor5-rails/commit/a0df4dec0668cf7a7f25eaac750879c0dba4c8d0))
+* Fix flaky specs by increasing Capybara default wait time ([4cf5d1a](https://github.com/Mati365/ckeditor5-rails/commit/4cf5d1ab43969c06459aae2da93819a5807ff063))
+
 ## [1.36.2] - 2026-04-25
 
 ### Bug Fixes
