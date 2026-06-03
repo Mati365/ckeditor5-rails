@@ -21,7 +21,7 @@ export class CKEditorComponent extends HTMLElement {
 
   instance: Editor | null = null;
 
-  editables: Record<string, HTMLElement> | null = Object.create({});
+  editables: Record<string, HTMLElement> | null = Object.create(null);
 
   #initialHTML: string = '';
 
