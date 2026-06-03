@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.36.5] - 2026-06-03
+
+### Features
+
+* Update CKEditor to version 48.2.0 ([b4142f9](https://github.com/Mati365/ckeditor5-rails/commit/b4142f902fd42c043a0189b345a2b3a21997059d))
+
+### Other Changes
+
+* chore: no longer run e2e nightly ([d1bf35b](https://github.com/Mati365/ckeditor5-rails/commit/d1bf35bd6ca9ea555e77631e363152eff6a12839))
+
 ## [1.36.4] - 2026-05-19
 
 ### Features
