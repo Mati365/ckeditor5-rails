@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.36.6] - 2026-07-02
+
+### Features
+
+* Update CKEditor to version 48.3.0 ([7b8322f](https://github.com/Mati365/ckeditor5-rails/commit/7b8322f44541822f5183fb200e340474474a78f4))
+
+### Bug Fixes
+
+* invalid object constructor in few places ([874df3e](https://github.com/Mati365/ckeditor5-rails/commit/874df3e4b83071d2c7be28a743a15526d7bbfff0))
+
 ## [1.36.5] - 2026-06-03
 
 ### Features
