@@ -66,9 +66,11 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
       # Test each editable
       expected_data = {}
       editors.each_with_index do |editor, index|
-        content = "Content for #{editables[index]}"
+        editable = editables[index]
+        content = "Content for #{editable}"
+
         replace_editor_content(editor, content)
-        expected_data[editables[index]] = "<p>#{content}</p>"
+        expected_data[editable] = editable.starts_with?('inline') ? content : "<p>#{content}</p>"
       end
 
       # Wait for change events and verify the last one
@@ -139,7 +141,8 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
     before { visit 'multiroot' }
 
     it_behaves_like 'an editor', 'multiroot'
-    it_behaves_like 'a multiroot editor that fires change events', 'multiroot', %w[toolbar content footer]
+    it_behaves_like 'a multiroot editor that fires change events', 'multiroot',
+                    %w[toolbar content inline-footer]
 
     it 'supports multiple editable areas' do
       expect(page).to have_css('.ck-editor__editable', minimum: 3)
