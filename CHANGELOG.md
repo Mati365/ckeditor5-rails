@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.37.0] - 2026-07-04
+
+### Features
+
+* add support for inline roots ([43aca6d](https://github.com/Mati365/ckeditor5-rails/commit/43aca6d24a56d313eb07597244c8dd9cf890aba3))
+
+### Documentation
+
+* adjust title ([03af980](https://github.com/Mati365/ckeditor5-rails/commit/03af980afd426704467faacd94b808e798e27be5))
+
+### Tests
+
+* test: adjust multiroot test ([95dbfea](https://github.com/Mati365/ckeditor5-rails/commit/95dbfeab4771c0a81766c95f6f48edddc6241dcf))
+
 ## [1.36.6] - 2026-07-02
 
 ### Features
