@@ -11,16 +11,19 @@
 
 CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEditor 5 with Rails applications through web components and helper methods. This gem supports various editor types, including classic, inline, balloon, and decoupled editors. It also includes support for custom plugins, translations, and configuration options.
 
-**Requirements:**
-  * Ruby >= 2.5
-  * Rails >= 5.0
-
 > [!IMPORTANT]
 > This gem is unofficial and not maintained by CKSource. For official CKEditor 5 documentation, visit [ckeditor.com](https://ckeditor.com/docs/ckeditor5/latest/). If you encounter any issues in editor, please report them on the [GitHub repository](https://github.com/ckeditor/ckeditor5/issues).
 
 <p align="center">
   <img src="docs/intro-classic-editor.png" alt="CKEditor 5 Classic Editor in Ruby on Rails application">
 </p>
+
+## 🔗 Compatibility
+
+| CKEditor 5 Version | Integration Version | Ruby Version | Rails Version |
+|--------------------|---------------------|--------------|---------------|
+| 43.x – 47.x        | `<= 1.36.x`         | `>= 2.5`     | `>= 5.0`      |
+| >= 48.0            | `>= 1.37.x`         | `>= 2.5`     | `>= 5.0`      |
 
 ## Installation 🛠️
 
@@ -147,7 +150,7 @@ bundle install
 
 # Start the server
 npm run npm_package:watch
-bundle exec guard -g rails 
+bundle exec guard -g rails
 ```
 
 Open [http://localhost:3000/](http://localhost:3000/) in a browser to start experimenting. Modify the code as needed.
@@ -157,6 +160,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
 ## Table of Contents 📚
 
 - [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
+  - [🔗 Compatibility](#-compatibility)
   - [Installation 🛠️](#installation-️)
     - [If you are not using importmap (custom bundler) 📦](#if-you-are-not-using-importmap-custom-bundler-)
   - [Try Demos! 🎮 ✨](#try-demos--)
@@ -206,9 +210,12 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
     - [Commercial usage 💰](#commercial-usage-)
   - [Editor placement 🏗️](#editor-placement-️)
     - [Setting Initial Content 📝](#setting-initial-content-)
+    - [Single-line editable areas (`$inlineRoot`) 📏](#single-line-editable-areas-inlineroot-)
     - [Watchdog 🐕](#watchdog-)
     - [Classic editor 📝](#classic-editor-)
     - [Multiroot editor 🌳](#multiroot-editor-)
+      - [Inline roots (single-line editable areas)](#inline-roots-single-line-editable-areas)
+      - [Setting initial content of a root](#setting-initial-content-of-a-root)
     - [Inline editor 📝](#inline-editor-)
     - [Balloon editor 🎈](#balloon-editor-)
     - [Decoupled editor 🌐](#decoupled-editor-)
@@ -1659,6 +1666,25 @@ In this scenario, the assets are included from the official CKEditor 5 CDN which
 
 The `ckeditor5_editor` helper renders CKEditor 5 instances in your views. Before using it, ensure you've included the necessary assets in your page's head section otherwise the editor won't work as there are no CKEditor 5 JavaScript and CSS files loaded.
 
+```ruby
+ckeditor5_editor(
+  preset: nil,          # Symbol, PresetBuilder - preset to use (default: context preset or :default)
+  config: nil,          # Hash - custom config; replaces the preset's config (use extra_config to merge instead)
+  extra_config: {},     # Hash - additional config, deep-merged on top of the preset/custom config
+  type: nil,            # Symbol - :classic, :inline, :balloon, :decoupled, :multiroot (default: preset's type)
+  initial_data: nil,    # String - initial HTML content for the editor (mutually exclusive with a block)
+  watchdog: true,       # Boolean - enables/disables the CKEditor 5 crash-recovery watchdog
+  editable_height: nil, # Integer, String - fixed height of the editing area, e.g. 300 or '300px' (:classic/:balloon only)
+  language: nil,        # Symbol - UI language override for this editor instance
+  inline: false,        # Boolean - use the $inlineRoot model element instead of $root for the (single) root
+                         # (not applicable to :multiroot - use `inline` on ckeditor5_editable per root instead)
+  **html_attributes     # any other keyword becomes an HTML attribute: style:, class:, id:, data-*,
+                         # form attributes (name:, required:, value:), event handlers (oneditorready:, oneditorchange:, oneditorerror:), ...
+)
+# &block - nested content: initial data for single-root editors, or ckeditor5_toolbar / ckeditor5_menubar / ckeditor5_editable
+#          for multiroot/decoupled editors. Mutually exclusive with `initial_data`.
+```
+
 ### Setting Initial Content 📝
 
 You can set the initial content of the editor using the `initial_data` keyword argument or by passing the content directly to the `ckeditor5_editor` helper block.
@@ -1680,6 +1706,18 @@ The example below shows how to set the initial content of the editor using the `
   <p>Initial content</p>
 <% end %>
 ```
+
+### Single-line editable areas (`$inlineRoot`) 📏
+
+If you want the (single) root to behave as a single-line editable area — e.g. a title field — instead of a regular multi-block `$root`, pass the `inline` keyword argument:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<%= ckeditor5_editor inline: true, initial_data: 'Document title', style: 'width: 600px' %>
+```
+
+This works for `:classic`, `:inline`, `:balloon` and `:decoupled` editors. For `:multiroot` editors, set `inline: true` per root using `ckeditor5_editable` instead — see [Inline roots](#inline-roots-single-line-editable-areas).
 
 ### Watchdog 🐕
 
@@ -1796,6 +1834,52 @@ If you want to use a multiroot editor, you can pass the `type` keyword argument 
 ```
 
 Roots can be defined later to the editor by simply adding new elements rendered by `ckeditor5_editable` helper.
+
+```ruby
+ckeditor5_editable(
+  name = nil,        # String - root identifier, matched against the editor's roots (required for multiroot editors)
+  inline: false,     # Boolean - use the $inlineRoot model element instead of $root (single-line areas, e.g. titles)
+  initial_data: nil, # String - initial HTML content via the `initial-data` attribute (mutually exclusive with a block)
+  **kwargs           # any other keyword becomes an HTML attribute: style:, class:, id:, ...
+)
+# &block - initial HTML content for this root, provided as nested markup. Mutually exclusive with `initial_data`.
+```
+
+#### Inline roots (single-line editable areas)
+
+Multiroot editors can expose *inline* roots — single-line editable areas (e.g. a title) that use the `$inlineRoot` model element instead of the default `$root`. Enable it by passing `inline: true` to `ckeditor5_editable`:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<%= ckeditor5_editor type: :multiroot, style: 'width: 600px' do %>
+  <%= ckeditor5_toolbar %>
+  <br>
+  <%= ckeditor5_editable 'title', inline: true, style: 'border: 1px solid var(--ck-color-base-border);' %>
+  <br>
+  <%= ckeditor5_editable 'content', style: 'border: 1px solid var(--ck-color-base-border)' %>
+<% end %>
+```
+
+#### Setting initial content of a root
+
+You can set the initial content of a specific root using the `initial_data` keyword argument, instead of passing it as the tag's content:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<%= ckeditor5_editable 'content', initial_data: '<p>Hello</p>' %>
+```
+
+This is equivalent to (and mutually exclusive with) passing the content as a block:
+
+```erb
+<!-- app/views/demos/index.html.erb -->
+
+<%= ckeditor5_editable 'content' do %>
+  <p>Hello</p>
+<% end %>
+```
 
 ### Inline editor 📝
 

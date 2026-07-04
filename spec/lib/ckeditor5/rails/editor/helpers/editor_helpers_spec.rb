@@ -85,7 +85,7 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
     it 'merges extra configuration with preset config' do
       extra_config = { toolbar: { items: ['bold'] } }
       expect(helper).to receive(:build_editor_config)
-        .with(preset, nil, extra_config, nil)
+        .with(preset, nil, extra_config, nil, inline: false)
         .and_return(extra_config)
 
       helper.ckeditor5_editor(extra_config: extra_config)
@@ -93,7 +93,7 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
 
     it 'sets initial data in config when provided' do
       expect(helper).to receive(:build_editor_config)
-        .with(preset, nil, {}, 'initial content')
+        .with(preset, nil, {}, 'initial content', inline: false)
         .and_call_original
 
       helper.ckeditor5_editor(initial_data: 'initial content')
@@ -258,6 +258,12 @@ RSpec.describe CKEditor5::Rails::Editor::Helpers::Editor do
     it 'includes data-turbo-temporary attribute in the editable component' do
       result = helper.ckeditor5_editable('content')
       expect(result).to include('data-turbo-temporary="true"')
+    end
+
+    it 'cannot have both initial_data and block content' do
+      expect do
+        helper.ckeditor5_editable('content', initial_data: 'content') { 'block content' }
+      end.to raise_error(ArgumentError, 'Cannot pass initial data and block at the same time.')
     end
   end
 

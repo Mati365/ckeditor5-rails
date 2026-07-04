@@ -78,10 +78,13 @@ export class CKEditorMultiRootEditablesTracker {
 
     return this.#editorElement.runAfterEditorReady<MultiRootEditor>((editor) => {
       const { ui, editing, model } = editor;
+      const modelElement = (element as any).modelElement as string | undefined;
+      const initialData = (element as any).initialData as string | undefined;
 
       editor.addRoot(name, {
         isUndoable: false,
-        data: element.innerHTML,
+        initialData: initialData ?? element.innerHTML,
+        ...modelElement && { modelElement },
       });
 
       const root = model.document.getRoot(name);

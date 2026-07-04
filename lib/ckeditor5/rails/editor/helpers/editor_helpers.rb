@@ -19,6 +19,9 @@ module CKEditor5::Rails
     # @param watchdog [Boolean] Enable/disable the editor crash recovery (default: true)
     # @param editable_height [Integer] Set fixed height for editor in pixels
     # @param language [Symbol] Set editor UI language (e.g. :pl, :es)
+    # @param inline [Boolean] Whether the (single) root should use the `$inlineRoot` model
+    #   element instead of the default `$root`. Not applicable to `:multiroot` editors —
+    #   use the `inline` argument of `ckeditor5_editable` per root instead.
     # @param html_attributes [Hash] Additional HTML attributes for editor element
     #
     # @example Basic usage with default preset
@@ -29,6 +32,9 @@ module CKEditor5::Rails
     #
     # @example Inline editor with custom styling
     #   <%= ckeditor5_editor type: :inline, style: 'width: 600px' %>
+    #
+    # @example Classic editor with a single-line ($inlineRoot) editing area
+    #   <%= ckeditor5_editor inline: true, style: 'width: 600px' %>
     #
     # @example Multiroot editor with multiple editable areas
     #   <%= ckeditor5_editor type: :multiroot do %>
@@ -60,7 +66,7 @@ module CKEditor5::Rails
       preset: nil,
       config: nil, extra_config: {}, type: nil,
       initial_data: nil, watchdog: true,
-      editable_height: nil, language: nil,
+      editable_height: nil, language: nil, inline: false,
       **html_attributes, &block
     )
       validate_editor_input!(initial_data, block)
@@ -68,7 +74,7 @@ module CKEditor5::Rails
       context = ckeditor5_context_or_fallback(preset)
 
       preset = Engine.find_preset!(preset || context[:preset] || :default)
-      config = build_editor_config(preset, config, extra_config, initial_data)
+      config = build_editor_config(preset, config, extra_config, initial_data, inline: inline)
 
       type ||= preset.type
 
@@ -91,15 +97,30 @@ module CKEditor5::Rails
     # Creates an editable area for multiroot or decoupled editors.
     #
     # @param name [String] Identifier for the editable area
+    # @param inline [Boolean] Whether the root should use the `$inlineRoot` model element
+    #   instead of the default `$root`. Useful for single-line editable areas (e.g. titles).
+    # @param initial_data [String] Initial HTML content for this editable area, passed via
+    #   the `initial-data` attribute instead of the element's content. Cannot be used
+    #   together with a block.
     # @param kwargs [Hash] HTML attributes for the editable element
     #
     # @example Creating a named editable area in multiroot editor
     #   <%= ckeditor5_editable 'content', style: 'border: 1px solid gray' %>
-    def ckeditor5_editable(name = nil, **kwargs, &block)
+    #
+    # @example Creating an inline editable area (e.g. a title) in multiroot editor
+    #   <%= ckeditor5_editable 'title', inline: true %>
+    #
+    # @example Setting initial content using the initial_data argument
+    #   <%= ckeditor5_editable 'content', initial_data: '<p>Hello</p>' %>
+    def ckeditor5_editable(name = nil, inline: false, initial_data: nil, **kwargs, &block)
+      raise ArgumentError, 'Cannot pass initial data and block at the same time.' if initial_data && block
+
       tag.public_send(
         :'ckeditor-editable-component',
         'data-turbo-temporary': true,
         name: name,
+        inline: inline,
+        'initial-data': initial_data,
         **kwargs, &block
       )
     end
@@ -159,11 +180,18 @@ module CKEditor5::Rails
     # @param config [Hash] Custom configuration that overrides preset config
     # @param extra_config [Hash] Additional configuration to merge
     # @param initial_data [String] Initial content for the editor
+    # @param inline [Boolean] Whether the root should use the `$inlineRoot` model element
     # @return [Hash] The merged configuration hash
-    def build_editor_config(preset, config, extra_config, initial_data)
+    def build_editor_config(preset, config, extra_config, initial_data, inline: false)
       editor_config = config || preset.config
       editor_config = editor_config.deep_merge(extra_config)
-      editor_config[:initialData] = initial_data if initial_data
+
+      if initial_data || inline
+        editor_config[:root] = (editor_config[:root] || {}).merge(
+          **(initial_data ? { initialData: initial_data } : {}),
+          **(inline ? { modelElement: '$inlineRoot' } : {})
+        )
+      end
 
       if preset.automatic_upgrades? && editor_config[:version].present?
         detected_version = VersionDetector.latest_safe_version(editor_config[:version])

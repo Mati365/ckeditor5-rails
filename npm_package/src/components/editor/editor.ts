@@ -78,15 +78,9 @@ export class CKEditorComponent extends HTMLElement {
    */
   #getEventHandler(name: string): Function | null {
     if (this.hasAttribute(`on${name}`)) {
-      const handler = this.getAttribute(`on${name}`)!;
-
-      if (!isSafeKey(handler)) {
-        throw new Error(`Unsafe event handler attribute value: ${handler}`);
-      }
-
-      // eslint-disable-next-line no-new-func
-      return (window as any)[handler] || new Function('event', handler);
+      return resolveInlineEventHandler(this.getAttribute(`on${name}`)!);
     }
+
     return (this as any)[`#${name}Handler`];
   }
 
@@ -189,13 +183,7 @@ export class CKEditorComponent extends HTMLElement {
    * Determines appropriate editor element tag based on editor type
    */
   get #editorElementTag() {
-    switch (this.getAttribute('type')) {
-      case 'ClassicEditor':
-        return 'textarea';
-
-      default:
-        return 'div';
-    }
+    return getEditorElementTag(this.getAttribute('type'));
   }
 
   /**
@@ -221,9 +209,7 @@ export class CKEditorComponent extends HTMLElement {
    * Gets editor configuration with resolved element references
    */
   #getConfig() {
-    const config = JSON.parse(this.getAttribute('config') || '{}');
-
-    return resolveConfigElementReferences(config);
+    return parseEditorConfig(this.getAttribute('config'));
   }
 
   /**
@@ -235,37 +221,20 @@ export class CKEditorComponent extends HTMLElement {
       this.#ensureWindowScriptsInjected(),
     ]);
 
-    // Depending on the type of the editor the content supplied on the first
-    // argument is different. For ClassicEditor it's a element or string, for MultiRootEditor
-    // it's an object with editables, for DecoupledEditor it's string.
-    let content: any = editablesOrContent;
-
-    if (editablesOrContent instanceof CKEditorMultiRootEditablesTracker) {
-      content = editablesOrContent.getAll();
-    }
-    else if (typeof editablesOrContent !== 'string') {
-      content = (editablesOrContent as any)['main'];
-    }
-
-    // Broadcast editor initialization event. It's good time to load add inline window plugins.
-    const beforeInitEventDetails = {
-      ...content instanceof HTMLElement && { element: content },
-      ...typeof content === 'string' && { data: content },
-      ...content instanceof Object && { editables: content },
-    };
+    const { isMultiroot, content } = resolveEditorContent(editablesOrContent);
+    const beforeInitEventDetails = buildBeforeInitEventDetails(content, isMultiroot);
 
     window.dispatchEvent(
       new CustomEvent('ckeditor:attach:before', { detail: beforeInitEventDetails }),
     );
 
-    // Start fetching constructor.
     const Editor = await this.#getEditorConstructor();
     const [plugins, translations] = await Promise.all([
       this.#getPlugins(),
       this.#getTranslations(),
     ]);
 
-    const config = {
+    const config: Record<string, any> = {
       ...this.#getConfig(),
       ...translations.length && {
         translations,
@@ -273,12 +242,12 @@ export class CKEditorComponent extends HTMLElement {
       plugins,
     };
 
-    // Broadcast editor mounting event. It's good time to map configuration.
+    applyContentToConfig(config, content, isMultiroot, this.isClassic());
+
     window.dispatchEvent(
       new CustomEvent('ckeditor:attach', { detail: { config, ...beforeInitEventDetails } }),
     );
 
-    // Initialize watchdog if needed
     let watchdog: EditorWatchdog | null = null;
     let instance: Editor | null = null;
     let contextId: string | null = null;
@@ -287,9 +256,8 @@ export class CKEditorComponent extends HTMLElement {
       contextId = uid();
 
       await this.#contextWatchdog!.add({
-        creator: (_element, _config) => Editor.create(_element, _config),
+        creator: (_config: any) => Editor.create(_config),
         id: contextId,
-        sourceElementOrData: content,
         type: 'editor',
         config,
       });
@@ -297,17 +265,15 @@ export class CKEditorComponent extends HTMLElement {
       instance = this.#contextWatchdog!.getItem(contextId) as Editor;
     }
     else if (this.hasWatchdog()) {
-      // Let's create use with plain watchdog.
       const { EditorWatchdog } = await import('ckeditor5');
       watchdog = new EditorWatchdog(Editor);
 
-      await watchdog.create(content, config);
+      await watchdog.create(config);
 
       instance = watchdog.editor;
     }
     else {
-      // Let's create the editor without watchdog.
-      instance = await Editor.create(content, config);
+      instance = await Editor.create(config);
     }
 
     return {
@@ -351,7 +317,7 @@ export class CKEditorComponent extends HTMLElement {
     }
 
     try {
-      const { watchdog, instance, contextId } = await this.#initializeEditor(this.editables || this.#getConfig().initialData || '');
+      const { watchdog, instance, contextId } = await this.#initializeEditor(this.editables || this.#getConfig().root?.initialData || '');
 
       this.watchdog = watchdog;
       this.instance = instance!;
@@ -448,13 +414,7 @@ export class CKEditorComponent extends HTMLElement {
     if (this.isMultiroot()) {
       const editables = [...this.querySelectorAll('ckeditor-editable-component')] as CKEditorEditableComponent[];
 
-      return editables.reduce((acc, element) => {
-        if (!element.name) {
-          throw new Error('Editable component missing required "name" attribute');
-        }
-        acc[element.name] = element;
-        return acc;
-      }, Object.create(null));
+      return buildEditablesMap(editables);
     }
 
     const mainEditable = this.querySelector(this.#editorElementTag);
@@ -478,11 +438,7 @@ export class CKEditorComponent extends HTMLElement {
       return;
     }
 
-    for (const attr of CKEditorComponent.inputAttributes) {
-      if (this.hasAttribute(attr)) {
-        textarea.setAttribute(attr, this.getAttribute(attr)!);
-      }
-    }
+    copyAttributes(this, textarea, CKEditorComponent.inputAttributes);
   }
 
   /**
@@ -507,21 +463,8 @@ export class CKEditorComponent extends HTMLElement {
 
       textarea.innerHTML = '';
       textarea.value = this.instance!.getData();
-      textarea.tabIndex = -1;
 
-      Object.assign(textarea.style, {
-        display: 'flex',
-        position: 'absolute',
-        bottom: '0',
-        left: '50%',
-        width: '1px',
-        height: '1px',
-        opacity: '0',
-        pointerEvents: 'none',
-        margin: '0',
-        padding: '0',
-        border: 'none',
-      });
+      hideTextareaVisually(textarea);
     };
 
     syncInput();
@@ -545,23 +488,20 @@ export class CKEditorComponent extends HTMLElement {
       return;
     }
 
-    const { instance } = this;
-    const height = Number.parseInt(this.getAttribute('editable-height')!, 10);
+    const height = parseEditableHeight(this.getAttribute('editable-height'));
 
-    if (Number.isNaN(height)) {
+    if (height === null) {
       return;
     }
 
-    instance!.editing.view.change((writer) => {
-      writer.setStyle('height', `${height}px`, instance!.editing.view.document.getRoot()!);
-    });
+    applyEditableHeight(this.instance!, height);
   }
 
   /**
    * Gets bundle JSON description from translations attribute
    */
   #getBundle(): BundleDescription {
-    return this.#bundle ||= JSON.parse(this.getAttribute('bundle')!);
+    return (this.#bundle ||= parseBundleDescription(this.getAttribute('bundle'))) as BundleDescription;
   }
 
   /**
@@ -593,15 +533,7 @@ export class CKEditorComponent extends HTMLElement {
    * Loads plugin modules
    */
   async #getPlugins() {
-    const raw = this.getAttribute('plugins');
-    const items = raw ? JSON.parse(raw) : [];
-    const mappedItems = items.map((item: any) =>
-      typeof item === 'string'
-        ? { import_name: 'ckeditor5', import_as: item }
-        : item,
-    );
-
-    return loadAsyncImports(mappedItems);
+    return loadAsyncImports(parsePluginDescriptors(this.getAttribute('plugins')));
   }
 
   /**
@@ -609,14 +541,223 @@ export class CKEditorComponent extends HTMLElement {
    */
   async #getEditorConstructor() {
     const CKEditor = await import('ckeditor5');
-    const editorType = this.getAttribute('type');
 
-    if (!editorType || !Object.prototype.hasOwnProperty.call(CKEditor, editorType)) {
-      throw new Error(`Invalid editor type: ${editorType}`);
+    return resolveEditorConstructor(CKEditor, this.getAttribute('type'));
+  }
+}
+
+/**
+ * Resolves the DOM tag used for the main editable element based on the editor type.
+ */
+function getEditorElementTag(type: string | null): 'textarea' | 'div' {
+  switch (type) {
+    case 'ClassicEditor':
+      return 'textarea';
+
+    default:
+      return 'div';
+  }
+}
+
+/**
+ * Parses the `config` attribute JSON and resolves any `$element` references within it.
+ */
+function parseEditorConfig(raw: string | null) {
+  const config = JSON.parse(raw || '{}');
+
+  return resolveConfigElementReferences(config);
+}
+
+/**
+ * Resolves the `editablesOrContent` argument passed to `#initializeEditor` into a
+ * normalized `{ isMultiroot, content }` shape.
+ */
+function resolveEditorContent(
+  editablesOrContent: Record<string, HTMLElement | string> | CKEditorMultiRootEditablesTracker | string | HTMLElement,
+) {
+  const isMultiroot = editablesOrContent instanceof CKEditorMultiRootEditablesTracker;
+
+  let content: any = editablesOrContent;
+
+  if (isMultiroot) {
+    content = (editablesOrContent as CKEditorMultiRootEditablesTracker).getAll();
+  }
+  else if (typeof editablesOrContent !== 'string') {
+    content = (editablesOrContent as any)['main'];
+  }
+
+  return { isMultiroot, content };
+}
+
+/**
+ * Builds the payload broadcasted with the `ckeditor:attach:before` / `ckeditor:attach` events.
+ */
+function buildBeforeInitEventDetails(content: any, isMultiroot: boolean) {
+  return {
+    ...content instanceof HTMLElement && { element: content },
+    ...typeof content === 'string' && { data: content },
+    ...isMultiroot && { editables: content },
+  };
+}
+
+/**
+ * Applies the resolved editor content to the editor configuration, using the
+ * non-deprecated `attachTo` / `root` / `roots` options instead of the legacy
+ * `Editor.create( sourceElementOrData, config )` signature.
+ */
+function applyContentToConfig(
+  config: Record<string, any>,
+  content: any,
+  isMultiroot: boolean,
+  isClassic: boolean,
+) {
+  if (isMultiroot) {
+    config['roots'] = buildRootsConfig(content as Record<string, CKEditorEditableComponent>);
+  }
+  else if (isClassic && content instanceof HTMLElement) {
+    config['attachTo'] = content;
+  }
+  else if (content instanceof HTMLElement) {
+    config['root'] = { ...config['root'], element: content };
+  }
+  else if (typeof content === 'string') {
+    config['root'] = { ...config['root'], initialData: content };
+  }
+}
+
+/**
+ * Builds the `roots` configuration object used to initialize a `MultiRootEditor`.
+ */
+function buildRootsConfig(editables: Record<string, CKEditorEditableComponent>) {
+  return Object.fromEntries(
+    Object.entries(editables).map(([name, element]) => {
+      const modelElement = (element as any).modelElement as string | undefined;
+      const initialData = (element as any).initialData as string | undefined;
+
+      return [
+        name,
+        {
+          element,
+          initialData: initialData ?? element.innerHTML,
+          ...modelElement && { modelElement },
+        },
+      ];
+    }),
+  );
+}
+
+/**
+ * Builds a `{ [name]: element }` map out of a list of editable components, validating
+ * that each one has a `name` attribute set.
+ */
+function buildEditablesMap(elements: CKEditorEditableComponent[]): Record<string, CKEditorEditableComponent> {
+  return elements.reduce((acc, element) => {
+    if (!element.name) {
+      throw new Error('Editable component missing required "name" attribute');
     }
 
-    return (CKEditor as any)[editorType] as EditorConstructor;
+    acc[element.name] = element;
+
+    return acc;
+  }, Object.create(null));
+}
+
+/**
+ * Copies the given attributes from the source element to the target element, when present.
+ */
+function copyAttributes(source: Element, target: Element, attrNames: readonly string[]) {
+  for (const attr of attrNames) {
+    if (source.hasAttribute(attr)) {
+      target.setAttribute(attr, source.getAttribute(attr)!);
+    }
   }
+}
+
+/**
+ * Hides a `<textarea>` element visually while keeping it accessible to form submissions.
+ */
+function hideTextareaVisually(textarea: HTMLTextAreaElement) {
+  textarea.tabIndex = -1;
+
+  Object.assign(textarea.style, {
+    display: 'flex',
+    position: 'absolute',
+    bottom: '0',
+    left: '50%',
+    width: '1px',
+    height: '1px',
+    opacity: '0',
+    pointerEvents: 'none',
+    margin: '0',
+    padding: '0',
+    border: 'none',
+  });
+}
+
+/**
+ * Parses the `editable-height` attribute into a pixel value, or `null` when absent/invalid.
+ */
+function parseEditableHeight(raw: string | null): number | null {
+  if (raw === null) {
+    return null;
+  }
+
+  const height = Number.parseInt(raw, 10);
+
+  return Number.isNaN(height) ? null : height;
+}
+
+/**
+ * Applies a fixed editing view height to the given editor instance.
+ */
+function applyEditableHeight(instance: Editor, height: number) {
+  instance.editing.view.change((writer) => {
+    writer.setStyle('height', `${height}px`, instance.editing.view.document.getRoot()!);
+  });
+}
+
+/**
+ * Parses the `bundle` attribute JSON into a `BundleDescription`.
+ */
+function parseBundleDescription(raw: string | null): BundleDescription {
+  return JSON.parse(raw!);
+}
+
+/**
+ * Parses the `plugins` attribute JSON into async import descriptors.
+ */
+function parsePluginDescriptors(raw: string | null) {
+  const items = raw ? JSON.parse(raw) : [];
+
+  return items.map((item: any) =>
+    typeof item === 'string'
+      ? { import_name: 'ckeditor5', import_as: item }
+      : item,
+  );
+}
+
+/**
+ * Resolves the CKEditor 5 editor constructor matching the `type` attribute.
+ */
+function resolveEditorConstructor(ckeditorModule: object, editorType: string | null): EditorConstructor {
+  if (!editorType || !Object.prototype.hasOwnProperty.call(ckeditorModule, editorType)) {
+    throw new Error(`Invalid editor type: ${editorType}`);
+  }
+
+  return (ckeditorModule as any)[editorType] as EditorConstructor;
+}
+
+/**
+ * Resolves an inline event handler attribute value (e.g. `oneditorready="doSomething(event)"`)
+ * into a callable function, looking it up on `window` first.
+ */
+function resolveInlineEventHandler(handlerAttr: string): Function {
+  if (!isSafeKey(handlerAttr)) {
+    throw new Error(`Unsafe event handler attribute value: ${handlerAttr}`);
+  }
+
+  // eslint-disable-next-line no-new-func
+  return (window as any)[handlerAttr] || new Function('event', handlerAttr);
 }
 
 type EditorConstructor = {

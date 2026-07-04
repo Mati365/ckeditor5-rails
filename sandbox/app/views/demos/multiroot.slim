@@ -16,6 +16,8 @@
             = ckeditor5_editable 'toolbar', style: 'margin-bottom: 20px', data: { testid: 'toolbar-editable' } do
               | This is a toolbar editable
             = ckeditor5_editable 'content', data: { testid: 'content-editable' }
+            br
+            = ckeditor5_editable 'header', inline: true, initial_data: 'Inline Footer', data: { testid: 'content-editable' }
 
         = render 'demos/shared/implementation' do
           p.mb-4

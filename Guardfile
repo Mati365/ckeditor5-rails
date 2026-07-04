@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+directories %w[lib spec sandbox npm_package/dist]
+
+ignore(%r{^node_modules/})
+
 group :rails do
   guard :process, name: 'Rails', dir: 'sandbox', command: 'bundle exec rails server' do
     watch('sandbox/Gemfile.lock')
@@ -7,6 +11,7 @@ group :rails do
     watch(%r{^sandbox/app/(.+)\.rb$})
     watch(%r{^sandbox/config/(.+)\.rb$})
     watch(%r{^lib/(.+)\.rb$})
+    watch(%r{^npm_package/dist/.+})
     watch(/.*\.gemspec/)
   end
 end

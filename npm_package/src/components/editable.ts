@@ -4,16 +4,6 @@ import { execIfDOMReady } from '../helpers/exec-if-dom-ready';
 
 export class CKEditorEditableComponent extends HTMLElement {
   /**
-   * List of attributes that trigger updates when changed
-   *
-   * @static
-   * @returns {string[]} Array of attribute names to observe
-   */
-  static get observedAttributes() {
-    return ['name'];
-  }
-
-  /**
    * Gets the name of this editable region
    */
   get name() {
@@ -25,6 +15,20 @@ export class CKEditorEditableComponent extends HTMLElement {
    */
   get editableElement() {
     return this.querySelector('div')!;
+  }
+
+  /**
+   * Root model element.
+   */
+  get modelElement() {
+    return this.getAttribute('inline') === 'true' ? '$inlineRoot' : undefined;
+  }
+
+  /**
+   * Initial editable data.
+   */
+  get initialData() {
+    return this.hasAttribute('initial-data') ? this.getAttribute('initial-data')! : undefined;
   }
 
   /**
@@ -55,32 +59,6 @@ export class CKEditorEditableComponent extends HTMLElement {
         editorComponent.editables[this.name] = this;
       }
     });
-  }
-
-  /**
-   * Lifecycle callback for attribute changes
-   * Handles name changes and propagates other attributes to editable element
-   */
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (oldValue === newValue) {
-      return;
-    }
-
-    if (name === 'name') {
-      if (!oldValue) {
-        return;
-      }
-
-      const editorComponent = this.#queryEditorElement();
-
-      if (editorComponent?.editables?.[oldValue]) {
-        editorComponent.editables[newValue] = editorComponent.editables[oldValue];
-        delete editorComponent.editables[oldValue];
-      }
-    }
-    else {
-      this.editableElement.setAttribute(name, newValue!);
-    }
   }
 
   /**

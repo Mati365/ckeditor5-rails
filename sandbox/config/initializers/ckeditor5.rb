@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 CKEditor5::Rails.configure do
-  version '48.0.1'
+  version '48.3.0'
 
   presets.define :custom do
-    version '48.0.1'
+    version '48.3.0'
 
     toolbar :sourceEditing, :undo, :redo, :|, :bold, :italic, :underline, :strikethrough, :subscript,
             :superscript, :removeFormat, :|, :findAndReplace, :selectAll, :|, :heading, :|, :bulletedList,
@@ -23,7 +23,7 @@ CKEditor5::Rails.configure do
   end
 
   presets.define :basic, inherit: false do
-    version '48.0.1'
+    version '48.3.0'
 
     toolbar :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
             :outdent, :indent, :blockQuote, :|, :alignment, :link, :anchor, :|,
@@ -37,7 +37,7 @@ CKEditor5::Rails.configure do
   end
 
   presets.define :grouped_toolbar, inherit: false do
-    version '48.0.1'
+    version '48.3.0'
 
     toolbar do
       group :text_formatting, label: 'Text Formatting', icon: 'threeVerticalDots' do
@@ -62,7 +62,7 @@ CKEditor5::Rails.configure do
   end
 
   presets.define :ultrabasic, inherit: false do
-    version '48.0.1'
+    version '48.3.0'
 
     editable_height 260
 
@@ -118,7 +118,7 @@ CKEditor5::Rails.configure do
   end
 
   presets.define :balloon_block, inherit: false do
-    version '48.0.1'
+    version '48.3.0'
 
     editable_height 100
 
