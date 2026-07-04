@@ -18,7 +18,7 @@ CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEdi
   <img src="docs/intro-classic-editor.png" alt="CKEditor 5 Classic Editor in Ruby on Rails application">
 </p>
 
-## 🔗 Compatibility
+## Compatibility 🔗
 
 | CKEditor 5 Version | Integration Version | Ruby Version | Rails Version |
 |--------------------|---------------------|--------------|---------------|
@@ -160,7 +160,7 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
 ## Table of Contents 📚
 
 - [CKEditor 5 Rails Integration ✨](#ckeditor-5-rails-integration-)
-  - [🔗 Compatibility](#-compatibility)
+  - [Compatibility 🔗](#compatibility-)
   - [Installation 🛠️](#installation-️)
     - [If you are not using importmap (custom bundler) 📦](#if-you-are-not-using-importmap-custom-bundler-)
   - [Try Demos! 🎮 ✨](#try-demos--)
