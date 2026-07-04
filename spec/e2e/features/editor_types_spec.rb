@@ -139,10 +139,10 @@ RSpec.describe 'CKEditor5 Types Integration', type: :feature, js: true do
     before { visit 'multiroot' }
 
     it_behaves_like 'an editor', 'multiroot'
-    it_behaves_like 'a multiroot editor that fires change events', 'multiroot', %w[toolbar content]
+    it_behaves_like 'a multiroot editor that fires change events', 'multiroot', %w[toolbar content footer]
 
     it 'supports multiple editable areas' do
-      expect(page).to have_css('.ck-editor__editable', minimum: 2)
+      expect(page).to have_css('.ck-editor__editable', minimum: 3)
     end
 
     it 'shares toolbar between editables' do

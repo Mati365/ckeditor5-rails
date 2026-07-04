@@ -17,7 +17,7 @@
               | This is a toolbar editable
             = ckeditor5_editable 'content', data: { testid: 'content-editable' }
             br
-            = ckeditor5_editable 'header', inline: true, initial_data: 'Inline Footer', data: { testid: 'content-editable' }
+            = ckeditor5_editable 'footer', inline: true, initial_data: 'Inline Footer', data: { testid: 'footer-editable' }
 
         = render 'demos/shared/implementation' do
           p.mb-4
