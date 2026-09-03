@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.37.3] - 2026-09-03
+
+### Features
+
+* Update CKEditor to version 48.5.0 ([56e43d6](https://github.com/Mati365/ckeditor5-rails/commit/56e43d6d700b377967ec8eb8820dac417bc6a5e9))
+
 ## [1.37.2] - 2026-08-06
 
 ### Features
