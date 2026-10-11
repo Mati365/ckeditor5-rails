@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.38.0] - 2026-10-11
+
+### Bug Fixes
+
+* crashes on CKEditor 49.x ([6ccbbcf](https://github.com/Mati365/ckeditor5-rails/commit/6ccbbcf30a8f80e3ca5fcd979bfe2500937a4342))
+
+### Documentation
+
+* update compatibility table ([e8dddc9](https://github.com/Mati365/ckeditor5-rails/commit/e8dddc990077334c16d18d926ed81fa6626911d9))
+
+### Other Changes
+
+* chore: bump editor in demos controller ([6d9f637](https://github.com/Mati365/ckeditor5-rails/commit/6d9f637618150ab05504e33e85b65d6f656fcead))
+* chore: remove redundant helper ([4e4b6e5](https://github.com/Mati365/ckeditor5-rails/commit/4e4b6e51d4fa352d3ebebdc4cbbb38087fa7a477))
+
 ## [1.37.6] - 2026-10-09
 
 ### Features
