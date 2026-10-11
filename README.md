@@ -211,7 +211,6 @@ For extending CKEditor's functionality, refer to the [plugins directory](https:/
   - [Editor placement 🏗️](#editor-placement-️)
     - [Setting Initial Content 📝](#setting-initial-content-)
     - [Single-line editable areas (`$inlineRoot`) 📏](#single-line-editable-areas-inlineroot-)
-    - [Watchdog 🐕](#watchdog-)
     - [Classic editor 📝](#classic-editor-)
     - [Multiroot editor 🌳](#multiroot-editor-)
       - [Inline roots (single-line editable areas)](#inline-roots-single-line-editable-areas)
@@ -1673,7 +1672,6 @@ ckeditor5_editor(
   extra_config: {},     # Hash - additional config, deep-merged on top of the preset/custom config
   type: nil,            # Symbol - :classic, :inline, :balloon, :decoupled, :multiroot (default: preset's type)
   initial_data: nil,    # String - initial HTML content for the editor (mutually exclusive with a block)
-  watchdog: true,       # Boolean - enables/disables the CKEditor 5 crash-recovery watchdog
   editable_height: nil, # Integer, String - fixed height of the editing area, e.g. 300 or '300px' (:classic/:balloon only)
   language: nil,        # Symbol - UI language override for this editor instance
   inline: false,        # Boolean - use the $inlineRoot model element instead of $root for the (single) root
@@ -1718,18 +1716,6 @@ If you want the (single) root to behave as a single-line editable area — e.g. 
 ```
 
 This works for `:classic`, `:inline`, `:balloon` and `:decoupled` editors. For `:multiroot` editors, set `inline: true` per root using `ckeditor5_editable` instead — see [Inline roots](#inline-roots-single-line-editable-areas).
-
-### Watchdog 🐕
-
-CKEditor 5 uses a watchdog utility to protect you from data loss in case the editor crashes. It saves your content just before the crash and creates a new instance of the editor with your content intact. It's enabled by default in the gem.
-
-If you want to disable the watchdog, you can pass the `watchdog` keyword argument with the value `false`:
-
-```erb
-<!-- app/views/demos/index.html.erb -->
-
-<%= ckeditor5_editor watchdog: false %>
-```
 
 ### Classic editor 📝
 

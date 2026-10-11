@@ -39,8 +39,7 @@ RSpec.describe CKEditor5::Rails::Hooks::Form do
           name: 'post[content]',
           id: 'post_content',
           type: 'ClassicEditor',
-          bundle: bundle_json,
-          watchdog: 'true'
+          bundle: bundle_json
         }
 
         expect(rendered_editor).to have_tag('ckeditor-component', with: attrs)

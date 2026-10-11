@@ -16,13 +16,11 @@ module CKEditor5::Rails::Editor
     def initialize(
       type, config,
       bundle: nil,
-      watchdog: true,
       editable_height: nil
     )
       raise ArgumentError, "Invalid editor type: #{type}" unless Props.valid_editor_type?(type)
 
       @bundle = bundle
-      @watchdog = watchdog
       @type = type
       @config = config
       @editable_height = EditableHeightNormalizer.new(type).normalize(editable_height)
@@ -33,7 +31,6 @@ module CKEditor5::Rails::Editor
         bundle: bundle&.to_json,
         plugins: serialize_plugins,
         config: serialize_config,
-        watchdog: watchdog,
         type: EDITOR_TYPES[@type]
       }
         .merge(editable_height ? { 'editable-height': editable_height } : {})
@@ -46,7 +43,7 @@ module CKEditor5::Rails::Editor
 
     private
 
-    attr_reader :bundle, :watchdog, :type, :config, :editable_height
+    attr_reader :bundle, :type, :config, :editable_height
 
     def serialize_plugins
       (config[:plugins] || []).map { |plugin| PropsBasePlugin.normalize(plugin).to_h }.to_json

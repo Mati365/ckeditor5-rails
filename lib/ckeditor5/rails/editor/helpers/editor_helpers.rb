@@ -16,7 +16,6 @@ module CKEditor5::Rails
     # @param extra_config [Hash] Additional configuration to merge with preset/custom config
     # @param type [Symbol] Editor type (:classic, :inline, :balloon, :decoupled, :multiroot)
     # @param initial_data [String] Initial HTML content for the editor
-    # @param watchdog [Boolean] Enable/disable the editor crash recovery (default: true)
     # @param editable_height [Integer] Set fixed height for editor in pixels
     # @param language [Symbol] Set editor UI language (e.g. :pl, :es)
     # @param inline [Boolean] Whether the (single) root should use the `$inlineRoot` model
@@ -64,9 +63,13 @@ module CKEditor5::Rails
     #   <% end %>
     def ckeditor5_editor( # rubocop:disable Metrics/ParameterLists
       preset: nil,
-      config: nil, extra_config: {}, type: nil,
-      initial_data: nil, watchdog: true,
-      editable_height: nil, language: nil, inline: false,
+      config: nil,
+      extra_config: {},
+      type: nil,
+      initial_data: nil,
+      editable_height: nil,
+      language: nil,
+      inline: false,
       **html_attributes, &block
     )
       validate_editor_input!(initial_data, block)
@@ -85,7 +88,6 @@ module CKEditor5::Rails
       editor_props = Editor::Props.new(
         type, config,
         bundle: context[:bundle],
-        watchdog: watchdog,
         editable_height: editable_height || preset.editable_height
       )
 

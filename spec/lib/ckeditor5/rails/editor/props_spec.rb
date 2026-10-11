@@ -27,8 +27,7 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
         type: 'ClassicEditor',
         bundle: String,
         plugins: String,
-        config: String,
-        watchdog: true
+        config: String
       )
     end
 
@@ -47,14 +46,6 @@ RSpec.describe CKEditor5::Rails::Editor::Props do
 
       it 'includes editable-height attribute' do
         expect(props.to_attributes[:'editable-height']).to eq('500px')
-      end
-    end
-
-    context 'with watchdog disabled' do
-      subject(:props) { described_class.new(type, config, bundle: bundle, watchdog: false) }
-
-      it 'includes watchdog: false in attributes' do
-        expect(props.to_attributes[:watchdog]).to be false
       end
     end
   end

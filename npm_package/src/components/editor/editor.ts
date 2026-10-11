@@ -1,4 +1,4 @@
-import type { Editor, EditorWatchdog, Watchdog } from 'ckeditor5';
+import type { Editor } from 'ckeditor5';
 
 import type { AsyncImportRawDescription } from '../../helpers';
 import type { CKEditorContextComponent } from '../context';
@@ -10,14 +10,11 @@ import {
   loadAsyncCSS,
   loadAsyncImports,
   resolveConfigElementReferences,
-  uid,
 } from '../../helpers';
 import { CKEditorMultiRootEditablesTracker } from './multiroot-editables-tracker';
 
 export class CKEditorComponent extends HTMLElement {
-  instancePromise = Promise.withResolvers<Editor>();
-
-  watchdog: Watchdog | null = null;
+  instancePromise = createInstancePromise<Editor>();
 
   instance: Editor | null = null;
 
@@ -27,7 +24,16 @@ export class CKEditorComponent extends HTMLElement {
 
   #context: CKEditorContextComponent | null = null;
 
-  #contextEditorId: string | null = null;
+  /**
+   * Incremented on every (re)initialization and on disconnect. An initialization that finishes
+   * with a different value is stale and destroys the editor it created.
+   */
+  #generation = 0;
+
+  /**
+   * Unregisters the error callback of the current editor instance.
+   */
+  #offEditorError: VoidFunction | null = null;
 
   #bundle: object | null = null;
 
@@ -111,24 +117,22 @@ export class CKEditorComponent extends HTMLElement {
     this.#context = this.closest('ckeditor-context-component');
     this.#initialHTML = this.innerHTML;
 
-    try {
-      execIfDOMReady(async () => {
-        if (this.#context) {
+    execIfDOMReady(async () => {
+      if (this.#context) {
+        try {
           await this.#context.instancePromise.promise;
-          this.#context.registerEditor(this);
+        }
+        catch (error) {
+          this.#reportError('Failed to initialize editor:', error);
+          return;
         }
 
-        await this.reinitializeEditor();
-      });
-    }
-    catch (error) {
-      console.error('Failed to initialize editor:', error);
+        this.#context.registerEditor(this);
+      }
 
-      const event = new CustomEvent('editor-error', { detail: error });
-
-      this.dispatchEvent(event);
-      this.oneditorerror?.(event);
-    }
+      // Errors are reported by `reinitializeEditor()` itself.
+      await this.reinitializeEditor().catch(() => {});
+    });
   }
 
   /**
@@ -143,7 +147,8 @@ export class CKEditorComponent extends HTMLElement {
     if (oldValue !== null
       && oldValue !== newValue
       && CKEditorComponent.observedAttributes.includes(name) && this.isConnected) {
-      await this.reinitializeEditor();
+      // Errors are reported by `reinitializeEditor()` itself.
+      await this.reinitializeEditor().catch(() => {});
     }
   }
 
@@ -156,6 +161,9 @@ export class CKEditorComponent extends HTMLElement {
     if (this.#context) {
       this.#context.unregisterEditor(this);
     }
+
+    // Makes an initialization in progress destroy the editor it creates.
+    this.#generation++;
 
     try {
       await this.#destroy();
@@ -187,22 +195,49 @@ export class CKEditorComponent extends HTMLElement {
   }
 
   /**
-   * Gets the CKEditor context instance if available.
+   * Destroys the current editor instance, if any.
    */
-  get #contextWatchdog() {
-    return this.#context?.instance;
+  async #destroy() {
+    const instance = this.#detachInstance();
+
+    // The context destroys its editors when it's destroyed (or reinitialized), so the editor
+    // may be already destroyed here.
+    if (instance && instance.state !== 'destroyed') {
+      await instance.destroy();
+    }
   }
 
   /**
-   * Destroys the editor instance and watchdog if available
+   * Detaches the current editor instance from the component without destroying it.
+   *
+   * @returns The detached instance or `null` if there was none.
    */
-  async #destroy() {
-    if (this.#contextEditorId) {
-      await this.#contextWatchdog!.remove(this.#contextEditorId);
+  #detachInstance(): Editor | null {
+    const { instance } = this;
+
+    if (!instance) {
+      return null;
     }
 
-    await this.instance?.destroy();
-    this.watchdog?.destroy();
+    this.#offEditorError?.();
+    this.#offEditorError = null;
+
+    this.instance = null;
+    this.instancePromise = createInstancePromise<Editor>();
+
+    return instance;
+  }
+
+  /**
+   * Logs the error and dispatches the `editor-error` event.
+   */
+  #reportError(message: string, error: unknown) {
+    console.error(message, error);
+
+    const event = new CustomEvent('editor-error', { detail: error });
+
+    this.dispatchEvent(event);
+    this.oneditorerror?.(event);
   }
 
   /**
@@ -215,7 +250,10 @@ export class CKEditorComponent extends HTMLElement {
   /**
    * Creates a new CKEditor instance
    */
-  async #initializeEditor(editablesOrContent: Record<string, HTMLElement | string> | CKEditorMultiRootEditablesTracker | string | HTMLElement) {
+  async #initializeEditor(editablesOrContent: Record<string, HTMLElement | string> | CKEditorMultiRootEditablesTracker | string | HTMLElement): Promise<Editor> {
+    // Always take the current context instance. It may have been reinitialized in the meantime.
+    const context = this.#context ? await this.#context.instancePromise.promise : null;
+
     await Promise.all([
       this.#ensureStylesheetsInjected(),
       this.#ensureWindowScriptsInjected(),
@@ -248,39 +286,11 @@ export class CKEditorComponent extends HTMLElement {
       new CustomEvent('ckeditor:attach', { detail: { config, ...beforeInitEventDetails } }),
     );
 
-    let watchdog: EditorWatchdog | null = null;
-    let instance: Editor | null = null;
-    let contextId: string | null = null;
-
-    if (this.#context) {
-      contextId = uid();
-
-      await this.#contextWatchdog!.add({
-        creator: (_config: any) => Editor.create(_config),
-        id: contextId,
-        type: 'editor',
-        config,
-      });
-
-      instance = this.#contextWatchdog!.getItem(contextId) as Editor;
-    }
-    else if (this.hasWatchdog()) {
-      const { EditorWatchdog } = await import('ckeditor5');
-      watchdog = new EditorWatchdog(Editor);
-
-      await watchdog.create(config);
-
-      instance = watchdog.editor;
-    }
-    else {
-      instance = await Editor.create(config);
-    }
-
-    return {
-      contextId,
-      instance,
-      watchdog,
-    };
+    return Editor.create(
+      context
+        ? { ...config, context }
+        : config,
+    );
   }
 
   /**
@@ -290,54 +300,89 @@ export class CKEditorComponent extends HTMLElement {
    * @returns {Promise<void>}
    */
   async reinitializeEditor() {
-    if (this.instance) {
-      this.instancePromise = Promise.withResolvers();
-
-      await this.#destroy();
-
-      this.instance = null;
-    }
-
-    this.style.display = 'block';
-
-    if (!this.isMultiroot() && !this.isDecoupled()) {
-      this.innerHTML = `<${this.#editorElementTag}>${this.#initialHTML}</${this.#editorElementTag}>`;
-      this.#assignInputAttributes();
-    }
-
-    // Let's track changes in editables if it's a multiroot editor.
-    if (this.isMultiroot()) {
-      this.editables = new CKEditorMultiRootEditablesTracker(this, this.#queryEditables()) as unknown as Record<string, HTMLElement>;
-    }
-    else if (this.isDecoupled()) {
-      this.editables = null;
-    }
-    else {
-      this.editables = this.#queryEditables();
-    }
+    const generation = ++this.#generation;
 
     try {
-      const { watchdog, instance, contextId } = await this.#initializeEditor(this.editables || this.#getConfig().root?.initialData || '');
+      await this.#destroy();
 
-      this.watchdog = watchdog;
-      this.instance = instance!;
-      this.#contextEditorId = contextId;
+      this.style.display = 'block';
+
+      if (!this.isMultiroot() && !this.isDecoupled()) {
+        this.innerHTML = `<${this.#editorElementTag}>${this.#initialHTML}</${this.#editorElementTag}>`;
+        this.#assignInputAttributes();
+      }
+
+      // Let's track changes in editables if it's a multiroot editor.
+      if (this.isMultiroot()) {
+        this.editables = new CKEditorMultiRootEditablesTracker(this, this.#queryEditables()) as unknown as Record<string, HTMLElement>;
+      }
+      else if (this.isDecoupled()) {
+        this.editables = null;
+      }
+      else {
+        this.editables = this.#queryEditables();
+      }
+
+      const [instance, { onEditorError }] = await Promise.all([
+        this.#initializeEditor(this.editables || this.#getConfig().root?.initialData || ''),
+        import('ckeditor5'),
+      ]);
+
+      // The element was disconnected or the editor was reinitialized again in the meantime.
+      if (generation !== this.#generation) {
+        if (instance.state !== 'destroyed') {
+          await instance.destroy();
+        }
+
+        return;
+      }
+
+      this.instance = instance;
+
+      // Nothing restarts the editor after a crash anymore and its state may be inconsistent,
+      // so lock it in read-only mode to avoid submitting broken data with the form.
+      // Errors of the context are handled by the context component.
+      this.#offEditorError = onEditorError(({ error, source }) => {
+        if (source !== instance) {
+          return;
+        }
+
+        instance.enableReadOnlyMode('error-handling');
+        this.#reportError('Editor failed:', error);
+      });
+
+      // The editor may be destroyed externally (by the context or manually using `.destroy()`).
+      instance.once('destroy', () => {
+        if (this.instance === instance) {
+          this.#detachInstance();
+        }
+      });
 
       this.#setupContentSync();
       this.#setupEditableHeight();
       this.#setupDataChangeListener();
 
-      this.instancePromise.resolve(this.instance!);
+      this.instancePromise.resolve(instance);
 
       // Broadcast editor ready event
-      const event = new CustomEvent('editor-ready', { detail: this.instance });
+      const event = new CustomEvent('editor-ready', { detail: instance });
 
       this.dispatchEvent(event);
       this.oneditorready?.(event);
     }
-    catch (err) {
-      this.instancePromise.reject(err);
-      throw err;
+    catch (error) {
+      // A newer initialization (or disconnect) owns the state now.
+      if (generation !== this.#generation) {
+        return;
+      }
+
+      // Reject callers waiting in `runAfterEditorReady()` and let the next initialization start with a fresh promise.
+      this.instancePromise.reject(error);
+      this.instancePromise = createInstancePromise<Editor>();
+
+      this.#reportError('Failed to initialize editor:', error);
+
+      throw error;
     }
   }
 
@@ -394,13 +439,6 @@ export class CKEditorComponent extends HTMLElement {
    */
   isDecoupled() {
     return this.getAttribute('type') === 'DecoupledEditor';
-  }
-
-  /**
-   * Checks if current editor has watchdog enabled
-   */
-  hasWatchdog() {
-    return this.getAttribute('watchdog') === 'true';
   }
 
   /**
@@ -758,6 +796,18 @@ function resolveInlineEventHandler(handlerAttr: string): Function {
 
   // eslint-disable-next-line no-new-func
   return (window as any)[handlerAttr] || new Function('event', handlerAttr);
+}
+
+/**
+ * Creates a deferred promise that does not report an unhandled rejection
+ * when it's rejected while nobody is waiting for it.
+ */
+function createInstancePromise<T>(): PromiseWithResolvers<T> {
+  const deferred = Promise.withResolvers<T>();
+
+  deferred.promise.catch(() => {});
+
+  return deferred;
 }
 
 type EditorConstructor = {
