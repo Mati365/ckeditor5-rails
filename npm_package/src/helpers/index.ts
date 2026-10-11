@@ -1,3 +1,4 @@
+export * from './create-instance-promise';
 export * from './exec-if-dom-ready';
 export * from './inject-script';
 export * from './is-safe-key';

@@ -5,6 +5,7 @@ import type { CKEditorContextComponent } from '../context';
 import type { CKEditorEditableComponent } from '../editable';
 
 import {
+  createInstancePromise,
   execIfDOMReady,
   isSafeKey,
   loadAsyncCSS,
@@ -796,18 +797,6 @@ function resolveInlineEventHandler(handlerAttr: string): Function {
 
   // eslint-disable-next-line no-new-func
   return (window as any)[handlerAttr] || new Function('event', handlerAttr);
-}
-
-/**
- * Creates a deferred promise that does not report an unhandled rejection
- * when it's rejected while nobody is waiting for it.
- */
-function createInstancePromise<T>(): PromiseWithResolvers<T> {
-  const deferred = Promise.withResolvers<T>();
-
-  deferred.promise.catch(() => {});
-
-  return deferred;
 }
 
 type EditorConstructor = {

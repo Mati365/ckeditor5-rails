@@ -2,7 +2,12 @@ import type { Context } from 'ckeditor5';
 
 import type { CKEditorComponent } from './editor';
 
-import { execIfDOMReady, loadAsyncImports, resolveConfigElementReferences } from '../helpers';
+import {
+  createInstancePromise,
+  execIfDOMReady,
+  loadAsyncImports,
+  resolveConfigElementReferences,
+} from '../helpers';
 
 export class CKEditorContextComponent extends HTMLElement {
   instance: Context | null = null;
@@ -194,18 +199,6 @@ export class CKEditorContextComponent extends HTMLElement {
 
     return resolveConfigElementReferences(config);
   }
-}
-
-/**
- * Creates a deferred promise that does not report an unhandled rejection
- * when it's rejected while nobody is waiting for it.
- */
-function createInstancePromise<T>(): PromiseWithResolvers<T> {
-  const deferred = Promise.withResolvers<T>();
-
-  deferred.promise.catch(() => {});
-
-  return deferred;
 }
 
 customElements.define('ckeditor-context-component', CKEditorContextComponent);
