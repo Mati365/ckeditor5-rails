@@ -15,7 +15,7 @@ class DemosController < ApplicationController
 
   def classic_controller_preset
     @preset = ckeditor5_preset do
-      version '43.3.0'
+      version '49.0.0'
 
       toolbar :sourceEditing, :|, :bold, :italic, :underline, :strikethrough,
               :subscript, :superscript, :removeFormat, :|, :bulletedList, :numberedList,
@@ -109,7 +109,7 @@ class DemosController < ApplicationController
 
   def special_characters
     @preset = ckeditor5_preset do
-      version '43.3.0'
+      version '49.0.0'
 
       toolbar :sourceEditing, :|, :bold, :italic, :underline,
               :strikethrough, :|, :specialCharacters, :|,
