@@ -23,7 +23,8 @@ CKEditor 5 Ruby on Rails integration gem. Provides seamless integration of CKEdi
 | CKEditor 5 Version | Integration Version | Ruby Version | Rails Version |
 |--------------------|---------------------|--------------|---------------|
 | 43.x – 47.x        | `<= 1.36.x`         | `>= 2.5`     | `>= 5.0`      |
-| >= 48.0            | `>= 1.37.x`         | `>= 2.5`     | `>= 5.0`      |
+| 48.0               | `1.37.x`            | `>= 2.5`     | `>= 5.0`      |
+| >= 49.0            | `>= 1.38.x`         | `>= 2.5`     | `>= 5.0`      |
 
 ## Installation 🛠️
 
